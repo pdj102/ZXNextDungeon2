@@ -13,6 +13,9 @@
 
 #include "main.h"
 #include "zxnext.h"
+#include "util.h"
+
+#include "text.h"
  
 void init(void) {
     // Initialization code here
@@ -22,7 +25,9 @@ void init(void) {
 
 int main(void) {
 
-    // init();
+    init();
+
+    util_abort("Hello World");
 
     while(1)
     {

@@ -130,6 +130,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $< -o $@
 	@echo "Compiled C: $< -> $@"
 
+# Rule to build object files from assembly source files
+$(OBJDIR)/%.o: $(SRCDIR)/%.asm
+	$(AS) $(ASFLAGS) $< -o $@
+	@echo "Assembled ASM: $< -> $@"
+
 # Rule to build the program
 $(PROGRAM): $(OFILES)
 	$(CC) $(LDFLAGS) $(OFILES) $(LDLIBS) -o $(BINDIR)/$(PROGRAM)
