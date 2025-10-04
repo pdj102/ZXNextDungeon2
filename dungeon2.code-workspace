@@ -1,0 +1,69 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
+		"files.associations": {
+			"stdint.h": "c",
+			"stddef.h": "c",
+			"types.h": "c",
+			"zxnext.h": "c",
+			"location_comp.h": "c",
+			"sprite_comp.h": "c",
+			"entity.h": "c",
+			"map_terrain.h": "c",
+			"config_zxn.h": "c",
+			"creature_comp.h": "c",
+			"zxn.h": "c",
+			"creature_base.h": "c",
+			"global_state.h": "c",
+			"creature_comp_priv.h": "c",
+			"init.h": "c",
+			"text.h": "c",
+			"item_comp.h": "c",
+			"entity_factory.h": "c",
+			"util.h": "c",
+			"entity_priv.h": "c",
+			"map_priv.h": "c",
+			"item_comp_priv.h": "c",
+			"sprite_comp_priv.h": "c",
+			"location_comp_priv.h": "c",
+			"container_comp.h": "c",
+			"container_comp.h": "c",
+			"contained_comp_priv.h": "c",
+			"contained_comp.h": "c",
+			"player_comp_priv.h": "c",
+			"player_comp.h": "c",
+			"map.h": "c",
+			"map_terrain_priv.h": "c",
+			"player_system.h": "c",
+			"actions_system.h": "c",
+			"movement_system.h": "c",
+			"player_system_priv.h": "c",
+			"map_render.h": "c",
+			"renderable_comp_priv.h": "c",
+			"renderable_comp.h": "c",
+			"event_system.h": "c",
+			"timer_comp_priv.h": "c",
+			"timer_comp.h": "c",
+			"timer_system.h": "c",
+			"ui.h": "c",
+			"item_base.h": "c",
+			"container_system.h": "c",
+			"string.h": "c",
+			"systems_dispatch.h": "c",
+			"monster_base.h": "c",
+			"equipment_base.h": "c",
+			"monster_system.h": "c",
+			"equipment_system.h": "c"
+		},
+		"C_Cpp.default.includePath": [
+			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",
+			"D:\\Documents\\_PROGRAMMING\\z88dk\\include\\**"
+		],
+		"makefile.makefilePath": "."
+	}
+}
