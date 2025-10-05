@@ -35,6 +35,9 @@
  */
 static zxnext_tile_t *tilemap_base_p = (zxnext_tile_t *) TILEMAP_BASE;
 
+/***************************************************
+ * functions
+ ***************************************************/
 void zxnext_tilemap_clear(const zxnext_tile_t *tile_p)
 {
     zxnext_tile_t *t_p = tilemap_base_p;
