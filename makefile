@@ -53,12 +53,15 @@ OBJDIR=./obj
 
 # Set C files
 # Add other source file directories as needed
-CFILES=$(wildcard $(SRCDIR)/*.c)
+CFILES=$(wildcard $(SRCDIR)/*.c) \
+	   $(wildcard $(SRCDIR)/PAGE0/*.c) \
+	   $(wildcard $(SRCDIR)/PAGE1/*.c)
 
 # Set assembly files 
 # Add other source file directories as needed
 # Note don't use the same file name for both C and ASM files
-AFILES=$(wildcard $(SRCDIR)/*.asm)
+AFILES=$(wildcard $(SRCDIR)/*.asm) \
+	   $(wildcard $(SRCDIR)/PAGE1/*.asm)
 
 # Set object files
 # Convert source file names to object file names
@@ -112,6 +115,29 @@ LDFLAGS=$(TARGET) $(VERBOSITY) -startup=$(CRT) -clib=sdcc_iy -pragma-include:$(P
 # LDLIBS - Libraries to link against, such as -lfoo
 LDLIBS=
 
+# Create build directories if they don't exist
+$(OBJDIR):
+	mkdir $(OBJDIR)
+
+$(BINDIR):
+	mkdir $(BINDIR)
+
+
+# Function: bankflags_for <target>
+# Extracts the PAGE## part from a path and builds the bank flags
+# Usage: $(call bankflags_for,<file_path>)
+# Example: $(call bankflags_for,src/init_page1/startup.asm) -> --codesegPAGE_1 --constsegPAGE_1
+# Note: This function assumes that the PAGE## directory is directly under the src directory
+
+
+bankflags_for = $(strip \
+$(patsubst PAGE%,--codesegPAGE_%, \
+$(notdir $(word 1,$(filter PAGE%,$(subst /, ,$(dir $(1)))))) \
+) \
+$(patsubst PAGE%,--constsegPAGE_%, \
+$(notdir $(word 1,$(filter PAGE%,$(subst /, ,$(dir $(1)))))) \
+) \
+)
 
 
 # Make targets
@@ -122,17 +148,29 @@ all: $(PROGRAM)
 # Rule to clean build files
 # Add other directories as needed
 clean:
-	del $(OBJDIR)/*.o $(BINDIR)/$(PROGRAM)
+	del /s .\obj\*.o 
+	del .\bin\$(PROGRAM)
 	@echo "Clean complete"
+
+
+# Rule to test bankflags function
+test_bankflags:
+	@echo "Testing bankflags function"
+	@echo "File: src/init_page1/startup.asm -> Flags: $(call bankflags_for,src/init_page1/startup.asm)"
+	@echo "File: src/tile_defs_data.asm -> Flags: $(call bankflags_for,src/tile_defs_data.asm)"
+	@echo "File: src/text.c -> Flags: $(call bankflags_for,src/text.c)"
+	@echo "File: src/PAGE01/somefile.asm -> Flags: $(call bankflags_for,src/PAGE01/somefile.asm)"
+	@echo "File: src/PAGE1/somefile.asm -> Flags: $(call bankflags_for,src/PAGE1/somefile.asm)"
+	@echo "Test complete"
 
 # Rule to build object files from C source files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(call bankflags_for,$@) $< -o $@
 	@echo "Compiled C: $< -> $@"
 
 # Rule to build object files from assembly source files
 $(OBJDIR)/%.o: $(SRCDIR)/%.asm
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $(ASFLAGS) $(call bankflags_for,$@) $< -o $@
 	@echo "Assembled ASM: $< -> $@"
 
 # Rule to build the program

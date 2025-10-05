@@ -14,18 +14,14 @@
 #include "main.h"
 #include "zxnext.h"
 #include "util.h"
-
 #include "text.h"
+#include "PAGE0/init.h"
  
-void init(void) {
-    // Initialization code here
-
-    zxnext_init();
-}
-
 int main(void) {
 
     init();
+
+    // TODO palette setup
 
     util_abort("Hello World");
 

@@ -31,11 +31,7 @@ typedef struct zxnext_tile {
  * public function prototypes
  ***************************************************/
 
-/**
- * @brief Initialize ZX Spectrum Next specific features
- * 
- */
-void zxnext_init(void);
+
 
 /**
  * @brief Clear the ZX Next tilemap by setting all tiles to the specified tile
@@ -54,6 +50,5 @@ void zxnext_tilemap_set(uint8_t x, uint8_t y, const zxnext_tile_t *tile_p);
  * 
  */
 void  zxnext_tilemap_copy(uint8_t fx, uint8_t fy, uint8_t tx, uint8_t ty);
-
 
 #endif // ZXNEXT_H

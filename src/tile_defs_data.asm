@@ -1,4 +1,4 @@
-SECTION PAGE_10 
+SECTION BANK_5
 org 0x4A00
 
 PUBLIC _tile_pattern
