@@ -34,6 +34,20 @@ int main(void) {
     // New game
     entity_init();
 
+
+    typedef enum {
+    ITEM_NONE = 0,
+    ITEM_SWORD,
+    ITEM_SHIELD,
+    ITEM_POTION,
+    ITEM_KEY,
+    ITEM_KIND_COUNT
+    } test_type_t;
+
+    uint16_t s = sizeof(test_type_t);
+    text_print_string(&temp_win, "\n\n\n Size of enum: ");
+    text_print_uint16(&temp_win, s);
+
     entity_id_t e1 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
     text_print_string(&temp_win, "\n\n\nEntity ID: ");
     text_print_uint8(&temp_win, e1);
@@ -50,7 +64,7 @@ int main(void) {
     text_print_string(&temp_win, "\n\n\nEntity ID: ");
     text_print_uint8(&temp_win, e3);
     text_print_string(&temp_win, "\n");
-    
+
 
     util_abort("Hello World");
 

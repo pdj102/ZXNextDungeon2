@@ -110,28 +110,28 @@ void text_scroll_up( text_window_t *win_p );
 
         switch(text[i])
         {
-            case 'u':   // uint8_t
-            text_print_uint8(win_p, (uint8_t) va_arg(ptr, uint8_t) );
+            case 'u':   // uint8_t (promoted to int)
+            text_print_uint8(win_p, (uint8_t) va_arg(ptr, int) );
             break;
 
-            case 'd':   // int8_t
-            text_print_int8(win_p, (int8_t) va_arg(ptr, int8_t) );
+            case 'd':   // int8_t (promoted to int)
+            text_print_int8(win_p, (int8_t) va_arg(ptr, int) );
             break;
 
-            case 'U':   // uint16_t
-            text_print_uint16(win_p, (int16_t) va_arg(ptr, uint16_t) );
+            case 'U':   // uint16_t (promoted to int)
+            text_print_uint16(win_p, (uint16_t) va_arg(ptr, int) );
             break;
 
-            case 'D':   // int16_t
-            text_print_int16(win_p, (int16_t) va_arg(ptr, int16_t) );
+            case 'D':   // int16_t (promoted to int)
+            text_print_int16(win_p, (int16_t) va_arg(ptr, int) );
             break;
 
-            case 'L':   // uint_32_t
-            text_print_uint32(win_p, (uint32_t) va_arg(ptr, uint32_t) );
+            case 'L':   // uint32_t / unsigned long
+            text_print_uint32(win_p, (uint32_t) va_arg(ptr, unsigned long) );
             break;
 
-            case 'c':   // unsigned char
-            text_putc(win_p, (unsigned char) va_arg(ptr, unsigned char) );
+            case 'c':   // char (promoted to int)
+            text_putc(win_p, (char) va_arg(ptr, int) );
             break;
 
             case 's':   // string

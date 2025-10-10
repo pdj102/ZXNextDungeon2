@@ -12,9 +12,10 @@
 #define GLOBAL_STATE_H
 
 
+/* Special case - include private headers to define the global game state structure */
 #include "entity_priv.h"
 #include "item_priv.h"
-#include "location.h"
+#include "location_priv.h"
 
 #include "map.h"
 
