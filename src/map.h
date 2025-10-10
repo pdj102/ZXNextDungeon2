@@ -2,7 +2,6 @@
  * @file map.h
  * @author Paul Johnson
  * @brief 
- 
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -22,13 +21,19 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef struct {
-    uint8_t tiles[MAP_WIDTH][MAP_HEIGHT]; /* tile data for the map */
-} map_t;
+typedef enum {
+    TERRAIN_NONE = 0,
+    TERRAIN_WALL,
+    TERRAIN_FLOOR,
+    TERRAIN_TYPE_COUNT
+} terrain_type_t;
+
+
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_init(map_t *map_p);
-uint8_t map_get_tile(const map_t *map_p, uint8_t x, uint8_t y);
-void map_set_tile(map_t *map_p, uint8_t x, uint8_t y, uint8_t tile);
+void map_init(void);
+terrain_type_t map_get_terrain( uint8_t x, uint8_t y);
+void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
+
 #endif // MAP_H

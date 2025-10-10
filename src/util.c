@@ -43,12 +43,12 @@ text_window_t assert_win = {
 
 void util_assert_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&assert_win, "ASSERT FAIL: %s FILE:%s LINE:%L", message, file, (unsigned long)line);
+    text_printf(&assert_win, "ASSERT FAIL: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
     while(1);
 }
 
 void util_abort_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&assert_win, "ABORT: %s FILE:%s LINE:%L", message, file, (unsigned long)line);
+    text_printf(&assert_win, "ABORT: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
     while(1);    
 }

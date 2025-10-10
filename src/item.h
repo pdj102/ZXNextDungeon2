@@ -29,7 +29,7 @@ typedef enum {
     ITEM_SHIELD,
     ITEM_POTION,
     ITEM_KEY,
-    ITEM_KIND_COUNT
+    ITEM_TYPE_COUNT
 } item_type_t;
 
 

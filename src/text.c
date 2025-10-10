@@ -126,7 +126,7 @@ void text_scroll_up( text_window_t *win_p );
             text_print_int16(win_p, (int16_t) va_arg(ptr, int) );
             break;
 
-            case 'L':   // uint32_t / unsigned long
+            case 'l':   // uint32_t / unsigned long (lowercase l)
             text_print_uint32(win_p, (uint32_t) va_arg(ptr, unsigned long) );
             break;
 

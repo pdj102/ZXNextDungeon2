@@ -20,7 +20,7 @@
  * private types
  ***************************************************/
 
-/* Read only base attributes for item component types */
+/* Item type base attributes - read only  */
 typedef struct {
     const char *name;   
     uint8_t sprite_id;

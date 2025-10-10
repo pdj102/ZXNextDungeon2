@@ -7,7 +7,9 @@
 	"settings": {
 		"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
 		"files.associations": {
-			"stdint.h": "c"
+			"stdint.h": "c",
+			"stddef.h": "c",
+			"types.h": "c"
 		}
 	}
 }

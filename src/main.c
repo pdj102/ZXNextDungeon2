@@ -12,9 +12,15 @@
  #include <arch/zxn.h>
 
 #include "main.h"
+
+#include "entity.h"
+#include "item.h"
+
+#include "map.h"
+
 #include "util.h"
 #include "text.h"
-#include "entity.h"
+
 #include "PAGE0/init.h"
 
 text_window_t temp_win = {
@@ -33,7 +39,7 @@ int main(void) {
 
     // New game
     entity_init();
-
+    map_init();
 
     typedef enum {
     ITEM_NONE = 0,
@@ -60,9 +66,10 @@ int main(void) {
 
     entity_destroy(e1);
 
-    entity_id_t e3 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
-    text_print_string(&temp_win, "\n\n\nEntity ID: ");
-    text_print_uint8(&temp_win, e3);
+    // entity_id_t e3 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
+    entity_id_t i1 = item_create(ITEM_SWORD, 1);
+    text_print_string(&temp_win, "\n\n\nItem Entity ID: ");
+    text_print_uint8(&temp_win, i1);
     text_print_string(&temp_win, "\n");
 
 

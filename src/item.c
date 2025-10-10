@@ -18,7 +18,7 @@
 /***************************************************
  * private variables
  * ***************************************************/
-const item_base_t item_bases[ITEM_KIND_COUNT] = {
+const item_base_t item_bases[ITEM_TYPE_COUNT] = {
     [ITEM_NONE]   = { "None",   0, 0, 0, 0 },
     [ITEM_SWORD]  = { "Sword",  10, 2, 5, 20 },
     [ITEM_SHIELD] = { "Shield", 11, 3, 0, 15 },

@@ -17,7 +17,7 @@
 #include "item_priv.h"
 #include "location_priv.h"
 
-#include "map.h"
+#include "map_priv.h"
 
 /***************************************************
  * public defines
@@ -37,6 +37,9 @@ typedef struct
     location_t location[MAX_ENTITIES]; /* location data per entity */
     entity_id_t location_cell_head[MAP_WIDTH][MAP_HEIGHT]; /* linked list head for entities at each map cell */
     entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
+    /* Map */
+    map_t map; /* the game map */
+
 } global_state_t;
 
 
