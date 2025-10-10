@@ -3,7 +3,7 @@
  * @author Paul Johnson 
  * @brief ZX Next Dungeon II
  * @version 0.1
- * @date 2025-10-04
+ 
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -16,6 +16,16 @@
 #include "text.h"
 #include "entity.h"
 #include "PAGE0/init.h"
+
+text_window_t temp_win = {
+    .x = 0,
+    .y = 0,
+    .w = 40,
+    .h = 32,
+    .c_x = 0,
+    .c_y = 0,
+    .tile = { .tile_id = 0, .tile_attr = 0 }
+};
  
 int main(void) {
 
@@ -23,6 +33,24 @@ int main(void) {
 
     // New game
     entity_init();
+
+    entity_id_t e1 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
+    text_print_string(&temp_win, "\n\n\nEntity ID: ");
+    text_print_uint8(&temp_win, e1);
+    text_print_string(&temp_win, "\n");
+
+    entity_id_t e2 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
+    text_print_string(&temp_win, "\n\n\nEntity ID: ");
+    text_print_uint8(&temp_win, e2);
+    text_print_string(&temp_win, "\n");    
+
+    entity_destroy(e1);
+
+    entity_id_t e3 = entity_create(ENTITY_ITEM, COMPONENT_ITEM);
+    text_print_string(&temp_win, "\n\n\nEntity ID: ");
+    text_print_uint8(&temp_win, e3);
+    text_print_string(&temp_win, "\n");
+    
 
     util_abort("Hello World");
 

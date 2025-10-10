@@ -2,7 +2,7 @@
  * @file item.h
  * @author Paul Johnson
  * @brief 
- * @date 2025-10-05
+ 
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -32,16 +32,12 @@ typedef enum {
     ITEM_KIND_COUNT
 } item_type_t;
 
-typedef struct {
-    item_type_t type;   // index into item_bases[]
-    uint8_t quantity;   // stack size
-} item_component_t;
+
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void entity_init(void);
-entity_id_t entity_create(void);
-void entity_destroy(entity_id_t id);
+entity_id_t item_create(item_type_t type, uint8_t quantity);
+void item_destroy(entity_id_t id);
 
 #endif // ITEM_H

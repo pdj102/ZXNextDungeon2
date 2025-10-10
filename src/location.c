@@ -1,8 +1,7 @@
 /**
  * @file location.c
  * @author Paul Johnson
- * @brief 
- * @date 2025-10-05
+ * @brief location management for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -11,29 +10,12 @@
 #include "location.h"
 
 #include "global_state.h"
-
 #include "entity.h"
+#include "location_priv.h"
+
 #include "map.h"
 
 #include "util.h"
-
-/***************************************************
- * private defines
- ***************************************************/
-
-/***************************************************
- * private types
- * ***************************************************/
-
- /***************************************************
- * private function prototypes
- ***************************************************/
-
-/***************************************************
- * private variables
- * ***************************************************/
-
-
 
 /***************************************************
  * public functions
@@ -45,8 +27,6 @@ void place_on_map(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert(x < MAP_WIDTH);
     util_assert(y < MAP_HEIGHT);
     util_assert(g.location[entity].type == LOC_NONE); /* entity must not be placed */
-
-    // remove_from_current_location(entity); /* remove from current location if any */
 
     g.location[entity].type = LOC_MAP;
     g.location[entity].data.map.x = x;
@@ -61,15 +41,12 @@ void put_in_container(entity_id_t entity, entity_id_t container) {
     util_assert(container < MAX_ENTITIES);
     util_assert(g.location[entity].type == LOC_NONE); /* entity must not be placed */
 
-    // remove_from_current_location(entity); /* remove from current location if any */
-
     g.location[entity].type = LOC_CONTAINER;
     g.location[entity].data.container = container;
 
     g.location[entity].next_in_location = g.location_container_head[container]; /* link to previous head entity in this container */
     g.location_container_head[container] = entity; /* set this entity as the head of the list in this container */
 }
-
 
 void remove_from_map(entity_id_t entity)
 {

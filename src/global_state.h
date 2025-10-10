@@ -2,7 +2,7 @@
  * @file global_state.h
  * @author Paul Johnson 
  * @brief 
- * @date 2025-10-04
+ 
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -11,9 +11,10 @@
 #ifndef GLOBAL_STATE_H
 #define GLOBAL_STATE_H
 
-#include "entity.h"
+
+#include "entity_priv.h"
+#include "item_priv.h"
 #include "location.h"
-#include "item.h"
 
 #include "map.h"
 

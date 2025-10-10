@@ -5,6 +5,9 @@
 		}
 	],
 	"settings": {
-		"C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
+		"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
+		"files.associations": {
+			"stdint.h": "c"
+		}
 	}
 }

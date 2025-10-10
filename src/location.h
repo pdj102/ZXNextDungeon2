@@ -1,8 +1,7 @@
 /**
  * @file location.h
  * @author Paul Johnson
- * @brief 
- * @date 2025-10-05
+ * @brief location management for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -18,23 +17,7 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    LOC_NONE,       // entity is not placed
-    LOC_MAP,        // entity is on the map
-    LOC_CONTAINER      // entity is contained in another entity
-} location_type_t;
 
-typedef struct {
-    location_type_t type;   /* type of location */
-    union {
-        struct {
-            uint8_t  x; /* x coordinate on the map */
-            uint8_t  y; /* y coordinate on the map */
-        } map;
-        entity_id_t container; /* entity containing this entity */
-    } data;
-    entity_id_t next_in_location; /* next entity in the same location either container or map cell */
-} location_t;
 
 /***************************************************
  * public function prototypes
