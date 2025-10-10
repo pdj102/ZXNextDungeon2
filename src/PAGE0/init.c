@@ -47,6 +47,9 @@
 #define TILE_PALETTE_SIZE_8_BIT 256 /* 256 bytes for 8-bit palette */
 #define TILE_PALETTE_SIZE_9_BIT 512 /* 512 bytes for 9-bit palette */
 
+#define PAGE_GLOBAL_STATE 28 /* 8k bank number for global state */
+#define PAGE_GLOBAL_STATE_2 29 /* 8k bank number for global state second part */
+
 /***************************************************
  * private function prototypes
  ***************************************************/
@@ -71,6 +74,13 @@ void init(void) {
 
     /* Disable the ZXnext ULA screen */
     ZXN_WRITE_REG(REG_ULA_CONTROL, (ZXN_READ_REG(REG_ULA_CONTROL) | RUC_DISABLE_ULA_OUTPUT));
+
+    /* Remove the ROM from MMU slots 0 and 1 by mapping in 8k bank 28 and 29 */
+    /* This frees up 16k of memory at 0x0000 - 0x3FFF for our program */
+    /* Map bank 28 into ZX Spectrum 8k MMU slot 0 */
+    ZXN_WRITE_REG(0x50, PAGE_GLOBAL_STATE);
+    /* Map bank 29 into ZX Spectrum 8k MMU slot 1 */
+    ZXN_WRITE_REG(0x51, PAGE_GLOBAL_STATE_2);    
 
     init_zxnext_tilemap();
 
