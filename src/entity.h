@@ -18,8 +18,10 @@
 #define ENTITY_ID_INVALID 0xFF /* Invalid entity ID */
 
 /* Component masks */
-/* NB all entities have location and common components */
-#define COMPONENT_ITEM 1 << 0
+#define COMPONENT_NONE 0
+#define COMPONENT_LOCATION 1 << 0
+#define COMPONENT_SPRITE 1 << 1
+#define COMPONENT_ITEM 1 << 2
 
 
 

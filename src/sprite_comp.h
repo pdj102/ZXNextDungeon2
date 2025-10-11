@@ -1,39 +1,34 @@
 /**
- * @file map.h
+ * @file sprite_comp.h
  * @author Paul Johnson
  * @brief 
+ 
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef MAP_H
-#define MAP_H
+#ifndef SPRITE_COMP_H
+#define SPRITE_COMP_H
 
 #include <stdint.h>
+
+#include "entity.h"
+#include "zxnext.h"
 
 /***************************************************
  * public defines
  ***************************************************/
-#define MAP_WIDTH 32
-#define MAP_HEIGHT 24
 
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    TERRAIN_NONE = 0,
-    TERRAIN_WALL,
-    TERRAIN_FLOOR,
-    TERRAIN_TYPE_COUNT
-} terrain_type_t;
-
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_init(void);
-terrain_type_t map_get_terrain( uint8_t x, uint8_t y);
-void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
+void sprite_init(void);
+bool_t sprite_init_for_entity(entity_id_t entity, const zxnext_tile_t *tile_p);
+void sprite_destroy(entity_id_t id);
 
-#endif // MAP_H
+#endif // SPRITE_COMP_H

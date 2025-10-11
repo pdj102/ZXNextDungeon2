@@ -33,19 +33,22 @@
  * @brief Pointer to the base of the ZXnext tilemap 
  * 
  */
-static zxnext_tile_t *tilemap_base_p = (zxnext_tile_t *) TILEMAP_BASE;
+static  zxnext_tile_t *tilemap_base_p = (volatile zxnext_tile_t *) TILEMAP_BASE;
 
 /***************************************************
  * functions
  ***************************************************/
 void zxnext_tilemap_clear(const zxnext_tile_t *tile_p)
 {
-    zxnext_tile_t *t_p = tilemap_base_p;
+    util_assert(tile_p != NULL);
 
-    for (uint16_t s = 0; s < TILEMAP_WIDTH * TILEMAP_HEIGHT; s++) {
-        t_p->tile_id = tile_p->tile_id;
-        t_p->tile_attr = tile_p->tile_attr;
-        t_p++;
+    zxnext_tile_t *t_p =  ((zxnext_tile_t *) TILEMAP_BASE);
+
+    uint16_t count = TILEMAP_WIDTH * TILEMAP_HEIGHT; 
+    uint16_t s;
+
+    for (s = 0; s < count; s++) {
+        *t_p++ = *tile_p; /* copy the tile and increment to next tile*/
     }
 }
 
@@ -55,7 +58,7 @@ void zxnext_tilemap_set(uint8_t x, uint8_t y, const zxnext_tile_t *tile_p)
     util_assert(y < TILEMAP_HEIGHT);
     util_assert(tile_p != NULL);
 
-    zxnext_tile_t *t_p = tilemap_base_p + ( (y * TILEMAP_WIDTH) + x);
+    volatile zxnext_tile_t *t_p = tilemap_base_p + ( (y * TILEMAP_WIDTH) + x);
 
     *t_p = *tile_p; /* copy the tile */
 }
@@ -67,8 +70,8 @@ void  zxnext_tilemap_copy(uint8_t fx, uint8_t fy, uint8_t tx, uint8_t ty)
     util_assert(tx < TILEMAP_WIDTH);
     util_assert(ty < TILEMAP_HEIGHT);
     
-    zxnext_tile_t *f_p = tilemap_base_p + ( (fy * TILEMAP_WIDTH) + fx);
-    zxnext_tile_t *t_p = tilemap_base_p + ( (ty * TILEMAP_WIDTH) + tx);
+    volatile zxnext_tile_t *f_p = tilemap_base_p + ( (fy * TILEMAP_WIDTH) + fx);
+    volatile zxnext_tile_t *t_p = tilemap_base_p + ( (ty * TILEMAP_WIDTH) + tx);
 
     *t_p = *f_p; /* copy the tile */
 }

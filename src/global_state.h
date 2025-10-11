@@ -14,10 +14,10 @@
 
 /* Special case - include private headers to define the global game state structure */
 #include "entity_priv.h"
-#include "item_priv.h"
-#include "location_priv.h"
+#include "item_comp_priv.h"
+#include "location_comp_priv.h"
 
-#include "map_priv.h"
+#include "terrain_map_priv.h"
 
 /***************************************************
  * public defines
@@ -32,13 +32,13 @@ typedef struct
     /* ECS - Entity */
     entity_arena_t entity_arena; /* entity arena */
     /* ECS - Item */
-    item_component_t item_components[MAX_ENTITIES]; /* item component data per entity */
+    item_comp_t item_components[MAX_ENTITIES]; /* item component data per entity */
     /* ECS - Location */
-    location_t location[MAX_ENTITIES]; /* location data per entity */
-    entity_id_t location_cell_head[MAP_WIDTH][MAP_HEIGHT]; /* linked list head for entities at each map cell */
+    location_comp_t location_components[MAX_ENTITIES]; /* location component data per entity */
+    entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
     entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
-    /* Map */
-    map_t map; /* the game map */
+    /* Terrain_map */
+    terrain_map_t terrain_map; /* the game terrain_map */
 
 } global_state_t;
 

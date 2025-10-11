@@ -35,7 +35,7 @@ CRT=31
 PRAGMAS=pragmas.inc
 
 # C Optimisation Flags for zcc
-C_OPT_FLAGS=-SO3 --max-allocs-per-node200000
+ C_OPT_FLAGS=-SO3 --max-allocs-per-node200000
 
 # Set program executable name
 PROGRAM=dungeon2.nex
@@ -115,14 +115,6 @@ LDFLAGS=$(TARGET) $(VERBOSITY) -startup=$(CRT) -clib=sdcc_iy -pragma-include:$(P
 # LDLIBS - Libraries to link against, such as -lfoo
 LDLIBS=
 
-# Create build directories if they don't exist
-$(OBJDIR):
-	mkdir $(OBJDIR)
-
-$(BINDIR):
-	mkdir $(BINDIR)
-
-
 # Function: bankflags_for <target>
 # Extracts the PAGE## part from a path and builds the bank flags
 # Usage: $(call bankflags_for,<file_path>)
@@ -139,14 +131,22 @@ $(notdir $(word 1,$(filter PAGE%,$(subst /, ,$(dir $(1)))))) \
 ) \
 )
 
+# Make targets and rules
 
-# Make targets
-# Default target
 # Rule to build all
+# Default target is 'all'
 all: $(PROGRAM)
 
+# Create build directories if they don't exist
+# Add other directories as needed	
+$(OBJDIR):
+	mkdir $(OBJDIR)
+
+$(BINDIR):
+	mkdir $(BINDIR)
+
 # Rule to clean build files
-# Add other directories as needed
+# Deletes all object files and the final executable
 clean:
 	del /s .\obj\*.o 
 	del .\bin\$(PROGRAM)

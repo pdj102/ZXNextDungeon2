@@ -53,7 +53,8 @@ entity_id_t entity_create(entity_type_t type, uint16_t mask)
     {
         return ENTITY_ID_INVALID; /* no free entities */
     }
-    entity_id_t id = g.entity_arena.free_ids[g.entity_arena.free_head++]; /* pop from free list */
+    entity_id_t id = g.entity_arena.free_ids[g.entity_arena.free_head++]; /* pop from free stack */
+
     g.entity_arena.entities[id].alive = 1;                                /* mark entity as alive */
     g.entity_arena.entities[id].mask = 0;                                 /* clear component mask */
     g.entity_arena.entities[id].type = type;                              /* set entity type */

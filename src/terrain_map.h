@@ -1,43 +1,39 @@
 /**
- * @file item.h
+ * @file terrain_map.h
  * @author Paul Johnson
  * @brief 
- 
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef ITEM_H
-#define ITEM_H
+#ifndef TERRAIN_MAP_H
+#define TERRAIN_MAP_H
 
 #include <stdint.h>
-
-#include "entity.h"
 
 /***************************************************
  * public defines
  ***************************************************/
+#define TERRAIN_MAP_WIDTH 32
+#define TERRAIN_MAP_HEIGHT 24
 
 /***************************************************
  * public types
  ***************************************************/
-
 typedef enum {
-    ITEM_NONE = 0,
-    ITEM_SWORD,
-    ITEM_SHIELD,
-    ITEM_POTION,
-    ITEM_KEY,
-    ITEM_TYPE_COUNT
-} item_type_t;
-
+    TERRAIN_NONE = 0,
+    TERRAIN_WALL,
+    TERRAIN_FLOOR,
+    TERRAIN_TYPE_COUNT
+} terrain_type_t;
 
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-entity_id_t item_create(item_type_t type, uint8_t quantity);
-void item_destroy(entity_id_t id);
+void terrain_map_init(void);
+terrain_type_t terrain_map_get_terrain( uint8_t x, uint8_t y);
+void terrain_map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
 
-#endif // ITEM_H
+#endif // TERRAIN_MAP_H
