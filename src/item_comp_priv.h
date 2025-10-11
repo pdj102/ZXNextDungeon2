@@ -33,7 +33,7 @@ typedef struct {
 
 /* Item component data per entity */
 typedef struct {
-    item_comp_type_t type;   // index into item_comp_bases[]
+    item_type_t type;   // index into item_comp_bases[]
     uint8_t quantity;       // stack size
 } item_comp_t;
 

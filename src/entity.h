@@ -11,6 +11,7 @@
 #define ENTITY_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 /***************************************************
  * public defines
@@ -41,12 +42,29 @@ typedef enum {
     ENTITY_TYPE_COUNT
 } entity_type_t;
 
+typedef enum {
+    ITEM_NONE = 0,
+    ITEM_SWORD,
+    ITEM_SHIELD,
+    ITEM_POTION,
+    ITEM_KEY,
+    ITEM_TYPE_COUNT
+} item_type_t;
+
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 void entity_init(void);
-entity_id_t entity_create(entity_type_t type, uint16_t mask);
+
+entity_id_t entity_create_item(item_type_t type, uint8_t quantity);
+
+entity_id_t entity_create(entity_type_t type);
+
+bool_t entity_has_component(entity_id_t id, uint32_t comp_mask);
+void entity_set_component(entity_id_t id, uint32_t comp_mask);
+void entity_clear_component(entity_id_t id, uint32_t comp_mask);
+
 void entity_destroy(entity_id_t id);
 
 #endif // ENTITY_H

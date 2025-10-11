@@ -43,6 +43,6 @@ typedef struct {
 /***************************************************
  * private function prototypes
  ***************************************************/
-
+entity_id_t entity_create(entity_type_t type);
 
 #endif // ENTITY_PRIV_H

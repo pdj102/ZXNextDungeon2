@@ -39,49 +39,27 @@ void item_init(void)
 }
 
 /**
- * @brief Factory function to create an item entity with item, location and sprite components
- * 
- * @param type 
- * @param quantity 
- * @return entity_id_t 
- */
- entity_id_t item_create(item_comp_type_t type, uint8_t quantity)
-{
-    entity_id_t id = entity_create( ENTITY_ITEM, COMPONENT_ITEM | COMPONENT_LOCATION | COMPONENT_SPRITE); 
-    if (id == ENTITY_ID_INVALID)
-        return id;
-
-    /* Initialize item component */
-    item_comp_t *ic = &(g.item_components[id]); /* get item component for this entity */
-    ic->type = type;
-    ic->quantity = quantity;
-
-    /* Initialize location component - not placed yet */
-    g.location_components[id].type = LOC_NONE;
-    g.location_components[id].next_in_location = ENTITY_ID_INVALID;
-    /* Initialize sprite component - use item tile */
-    // g.sprite_components[id].tile = item_bases[type].tile;
-
-    return id;
-}
-
-/**
  * @brief Initialize item component for an existing entity
  * 
  * @param id 
  */
-bool_t item_init_for_entity(entity_id_t entity, item_comp_type_t type, uint8_t quantity)
+uint8_t item_init_for_entity(entity_id_t id, entity_type_t type, uint8_t quantity)
 {
-    util_assert(entity < MAX_ENTITIES);
+    util_assert(id < MAX_ENTITIES);
     util_assert(type < ITEM_TYPE_COUNT);
     util_assert(quantity > 0);
 
-    g.item_components[entity].type = type; /* set item type */
-    g.item_components[entity].quantity = quantity; /* set quantity */
+    g.item_components[id].type = type; /* set item type */
+    g.item_components[id].quantity = quantity; /* set quantity */
 
-    /* TODO set entity item component mask */
+    entity_set_component(id, COMPONENT_ITEM); /* set entity item component mask */
 
     return 1; /* success */
+}
+
+zxnext_tile_t *item_get_tile(entity_id_t id)
+{
+    return &(item_bases[g.item_components[id].type].tile);
 }
 
 /**
@@ -91,5 +69,5 @@ bool_t item_init_for_entity(entity_id_t entity, item_comp_type_t type, uint8_t q
  */
 void item_destroy(entity_id_t id)
 {
-    /* TODO unset entity item component mask */
+    entity_clear_component(id, COMPONENT_ITEM); /* clear entity item component mask */
 }

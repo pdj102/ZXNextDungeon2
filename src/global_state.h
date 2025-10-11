@@ -16,6 +16,7 @@
 #include "entity_priv.h"
 #include "item_comp_priv.h"
 #include "location_comp_priv.h"
+#include "sprite_comp_priv.h"
 
 #include "terrain_map_priv.h"
 
@@ -37,6 +38,9 @@ typedef struct
     location_comp_t location_components[MAX_ENTITIES]; /* location component data per entity */
     entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
     entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
+    /* ECS - Sprite*/
+    sprite_comp_t sprite_components[MAX_ENTITIES]; /* sprite component data per entity*/
+
     /* Terrain_map */
     terrain_map_t terrain_map; /* the game terrain_map */
 

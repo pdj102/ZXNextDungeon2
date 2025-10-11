@@ -47,7 +47,7 @@ bool_t location_init_for_entity(entity_id_t entity)
     g.location_components[entity].type = LOC_NONE; /* mark as not placed */
     g.location_components[entity].next_in_location = ENTITY_ID_INVALID; /* clear next in location */
 
-    /* TODO set entity location component mask */
+    entity_set_component(entity, COMPONENT_LOCATION); /* set entity location component mask */
 
     return 1; /* success */
 }
@@ -138,10 +138,10 @@ void location_remove_from_current(entity_id_t entity)
 
     switch (g.location_components[entity].type) {
         case LOC_MAP:
-            remove_from_map(entity);
+            location_remove_from_map(entity);
             break;
         case LOC_CONTAINER:
-            remove_from_container(entity);
+            location_remove_from_container(entity);
             break;
         case LOC_NONE:
             // Entity is not placed, nothing to do
@@ -160,5 +160,5 @@ void location_destroy(entity_id_t id)
     g.location_components[id].type = LOC_NONE; /* mark as not placed */
     g.location_components[id].next_in_location = ENTITY_ID_INVALID; /* clear next */
 
-    /* TODO unset entity location component mask */
+    entity_clear_component(id, COMPONENT_LOCATION); /* clear entity location component mask */
 }
