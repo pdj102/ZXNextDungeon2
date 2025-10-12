@@ -10,7 +10,8 @@
 #define ITEM_COMP_PRIV_H
 
 #include <stdint.h>
-#include "item_comp.h" /* pull in public item_comp_type_t and ITEM_KIND_COUNT */
+
+#include "item_comp.h"
 
 #include "zxnext.h"
 
@@ -33,7 +34,7 @@ typedef struct {
 
 /* Item component data per entity */
 typedef struct {
-    item_type_t type;   // index into item_comp_bases[]
+    item_kind_t kind;       // index into item_comp_bases[]
     uint8_t quantity;       // stack size
 } item_comp_t;
 

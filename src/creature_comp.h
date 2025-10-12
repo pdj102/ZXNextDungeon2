@@ -1,5 +1,5 @@
 /**
- * @file item_comp.h
+ * @file creature_comp.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef ITEM_COMP_H
-#define ITEM_COMP_H
+#ifndef CREATURE_COMP_H
+#define CREATURE_COMP_H
 
 #include <stdint.h>
 
@@ -25,23 +25,21 @@
  * public types
  ***************************************************/
 typedef enum {
-    ITEM_NONE = 0,
-    ITEM_SWORD,
-    ITEM_SHIELD,
-    ITEM_POTION,
-    ITEM_KEY,
-    ITEM_KIND_COUNT
-} item_kind_t;
+    CREATURE_NONE = 0,
+    CREATURE_RAT,
+    CREATURE_HUMAN,
+    CREATURE_KIND_COUNT
+} creature_kind_t;
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void item_init(void);
+void creature_init(void);
 
-uint8_t item_init_for_entity(entity_id_t id, entity_kind_t type, uint8_t quantity);
+uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t type, uint8_t quantity);
 
-zxnext_tile_t *item_get_tile(entity_id_t id);
+zxnext_tile_t *creature_get_tile(entity_id_t id);
 
-void item_destroy(entity_id_t id);
+void creature_destroy(entity_id_t id);
 
-#endif // ITEM_COMP_H
+#endif // CREATURE_COMP_H

@@ -15,7 +15,8 @@
 
 #include "entity.h"
 
-#include "item_comp.h"
+#include "entity_factory.h"
+
 #include "location_comp.h"
 
 #include "terrain_map.h"
@@ -57,13 +58,16 @@ int main(void) {
     } test_type_t;
 
     // Create some items
-    entity_id_t e1 = entity_create_item(ITEM_SWORD, 1);
+    entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
     location_place_on_map(e1, 10, 10);
     text_printf(&temp_win, "Item Entity ID: %u\n", e1);
 
-    entity_id_t e2 = entity_create_item(ITEM_POTION, 1);
+    entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
     location_place_on_map(e2, 12, 10);
     text_printf(&temp_win, "Item Entity ID: %u\n", e2);
+
+    entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
+    location_place_on_map(e3, 14, 10);
 
     map_render();
 

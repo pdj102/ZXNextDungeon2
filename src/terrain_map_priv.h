@@ -22,11 +22,7 @@
  * private types
  ***************************************************/
 
-/* Terrain type base attributes - read only  */
-typedef struct {
-    const char *name;   
-    char symbol;
-} terrain_base_t;
+
 
 /* Terrain_map structure */
  typedef struct {

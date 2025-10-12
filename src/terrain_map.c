@@ -18,11 +18,7 @@
 /***************************************************
  * private variables
  * ***************************************************/
-const terrain_base_t terrain_bases[TERRAIN_TYPE_COUNT] = {
-    [TERRAIN_NONE]   = { "None",   'X' },
-    [TERRAIN_WALL]   = { "Wall",   '#' },
-    [TERRAIN_FLOOR]  = { "Floor",  '.' }
-};
+
 
 /***************************************************
  * public functions

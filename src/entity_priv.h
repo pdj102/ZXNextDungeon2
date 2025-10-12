@@ -30,7 +30,7 @@
 typedef struct { 
     uint16_t mask; /* component mask */
     uint8_t alive; /* 0 = free, 1 = alive */
-    entity_type_t type; /* type of entity */
+    entity_kind_t type; /* type of entity */
 } entity_t;
 
 /* Entity arena structure - fast create and destroy */
@@ -43,6 +43,6 @@ typedef struct {
 /***************************************************
  * private function prototypes
  ***************************************************/
-entity_id_t entity_create(entity_type_t type);
+entity_id_t entity_create(entity_kind_t type);
 
 #endif // ENTITY_PRIV_H

@@ -1,21 +1,21 @@
 /**
- * @file item_comp.h
+ * @file entity_factory.h
  * @author Paul Johnson
- * @brief 
- 
+ * @brief Entity_factory for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef ITEM_COMP_H
-#define ITEM_COMP_H
+#ifndef ENTITY_FACTORY_H
+#define ENTITY_FACTORY_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "entity.h"
-
-#include "zxnext.h"
+#include "item_comp.h"
+#include "creature_comp.h"
 
 /***************************************************
  * public defines
@@ -24,24 +24,12 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    ITEM_NONE = 0,
-    ITEM_SWORD,
-    ITEM_SHIELD,
-    ITEM_POTION,
-    ITEM_KEY,
-    ITEM_KIND_COUNT
-} item_kind_t;
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void item_init(void);
 
-uint8_t item_init_for_entity(entity_id_t id, entity_kind_t type, uint8_t quantity);
+entity_id_t entity_factory_create_item(item_kind_t type, uint8_t quantity);
 
-zxnext_tile_t *item_get_tile(entity_id_t id);
 
-void item_destroy(entity_id_t id);
-
-#endif // ITEM_COMP_H
+#endif // ENTITY_FACTORY_H

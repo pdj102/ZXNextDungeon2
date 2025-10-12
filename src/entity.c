@@ -52,34 +52,7 @@ void entity_init(void)
     g.entity_arena.free_head = 0; /* point to the first free entity */
 }
 
- entity_id_t entity_create_item(item_type_t type, uint8_t quantity)
-{
-    entity_id_t id = entity_create( ENTITY_ITEM); 
-    if (id == ENTITY_ID_INVALID)
-        return id;
-
-    /* Initialize item component */
-    if (item_init_for_entity(id, type, quantity) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
-
-    /* Initialize location component - not placed yet */
-    if (location_init_for_entity(id) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
-
-    /* Initialize sprite component - use item tile */
-    if(sprite_init_for_entity(id, item_get_tile(id)) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
-
-    return id;
-}
-
-entity_id_t entity_create(entity_type_t type)
+entity_id_t entity_create(entity_kind_t type)
 {
     if (g.entity_arena.free_head >= MAX_ENTITIES)
     {

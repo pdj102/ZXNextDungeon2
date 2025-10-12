@@ -18,13 +18,12 @@
  ***************************************************/
 #define ENTITY_ID_INVALID 0xFF /* Invalid entity ID */
 
-/* Component masks */
+/* Component masks for the various component types */
 #define COMPONENT_NONE 0
 #define COMPONENT_LOCATION 1 << 0
 #define COMPONENT_SPRITE 1 << 1
 #define COMPONENT_ITEM 1 << 2
-
-
+#define COMPONENT_CREATURE 1 << 3
 
 /***************************************************
  * public types
@@ -39,17 +38,8 @@ typedef enum {
     ENTITY_CHEST,
     ENTITY_DOOR,
     ENTITY_EFFECT,
-    ENTITY_TYPE_COUNT
-} entity_type_t;
-
-typedef enum {
-    ITEM_NONE = 0,
-    ITEM_SWORD,
-    ITEM_SHIELD,
-    ITEM_POTION,
-    ITEM_KEY,
-    ITEM_TYPE_COUNT
-} item_type_t;
+    ENTITY_KIND_COUNT
+} entity_kind_t;
 
 
 /***************************************************
@@ -57,9 +47,7 @@ typedef enum {
  ***************************************************/
 void entity_init(void);
 
-entity_id_t entity_create_item(item_type_t type, uint8_t quantity);
-
-entity_id_t entity_create(entity_type_t type);
+entity_id_t entity_create(entity_kind_t kind);
 
 bool_t entity_has_component(entity_id_t id, uint32_t comp_mask);
 void entity_set_component(entity_id_t id, uint32_t comp_mask);
