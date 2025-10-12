@@ -36,7 +36,7 @@ typedef enum {
  ***************************************************/
 void creature_init(void);
 
-uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t type, uint8_t quantity);
+uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t type);
 
 zxnext_tile_t *creature_get_tile(entity_id_t id);
 

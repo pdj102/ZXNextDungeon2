@@ -24,6 +24,7 @@
 #define COMPONENT_SPRITE 1 << 1
 #define COMPONENT_ITEM 1 << 2
 #define COMPONENT_CREATURE 1 << 3
+#define COMPONENT_CONTAINER 1 << 4
 
 /***************************************************
  * public types

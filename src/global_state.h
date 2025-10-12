@@ -37,16 +37,20 @@ typedef struct
     item_comp_t item_components[MAX_ENTITIES]; /* item component data per entity */
     /* ECS - Location */
     location_comp_t location_components[MAX_ENTITIES]; /* location component data per entity */
-    entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
-    entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
     /* ECS - Sprite*/
     sprite_comp_t sprite_components[MAX_ENTITIES]; /* sprite component data per entity*/
     /* ECS - Creature*/
     creature_comp_t creature_components[MAX_ENTITIES]; /* creature component data per entity */
+    /* ECS - Container */
+    entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
 
     /* Terrain_map */
     terrain_map_t terrain_map; /* the game terrain_map */
+    entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
 
+    /* Player */
+    entity_id_t player;
+    
 } global_state_t;
 
 

@@ -55,6 +55,7 @@ bool_t location_init_for_entity(entity_id_t entity)
 void location_place_on_map(entity_id_t entity, uint8_t x, uint8_t y)
 {
     util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
     util_assert(x < TERRAIN_MAP_WIDTH);
     util_assert(y < TERRAIN_MAP_HEIGHT);
     util_assert(g.location_components[entity].type == LOC_NONE); /* entity must not be placed */
@@ -69,7 +70,9 @@ void location_place_on_map(entity_id_t entity, uint8_t x, uint8_t y)
 void location_put_in_container(entity_id_t entity, entity_id_t container) {
     
     util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
     util_assert(container < MAX_ENTITIES);
+    // todo implement container_components and check entity is a container
     util_assert(g.location_components[entity].type == LOC_NONE); /* entity must not be placed */
 
     g.location_components[entity].type = LOC_CONTAINER;
@@ -82,6 +85,7 @@ void location_put_in_container(entity_id_t entity, entity_id_t container) {
 void location_remove_from_map(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
     util_assert(g.location_components[entity].type == LOC_MAP);
 
     entity_id_t x = g.location_components[entity].data.map.x;
@@ -109,6 +113,7 @@ void location_remove_from_map(entity_id_t entity)
 void location_remove_from_container(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
     util_assert(g.location_components[entity].type == LOC_CONTAINER);
 
     entity_id_t container = g.location_components[entity].data.container;
@@ -135,6 +140,7 @@ void location_remove_from_container(entity_id_t entity)
 void location_remove_from_current(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
 
     switch (g.location_components[entity].type) {
         case LOC_MAP:

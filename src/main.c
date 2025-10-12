@@ -14,6 +14,8 @@
 #include "main.h"
 
 #include "entity.h"
+#include "item_comp.h"
+#include "creature_comp.h"
 
 #include "entity_factory.h"
 
@@ -21,6 +23,8 @@
 
 #include "terrain_map.h"
 #include "map_render.h"
+
+#include "global_state.h"
 
 #include "util.h"
 #include "text.h"
@@ -47,15 +51,7 @@ int main(void) {
     item_init();
     location_init();
     terrain_map_init();
-
-    typedef enum {
-    ITEM_NONE = 0,
-    ITEM_SWORD,
-    ITEM_SHIELD,
-    ITEM_POTION,
-    ITEM_KEY,
-    ITEM_KIND_COUNT
-    } test_type_t;
+    g.player = ENTITY_ID_INVALID;
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
@@ -67,16 +63,25 @@ int main(void) {
     text_printf(&temp_win, "Item Entity ID: %u\n", e2);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
+    text_printf(&temp_win, "Item Entity ID: %u\n", e3);    
     location_place_on_map(e3, 14, 10);
 
-    map_render();
+    entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);
+    text_printf(&temp_win, "Item Entity ID: %u\n", e4);    
+    location_place_on_map(e4, 10, 12);
 
-    util_abort("Hello World");
+    entity_id_t e5 = entity_factory_create_player();
+    text_printf(&temp_win, "Item Entity ID: %u\n", e5);    
+    location_place_on_map(e5, 10, 15);
+
+    map_render();
 
     while(1)
     {
         // Main loop code here
     }
+
+    util_abort("Hello World");
 
     return 0;
 }

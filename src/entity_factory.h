@@ -29,7 +29,19 @@
  * public function prototypes
  ***************************************************/
 
+/*
+ * @brief Create an item of a given kind
+*/
 entity_id_t entity_factory_create_item(item_kind_t type, uint8_t quantity);
 
+/*
+* @brief Create a monster of a given kind
+*/
+entity_id_t entity_factory_create_monster(creature_kind_t kind);
+
+/*
+* @brief Create player
+*/
+entity_id_t entity_factory_create_player( void );
 
 #endif // ENTITY_FACTORY_H

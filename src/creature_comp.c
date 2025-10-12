@@ -43,14 +43,13 @@ void creature_init(void)
  * 
  * @param id 
  */
-uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t kind, uint8_t quantity)
+uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t kind)
 {
     util_assert(id < MAX_ENTITIES);
     util_assert(kind < CREATURE_KIND_COUNT);
-    util_assert(quantity > 0);
 
     g.creature_components[id].kind = kind; /* set creature type */
-    // todo
+    // todo set up creature 
 
     entity_set_component(id, COMPONENT_CREATURE); /* set entity creature component mask */
 
