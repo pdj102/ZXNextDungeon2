@@ -11,6 +11,7 @@
 #include "zxnext.h"
 
 #include <arch/zxn.h>
+#include <input.h>              // Functions for Reading Keyboards, Joysticks and Mice
 
 #include "util.h"
 
@@ -76,3 +77,12 @@ void  zxnext_tilemap_copy(uint8_t fx, uint8_t fy, uint8_t tx, uint8_t ty)
     *t_p = *f_p; /* copy the tile */
 }
 
+int key_press(void)
+{
+    int key;
+
+    while ((key = in_inkey()) == 0);  /* loop while no key pressed */
+    in_wait_nokey(); /* wait no key */
+
+    return key;
+}

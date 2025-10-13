@@ -25,6 +25,8 @@
 #define COMPONENT_ITEM 1 << 2
 #define COMPONENT_CREATURE 1 << 3
 #define COMPONENT_CONTAINER 1 << 4
+#define COMPONENT_PLAYER_CTRL 1 << 5
+#define COMPONENT_AI_CTRL 1 << 6
 
 /***************************************************
  * public types

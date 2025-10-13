@@ -18,6 +18,7 @@
 #include "location_comp_priv.h"
 #include "sprite_comp_priv.h"
 #include "creature_comp_priv.h"
+#include "player_ctrl_comp_priv.h"
 
 #include "terrain_map_priv.h"
 
@@ -43,13 +44,14 @@ typedef struct
     creature_comp_t creature_components[MAX_ENTITIES]; /* creature component data per entity */
     /* ECS - Container */
     entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
+    /* ECS - Player */
+    player_ctrl_comp_t player; /* the player component*/
 
     /* Terrain_map */
     terrain_map_t terrain_map; /* the game terrain_map */
     entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
 
-    /* Player */
-    entity_id_t player;
+
     
 } global_state_t;
 

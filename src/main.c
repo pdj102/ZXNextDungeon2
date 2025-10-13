@@ -50,8 +50,8 @@ int main(void) {
     entity_init();
     item_init();
     location_init();
+    player_ctrl_init();
     terrain_map_init();
-    g.player = ENTITY_ID_INVALID;
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
@@ -79,6 +79,10 @@ int main(void) {
     while(1)
     {
         // Main loop code here
+        /* energy system */
+        /* player control system*/
+        player_control_system_run();
+        
     }
 
     util_abort("Hello World");

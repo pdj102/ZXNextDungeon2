@@ -118,6 +118,10 @@ void entity_destroy(entity_id_t id)
         sprite_destroy(id);
     }
 
+    if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
+        player_ctrl_destroy(id);
+    }
+
     /* mark entity as free */
     g.entity_arena.entities[id].alive = 0;                    /* mark as not alive*/
     g.entity_arena.entities[id].mask = 0;                     /* clear component mask */

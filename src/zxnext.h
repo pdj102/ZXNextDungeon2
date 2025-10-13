@@ -51,4 +51,11 @@ void zxnext_tilemap_set(uint8_t x, uint8_t y, const zxnext_tile_t *tile_p);
  */
 void  zxnext_tilemap_copy(uint8_t fx, uint8_t fy, uint8_t tx, uint8_t ty);
 
+/**
+ * @brief Wait for a key press
+ * 
+ * @return int 
+ */
+int key_press(void);
+
 #endif // ZXNEXT_H

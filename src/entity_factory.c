@@ -98,7 +98,7 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
 
 entity_id_t entity_factory_create_player( void )
 {
-    util_assert(g.player == ENTITY_ID_INVALID); /* check player entity does not exist */
+    util_assert(g.player.id == ENTITY_ID_INVALID); /* check player entity does not exist */
 
     entity_id_t id = entity_create(ENTITY_PLAYER);
     if (id == ENTITY_ID_INVALID)
@@ -116,13 +116,17 @@ entity_id_t entity_factory_create_player( void )
         return ENTITY_ID_INVALID;
     }
 
-    /* Initialize sprite component - use creature tle */
+    /* Initialize sprite component - use creature tile */
     if(sprite_init_for_entity(id, creature_get_tile(id)) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
-    
-    g.player = id;
+
+    /* initialise player control component */
+    if (player_ctrl_init_for_entity(id) == 0) {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }
 
     return id;
 }
