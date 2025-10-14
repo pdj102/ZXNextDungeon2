@@ -12,6 +12,7 @@
 #include <stdint.h>
 
 #include "creature_comp.h"
+#include "entity_priv.h"
 
 #include "zxnext.h"
 
@@ -61,7 +62,7 @@ typedef struct {
     // etc
 } creature_comp_t;
 
-
+typedef creature_comp_t creature_components_t[MAX_ENTITIES]; /* creature component data */
 
 #endif /* CREATURE_COMP_PRIV_H */
 

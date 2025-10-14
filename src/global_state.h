@@ -18,6 +18,7 @@
 #include "location_comp_priv.h"
 #include "sprite_comp_priv.h"
 #include "creature_comp_priv.h"
+#include "container_comp_priv.h"
 #include "player_ctrl_comp_priv.h"
 
 #include "terrain_map_priv.h"
@@ -33,17 +34,17 @@
 typedef struct 
 {
     /* ECS - Entity */
-    entity_arena_t entity_arena; /* entity arena */
+    entity_components_t entity_components; /* entity arena */
     /* ECS - Item */
-    item_comp_t item_components[MAX_ENTITIES]; /* item component data per entity */
+    item_components_t item_components; /* item component data */
     /* ECS - Location */
-    location_comp_t location_components[MAX_ENTITIES]; /* location component data per entity */
+    location_components_t location_components; /* location component data */
     /* ECS - Sprite*/
-    sprite_comp_t sprite_components[MAX_ENTITIES]; /* sprite component data per entity*/
+    sprite_components_t sprite_components; /* sprite component data */
     /* ECS - Creature*/
-    creature_comp_t creature_components[MAX_ENTITIES]; /* creature component data per entity */
+    creature_components_t creature_components; /* creature component data */
     /* ECS - Container */
-    entity_id_t location_container_head[MAX_ENTITIES]; /* linked list head for entities in each container */
+    container_components_t container_components; /* container component data */
     /* ECS - Player */
     player_ctrl_comp_t player; /* the player component*/
 

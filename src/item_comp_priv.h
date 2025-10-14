@@ -38,6 +38,8 @@ typedef struct {
     uint8_t quantity;       // stack size
 } item_comp_t;
 
+typedef item_comp_t item_components_t[MAX_ENTITIES]; /* item component data */
+
 
 
 #endif /* ITEM_COMP_PRIV_H */

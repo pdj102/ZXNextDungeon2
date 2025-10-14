@@ -44,26 +44,26 @@ void entity_init(void)
 {
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        g.entity_arena.entities[i].alive = 0; /* mark all entities as free */
-        g.entity_arena.entities[i].mask = 0;  /* clear all component masks */
-        g.entity_arena.free_ids[i] = i;       /* initialize free list */
+        g.entity_components.entities[i].alive = 0; /* mark all entities as free */
+        g.entity_components.entities[i].mask = 0;  /* clear all component masks */
+        g.entity_components.free_ids[i] = i;       /* initialize free list */
     }
 
-    g.entity_arena.free_head = 0; /* point to the first free entity */
+    g.entity_components.free_head = 0; /* point to the first free entity */
 }
 
 entity_id_t entity_create(entity_kind_t type)
 {
-    if (g.entity_arena.free_head >= MAX_ENTITIES)
+    if (g.entity_components.free_head >= MAX_ENTITIES)
     {
         return ENTITY_ID_INVALID; /* no free entities */
     }
-    entity_id_t id = g.entity_arena.free_ids[g.entity_arena.free_head++]; /* pop from free stack */
+    entity_id_t id = g.entity_components.free_ids[g.entity_components.free_head++]; /* pop from free stack */
 
-    g.entity_arena.entities[id].alive = 1;                                /* mark entity as alive */
-    g.entity_arena.entities[id].mask = 0;                                 /* clear component mask */
-    g.entity_arena.entities[id].type = type;                              /* set entity type */
-    g.entity_arena.entities[id].mask = COMPONENT_NONE;                    /* clear component mask */
+    g.entity_components.entities[id].alive = 1;                                /* mark entity as alive */
+    g.entity_components.entities[id].mask = 0;                                 /* clear component mask */
+    g.entity_components.entities[id].type = type;                              /* set entity type */
+    g.entity_components.entities[id].mask = COMPONENT_NONE;                    /* clear component mask */
 
     return id;
 }
@@ -75,7 +75,7 @@ bool_t entity_has_component(entity_id_t id, uint32_t comp_mask)
         return 0; /* invalid ID */
     }
 
-    return (g.entity_arena.entities[id].mask & comp_mask) != 0;
+    return (g.entity_components.entities[id].mask & comp_mask) != 0;
 }
 
 void entity_set_component(entity_id_t id, uint32_t comp_mask)
@@ -85,7 +85,7 @@ void entity_set_component(entity_id_t id, uint32_t comp_mask)
         return; /* invalid ID */
     }
 
-    g.entity_arena.entities[id].mask |= comp_mask;
+    g.entity_components.entities[id].mask |= comp_mask;
 }
 
 void entity_clear_component(entity_id_t id, uint32_t comp_mask)
@@ -95,14 +95,14 @@ void entity_clear_component(entity_id_t id, uint32_t comp_mask)
         return; /* invalid ID */
     }
 
-    g.entity_arena.entities[id].mask &= ~comp_mask;
+    g.entity_components.entities[id].mask &= ~comp_mask;
 }
 
 
 
 void entity_destroy(entity_id_t id)
 {
-    if (id >= MAX_ENTITIES || !g.entity_arena.entities[id].alive)
+    if (id >= MAX_ENTITIES || !g.entity_components.entities[id].alive)
     {
         return; /* invalid ID or entity not alive */
     }
@@ -123,7 +123,7 @@ void entity_destroy(entity_id_t id)
     }
 
     /* mark entity as free */
-    g.entity_arena.entities[id].alive = 0;                    /* mark as not alive*/
-    g.entity_arena.entities[id].mask = 0;                     /* clear component mask */
-    g.entity_arena.free_ids[--g.entity_arena.free_head] = id; /* add back to free list */
+    g.entity_components.entities[id].alive = 0;                    /* mark as not alive*/
+    g.entity_components.entities[id].mask = 0;                     /* clear component mask */
+    g.entity_components.free_ids[--g.entity_components.free_head] = id; /* add back to free list */
 }

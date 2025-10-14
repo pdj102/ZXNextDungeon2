@@ -27,5 +27,7 @@ typedef struct {
     zxnext_tile_t tile;   // tile to use for this sprite
 } sprite_comp_t;
 
+typedef sprite_comp_t sprite_components_t[MAX_ENTITIES]; /* sprite component data */
+
 #endif /* SPRITE_COMP_PRIV_H */
 

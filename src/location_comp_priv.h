@@ -38,6 +38,10 @@ typedef struct {
     entity_id_t next_in_location; /* next entity in the same location either container or map cell */
 } location_comp_t;
 
+typedef location_comp_t location_components_t[MAX_ENTITIES]; /* location component data */
+
+
+
 /***************************************************
  * private function prototypes
  ***************************************************/
