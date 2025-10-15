@@ -19,6 +19,7 @@
 #include "sprite_comp_priv.h"
 #include "creature_comp_priv.h"
 #include "container_comp_priv.h"
+#include "contained_comp_priv.h"
 #include "player_ctrl_comp_priv.h"
 
 #include "terrain_map_priv.h"
@@ -45,6 +46,8 @@ typedef struct
     creature_components_t creature_components; /* creature component data */
     /* ECS - Container */
     container_components_t container_components; /* container component data */
+    /* ECS - Conainted */
+    contained_components_t contained_components; /* contained component data
     /* ECS - Player */
     player_ctrl_comp_t player; /* the player component*/
 
