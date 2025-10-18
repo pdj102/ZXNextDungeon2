@@ -30,7 +30,10 @@ void player_ctrl_init(void)
     g.player.id = ENTITY_ID_INVALID;
 }
 
-bool_t player_add(entity_id_t id)
+/*
+ * There can only be one player ctrl component 
+*/
+bool_t player_ctrl_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
     util_assert( g.player.id == ENTITY_ID_INVALID);
@@ -42,7 +45,7 @@ bool_t player_add(entity_id_t id)
     return 1; /* success */
 }
 
-void player_remove(entity_id_t entity)
+void player_ctrl_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
     if (!entity_has_component(entity, COMPONENT_PLAYER_CTRL))

@@ -30,21 +30,13 @@
 #define COMPONENT_PLAYER_CTRL 1 << 6
 #define COMPONENT_AI_CTRL 1 << 7
 
+#define FLAG_NONE 0
+#define FLAG_INUSE 1 << 0
+
 /***************************************************
  * public types
  ***************************************************/
 typedef uint8_t entity_id_t; /* Type for entity IDs */
-
-typedef enum {
-    ENTITY_NONE = 0,
-    ENTITY_PLAYER,
-    ENTITY_MONSTER,
-    ENTITY_ITEM,
-    ENTITY_CHEST,
-    ENTITY_DOOR,
-    ENTITY_EFFECT,
-    ENTITY_KIND_COUNT
-} entity_kind_t;
 
 
 /***************************************************
@@ -52,11 +44,15 @@ typedef enum {
  ***************************************************/
 void entity_init(void);
 
-entity_id_t entity_create(entity_kind_t kind);
+entity_id_t entity_create(void);
 
-bool_t entity_has_component(entity_id_t id, uint32_t comp_mask);
-void entity_set_component(entity_id_t id, uint32_t comp_mask);
-void entity_clear_component(entity_id_t id, uint32_t comp_mask);
+bool_t entity_has_component(entity_id_t id, uint16_t comp_mask);
+void entity_set_component(entity_id_t id, uint16_t comp_mask);
+void entity_clear_component(entity_id_t id, uint16_t comp_mask);
+
+bool_t entity_has_flag(entity_id_t id, uint8_t flag);
+void entity_set_flag(entity_id_t id, uint8_t flag);
+void entity_clear_flag(entity_id_t id, uint8_t flag);
 
 void entity_destroy(entity_id_t id);
 

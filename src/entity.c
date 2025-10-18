@@ -44,31 +44,30 @@ void entity_init(void)
 {
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        g.entity_components.entities[i].alive = 0; /* mark all entities as free */
-        g.entity_components.entities[i].mask = 0;  /* clear all component masks */
+        g.entity_components.entities[i].flags = FLAG_NONE; /* clear flags */
+        g.entity_components.entities[i].mask = COMPONENT_NONE;  /* clear component mask */
         g.entity_components.free_ids[i] = i;       /* initialize free list */
     }
 
     g.entity_components.free_head = 0; /* point to the first free entity */
 }
 
-entity_id_t entity_create(entity_kind_t type)
+entity_id_t entity_create(void)
 {
     if (g.entity_components.free_head >= MAX_ENTITIES)
     {
         return ENTITY_ID_INVALID; /* no free entities */
     }
-    entity_id_t id = g.entity_components.free_ids[g.entity_components.free_head++]; /* pop from free stack */
 
-    g.entity_components.entities[id].alive = 1;                                /* mark entity as alive */
-    g.entity_components.entities[id].mask = 0;                                 /* clear component mask */
-    g.entity_components.entities[id].type = type;                              /* set entity type */
-    g.entity_components.entities[id].mask = COMPONENT_NONE;                    /* clear component mask */
+    entity_id_t id = g.entity_components.free_ids[g.entity_components.free_head++]; /* pop next free entity from free stack */
+
+    g.entity_components.entities[id].flags = FLAG_INUSE;                    /* mark entity as in use */
+    g.entity_components.entities[id].mask = COMPONENT_NONE;                 /* clear component mask */
 
     return id;
 }
 
-bool_t entity_has_component(entity_id_t id, uint32_t comp_mask)
+bool_t entity_has_component(entity_id_t id, uint16_t comp_mask)
 {
     if (id >= MAX_ENTITIES)
     {
@@ -78,7 +77,7 @@ bool_t entity_has_component(entity_id_t id, uint32_t comp_mask)
     return (g.entity_components.entities[id].mask & comp_mask) != 0;
 }
 
-void entity_set_component(entity_id_t id, uint32_t comp_mask)
+void entity_set_component(entity_id_t id, uint16_t comp_mask)
 {
     if (id >= MAX_ENTITIES)
     {
@@ -88,7 +87,7 @@ void entity_set_component(entity_id_t id, uint32_t comp_mask)
     g.entity_components.entities[id].mask |= comp_mask;
 }
 
-void entity_clear_component(entity_id_t id, uint32_t comp_mask)
+void entity_clear_component(entity_id_t id, uint16_t comp_mask)
 {
     if (id >= MAX_ENTITIES)
     {
@@ -98,13 +97,47 @@ void entity_clear_component(entity_id_t id, uint32_t comp_mask)
     g.entity_components.entities[id].mask &= ~comp_mask;
 }
 
+bool_t entity_has_flag(entity_id_t id, uint8_t flag)
+{
+    if (id >= MAX_ENTITIES)
+    {
+        return 0; /* invalid ID */
+    }
+
+    return (g.entity_components.entities[id].mask & flag) != 0;
+}
+
+void entity_set_flag(entity_id_t id, uint8_t flag)
+{
+    if (id >= MAX_ENTITIES)
+    {
+        return; /* invalid ID */
+    }
+
+    g.entity_components.entities[id].mask |= flag;
+}
+
+void entity_clear_flag(entity_id_t id, uint8_t flag)
+{
+    if (id >= MAX_ENTITIES)
+    {
+        return; /* invalid ID */
+    }
+
+    g.entity_components.entities[id].mask &= ~flag;
+}
 
 
+/* 
+ * NB  items must have been from container first or will abort. 
+ * TODO
+ * - destroy contained items
+*/
 void entity_destroy(entity_id_t id)
 {
-    if (id >= MAX_ENTITIES || !g.entity_components.entities[id].alive)
+    if (id >= MAX_ENTITIES || !entity_has_flag(id, FLAG_INUSE))
     {
-        return; /* invalid ID or entity not alive */
+        return; /* invalid ID or entity not in use */
     }
 
     /* Clear all components associated with this entity */
@@ -123,13 +156,12 @@ void entity_destroy(entity_id_t id)
     if (entity_has_component(id, COMPONENT_CONTAINER)) {
         container_remove(id);
     }          
-
     if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
-        player_remove(id);
+        player_ctrl_remove(id);
     }
 
-    /* mark entity as free */
-    g.entity_components.entities[id].alive = 0;                    /* mark as not alive*/
-    g.entity_components.entities[id].mask = 0;                     /* clear component mask */
+    /* mark entity as free to use */
+    g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including inuse */
+    g.entity_components.entities[id].mask = COMPONENT_NONE;         /* clear component mask */
     g.entity_components.free_ids[--g.entity_components.free_head] = id; /* add back to free list */
 }
