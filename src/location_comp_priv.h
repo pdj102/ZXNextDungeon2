@@ -33,5 +33,7 @@ typedef location_comp_t location_components_t[MAX_ENTITIES]; /* location compone
  * private function prototypes
  ***************************************************/
 
+void location_unlink(entity_id_t entity);
+void location_link(entity_id_t entity);
 
 #endif // LOCATION_COMP_PRIV_H

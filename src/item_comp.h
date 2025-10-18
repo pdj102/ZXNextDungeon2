@@ -38,7 +38,7 @@ typedef enum {
  ***************************************************/
 void item_init(void);
 
-uint8_t item_add(entity_id_t entity, entity_kind_t type, uint8_t quantity);
+uint8_t item_add(entity_id_t entity, item_kind_t type, uint8_t quantity);
 
 zxnext_tile_t *item_get_tile(entity_id_t entity);
 

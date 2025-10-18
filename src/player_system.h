@@ -1,5 +1,5 @@
 /**
- * @file creature_comp.h
+ * @file player_system.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,13 +8,12 @@
  * 
  */
 
-#ifndef CREATURE_COMP_H
-#define CREATURE_COMP_H
+#ifndef PLAYER_SYSTEM_H
+#define PLAYER_SYSTEM_H
 
 #include <stdint.h>
 
 #include "entity.h"
-
 #include "zxnext.h"
 
 /***************************************************
@@ -24,22 +23,11 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    CREATURE_NONE = 0,
-    CREATURE_RAT,
-    CREATURE_HUMAN,
-    CREATURE_KIND_COUNT
-} creature_kind_t;
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void creature_init(void);
+void player_system_init(void);
+void player_system_update(void);
 
-uint8_t creature_add(entity_id_t entity, creature_kind_t type);
-
-zxnext_tile_t *creature_get_tile(entity_id_t id);
-
-void creature_remove(entity_id_t entity);
-
-#endif // CREATURE_COMP_H
+#endif // PLAYER_SYSTEM_H

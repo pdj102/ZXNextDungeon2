@@ -1,18 +1,18 @@
 /**
- * @file terrain_map_priv.h
+ * @file map_terrain_priv.h
  * @author Paul Johnson
- * @brief Private/internal declarations for terrain_map.c
+ * @brief Private/internal declarations for map_terrain.c
  * 
  * @copyright Copyright (c) 2025
  *
  * This header exposes internal item definitions only to files that need them
- * (primarily `terrain_map.c`). It should NOT be included by general modules.*  
+ * (primarily `map_terrain.c`). It should NOT be included by general modules.*  
  */
 
-#ifndef TERRAIN_MAP_PRIV_H
-#define TERRAIN_MAP_PRIV_H
+#ifndef MAP_TERRAIN_PRIV_H
+#define MAP_TERRAIN_PRIV_H
 
-#include "terrain_map.h"
+#include "map_terrain.h"
 
 /***************************************************
  * private defines
@@ -24,13 +24,13 @@
 
 
 
-/* Terrain_map structure */
+/* Map_terrain structure */
  typedef struct {
-    terrain_type_t terrain[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* terrain data for the terrain_map */
-} terrain_map_t;
+    terrain_type_t terrain[MAP_TERRAIN_WIDTH][MAP_TERRAIN_HEIGHT]; /* terrain data for the map_terrain */
+} map_terrain_t;
 
 /***************************************************
  * private function prototypes
  ***************************************************/
 
-#endif // TERRAIN_MAP_PRIV_H
+#endif // MAP_TERRAIN_PRIV_H

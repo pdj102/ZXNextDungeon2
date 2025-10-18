@@ -16,12 +16,13 @@
 #include "entity.h"
 #include "item_comp.h"
 #include "creature_comp.h"
+#include "location_comp.h"
 
 #include "entity_factory.h"
 
-#include "location_comp.h"
+#include "player_system.h"
 
-#include "terrain_map.h"
+#include "map_terrain.h"
 #include "map_render.h"
 
 #include "global_state.h"
@@ -51,7 +52,7 @@ int main(void) {
     item_init();
     location_init();
     player_ctrl_init();
-    terrain_map_init();
+    map_terrain_init();
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
@@ -82,6 +83,15 @@ int main(void) {
         /* energy system */
         /* player control system*/
         // player_control_system_run();
+        map_render();
+
+        /*
+        text_printf(&temp_win, "id = %u\n", g.player.id);
+        text_printf(&temp_win, "x = %u\n", g.location_components[g.player.id].x);
+        text_printf(&temp_win, "y = %u\n", g.location_components[g.player.id].y);
+        */
+       
+        player_system_update();
         
     }
 

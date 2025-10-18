@@ -38,7 +38,7 @@ void creature_init(void)
     }
 }
 
-uint8_t creature_add(entity_id_t entity, entity_kind_t kind)
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(kind < CREATURE_KIND_COUNT);

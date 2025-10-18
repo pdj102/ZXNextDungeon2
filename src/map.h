@@ -1,5 +1,5 @@
 /**
- * @file map_terrain.h
+ * @file map.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -7,26 +7,22 @@
  * 
  */
 
-#ifndef MAP_TERRAIN_H
-#define MAP_TERRAIN_H
+#ifndef MAP_H
+#define MAP_H
+
+#include "entity.h"
 
 #include <stdint.h>
 
 /***************************************************
  * public defines
  ***************************************************/
-#define MAP_TERRAIN_WIDTH 32
-#define MAP_TERRAIN_HEIGHT 24
+#define MAP_WIDTH 32
+#define MAP_HEIGHT 24
 
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    TERRAIN_NONE = 0,
-    TERRAIN_WALL,
-    TERRAIN_FLOOR,
-    TERRAIN_TYPE_COUNT
-} terrain_type_t;
 
 /***************************************************
  * public variables
@@ -36,8 +32,7 @@ typedef enum {
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_terrain_init(void);
-terrain_type_t map_terrain_get_terrain( uint8_t x, uint8_t y);
-void map_terrain_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
+void map_init(void);
+bool_t map_can_enter(entity_id_t entity, uint8_t x, uint8_t y);
 
 #endif // MAP_TERRAIN_H

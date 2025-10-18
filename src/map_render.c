@@ -40,9 +40,9 @@ void map_render(void)
 {
     zxnext_tile_t tile = {0};
 
-    for (uint8_t x = 0; x < TERRAIN_MAP_WIDTH; x++)
+    for (uint8_t x = 0; x < MAP_TERRAIN_WIDTH; x++)
     {
-        for (uint8_t y = 0; y < TERRAIN_MAP_HEIGHT; y++)
+        for (uint8_t y = 0; y < MAP_TERRAIN_HEIGHT; y++)
         {
 
             if (g.location_cell_head[x][y] != ENTITY_ID_INVALID)
@@ -52,7 +52,7 @@ void map_render(void)
             }
             else
             {
-                terrain_type_t terrain = g.terrain_map.terrain[x][y];
+                terrain_type_t terrain = g.map_terrain.terrain[x][y];
 
                 zxnext_tilemap_set(x, y, &terrain_bases[terrain].tile);
             }

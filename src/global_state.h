@@ -22,7 +22,7 @@
 #include "contained_comp_priv.h"
 #include "player_ctrl_comp_priv.h"
 
-#include "terrain_map_priv.h"
+#include "map_terrain_priv.h"
 
 /***************************************************
  * public defines
@@ -51,9 +51,9 @@ typedef struct
     /* ECS - Player */
     player_ctrl_comp_t player; /* the player component*/
 
-    /* Terrain_map */
-    terrain_map_t terrain_map; /* the game terrain_map */
-    entity_id_t location_cell_head[TERRAIN_MAP_WIDTH][TERRAIN_MAP_HEIGHT]; /* linked list head for entities at each terrain_map cell */
+    /* Map_terrain */
+    map_terrain_t map_terrain; /* the game map_terrain */
+    entity_id_t location_cell_head[MAP_TERRAIN_WIDTH][MAP_TERRAIN_HEIGHT]; /* linked list head for entities at each map_terrain cell */
 
 
     
