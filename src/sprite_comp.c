@@ -34,12 +34,7 @@ void sprite_init(void)
     }
 }
 
-/**
- * @brief Initialize sprite component for an existing entity
- * 
- * @param id 
- */
-bool_t sprite_init_for_entity(entity_id_t id, const zxnext_tile_t *tile_p )
+bool_t sprite_add(entity_id_t id, const zxnext_tile_t *tile_p )
 {
     util_assert(id < MAX_ENTITIES);
 
@@ -50,12 +45,13 @@ bool_t sprite_init_for_entity(entity_id_t id, const zxnext_tile_t *tile_p )
     return 1; /* success */
 }
 
-/**
- * @brief Destroy sprite component for an entity
- * 
- * @param id 
- */
-void sprite_destroy(entity_id_t id)
+void sprite_remove(entity_id_t entity)
 {
-    entity_clear_component(id, COMPONENT_SPRITE); /* clear entity sprite component mask */
+    util_assert(entity < MAX_ENTITIES);
+    if (!entity_has_component(entity, COMPONENT_SPRITE))
+    {
+        return;
+    }
+
+    entity_clear_component(entity, COMPONENT_SPRITE); /* clear entity sprite component mask */
 }

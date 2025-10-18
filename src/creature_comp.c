@@ -38,20 +38,16 @@ void creature_init(void)
     }
 }
 
-/**
- * @brief Initialize creature component for an existing entity
- * 
- * @param id 
- */
-uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t kind)
+uint8_t creature_add(entity_id_t entity, entity_kind_t kind)
 {
-    util_assert(id < MAX_ENTITIES);
+    util_assert(entity < MAX_ENTITIES);
     util_assert(kind < CREATURE_KIND_COUNT);
+    util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
-    g.creature_components[id].kind = kind; /* set creature type */
+    g.creature_components[entity].kind = kind; /* set creature type */
     // todo set up creature 
 
-    entity_set_component(id, COMPONENT_CREATURE); /* set entity creature component mask */
+    entity_set_component(entity, COMPONENT_CREATURE); /* set entity creature component mask */
 
     return 1; /* success */
 }
@@ -61,12 +57,13 @@ zxnext_tile_t *creature_get_tile(entity_id_t id)
     return &(creature_bases[g.creature_components[id].kind].tile);
 }
 
-/**
- * @brief Destroy creature component for an entity
- * 
- * @param id 
- */
-void creature_destroy(entity_id_t id)
+void creature_remove(entity_id_t entity)
 {
-    entity_clear_component(id, COMPONENT_CREATURE); /* clear entity creature component mask */
+    util_assert(entity < MAX_ENTITIES);
+    if (!entity_has_component(entity, COMPONENT_CREATURE))
+    {
+        return;
+    }
+
+    entity_clear_component(entity, COMPONENT_CREATURE); /* clear entity creature component mask */
 }

@@ -30,12 +30,7 @@ void player_ctrl_init(void)
     g.player.id = ENTITY_ID_INVALID;
 }
 
-/**
- * @brief Initialize player_ctrl component for an existing entity
- * 
- * @param id 
- */
-bool_t player_ctrl_init_for_entity(entity_id_t id)
+bool_t player_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
     util_assert( g.player.id == ENTITY_ID_INVALID);
@@ -47,14 +42,15 @@ bool_t player_ctrl_init_for_entity(entity_id_t id)
     return 1; /* success */
 }
 
-/**
- * @brief Destroy player_ctrl component for an entity
- * 
- * @param id 
- */
-void player_ctrl_destroy(entity_id_t id)
+void player_remove(entity_id_t entity)
 {
+    util_assert(entity < MAX_ENTITIES);
+    if (!entity_has_component(entity, COMPONENT_PLAYER_CTRL))
+    {
+        return;
+    }
+
     g.player.id == ENTITY_ID_INVALID;
 
-    entity_clear_component(id, COMPONENT_PLAYER_CTRL); /* clear entity player_ctrl component mask */
+    entity_clear_component(entity, COMPONENT_PLAYER_CTRL); /* clear entity player_ctrl component mask */
 }

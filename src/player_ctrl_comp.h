@@ -28,7 +28,7 @@
  * public function prototypes
  ***************************************************/
 void player_ctrl_init(void);
-bool_t player_ctrl_init_for_entity(entity_id_t entity);
-void player_ctrl_destroy(entity_id_t id);
+bool_t player_add(entity_id_t entity);
+void player_remove(entity_id_t entity);
 
 #endif // PLAYER_CTRL_COMP_H

@@ -27,9 +27,7 @@
  * public function prototypes
  ***************************************************/
 void container_init(void);
-bool_t container_init_for_entity(entity_id_t entity);
-void container_add(entity_id_t container, entity_id_t entity);
-void container_remove(entity_id_t container, entity_id_t entity);
-void container_destroy(entity_id_t id);
+bool_t container_add(entity_id_t entity);
+void container_remove(entity_id_t entity);
 
 #endif // CONTAINER_COMP_H

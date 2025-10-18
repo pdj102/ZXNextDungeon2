@@ -28,7 +28,7 @@
  ***************************************************/
 void contained_init(void);
 bool_t contained_init_for_entity(entity_id_t entity);
-void contained_add(entity_id_t container, entity_id_t entity);
+void contained_add(entity_id_t entity, entity_id_t container);
 void contained_remove(entity_id_t entity);
 void contained_destroy(entity_id_t id);
 

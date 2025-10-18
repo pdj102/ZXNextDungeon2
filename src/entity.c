@@ -109,17 +109,23 @@ void entity_destroy(entity_id_t id)
 
     /* Clear all components associated with this entity */
     if (entity_has_component(id, COMPONENT_ITEM)) {
-        item_destroy(id);
+        item_remove(id);
     }
     if (entity_has_component(id, COMPONENT_LOCATION)) {
-        location_destroy(id);
+        location_remove(id);
     }
     if (entity_has_component(id, COMPONENT_SPRITE)) {
-        sprite_destroy(id);
+        sprite_remove(id);
     }
+    if (entity_has_component(id, COMPONENT_CONTAINED)) {
+        contained_remove(id);
+    }
+    if (entity_has_component(id, COMPONENT_CONTAINER)) {
+        container_remove(id);
+    }          
 
     if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
-        player_ctrl_destroy(id);
+        player_remove(id);
     }
 
     /* mark entity as free */

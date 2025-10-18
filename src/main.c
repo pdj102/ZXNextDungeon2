@@ -55,24 +55,24 @@ int main(void) {
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
-    location_place_on_map(e1, 10, 10);
+    location_add(e1, 10, 10);
     text_printf(&temp_win, "Item Entity ID: %u\n", e1);
 
     entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
-    location_place_on_map(e2, 12, 10);
+    location_add(e2, 12, 10);
     text_printf(&temp_win, "Item Entity ID: %u\n", e2);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
     text_printf(&temp_win, "Item Entity ID: %u\n", e3);    
-    location_place_on_map(e3, 14, 10);
+    location_add(e3, 14, 10);
 
     entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);
     text_printf(&temp_win, "Item Entity ID: %u\n", e4);    
-    location_place_on_map(e4, 10, 12);
+    location_add(e4, 10, 12);
 
     entity_id_t e5 = entity_factory_create_player();
     text_printf(&temp_win, "Item Entity ID: %u\n", e5);    
-    location_place_on_map(e5, 10, 15);
+    location_add(e5, 10, 15);
 
     map_render();
 
@@ -81,7 +81,7 @@ int main(void) {
         // Main loop code here
         /* energy system */
         /* player control system*/
-        player_control_system_run();
+        // player_control_system_run();
         
     }
 

@@ -38,10 +38,10 @@ typedef enum {
  ***************************************************/
 void item_init(void);
 
-uint8_t item_init_for_entity(entity_id_t id, entity_kind_t type, uint8_t quantity);
+uint8_t item_add(entity_id_t entity, entity_kind_t type, uint8_t quantity);
 
-zxnext_tile_t *item_get_tile(entity_id_t id);
+zxnext_tile_t *item_get_tile(entity_id_t entity);
 
-void item_destroy(entity_id_t id);
+void item_remove(entity_id_t entity);
 
 #endif // ITEM_COMP_H

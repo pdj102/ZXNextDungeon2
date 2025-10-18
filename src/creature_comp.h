@@ -36,10 +36,10 @@ typedef enum {
  ***************************************************/
 void creature_init(void);
 
-uint8_t creature_init_for_entity(entity_id_t id, entity_kind_t type);
+uint8_t creature_add(entity_id_t entity, entity_kind_t type);
 
 zxnext_tile_t *creature_get_tile(entity_id_t id);
 
-void creature_destroy(entity_id_t id);
+void creature_remove(entity_id_t entity);
 
 #endif // CREATURE_COMP_H

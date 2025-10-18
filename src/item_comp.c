@@ -38,36 +38,33 @@ void item_init(void)
     }
 }
 
-/**
- * @brief Initialize item component for an existing entity
- * 
- * @param id 
- */
-uint8_t item_init_for_entity(entity_id_t id, entity_kind_t kind, uint8_t quantity)
+uint8_t item_add(entity_id_t entity, entity_kind_t kind, uint8_t quantity)
 {
-    util_assert(id < MAX_ENTITIES);
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_ITEM)); /* entity must not have item component */
     util_assert(kind < ITEM_KIND_COUNT);
     util_assert(quantity > 0);
 
-    g.item_components[id].kind = kind; /* set item kind */
-    g.item_components[id].quantity = quantity; /* set quantity */
+    g.item_components[entity].kind = kind; /* set item kind */
+    g.item_components[entity].quantity = quantity; /* set quantity */
 
-    entity_set_component(id, COMPONENT_ITEM); /* set entity item component mask */
+    entity_set_component(entity, COMPONENT_ITEM); /* set entity item component mask */
 
     return 1; /* success */
 }
 
-zxnext_tile_t *item_get_tile(entity_id_t id)
+zxnext_tile_t *item_get_tile(entity_id_t entity)
 {
-    return &(item_bases[g.item_components[id].kind].tile);
+    return &(item_bases[g.item_components[entity].kind].tile);
 }
 
-/**
- * @brief Destroy item component for an entity
- * 
- * @param id 
- */
-void item_destroy(entity_id_t id)
+void item_remove(entity_id_t entity)
 {
-    entity_clear_component(id, COMPONENT_ITEM); /* clear entity item component mask */
+    util_assert(entity < MAX_ENTITIES);
+    if (!entity_has_component(entity, COMPONENT_ITEM))
+    {
+        return;
+    }
+
+    entity_clear_component(entity, COMPONENT_ITEM); /* clear entity item component mask */
 }

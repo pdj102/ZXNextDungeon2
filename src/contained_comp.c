@@ -33,20 +33,7 @@ void contained_init(void)
     }
 }
 
-/**
- * @brief Initialize contained component for an existing entity
- * 
- * @param id 
- */
-bool_t contained_init_for_entity(entity_id_t id)
-{
-    /* TODO remove init */
-    util_assert(id < MAX_ENTITIES);
-
-    return 1; /* success */
-}
-
-void contained_add(entity_id_t container, entity_id_t entity)
+void contained_add(entity_id_t entity, entity_id_t container)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);    
@@ -62,10 +49,18 @@ void contained_add(entity_id_t container, entity_id_t entity)
 
 void contained_remove(entity_id_t entity)
 {
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_component(entity, COMPONENT_CONTAINED));
+    entity_id_t container;
 
-    entity_id_t container = g.contained_components[entity].container;
+    util_assert(entity < MAX_ENTITIES);
+
+    if (entity_has_component(entity, COMPONENT_CONTAINED) == 0)
+    {
+        return; /* not contained anywhere*/
+    }
+
+    container = g.contained_components[entity].container;
+    util_assert(container < MAX_ENTITIES);
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
 
     entity_id_t current = g.container_components[container].head; /* start at the head of the list */
     entity_id_t prev = ENTITY_ID_INVALID; /* previous entity in the list */
@@ -77,7 +72,7 @@ void contained_remove(entity_id_t entity)
             } else {
                 g.contained_components[prev].next = g.contained_components[current].next; /* bypass current */
             }
-            g.contained_components[current].next = ENTITY_ID_INVALID; /* clear next */
+            /* remove container component*/
             entity_clear_component(entity, COMPONENT_CONTAINED);
             return;
         }
@@ -85,14 +80,4 @@ void contained_remove(entity_id_t entity)
         current = g.contained_components[current].next; /* move to next */
     }
     util_abort("Entity not found in contained");
-}
-
-/**
- * @brief Destroy contained component for an entity
- * 
- * @param id 
- */
-void contained_destroy(entity_id_t id)
-{
-    contained_remove(id);
 }

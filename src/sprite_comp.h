@@ -28,7 +28,7 @@
  * public function prototypes
  ***************************************************/
 void sprite_init(void);
-bool_t sprite_init_for_entity(entity_id_t entity, const zxnext_tile_t *tile_p);
-void sprite_destroy(entity_id_t id);
+bool_t sprite_add(entity_id_t entity, const zxnext_tile_t *tile_p);
+void sprite_remove(entity_id_t entity);
 
 #endif // SPRITE_COMP_H
