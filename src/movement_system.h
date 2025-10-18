@@ -1,39 +1,32 @@
 /**
- * @file map.h
+ * @file movement_system.h
  * @author Paul Johnson
  * @brief 
+ 
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef MAP_H
-#define MAP_H
-
-#include "entity.h"
+#ifndef MOVEMENT_SYSTEM_H
+#define MOVEMENT_SYSTEM_H
 
 #include <stdint.h>
+
+#include "entity.h"
 
 /***************************************************
  * public defines
  ***************************************************/
-#define MAP_WIDTH 32
-#define MAP_HEIGHT 24
 
 /***************************************************
  * public types
  ***************************************************/
 
-
-/***************************************************
- * public variables
- ***************************************************/
-
-
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_init(void);
-bool_t map_can_enter(entity_id_t entity, uint8_t x, uint8_t y);
+void movement_system_init(void);
+void movement_system_try_move(entity_id_t entity, int8_t dx, int8_t dy);
 
-#endif // MAP_H
+#endif // MOVEMENT_SYSTEM_H

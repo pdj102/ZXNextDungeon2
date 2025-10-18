@@ -32,20 +32,22 @@
 
 #include "PAGE0/init.h"
 
-text_window_t temp_win = {
-    .x = 0,
-    .y = 24,
-    .w = 40,
-    .h = 8,
-    .c_x = 0,
-    .c_y = 0,
-    .tile = { .tile_id = ' ', .tile_attr = 0 }
-};
+
  
 int main(void) {
 
     init();
-    zxnext_tilemap_clear(&(temp_win.tile));
+
+g.msg_win.x = 0;
+g.msg_win.y = 24;
+g.msg_win.w = 40;
+g.msg_win.h = 8;
+g.msg_win.c_x = 0;
+g.msg_win.c_y = 0;
+g.msg_win.tile.tile_id = ' ';
+g.msg_win.tile.tile_attr = 0;
+    
+    zxnext_tilemap_clear(&(g.msg_win.tile));
 
     // New game
     entity_init();
@@ -57,22 +59,22 @@ int main(void) {
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
     location_add(e1, 10, 10);
-    text_printf(&temp_win, "Item Entity ID: %u\n", e1);
+    text_printf(&g.msg_win, "Item Entity ID: %u\n", e1);
 
     entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
     location_add(e2, 12, 10);
-    text_printf(&temp_win, "Item Entity ID: %u\n", e2);
+    text_printf(&g.msg_win, "Item Entity ID: %u\n", e2);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
-    text_printf(&temp_win, "Item Entity ID: %u\n", e3);    
+    text_printf(&g.msg_win, "Item Entity ID: %u\n", e3);    
     location_add(e3, 14, 10);
 
     entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);
-    text_printf(&temp_win, "Item Entity ID: %u\n", e4);    
+    text_printf(&g.msg_win, "Item Entity ID: %u\n", e4);    
     location_add(e4, 10, 12);
 
     entity_id_t e5 = entity_factory_create_player();
-    text_printf(&temp_win, "Item Entity ID: %u\n", e5);    
+    text_printf(&g.msg_win, "Item Entity ID: %u\n", e5);    
     location_add(e5, 10, 15);
 
     map_render();
@@ -86,11 +88,11 @@ int main(void) {
         map_render();
 
         /*
-        text_printf(&temp_win, "id = %u\n", g.player.id);
-        text_printf(&temp_win, "x = %u\n", g.location_components[g.player.id].x);
-        text_printf(&temp_win, "y = %u\n", g.location_components[g.player.id].y);
+        text_printf(&g.msg_win, "id = %u\n", g.player.id);
+        text_printf(&g.msg_win, "x = %u\n", g.location_components[g.player.id].x);
+        text_printf(&g.msg_win, "y = %u\n", g.location_components[g.player.id].y);
         */
-       
+
         player_system_update();
         
     }

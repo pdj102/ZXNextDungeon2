@@ -15,31 +15,24 @@
 #include "global_state.h"
 #include "entity.h"
 #include "location_comp.h"
+
+#include "movement_system.h"
+
+#include "item_action.h"
+
 #include "map.h"
 #include "util.h"
+
+#include "zxnext.h"
 
 
 /***************************************************
  * private variables
  * ***************************************************/
 
- void try_move(void)
- {
-    uint8_t x;
-    uint8_t y;
+void pickup(void);
 
-    x = g.location_components[g.player.id].x;
-    y = g.location_components[g.player.id].y;
-
-    x++;
-
-    if (map_can_enter(g.player.id, x, y))
-    {
-        location_move(g.player.id, x, y);
-    }
- }
-
-/***************************************************
+ /***************************************************
  * public functions
  ***************************************************/
 void player_system_init(void)
@@ -49,6 +42,7 @@ void player_system_init(void)
 void player_system_update(void)
 {
     uint8_t entity = g.player.id;
+    int key;
 
     if ( (entity == ENTITY_ID_INVALID) || (!entity_has_component(entity, COMPONENT_PLAYER_CTRL) ))
     {
@@ -57,5 +51,50 @@ void player_system_update(void)
 
     /* TODO checking if creature component is alive */
 
-    try_move();
+    key = key_press();
+
+    text_printf(&g.msg_win, "key: %d\n", key);
+
+    switch(key) {
+        case 8: /* left */
+            movement_system_try_move(entity, -1, 0);
+            break;
+        case 9: /* right */
+            movement_system_try_move(entity, 1, 0);
+            break;
+        case 11: /* up */
+            movement_system_try_move(entity, 0, -1);
+            break;
+        case 10: /* down */
+            movement_system_try_move(entity, 0, 1);
+            break;
+        case 100: /* drop an item */
+            break;
+        case 103: /* get object from floor */
+            pickup();
+            break;            
+        default:
+            break;
+    }
+}
+
+void pickup(void)
+{
+    entity_id_t item;
+    uint8_t x = g.location_components[g.player.id].x;
+    uint8_t y = g.location_components[g.player.id].y;
+
+    item = g.map.cell_head[x][y];
+
+    while (item != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(item, COMPONENT_ITEM))
+        {
+            item_action_try_pickup(g.player.id, item);
+            text_printf(&g.msg_win, "Picked up\n");
+            break;
+        }
+        item = g.location_components[item].next_in_location;
+    }
+    text_printf(&g.msg_win, "Nothing to pick up here\n");
 }

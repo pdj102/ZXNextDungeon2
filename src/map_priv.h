@@ -1,5 +1,5 @@
 /**
- * @file map.h
+ * @file map_priv.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -7,33 +7,34 @@
  * 
  */
 
-#ifndef MAP_H
-#define MAP_H
+#ifndef MAP_PRIV_H
+#define MAP_PRIV_H
+
+#include "map.h"
 
 #include "entity.h"
 
-#include <stdint.h>
+#include "map_terrain_priv.h"
 
 /***************************************************
- * public defines
+ * private defines
  ***************************************************/
-#define MAP_WIDTH 32
-#define MAP_HEIGHT 24
 
 /***************************************************
- * public types
+ * private types
+ ***************************************************/
+typedef struct {
+    map_terrain_t terrain;
+    entity_id_t cell_head[MAP_WIDTH][MAP_HEIGHT];
+} map_t;
+
+/***************************************************
+ * private variables
  ***************************************************/
 
 
 /***************************************************
- * public variables
+ * private function prototypes
  ***************************************************/
 
-
-/***************************************************
- * public function prototypes
- ***************************************************/
-void map_init(void);
-bool_t map_can_enter(entity_id_t entity, uint8_t x, uint8_t y);
-
-#endif // MAP_H
+#endif // MAP_PRIV_H

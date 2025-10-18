@@ -13,6 +13,7 @@
 #include <arch/zxn.h>
 #include <stdint.h>
 
+#include "../global_state.h"
 #include "../zxnext.h"
 
 
@@ -85,6 +86,8 @@ void init(void) {
     init_zxnext_tilemap();
 
     init_zxnext_palette();
+
+
 } 
 
 void init_zxnext_tilemap(void)

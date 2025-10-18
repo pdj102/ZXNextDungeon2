@@ -45,14 +45,14 @@ void map_render(void)
         for (uint8_t y = 0; y < MAP_TERRAIN_HEIGHT; y++)
         {
 
-            if (g.location_cell_head[x][y] != ENTITY_ID_INVALID)
+            if (g.map.cell_head[x][y] != ENTITY_ID_INVALID)
             {
                 /* there is at least one entity at this location - render the top one */
-                zxnext_tilemap_set(x, y, &g.sprite_components[g.location_cell_head[x][y]].tile);
+                zxnext_tilemap_set(x, y, &g.sprite_components[g.map.cell_head[x][y]].tile);
             }
             else
             {
-                terrain_type_t terrain = g.map_terrain.terrain[x][y];
+                terrain_type_t terrain = g.map.terrain.terrain[x][y];
 
                 zxnext_tilemap_set(x, y, &terrain_bases[terrain].tile);
             }

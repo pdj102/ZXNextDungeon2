@@ -45,7 +45,7 @@ bool_t map_can_enter(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert( x < MAP_WIDTH);
     util_assert( y < MAP_HEIGHT);
 
-    if (g.map_terrain.terrain[x][y] == TERRAIN_FLOOR)
+    if (g.map.terrain.terrain[x][y] == TERRAIN_FLOOR)
     {
         return 1;
     }

@@ -22,7 +22,10 @@
 #include "contained_comp_priv.h"
 #include "player_ctrl_comp_priv.h"
 
+#include "map_priv.h"
 #include "map_terrain_priv.h"
+
+#include "text.h"
 
 /***************************************************
  * public defines
@@ -34,29 +37,22 @@
  * ***************************************************/
 typedef struct 
 {
-    /* ECS - Entity */
-    entity_components_t entity_components; /* entity arena */
-    /* ECS - Item */
+    /* ECS */
+    entity_components_t entity_components; /* entity data */
     item_components_t item_components; /* item component data */
-    /* ECS - Location */
     location_components_t location_components; /* location component data */
-    /* ECS - Sprite*/
     sprite_components_t sprite_components; /* sprite component data */
-    /* ECS - Creature*/
     creature_components_t creature_components; /* creature component data */
-    /* ECS - Container */
     container_components_t container_components; /* container component data */
-    /* ECS - Conainted */
-    contained_components_t contained_components; /* contained component data
-    /* ECS - Player */
-    player_ctrl_comp_t player; /* the player component*/
+    contained_components_t contained_components; /* contained component data */
+    player_ctrl_comp_t player; /* player component data */
 
-    /* Map_terrain */
-    map_terrain_t map_terrain; /* the game map_terrain */
-    entity_id_t location_cell_head[MAP_TERRAIN_WIDTH][MAP_TERRAIN_HEIGHT]; /* linked list head for entities at each map_terrain cell */
+    /* World */
+    map_t map; /* the map */
 
+    /* UI */
+    text_window_t msg_win;  
 
-    
 } global_state_t;
 
 

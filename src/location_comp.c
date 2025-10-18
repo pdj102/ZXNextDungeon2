@@ -31,7 +31,7 @@ void location_init(void)
 
     for (uint8_t x = 0; x < MAP_TERRAIN_WIDTH; x++) {
         for (uint8_t y = 0; y < MAP_TERRAIN_HEIGHT; y++) {
-            g.location_cell_head[x][y] = ENTITY_ID_INVALID; /* mark all map cells as empty */
+            g.map.cell_head[x][y] = ENTITY_ID_INVALID; /* mark all map cells as empty */
         }
     }
 }
@@ -93,8 +93,8 @@ void location_link(entity_id_t entity)
     uint8_t x = g.location_components[entity].x;
     uint8_t y = g.location_components[entity].y;
 
-    g.location_components[entity].next_in_location = g.location_cell_head[x][y]; /* link to previous head entity at this map cell */
-    g.location_cell_head[x][y] = entity; /* set this entity as the head of the list at this map cell */
+    g.location_components[entity].next_in_location = g.map.cell_head[x][y]; /* link to previous head entity at this map cell */
+    g.map.cell_head[x][y] = entity; /* set this entity as the head of the list at this map cell */
 }
 
 /*
@@ -107,13 +107,13 @@ void location_unlink(entity_id_t entity)
     entity_id_t y = g.location_components[entity].y;
 
     /* find entity in cell list */
-    entity_id_t current = g.location_cell_head[x][y]; /* start at the head of the list */
+    entity_id_t current = g.map.cell_head[x][y]; /* start at the head of the list */
     entity_id_t prev = ENTITY_ID_INVALID; /* previous entity in the list */
 
     while (current != ENTITY_ID_INVALID) { /* traverse the linked list */
         if (current == entity) { /* found the entity to remove */
             if (prev == ENTITY_ID_INVALID) { 
-                g.location_cell_head[x][y] = g.location_components[current].next_in_location; /* remove from head */
+                g.map.cell_head[x][y] = g.location_components[current].next_in_location; /* remove from head */
             } else {
                 g.location_components[prev].next_in_location = g.location_components[current].next_in_location; /* bypass current */
             }

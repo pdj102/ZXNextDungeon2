@@ -11,10 +11,7 @@
 #ifndef PLAYER_SYSTEM_H
 #define PLAYER_SYSTEM_H
 
-#include <stdint.h>
-
 #include "entity.h"
-#include "zxnext.h"
 
 /***************************************************
  * public defines
