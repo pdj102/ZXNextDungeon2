@@ -55,7 +55,8 @@ OBJDIR=./obj
 # Add other source file directories as needed
 CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/PAGE0/*.c) \
-	   $(wildcard $(SRCDIR)/PAGE1/*.c)
+	   $(wildcard $(SRCDIR)/PAGE1/*.c) \
+	   $(wildcard $(SRCDIR)/PAGE30/*.c)
 
 # Set assembly files 
 # Add other source file directories as needed

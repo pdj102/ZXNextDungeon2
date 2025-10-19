@@ -14,7 +14,13 @@
 			"location_comp.h": "c",
 			"sprite_comp.h": "c",
 			"entity.h": "c",
-			"map_terrain.h": "c"
+			"map_terrain.h": "c",
+			"config_zxn.h": "c",
+			"creature_comp.h": "c",
+			"zxn.h": "c",
+			"creature_base.h": "c",
+			"global_state.h": "c",
+			"creature_comp_priv.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",

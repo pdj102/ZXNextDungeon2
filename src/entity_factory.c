@@ -65,6 +65,8 @@
 
 entity_id_t entity_factory_create_monster(creature_kind_t kind)
 {
+    zxnext_tile_t tile; 
+
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
         return id;
@@ -76,7 +78,8 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
     }
 
     /* Add sprite component - use creature tile */
-    if(sprite_add(id, creature_get_tile(id)) == 0) {
+    creature_get_tile(id, &tile);
+    if(sprite_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
@@ -93,7 +96,7 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
 
 entity_id_t entity_factory_create_player( void )
 {
-    util_assert(g.player.id == ENTITY_ID_INVALID); /* check player entity does not exist */
+    zxnext_tile_t tile; 
 
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
@@ -106,7 +109,8 @@ entity_id_t entity_factory_create_player( void )
     }
 
     /* Add sprite component - use creature tile */
-    if(sprite_add(id, creature_get_tile(id)) == 0) {
+    creature_get_tile(id, &tile);
+    if(sprite_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

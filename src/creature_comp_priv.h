@@ -20,6 +20,10 @@
  * private defines
  ***************************************************/
 
+/***************************************************
+ * private types
+ ***************************************************/
+
 typedef enum {
     CREATURE_CLASS_NONE = 0,
     CREATURE_CLASS_ABERRATIONS,
@@ -37,10 +41,6 @@ typedef enum {
     CREATURE_CLASS_PLANTS,
     CREATURE_CLASS_UNDEAD
 } creature_class_t;
-
-/***************************************************
- * private types
- ***************************************************/
 
 /* Creature type base attributes - read only  */
 typedef struct {
@@ -63,6 +63,8 @@ typedef struct {
 } creature_comp_t;
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; /* creature component data */
+
+
 
 #endif /* CREATURE_COMP_PRIV_H */
 
