@@ -40,7 +40,9 @@ typedef struct {
 
 typedef item_comp_t item_components_t[MAX_ENTITIES]; /* item component data */
 
-
+ /***************************************************
+ * private functions prototypes
+ ***************************************************/
 
 #endif /* ITEM_COMP_PRIV_H */
 

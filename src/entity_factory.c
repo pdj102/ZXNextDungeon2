@@ -81,6 +81,13 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
         return ENTITY_ID_INVALID;
     }
 
+    /* Add container component */
+    if (container_add(id) == 0)
+    {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }
+
     return id;
 }
 
@@ -103,6 +110,13 @@ entity_id_t entity_factory_create_player( void )
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
+
+    /* Add container component */
+    if (container_add(id) == 0)
+    {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }    
 
     /* Add player control component */
     if (player_ctrl_add(id) == 0) {

@@ -10,6 +10,8 @@
 
 #include "player_system.h"
 
+#include "player_system_priv.h"
+
 #include <sys\types.h>
 
 #include "global_state.h"
@@ -18,7 +20,7 @@
 
 #include "movement_system.h"
 
-#include "item_action.h"
+#include "creature_actions.h"
 
 #include "map.h"
 #include "util.h"
@@ -30,7 +32,7 @@
  * private variables
  * ***************************************************/
 
-void pickup(void);
+
 
  /***************************************************
  * public functions
@@ -69,6 +71,7 @@ void player_system_update(void)
             movement_system_try_move(entity, 0, 1);
             break;
         case 100: /* drop an item */
+            drop();
             break;
         case 103: /* get object from floor */
             pickup();
@@ -77,6 +80,10 @@ void player_system_update(void)
             break;
     }
 }
+
+ /***************************************************
+ * private functions
+ ***************************************************/
 
 void pickup(void)
 {
@@ -90,11 +97,29 @@ void pickup(void)
     {
         if (entity_has_component(item, COMPONENT_ITEM))
         {
-            item_action_try_pickup(g.player.id, item);
-            text_printf(&g.msg_win, "Picked up\n");
-            break;
+            if (creature_actions_try_pickup(g.player.id, item))
+            {
+                text_printf(&g.msg_win, "Picked up %u\n", item);
+                text_printf(&g.msg_win, "Player container head %u\n", g.container_components[g.player.id].head);
+                return;
+            }
         }
         item = g.location_components[item].next_in_location;
     }
     text_printf(&g.msg_win, "Nothing to pick up here\n");
+}
+
+void drop(void)
+{
+   entity_id_t item;
+   
+   item = g.container_components[g.player.id].head;
+
+   if (item == ENTITY_ID_INVALID)
+   {
+        text_printf(&g.msg_win, "Nothing to drop\n");
+        return;
+   }
+
+   creature_actions_try_drop(g.player.id, item);
 }

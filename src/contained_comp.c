@@ -33,6 +33,9 @@ void contained_init(void)
     }
 }
 
+/*
+ * @brief Add a contained component to the entity and place the entity in the container entity e.g. add potion (item) to chest (container)
+ */
 void contained_add(entity_id_t entity, entity_id_t container)
 {
     util_assert(entity < MAX_ENTITIES);
@@ -42,11 +45,16 @@ void contained_add(entity_id_t entity, entity_id_t container)
     util_assert(!entity_has_component(entity, COMPONENT_LOCATION)); /* entity must not have location component */
 
     g.contained_components[entity].next = g.container_components[container].head; /* set next to current container head */
-    g.container_components[entity].head = entity; /* set container head to entity */
+    g.contained_components[entity].container = container;   /* set container to current container */
+
+    g.container_components[container].head = entity; /* set container head to entity */
 
     entity_set_component(entity, COMPONENT_CONTAINED); /* set entity contained component mask */    
 }
 
+/*
+ * @brief Remove the contained entity from its container and remove its contained component e.g. remove potion (item) from a chest (container)
+*/
 void contained_remove(entity_id_t entity)
 {
     entity_id_t container;

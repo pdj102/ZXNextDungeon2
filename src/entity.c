@@ -20,24 +20,13 @@
 #include "location_comp.h"
 #include "item_comp.h"
 
-/***************************************************
- * private defines
- ***************************************************/
-
-/***************************************************
- * private types
- * ***************************************************/
-
-/***************************************************
- * private function prototypes
- ***************************************************/
 
 /***************************************************
  * private variables
  * ***************************************************/
 
 /***************************************************
- * functions
+ * public functions
  ***************************************************/
 
 void entity_init(void)
@@ -165,3 +154,7 @@ void entity_destroy(entity_id_t id)
     g.entity_components.entities[id].mask = COMPONENT_NONE;         /* clear component mask */
     g.entity_components.free_ids[--g.entity_components.free_head] = id; /* add back to free list */
 }
+
+ /***************************************************
+ * private functions
+ ***************************************************/

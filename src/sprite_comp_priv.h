@@ -29,5 +29,9 @@ typedef struct {
 
 typedef sprite_comp_t sprite_components_t[MAX_ENTITIES]; /* sprite component data */
 
+/***************************************************
+ * private function prototypes
+ ***************************************************/
+
 #endif /* SPRITE_COMP_PRIV_H */
 

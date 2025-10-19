@@ -51,9 +51,15 @@ g.msg_win.tile.tile_attr = 0;
 
     // New game
     entity_init();
+    contained_init();
+    container_init();
+    creature_init();
     item_init();
     location_init();
     player_ctrl_init();
+    sprite_init();
+
+    map_init();
     map_terrain_init();
 
     // Create some items

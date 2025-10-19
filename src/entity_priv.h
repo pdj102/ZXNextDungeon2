@@ -42,6 +42,6 @@ typedef struct {
 /***************************************************
  * private function prototypes
  ***************************************************/
-entity_id_t entity_create(void);
+
 
 #endif // ENTITY_PRIV_H

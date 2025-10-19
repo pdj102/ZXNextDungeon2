@@ -39,6 +39,8 @@ bool_t container_add(entity_id_t entity)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CONTAINER)); /* entity must not have container component */
 
+    g.container_components[entity].head = ENTITY_ID_INVALID; 
+
     entity_set_component(entity, COMPONENT_CONTAINER); /* set entity container component mask */
 
     return 1; /* success */

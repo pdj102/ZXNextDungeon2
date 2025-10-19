@@ -67,8 +67,23 @@ void location_move(entity_id_t entity, uint8_t x, uint8_t y)
     location_link(entity);
 }
 
+bool_t location_equal(entity_id_t entity1, entity_id_t entity2)
+{
+    util_assert(entity1 < MAX_ENTITIES);
+    util_assert(entity2 < MAX_ENTITIES);
+    util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
+
+    if ((g.location_components[entity1].x == g.location_components[entity2].x) &&
+        (g.location_components[entity1].y == g.location_components[entity2].y))
+    {
+        return 1;
+    }
+    return 0;
+}
+
 /*
- * @brief Unlink entity from the map and clear its location component
+ * @brief Unlink entity from the map and remove its location component
  * @param[in] entity to remove component from
  */
 void location_remove(entity_id_t entity)
@@ -83,6 +98,10 @@ void location_remove(entity_id_t entity)
     location_unlink(entity);
     entity_clear_component(entity, COMPONENT_LOCATION); /* clear entity location component mask */    
 }
+
+ /***************************************************
+ * private functions
+ ***************************************************/
 
 /*
  * @brief Link entity to a map cell

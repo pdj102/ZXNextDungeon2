@@ -68,3 +68,7 @@ void item_remove(entity_id_t entity)
 
     entity_clear_component(entity, COMPONENT_ITEM); /* clear entity item component mask */
 }
+
+ /***************************************************
+ * private functions
+ ***************************************************/

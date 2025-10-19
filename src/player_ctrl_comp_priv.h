@@ -27,5 +27,9 @@ typedef struct {
     entity_id_t id;
 } player_ctrl_comp_t;
 
+/***************************************************
+ * private function prototypes
+ ***************************************************/
+
 #endif /* PLAYER_CTRL_COMP_PRIV_H */
 

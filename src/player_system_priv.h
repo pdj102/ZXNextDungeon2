@@ -1,5 +1,5 @@
 /**
- * @file item_action.h
+ * @file player_system_priv.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,28 +8,23 @@
  * 
  */
 
-#ifndef ITEM_ACTION_H
-#define ITEM_ACTION_H
-
-#include <stdint.h>
-#include <sys/types.h>
+#ifndef PLAYER_SYSTEM_PRIV_H
+#define PLAYER_SYSTEM_PRIV_H
 
 #include "entity.h"
 
-#include "zxnext.h"
-
 /***************************************************
- * public defines
+ * private defines
  ***************************************************/
 
 /***************************************************
- * public types
+ * private types
  ***************************************************/
 
 /***************************************************
- * public function prototypes
+ * private function prototypes
  ***************************************************/
+void pickup(void);
+void drop(void);
 
-bool_t item_action_try_pickup(entity_id_t entity, entity_id_t item);
-
-#endif // ITEM_ACTION_H
+#endif // PLAYER_SYSTEM_PRIV_H
