@@ -42,23 +42,66 @@ typedef enum {
     CREATURE_CLASS_UNDEAD
 } creature_class_t;
 
+typedef struct dice_s {
+    uint8_t n;
+    uint8_t d;
+    uint8_t mod;
+} dice_t;
+
+typedef enum {
+    DAMAGE_NONE, 
+    DAMAGE_ACID,
+    DAMAGE_BLUDGEONING,
+    DAMAGE_COLD, 
+    DAMAGE_FIRE, 
+    DAMAGE_LIGHTNING, 
+    DAMAGE_PIERCING, 
+    DAMAGE_POISON, 
+    DAMAGE_SLASHING
+} damage_type_t;
+
+typedef struct creature_attack_s {
+    struct dice_s damage_roll;
+    damage_type_t damage_type;
+    uint8_t range; 
+} creature_attack_t;
+
 /* Creature type base attributes - read only  */
 typedef struct {
     const char *name;
     zxnext_tile_t tile;
     creature_class_t c_class;
     uint8_t ac;
-    uint8_t max_hp;
+    uint8_t hp;
     uint8_t speed;
-    // etc
-
+    uint8_t str;
+    uint8_t dex;
+    uint8_t con;
+    uint8_t inte;
+    uint8_t wis;
+    uint8_t cha;
+    uint8_t challenge;
+    struct creature_attack_s melee;
+    struct creature_attack_s ranged;
 } creature_comp_base_t;
+
 
 /* Creature component data per entity */
 typedef struct {
     creature_kind_t kind;   // index into creature_comp_bases[]
     // variable data
+    uint8_t ac;
     uint8_t cur_hp;
+    uint8_t max_hp;
+    uint8_t speed;
+    uint8_t str;
+    uint8_t dex;
+    uint8_t con;
+    uint8_t inte;
+    uint8_t wis;
+    uint8_t cha;
+    struct creature_attack_s melee;
+    struct creature_attack_s ranged;    
     // etc
 } creature_comp_t;
 

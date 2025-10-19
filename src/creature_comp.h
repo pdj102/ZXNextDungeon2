@@ -27,7 +27,7 @@
 typedef enum {
     CREATURE_NONE = 0,
     CREATURE_RAT,
-    CREATURE_HUMAN,
+    CREATURE_COMMONER,
     CREATURE_KIND_COUNT
 } creature_kind_t;
 

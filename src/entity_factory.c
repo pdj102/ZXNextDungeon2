@@ -103,7 +103,7 @@ entity_id_t entity_factory_create_player( void )
         return id;
 
     /* Add creature component */
-    if (creature_add(id, CREATURE_HUMAN) == 0) {
+    if (creature_add(id, CREATURE_COMMONER) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

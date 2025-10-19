@@ -26,17 +26,24 @@
  * private variables
  * ***************************************************/
 const creature_comp_base_t creature_bases[CREATURE_KIND_COUNT] = {
-    [CREATURE_NONE]   = { "None",   {' ', 0}, CREATURE_CLASS_NONE, 0, 0, 0 },
-    [CREATURE_RAT]    = { "Rat",   {'R', 0}, CREATURE_CLASS_BEASTS, 12, 7, 10},
-    [CREATURE_HUMAN]  = { "Human", {'H', 0}, CREATURE_CLASS_HUMANOIDS, 10, 4, 10}
-};
+    [CREATURE_NONE] = {.name = "None", .tile = {' ', 0}, .c_class = CREATURE_CLASS_NONE, .ac = 0, .hp = 0, .speed = 0, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0, .challenge = 0, 
+    .melee = { .damage_roll = { .n = 0, .d = 0, .mod = 0}, .damage_type = DAMAGE_NONE, .range = 0},
+    .ranged = { .damage_roll = { .n = 0, .d = 0, .mod = 0}, .damage_type = DAMAGE_NONE, .range = 0}},
+    
+    [CREATURE_RAT] = {.name = "Rat", .tile = {'R', 0}, .c_class = CREATURE_CLASS_BEASTS, .ac = 10, .hp = 1, .speed = 15, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4, .challenge = 10, 
+    .melee = { .damage_roll = { .n = 1, .d = 4, .mod = 0}, .damage_type = DAMAGE_PIERCING, .range = 1},
+    .ranged = { .damage_roll = { .n = 0, .d = 0, .mod = 0}, .damage_type = DAMAGE_NONE, .range = 0}},
 
+    [CREATURE_COMMONER] = {.name = "Commoner", .tile = {'H', 0}, .c_class = CREATURE_CLASS_HUMANOIDS, .ac = 10, .hp = 4, .speed = 10, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10, .challenge = 10, 
+    .melee = { .damage_roll = { .n = 1, .d = 8, .mod = 0}, .damage_type = DAMAGE_BLUDGEONING, .range = 1},
+    .ranged = { .damage_roll = { .n = 0, .d = 0, .mod = 0}, .damage_type = DAMAGE_NONE, .range = 0}},
+};
 
 /***************************************************
  * public functions
  ***************************************************/
 
- void test(void)
+void creature_base_init(uint8_t creature, uint8_t kind)
  {
-    key_press();
+    
  }
