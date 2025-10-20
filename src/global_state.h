@@ -51,7 +51,9 @@ typedef struct
     map_t map; /* the map */
 
     /* UI */
+    text_window_t stat_win;      
     text_window_t msg_win;  
+
 
 } global_state_t;
 

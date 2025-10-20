@@ -45,10 +45,11 @@ uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */    
-
-    g.creature_components[entity].kind = kind; /* set creature type */
-    // todo set up creature
+    
     creature_base_init(entity, kind);
+    
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);     
 
     entity_set_component(entity, COMPONENT_CREATURE); /* set entity creature component mask */
 

@@ -16,18 +16,12 @@
  * @brief Initialize ZX Spectrum Next specific features
  * 
  */
-void init(void);
+void init_zxnext(void);
 
-/**
- * @brief Initialize the ZX Next tilemap
- * 
- */
-void init_zxnext_tilemap(void);
+void init_game_state(void);
 
-/**
- * @brief Initialize the ZX Next tile palette
- * 
- */
-void init_zxnext_palette(void);
+void init_ui(void);
+
+
 
 #endif // INIT_H

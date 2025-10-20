@@ -32,55 +32,38 @@
 
 #include "PAGE0/init.h"
 
+#include "PAGE30/creature_base.h"
+
 
  
 int main(void) {
 
-    init();
+   init_zxnext();
+   init_game_state();
+   init_ui();
 
-g.msg_win.x = 0;
-g.msg_win.y = 24;
-g.msg_win.w = 40;
-g.msg_win.h = 8;
-g.msg_win.c_x = 0;
-g.msg_win.c_y = 0;
-g.msg_win.tile.tile_id = ' ';
-g.msg_win.tile.tile_attr = 0;
-    
-    zxnext_tilemap_clear(&(g.msg_win.tile));
 
-    // New game
-    entity_init();
-    contained_init();
-    container_init();
-    creature_init();
-    item_init();
-    location_init();
-    player_ctrl_init();
-    sprite_init();
-
-    map_init();
-    map_terrain_init();
+   text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
     location_add(e1, 10, 10);
-    text_printf(&g.msg_win, "Item Entity ID: %u\n", e1);
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e1);
 
     entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
     location_add(e2, 12, 10);
-    text_printf(&g.msg_win, "Item Entity ID: %u\n", e2);
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e2);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
-    text_printf(&g.msg_win, "Item Entity ID: %u\n", e3);    
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e3);    
     location_add(e3, 14, 10);
 
     entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);
-    text_printf(&g.msg_win, "Item Entity ID: %u\n", e4);    
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e4);    
     location_add(e4, 10, 12);
 
     entity_id_t e5 = entity_factory_create_player();
-    text_printf(&g.msg_win, "Item Entity ID: %u\n", e5);    
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e5);    
     location_add(e5, 10, 15);
 
     map_render();
@@ -92,6 +75,10 @@ g.msg_win.tile.tile_attr = 0;
         /* player control system*/
         // player_control_system_run();
         map_render();
+
+        text_cls(&g.stat_win);
+        text_printf(&g.stat_win, "hp:%u\n", g.creature_components[g.player.id].cur_hp);
+        text_printf(&g.stat_win, "ac:%u\n", g.creature_components[g.player.id].ac);
 
         /*
         text_printf(&g.msg_win, "id = %u\n", g.player.id);

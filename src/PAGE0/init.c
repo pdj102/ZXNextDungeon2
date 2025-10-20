@@ -13,7 +13,16 @@
 #include <arch/zxn.h>
 #include <stdint.h>
 
+#include "../entity.h"
+#include "../item_comp.h"
+#include "../creature_comp.h"
+#include "../location_comp.h"
+#include "../entity_factory.h"
+#include "../player_system.h"
+#include "../map_terrain.h"
+#include "../map_render.h"
 #include "../global_state.h"
+
 #include "../zxnext.h"
 
 
@@ -66,7 +75,8 @@ void init_zxnext_palette(void);
  */
 extern uint8_t tile_palette[]; 
 
-void init(void) {
+void init_zxnext(void) 
+{
     /* set CPU speed 28MHz */
     ZXN_WRITE_REG(REG_TURBO_MODE, RTM_28MHZ);
 
@@ -86,9 +96,47 @@ void init(void) {
     init_zxnext_tilemap();
 
     init_zxnext_palette();
-
-
 } 
+
+void init_game_state(void)
+{
+    // Init game state
+    entity_init();
+
+    contained_init();
+    container_init();
+    creature_init();
+    item_init();
+    location_init();
+    player_ctrl_init();
+    sprite_init();
+
+    map_init();
+    map_terrain_init();
+}
+
+void init_ui(void)
+{
+    g.msg_win.x = 0;
+    g.msg_win.y = 24;
+    g.msg_win.w = 40;
+    g.msg_win.h = 8;
+    g.msg_win.c_x = 0;
+    g.msg_win.c_y = 0;
+    g.msg_win.tile.tile_id = ' ';
+    g.msg_win.tile.tile_attr = 0;
+
+    g.stat_win.x = 32;
+    g.stat_win.y = 0;
+    g.stat_win.w = 8;
+    g.stat_win.h = 24;
+    g.stat_win.c_x = 0;
+    g.stat_win.c_y = 0;
+    g.stat_win.tile.tile_id = ' ';
+    g.stat_win.tile.tile_attr = 0;
+
+    zxnext_tilemap_clear(&(g.msg_win.tile));
+}
 
 void init_zxnext_tilemap(void)
 {

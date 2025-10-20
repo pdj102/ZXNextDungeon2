@@ -13,6 +13,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-void init(void);
+void init_zxnext(void);
 
 #endif // MAIN_H

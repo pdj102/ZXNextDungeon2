@@ -43,7 +43,19 @@ const creature_comp_base_t creature_bases[CREATURE_KIND_COUNT] = {
  * public functions
  ***************************************************/
 
-void creature_base_init(uint8_t creature, uint8_t kind)
+ void creature_base_init(uint8_t creature, uint8_t kind)
  {
-    
+    g.creature_components[creature].kind = kind;
+    g.creature_components[creature].ac = creature_bases[kind].ac;
+    g.creature_components[creature].max_hp = creature_bases[kind].hp;
+    g.creature_components[creature].cur_hp = creature_bases[kind].hp;
+    g.creature_components[creature].speed = creature_bases[kind].speed;
+    g.creature_components[creature].str = creature_bases[kind].str;
+    g.creature_components[creature].dex = creature_bases[kind].dex;
+    g.creature_components[creature].con = creature_bases[kind].con;
+    g.creature_components[creature].inte = creature_bases[kind].inte;
+    g.creature_components[creature].wis = creature_bases[kind].wis;
+    g.creature_components[creature].cha = creature_bases[kind].cha;
+    g.creature_components[creature].melee = creature_bases[kind].melee;
+    g.creature_components[creature].ranged = creature_bases[kind].ranged;
  }

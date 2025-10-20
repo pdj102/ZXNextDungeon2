@@ -50,6 +50,8 @@ void text_scroll_up( text_window_t *win_p );
     uint8_t x2 = win_p->x + win_p->w;
     uint8_t y2 = win_p->y + win_p->h;
 
+    win_p->tile.tile_id = ' '; /* clear using space character */
+
     for (uint8_t y = win_p->y; y < y2; y++) {
         for (uint8_t x = win_p->x; x < x2; x++) {
             zxnext_tilemap_set(x, y, &win_p->tile);

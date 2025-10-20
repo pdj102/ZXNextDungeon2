@@ -25,6 +25,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
+
 void creature_base_init(uint8_t creature, uint8_t kind);
 
 extern const creature_comp_base_t creature_bases[];

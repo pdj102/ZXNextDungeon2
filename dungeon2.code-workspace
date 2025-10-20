@@ -20,7 +20,8 @@
 			"zxn.h": "c",
 			"creature_base.h": "c",
 			"global_state.h": "c",
-			"creature_comp_priv.h": "c"
+			"creature_comp_priv.h": "c",
+			"init.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",
