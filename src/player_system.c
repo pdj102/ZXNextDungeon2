@@ -70,6 +70,9 @@ void player_system_update(void)
         case 10: /* down */
             movement_system_try_move(entity, 0, 1);
             break;
+        case 97: /* melee attack */
+            melee_attack();
+            break;            
         case 100: /* drop an item */
             drop();
             break;
@@ -84,6 +87,50 @@ void player_system_update(void)
  /***************************************************
  * private functions
  ***************************************************/
+
+void melee_attack(void)
+{
+    entity_id_t target;
+    direction_t dir;
+    uint8_t x;
+    uint8_t y;
+
+    dir = get_dir_or_cancel_b();
+
+    x = g.location_components[g.player.id].x + directions[dir].x;
+    y = g.location_components[g.player.id].y + directions[dir].y;
+
+    target = g.map.cell_head[x][y];
+
+    while (target != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(target, COMPONENT_CREATURE))
+        {
+            if (creature_actions_try_melee_attack(g.player.id, target))
+            {
+                text_printf(&g.msg_win, "Attacked %u\n", target);
+                return;
+            }
+        }
+        target = g.location_components[target].next_in_location;
+    }
+    text_printf(&g.msg_win, "Nothing to attack here\n");
+}    
+
+ void drop(void)
+{
+   entity_id_t item;
+   
+   item = g.container_components[g.player.id].head;
+
+   if (item == ENTITY_ID_INVALID)
+   {
+        text_printf(&g.msg_win, "Nothing to drop\n");
+        return;
+   }
+
+   creature_actions_try_drop(g.player.id, item);
+}
 
 void pickup(void)
 {
@@ -109,17 +156,3 @@ void pickup(void)
     text_printf(&g.msg_win, "Nothing to pick up here\n");
 }
 
-void drop(void)
-{
-   entity_id_t item;
-   
-   item = g.container_components[g.player.id].head;
-
-   if (item == ENTITY_ID_INVALID)
-   {
-        text_printf(&g.msg_win, "Nothing to drop\n");
-        return;
-   }
-
-   creature_actions_try_drop(g.player.id, item);
-}

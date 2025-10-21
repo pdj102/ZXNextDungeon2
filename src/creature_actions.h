@@ -30,6 +30,7 @@
  * public function prototypes
  ***************************************************/
 
+bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target);
 bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item);
 bool_t creature_actions_try_drop(entity_id_t creature, entity_id_t item);
 

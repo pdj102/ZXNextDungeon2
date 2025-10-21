@@ -1,6 +1,6 @@
 /**
  * @file zxnext.h
- * @author Paul Johnson (you@domain.com)
+ * @author Paul Johnson 
  * @brief ZX Next specific functions
  * @version 0.1
  
@@ -13,6 +13,14 @@
 #define ZXNEXT_H
 
 #include <stdint.h>
+
+#define KEY_UP          11
+#define KEY_DOWN        10
+#define KEY_LEFT        8
+#define KEY_RIGHT       9
+#define KEY_A           97
+#define KEY_D           100
+#define KEY_G           103
 
 /***************************************************
  * public types

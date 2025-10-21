@@ -52,7 +52,8 @@ typedef struct
 
     /* UI */
     text_window_t stat_win;      
-    text_window_t msg_win;  
+    text_window_t msg_win;
+    text_window_t assert_win;
 
 
 } global_state_t;

@@ -29,6 +29,21 @@
  * public functions
  ***************************************************/
 
+bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
+{
+    /* entity to be attacked has creature and location component */
+    util_assert(entity_has_component(target, COMPONENT_LOCATION | COMPONENT_CREATURE));
+    
+    /* actor has creature, contained and location */
+    util_assert(entity_has_component(creature, COMPONENT_CREATURE | COMPONENT_LOCATION));
+    
+    /* check target within melee attack range */
+
+    /* try attack*/
+
+    return 1;
+}
+
 bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
 {  
     /* entity to be picked up has item and location components */

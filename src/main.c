@@ -71,23 +71,13 @@ int main(void) {
     while(1)
     {
         // Main loop code here
-        /* energy system */
-        /* player control system*/
-        // player_control_system_run();
         map_render();
 
         text_cls(&g.stat_win);
         text_printf(&g.stat_win, "hp:%u\n", g.creature_components[g.player.id].cur_hp);
         text_printf(&g.stat_win, "ac:%u\n", g.creature_components[g.player.id].ac);
 
-        /*
-        text_printf(&g.msg_win, "id = %u\n", g.player.id);
-        text_printf(&g.msg_win, "x = %u\n", g.location_components[g.player.id].x);
-        text_printf(&g.msg_win, "y = %u\n", g.location_components[g.player.id].y);
-        */
-
-        player_system_update();
-        
+        player_system_update();        
     }
 
     util_abort("Hello World");

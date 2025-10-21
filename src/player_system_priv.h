@@ -24,6 +24,7 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+void melee_attack(void);
 void pickup(void);
 void drop(void);
 

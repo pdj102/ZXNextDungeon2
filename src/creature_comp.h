@@ -24,7 +24,7 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
+typedef enum creature_kind_e {
     CREATURE_NONE = 0,
     CREATURE_RAT,
     CREATURE_COMMONER,

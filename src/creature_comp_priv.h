@@ -14,6 +14,7 @@
 #include "creature_comp.h"
 #include "entity_priv.h"
 
+#include "util.h"
 #include "zxnext.h"
 
 /***************************************************
@@ -42,12 +43,6 @@ typedef enum {
     CREATURE_CLASS_UNDEAD
 } creature_class_t;
 
-typedef struct dice_s {
-    uint8_t n;
-    uint8_t d;
-    uint8_t mod;
-} dice_t;
-
 typedef enum {
     DAMAGE_NONE, 
     DAMAGE_ACID,
@@ -61,9 +56,11 @@ typedef enum {
 } damage_type_t;
 
 typedef struct creature_attack_s {
-    struct dice_s damage_roll;
+    dice_roll_t damage_roll;
     damage_type_t damage_type;
-    uint8_t range; 
+    uint8_t range;
+    uint8_t to_hit;
+    uint8_t to_damage; 
 } creature_attack_t;
 
 /* Creature type base attributes - read only  */
@@ -107,7 +104,4 @@ typedef struct {
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; /* creature component data */
 
-
-
 #endif /* CREATURE_COMP_PRIV_H */
-

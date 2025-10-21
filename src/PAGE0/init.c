@@ -135,6 +135,15 @@ void init_ui(void)
     g.stat_win.tile.tile_id = ' ';
     g.stat_win.tile.tile_attr = 0;
 
+    g.assert_win.x = 0;
+    g.assert_win.y = 0;
+    g.assert_win.w = 40;
+    g.assert_win.h = 32;
+    g.assert_win.c_x = 0;
+    g.assert_win.c_y = 0;
+    g.assert_win.tile.tile_id = ' ';
+    g.assert_win.tile.tile_attr = 0;
+
     zxnext_tilemap_clear(&(g.msg_win.tile));
 }
 
