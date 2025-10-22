@@ -95,7 +95,7 @@ void melee_attack(void)
     uint8_t x;
     uint8_t y;
 
-    dir = get_dir_or_cancel_b();
+    dir = util_get_dir_or_cancel_b();
 
     x = g.location_components[g.player.id].x + directions[dir].x;
     y = g.location_components[g.player.id].y + directions[dir].y;
@@ -110,6 +110,11 @@ void melee_attack(void)
             {
                 text_printf(&g.msg_win, "Attacked %u\n", target);
                 return;
+            }
+            else
+            {
+             text_printf(&g.msg_win, "Missed %u\n", target);
+             return;
             }
         }
         target = g.location_components[target].next_in_location;

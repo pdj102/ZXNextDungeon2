@@ -67,7 +67,9 @@ extern const dice_t dice[];
  * function prototypes
  ***************************************************/
 
-direction_t get_dir_or_cancel_b( void );
+uint8_t util_roll_dice(dice_roll_t dice);
+
+direction_t util_get_dir_or_cancel_b( void );
 
 void util_assert_f(const char *message, const char *file, unsigned line);
 

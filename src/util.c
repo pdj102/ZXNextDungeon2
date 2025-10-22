@@ -11,6 +11,7 @@
 
 #include "util.h"
 
+#include <stdlib.h>
 #include <stdint.h>
 
 #include "global_state.h"
@@ -54,6 +55,19 @@ const dice_t dice_roll[DICE_COUNT] = {
  * functions
  ***************************************************/
 
+uint8_t util_roll_dice(dice_roll_t dice)
+{
+    uint8_t roll;
+
+    for (uint8_t i = 0; i < dice_roll[dice].n; i++)
+    {
+        roll += 1 + rand() % dice_roll[dice].d;
+    }
+    roll += dice_roll[dice].mod;
+
+    return roll;
+}
+
 uint8_t util_distance_manhattan(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2)
 {
     uint8_t x = x1 > x2 ? x1 - x2 : x2 - x1;
@@ -62,7 +76,7 @@ uint8_t util_distance_manhattan(uint8_t x1, uint8_t y1,uint8_t x2, uint8_t y2)
     return x + y;
 }
 
-direction_t get_dir_or_cancel_b( void )
+direction_t util_get_dir_or_cancel_b( void )
 {
     unsigned int key;
 

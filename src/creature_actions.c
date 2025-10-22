@@ -31,6 +31,8 @@
 
 bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
 {
+    uint8_t attack_roll;
+
     /* entity to be attacked has creature and location component */
     util_assert(entity_has_component(target, COMPONENT_LOCATION | COMPONENT_CREATURE));
     
@@ -41,7 +43,20 @@ bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t targe
 
     /* try attack*/
 
-    return 1;
+    /* attack roll calculation = 1d20 + weapon mod + ability modifer + proficiency bonus */
+    attack_roll = util_roll_dice(DICE_1D20);
+    
+    /* successful hit if attack roll is greater or equal to target's armour class */
+    if (attack_roll >= g.creature_components[target].ac)
+    {
+        text_printf(&g.msg_win, "%u %u", attack_roll, g.creature_components[target].ac);
+        return 1;
+    }
+    else
+    {
+        text_printf(&g.msg_win, "%u %u", attack_roll, g.creature_components[target].ac);
+        return 0;
+    }
 }
 
 bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
