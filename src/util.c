@@ -57,8 +57,9 @@ const dice_t dice_roll[DICE_COUNT] = {
 
 uint8_t util_roll_dice(dice_roll_t dice)
 {
-    uint8_t roll;
+    uint8_t roll = 0;
 
+    text_printf(&g.msg_win, "Roll:%uD%u+%u\n", dice_roll[dice].n, dice_roll[dice].d, dice_roll[dice].mod);
     for (uint8_t i = 0; i < dice_roll[dice].n; i++)
     {
         roll += 1 + rand() % dice_roll[dice].d;

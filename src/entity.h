@@ -38,6 +38,18 @@
  ***************************************************/
 typedef uint8_t entity_id_t; /* Type for entity IDs */
 
+typedef enum {
+    DAMAGE_NONE, 
+    DAMAGE_ACID,
+    DAMAGE_BLUDGEONING,
+    DAMAGE_COLD, 
+    DAMAGE_FIRE, 
+    DAMAGE_LIGHTNING, 
+    DAMAGE_PIERCING, 
+    DAMAGE_POISON, 
+    DAMAGE_SLASHING
+} damage_type_t;
+
 
 /***************************************************
  * public function prototypes

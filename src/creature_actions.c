@@ -31,7 +31,8 @@
 
 bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
 {
-    uint8_t attack_roll;
+    int8_t attack_roll;
+    int8_t damage_roll;
 
     /* entity to be attacked has creature and location component */
     util_assert(entity_has_component(target, COMPONENT_LOCATION | COMPONENT_CREATURE));
@@ -43,20 +44,52 @@ bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t targe
 
     /* try attack*/
 
-    /* attack roll calculation = 1d20 + weapon mod + ability modifer + proficiency bonus */
+    /* attack roll calculation = 1d20 + to_hit_bonus (which is weapon mod + ability modifer + proficiency bonus) */
     attack_roll = util_roll_dice(DICE_1D20);
+    attack_roll += g.creature_components[creature].melee.to_hit;
     
     /* successful hit if attack roll is greater or equal to target's armour class */
     if (attack_roll >= g.creature_components[target].ac)
     {
-        text_printf(&g.msg_win, "%u %u", attack_roll, g.creature_components[target].ac);
+        /* damage roll calculation = weapon dice roll + to_damage_bonus (which is weapon mod + ability modifer + proficiency bonus )*/
+        damage_roll = util_roll_dice(g.creature_components[creature].melee.damage_roll);
+        damage_roll += g.creature_components[creature].melee.to_damage;
+
+        creature_actions_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
+
+        text_printf(&g.msg_win, "Attack roll:%u ac: %u\n", attack_roll, g.creature_components[target].ac);
+        text_printf(&g.msg_win, "Die:%u\n", g.creature_components[creature].melee.damage_roll);
+        text_printf(&g.msg_win, "Damage roll:%u hp: %u\n", damage_roll, g.creature_components[target].cur_hp);
         return 1;
     }
     else
     {
-        text_printf(&g.msg_win, "%u %u", attack_roll, g.creature_components[target].ac);
+        text_printf(&g.msg_win, "Attack roll:%u ac: %u\n", attack_roll, g.creature_components[target].ac);
         return 0;
     }
+}
+
+int8_t creature_actions_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
+{
+    /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
+    if (g.creature_components[creature].cur_hp <= damage)
+    {
+        g.creature_components[creature].cur_hp = 0;
+        creature_actions_try_die(creature);
+    }
+    else
+    {
+        g.creature_components[creature].cur_hp -= damage;
+    }
+    
+    return damage;
+}
+
+bool_t creature_actions_try_die(entity_id_t creature)
+{
+    entity_destroy(creature);
+
+    return 1;
 }
 
 bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)

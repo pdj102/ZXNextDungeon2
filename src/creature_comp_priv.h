@@ -43,18 +43,6 @@ typedef enum {
     CREATURE_CLASS_UNDEAD
 } creature_class_t;
 
-typedef enum {
-    DAMAGE_NONE, 
-    DAMAGE_ACID,
-    DAMAGE_BLUDGEONING,
-    DAMAGE_COLD, 
-    DAMAGE_FIRE, 
-    DAMAGE_LIGHTNING, 
-    DAMAGE_PIERCING, 
-    DAMAGE_POISON, 
-    DAMAGE_SLASHING
-} damage_type_t;
-
 typedef struct creature_attack_s {
     dice_roll_t damage_roll;
     damage_type_t damage_type;
@@ -87,16 +75,16 @@ typedef struct {
 typedef struct {
     creature_kind_t kind;   // index into creature_comp_bases[]
     // variable data
-    uint8_t ac;
-    uint8_t cur_hp;
-    uint8_t max_hp;
-    uint8_t speed;
-    uint8_t str;
-    uint8_t dex;
-    uint8_t con;
-    uint8_t inte;
-    uint8_t wis;
-    uint8_t cha;
+    int8_t ac;
+    int8_t cur_hp;
+    int8_t max_hp;
+    int8_t speed;
+    int8_t str;
+    int8_t dex;
+    int8_t con;
+    int8_t inte;
+    int8_t wis;
+    int8_t cha;
     struct creature_attack_s melee;
     struct creature_attack_s ranged;    
     // etc
