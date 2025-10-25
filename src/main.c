@@ -60,9 +60,13 @@ int main(void) {
     // text_printf(&g.msg_win, "Item Entity ID: %u\n", e4);    
     location_add(e4, 10, 12);
 
-    entity_id_t e5 = entity_factory_create_player();
+    entity_id_t e5 = entity_factory_create_monster(CREATURE_WITHERWEED);
+    // text_printf(&g.msg_win, "Item Entity ID: %u\n", e4);    
+    location_add(e5, 12, 12);    
+
+    entity_id_t e6 = entity_factory_create_player();
     // text_printf(&g.msg_win, "Item Entity ID: %u\n", e5);    
-    location_add(e5, 10, 15);
+    location_add(e6, 10, 15);
 
     map_render();
 

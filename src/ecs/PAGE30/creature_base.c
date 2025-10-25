@@ -23,17 +23,36 @@
  * private variables
  * ***************************************************/
 const creature_comp_base_t creature_bases[CREATURE_KIND_COUNT] = {
+   
     [CREATURE_NONE] = {.name = "None", .tile = {' ', 0}, .c_class = CREATURE_CLASS_NONE, .ac = 0, .hp = 0, .speed = 0, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0, .challenge = 0, 
     .melee = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .to_hit = 0, .to_damage = 0},
     .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .to_hit = 0, .to_damage = 0}},
-    
-    [CREATURE_RAT] = {.name = "Rat", .tile = {'R', 0}, .c_class = CREATURE_CLASS_BEASTS, .ac = 10, .hp = 1, .speed = 15, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4, .challenge = 10, 
+   /* CREATURE_CLASS_ABERRATIONS */
+   /* CREATURE_CLASS_BEASTS */
+    [CREATURE_RAT] = {.name = "Rat", .tile = {'R', 0}, .c_class = CREATURE_CLASS_BEASTS, .ac = 10, .hp = 1, .speed = 30, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4, .challenge = 10, 
     .melee = { .damage_roll = DICE_1D4, .damage_type = DAMAGE_PIERCING, .range = 1, .to_hit = 4, .to_damage = 2},
     .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .to_hit = 0, .to_damage = 0}},
 
-    [CREATURE_COMMONER] = {.name = "Commoner", .tile = {'H', 0}, .c_class = CREATURE_CLASS_HUMANOIDS, .ac = 10, .hp = 4, .speed = 10, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10, .challenge = 10, 
+   /* CREATURE_CLASS_CELESTIALS */
+   /* CREATURE_CLASS_CONSTRUCTS */
+   /* CREATURE_CLASS_DRAGONS */
+   /* CREATURE_CLASS_ELEMENTALS */
+   /* CREATURE_CLASS_FEY */
+   /* CREATURE_CLASS_FIENDS */
+   /* CREATURE_CLASS_GIANTS */
+   /* CREATURE_CLASS_HUMANOIDS */
+    [CREATURE_COMMONER] = {.name = "Commoner", .tile = {'H', 0}, .c_class = CREATURE_CLASS_HUMANOIDS, .ac = 10, .hp = 4, .speed = 30, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10, .challenge = 10, 
     .melee = { .damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .to_hit = 2, .to_damage = 0},
     .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .to_hit = 0, .to_damage = 0}},
+
+    /* CREATURE_CLASS_MONSTROSITIES */
+    /* CREATURE_CLASS_OOZES */
+    /* CREATURE_CLASS_PLANTS */
+    [CREATURE_WITHERWEED] = {.name = "Witherweed", .tile = {'P', 0}, .c_class = CREATURE_CLASS_PLANTS, .ac = 5, .hp = 22, .speed = 5, .str = 3, .dex = 1, .con = 10, .inte = 1, .wis = 3, .cha = 1, .challenge = 100, 
+    .melee = { .damage_roll = DICE_1D4, .damage_type = DAMAGE_POISON, .range = 1, .to_hit = 2, .to_damage = 0},
+    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .to_hit = 0, .to_damage = 0}},    
+
+    /* CREATURE_CLASS_UNDEAD */
 };
 
 /***************************************************
