@@ -56,3 +56,9 @@ const creature_comp_base_t creature_bases[CREATURE_KIND_COUNT] = {
     g.creature_components[creature].melee = creature_bases[kind].melee;
     g.creature_components[creature].ranged = creature_bases[kind].ranged;
  }
+
+ void creature_base_print_name(text_window_t *win, entity_id_t creature)
+ {
+    creature_kind_t kind = g.creature_components[creature].kind;
+    text_print_string(win, creature_bases[kind].name);
+ }

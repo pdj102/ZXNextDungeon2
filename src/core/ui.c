@@ -10,6 +10,8 @@
 #include "ui.h"
 
 #include "../ecs/event_system.h"
+#include "../ecs/creature_comp.h"
+#include "../ecs/item_comp.h"
 
 #include "../game/global_state.h"
 #include "../core/text.h"
@@ -37,5 +39,41 @@
 
  void ui_on_event(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
  {
-    text_printf(&g.msg_win, "Event\n");
+    text_printf(&g.msg_win, "Event:%u src:%u tgt:%u val:%u\n", type, src, tgt, val);
+
+    switch( type )
+    {
+        case EVENT_NONE:
+            break;
+        case EVENT_ITEM_PICKED_UP:
+            creature_print_name(&g.msg_win, src);
+            text_printf(&g.msg_win, " picked up ");
+            item_print_name(&g.msg_win, tgt);
+            text_print_string(&g.msg_win, "\n");
+            break;
+        case EVENT_ITEM_DROPPED:
+            creature_print_name(&g.msg_win, src);
+            text_printf(&g.msg_win, " dropped ");
+            item_print_name(&g.msg_win, tgt);
+            text_print_string(&g.msg_win, "\n");            
+            break;
+        case EVENT_ENTITY_ATTACKED:
+            creature_print_name(&g.msg_win, src);
+            text_printf(&g.msg_win, " attacked ");
+            creature_print_name(&g.msg_win, tgt);
+            text_print_string(&g.msg_win, "\n");
+            break;
+        case EVENT_ENTITY_ATTACKED_MISSED:
+            creature_print_name(&g.msg_win, src);
+            text_printf(&g.msg_win, " missed ");
+            creature_print_name(&g.msg_win, tgt);
+            text_print_string(&g.msg_win, "\n");
+            break;            
+        case EVENT_ENTITY_DIED:
+            creature_print_name(&g.msg_win, src);
+            text_printf(&g.msg_win, " died\n");
+            break;
+        default:
+            break;
+    }
  }

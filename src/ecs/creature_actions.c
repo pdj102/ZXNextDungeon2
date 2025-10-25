@@ -14,6 +14,7 @@
 
 #include "location_comp.h"
 #include "contained_comp.h"
+#include "event_system.h"
 
 #include "../game/global_state.h"
 #include "../core/text.h"
@@ -55,16 +56,14 @@ bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t targe
         damage_roll = util_roll_dice(g.creature_components[creature].melee.damage_roll);
         damage_roll += g.creature_components[creature].melee.to_damage;
 
-        creature_actions_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
+        event_emit(EVENT_ENTITY_ATTACKED, creature, target, 0);
 
-        text_printf(&g.msg_win, "Attack roll:%u ac: %u\n", attack_roll, g.creature_components[target].ac);
-        text_printf(&g.msg_win, "Die:%u\n", g.creature_components[creature].melee.damage_roll);
-        text_printf(&g.msg_win, "Damage roll:%u hp: %u\n", damage_roll, g.creature_components[target].cur_hp);
+        creature_actions_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
         return 1;
     }
     else
     {
-        text_printf(&g.msg_win, "Attack roll:%u ac: %u\n", attack_roll, g.creature_components[target].ac);
+        event_emit(EVENT_ENTITY_ATTACKED_MISSED, creature, target, 0);
         return 0;
     }
 }
@@ -87,6 +86,9 @@ int8_t creature_actions_try_take_damage(entity_id_t creature, int8_t damage, dam
 
 bool_t creature_actions_try_die(entity_id_t creature)
 {
+    // text_printf(&g.msg_win, "DIED!");
+    event_emit(EVENT_ENTITY_DIED, creature, ENTITY_ID_INVALID, 0);
+
     entity_destroy(creature);
 
     return 1;
@@ -107,8 +109,9 @@ bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
     }
 
     location_remove(item);
-
     contained_add(item, creature);
+
+    event_emit(EVENT_ITEM_PICKED_UP, creature, item, 0);
 
     return 1;
 }
@@ -130,12 +133,11 @@ bool_t creature_actions_try_drop(entity_id_t creature, entity_id_t item)
     }
 
     contained_remove(item);
-
     x = g.location_components[creature].x;
     y = g.location_components[creature].y;
-
-    text_printf(&g.msg_win, "Dropping %d at (%d,%d)\n", item, x, y);
     location_add(item, x, y);
+
+    event_emit(EVENT_ITEM_DROPPED, creature, item, 0);    
 
     return 1;
 }

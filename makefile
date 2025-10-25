@@ -59,6 +59,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/core/PAGE1/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/PAGE30/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/PAGE32/*.c) \
 	   $(wildcard $(SRCDIR)/game/*.c)
 
 # Set assembly files 

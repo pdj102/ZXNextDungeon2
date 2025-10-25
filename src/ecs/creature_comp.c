@@ -17,6 +17,7 @@
 #include "PAGE30/creature_base.h"
 
 #include "../game/global_state.h"
+#include "../core/text.h"
 #include "../core/util.h"
 
 
@@ -68,6 +69,19 @@ void creature_get_tile(entity_id_t id, zxnext_tile_t *tile)
 
     /* restore previous bank */
     ZXN_WRITE_MMU6(current_bank);    
+}
+
+void creature_print_name(text_window_t *win, entity_id_t creature)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */
+
+    creature_base_print_name(win, creature);
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);        
 }
 
 void creature_remove(entity_id_t entity)

@@ -43,6 +43,8 @@
 
  entity_id_t entity_factory_create_item(item_kind_t kind, uint8_t quantity)
 {
+    zxnext_tile_t tile; 
+
     entity_id_t id = entity_create(); 
     if (id == ENTITY_ID_INVALID)
         return id;
@@ -54,7 +56,8 @@
     }
 
     /* Add sprite component - use item tile */
-    if(sprite_add(id, item_get_tile(id)) == 0) {
+    item_get_tile(id, &tile);
+    if(sprite_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

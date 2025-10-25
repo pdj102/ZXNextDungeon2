@@ -10,22 +10,21 @@
 
 #include "item_comp.h"
 
+#include <arch/zxn.h>
+
 #include "entity.h"
+#include "item_comp_priv.h"
+#include "PAGE32/item_base.h"
 
 #include "../game/global_state.h"
 #include "../core/util.h"
+#include "../core/zxnext.h"
 
 
 /***************************************************
  * private variables
  * ***************************************************/
-const item_comp_base_t item_bases[ITEM_KIND_COUNT] = {
-    [ITEM_NONE]   = { "None",   {' ', 0}, 0, 0, 0, 0 },
-    [ITEM_SWORD]  = { "Sword",  {'s', 0}, 10, 2, 5, 20 },
-    [ITEM_SHIELD] = { "Shield", {'s', 0}, 11, 3, 0, 15 },
-    [ITEM_POTION] = { "Potion", {'p', 0}, 12, 1, 0, 5 },
-    [ITEM_KEY]    = { "Key",    {'k', 0}, 13, 0, 0, 1 },
-};
+
 
 /***************************************************
  * public functions
@@ -54,9 +53,31 @@ uint8_t item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
     return 1; /* success */
 }
 
-zxnext_tile_t *item_get_tile(entity_id_t entity)
+void item_get_tile(entity_id_t id, zxnext_tile_t *tile)
 {
-    return &(item_bases[g.item_components[entity].kind].tile);
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(32); /* Map (bank 32) into ZX Spectrum 8k MMU slot 6 */
+
+    tile->tile_attr = item_bases[g.item_components[id].kind].tile.tile_attr;
+    tile->tile_id = item_bases[g.item_components[id].kind].tile.tile_id;
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);   
+}
+
+void item_print_name(text_window_t *win, entity_id_t item)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(32); /* Map (bank 32) into ZX Spectrum 8k MMU slot 6 */
+
+    item_base_print_name(win, item);
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);   
 }
 
 void item_remove(entity_id_t entity)

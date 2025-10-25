@@ -104,16 +104,8 @@ void melee_attack(void)
     {
         if (entity_has_component(target, COMPONENT_CREATURE))
         {
-            if (creature_actions_try_melee_attack(g.player.id, target))
-            {
-                text_printf(&g.msg_win, "Attacked %u\n", target);
-                return;
-            }
-            else
-            {
-             text_printf(&g.msg_win, "Missed %u\n", target);
-             return;
-            }
+            creature_actions_try_melee_attack(g.player.id, target);
+            return;
         }
         target = g.location_components[target].next_in_location;
     }
@@ -147,12 +139,8 @@ void pickup(void)
     {
         if (entity_has_component(item, COMPONENT_ITEM))
         {
-            if (creature_actions_try_pickup(g.player.id, item))
-            {
-                text_printf(&g.msg_win, "Picked up %u\n", item);
-                text_printf(&g.msg_win, "Player container head %u\n", g.container_components[g.player.id].head);
-                return;
-            }
+            creature_actions_try_pickup(g.player.id, item);
+            return;
         }
         item = g.location_components[item].next_in_location;
     }

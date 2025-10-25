@@ -1,5 +1,5 @@
 /**
- * @file event_system.h
+ * @file item_base.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,12 +8,13 @@
  * 
  */
 
-#ifndef EVENT_SYSTEM_H
-#define EVENT_SYSTEM_H
+#ifndef ITEM_BASE_H
+#define ITEM_BASE_H
 
-#include <stdint.h>
+#include "../item_comp_priv.h"
 
-#include "entity.h"
+#include "../../core/text.h"
+
 
 /***************************************************
  * public defines
@@ -22,20 +23,14 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
-    EVENT_NONE,
-    EVENT_ENTITY_ATTACKED,
-    EVENT_ENTITY_ATTACKED_MISSED,
-    EVENT_ENTITY_DIED,
-    EVENT_ITEM_PICKED_UP,
-    EVENT_ITEM_DROPPED,
-    EVENT_COUNT
-} event_type_t;
+extern const item_comp_base_t item_bases[];
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void event_system_init(void);
-void event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
 
-#endif // EVENT_SYSTEM_H
+void item_base_init(uint8_t item, uint8_t kind);
+
+void item_base_print_name(text_window_t *win, entity_id_t item);
+
+#endif // ITEM_BASE_H
