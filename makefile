@@ -54,15 +54,18 @@ OBJDIR=./obj
 # Set C files
 # Add other source file directories as needed
 CFILES=$(wildcard $(SRCDIR)/*.c) \
-	   $(wildcard $(SRCDIR)/PAGE0/*.c) \
-	   $(wildcard $(SRCDIR)/PAGE1/*.c) \
-	   $(wildcard $(SRCDIR)/PAGE30/*.c)
+	   $(wildcard $(SRCDIR)/core/*.c) \
+	   $(wildcard $(SRCDIR)/core/PAGE0/*.c) \
+	   $(wildcard $(SRCDIR)/core/PAGE1/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/PAGE30/*.c) \
+	   $(wildcard $(SRCDIR)/game/*.c)
 
 # Set assembly files 
 # Add other source file directories as needed
 # Note don't use the same file name for both C and ASM files
-AFILES=$(wildcard $(SRCDIR)/*.asm) \
-	   $(wildcard $(SRCDIR)/PAGE1/*.asm)
+AFILES=$(wildcard $(SRCDIR)/core/*.asm) \
+	   $(wildcard $(SRCDIR)/core/PAGE1/*.asm)
 
 # Set object files
 # Convert source file names to object file names

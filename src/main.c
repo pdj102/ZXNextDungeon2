@@ -13,26 +13,24 @@
 
 #include "main.h"
 
-#include "entity.h"
-#include "item_comp.h"
-#include "creature_comp.h"
-#include "location_comp.h"
+#include "ecs/entity.h"
+#include "ecs/item_comp.h"
+#include "ecs/creature_comp.h"
+#include "ecs/location_comp.h"
 
-#include "entity_factory.h"
+#include "ecs/entity_factory.h"
 
-#include "player_system.h"
+#include "ecs/player_system.h"
 
-#include "map_terrain.h"
-#include "map_render.h"
+#include "game/map_terrain.h"
+#include "game/map_render.h"
 
-#include "global_state.h"
+#include "game/global_state.h"
 
-#include "util.h"
-#include "text.h"
+#include "core/util.h"
+#include "core/text.h"
 
-#include "PAGE0/init.h"
-
-#include "PAGE30/creature_base.h"
+#include "core/PAGE0/init.h"
 
 
  
