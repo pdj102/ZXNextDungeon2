@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "dezog cspect",
+            "remoteType": "cspect",
+            "cspect": 
+            {
+                "hostname": "localhost", 
+                "port": 11000
+            },
+            
+            "rootFolder": "${workspaceFolder}",
+            "load": "bin/dungeon2.nex",
+            "topOfStack": "0xbfff"
+
+        }
+    ]
+}

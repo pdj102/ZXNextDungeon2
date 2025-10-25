@@ -1,3 +1,4 @@
 *.nex
 *.bin
 *.o
+.tmp/*

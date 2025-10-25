@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+    "tasks": [
+                {
+    // use the sjasmplus assembler
+            "label": "Make dungeon2.nex",
+            "type": "shell",
+    
+            "command": "make", 
+            "args": [
+                "dungeon2.nex"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
