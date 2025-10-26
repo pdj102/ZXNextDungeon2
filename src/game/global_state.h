@@ -21,6 +21,7 @@
 #include "../ecs/container_comp_priv.h"
 #include "../ecs/contained_comp_priv.h"
 #include "../ecs/player_ctrl_comp_priv.h"
+#include "../ecs/timer_comp_priv.h"
 
 #include "../game/map_priv.h"
 #include "../game/map_terrain_priv.h"
@@ -46,6 +47,7 @@ typedef struct
     container_components_t container_components; /* container component data */
     contained_components_t contained_components; /* contained component data */
     player_ctrl_comp_t player; /* player component data */
+    timer_components_t timer_components; /* timer component data */
 
     /* World */
     map_t map; /* the map */

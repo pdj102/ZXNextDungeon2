@@ -58,7 +58,7 @@ typedef struct {
     creature_class_t c_class;
     uint8_t ac;
     uint8_t hp;
-    uint8_t speed;
+    creature_speed_t speed;
     uint8_t str;
     uint8_t dex;
     uint8_t con;
@@ -78,7 +78,7 @@ typedef struct {
     int8_t ac;
     int8_t cur_hp;
     int8_t max_hp;
-    int8_t speed;
+    creature_speed_t speed;
     int8_t str;
     int8_t dex;
     int8_t con;

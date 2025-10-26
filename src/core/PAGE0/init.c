@@ -14,11 +14,20 @@
 #include <stdint.h>
 
 #include "../../ecs/entity.h"
-#include "../../ecs/item_comp.h"
+
+#include "../../ecs/contained_comp.h"
+#include "../../ecs/container_comp.h"
 #include "../../ecs/creature_comp.h"
+#include "../../ecs/item_comp.h"
 #include "../../ecs/location_comp.h"
-#include "../../ecs/entity_factory.h"
+#include "../../ecs/player_ctrl_comp.h"
+#include "../../ecs/sprite_comp.h"
+
+#include "../../ecs/event_system.h"
+#include "../../ecs/movement_system.h"
 #include "../../ecs/player_system.h"
+#include "../../ecs/timer_system.h"
+
 #include "../../game/map_terrain.h"
 #include "../../game/map_render.h"
 #include "../../game/global_state.h"
@@ -100,9 +109,10 @@ void init_zxnext(void)
 
 void init_game_state(void)
 {
-    // Init game state
+    /* Init entity */
     entity_init();
 
+    /* Init components */
     contained_init();
     container_init();
     creature_init();
@@ -110,7 +120,15 @@ void init_game_state(void)
     location_init();
     player_ctrl_init();
     sprite_init();
+    timer_init();
 
+    /* Init systems */
+    event_system_init();
+    movement_system_init();
+    player_system_init();
+    timer_system_init();
+
+    /* Init game */
     map_init();
     map_terrain_init();
 }

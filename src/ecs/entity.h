@@ -3,8 +3,6 @@
  * @author Paul Johnson
  * @brief Entity management for ECS
  * 
- * @copyright Copyright (c) 2025
- * 
  */
 
 #ifndef ENTITY_H
@@ -29,9 +27,11 @@
 #define COMPONENT_CONTAINED 1 << 5
 #define COMPONENT_PLAYER_CTRL 1 << 6
 #define COMPONENT_AI_CTRL 1 << 7
+#define COMPONENT_TIMER 1 << 8
 
 #define FLAG_NONE 0
-#define FLAG_INUSE 1 << 0
+#define FLAG_ALIVE 1 << 0
+#define FLAG_PENDING_DESTORY 1 << 1
 
 /***************************************************
  * public types
@@ -65,6 +65,8 @@ void entity_clear_component(entity_id_t id, uint16_t comp_mask);
 bool_t entity_has_flag(entity_id_t id, uint8_t flag);
 void entity_set_flag(entity_id_t id, uint8_t flag);
 void entity_clear_flag(entity_id_t id, uint8_t flag);
+
+void entity_clean_up(void);
 
 void entity_destroy(entity_id_t id);
 

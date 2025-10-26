@@ -24,6 +24,7 @@
  * public types
  ***************************************************/
 extern const creature_comp_base_t creature_bases[];
+extern const turn_tick_t creature_speeds_conversion[];
 
 /***************************************************
  * public function prototypes

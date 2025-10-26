@@ -2,9 +2,6 @@
  * @file creature_comp.c
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
  * 
  */
 
@@ -69,6 +66,23 @@ void creature_get_tile(entity_id_t id, zxnext_tile_t *tile)
 
     /* restore previous bank */
     ZXN_WRITE_MMU6(current_bank);    
+}
+
+void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks)
+{
+    uint8_t current_bank;
+    creature_speed_t speed;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */   
+
+    speed = g.creature_components[id].speed;
+
+    turns_ticks->turns = creature_speeds_conversion[speed].turns;
+    turns_ticks->ticks = creature_speeds_conversion[speed].ticks;
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);      
 }
 
 void creature_print_name(text_window_t *win, entity_id_t creature)

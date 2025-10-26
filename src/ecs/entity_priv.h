@@ -32,11 +32,11 @@ typedef struct {
     uint8_t flags; /* entity flags */
 } entity_t;
 
-/* Entity arena structure - fast create and destroy */
+/* Entity arena structure - fast iterate */
 typedef struct {
     entity_t entities[MAX_ENTITIES]; /* array of entities */
-    entity_id_t free_ids[MAX_ENTITIES]; /* stack of free entity IDs */
-    uint8_t free_head; /* index of the top of the free stack */
+    uint8_t active_list[MAX_ENTITIES];
+    uint8_t count;
 } entity_components_t;
 
 /***************************************************

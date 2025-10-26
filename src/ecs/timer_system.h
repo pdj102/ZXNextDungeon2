@@ -1,12 +1,12 @@
 /**
- * @file container_comp.h
+ * @file timer_system.h
  * @author Paul Johnson
  * @brief 
  * 
  */
 
-#ifndef CONTAINER_COMP_H
-#define CONTAINER_COMP_H
+#ifndef TIMER_SYSTEM_H
+#define TIMER_SYSTEM_H
 
 #include <stdint.h>
 
@@ -20,12 +20,10 @@
  * public types
  ***************************************************/
 
-
 /***************************************************
  * public function prototypes
  ***************************************************/
-void container_init(void);
-bool_t container_add(entity_id_t entity);
-void container_remove(entity_id_t entity);
+void timer_system_init(void);
+void timer_system_update(void);
 
-#endif // CONTAINER_COMP_H
+#endif // TIMER_SYSTEM_H

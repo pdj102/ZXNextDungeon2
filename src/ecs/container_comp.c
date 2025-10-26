@@ -2,9 +2,6 @@
  * @file container_comp.c
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
  * 
  */
 

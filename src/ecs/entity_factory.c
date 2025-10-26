@@ -99,6 +99,7 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
 entity_id_t entity_factory_create_player( void )
 {
     zxnext_tile_t tile; 
+    turn_tick_t tt;
 
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
@@ -122,13 +123,22 @@ entity_id_t entity_factory_create_player( void )
     {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
-    }    
+    }
 
     /* Add player control component */
     if (player_ctrl_add(id) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
+
+    /* Add timer component*/
+    if (timer_add(id) == 0) {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }
+    creature_speed_to_turns_ticks(id, &tt);
+    text_printf(&g.msg_win, "turns:%u ticks:%u\n", tt.turns, tt.ticks);
+    timer_set(id, tt.turns, tt.ticks);
 
     return id;
 }

@@ -89,7 +89,7 @@ bool_t creature_actions_try_die(entity_id_t creature)
     // text_printf(&g.msg_win, "DIED!");
     event_emit(EVENT_ENTITY_DIED, creature, ENTITY_ID_INVALID, 0);
 
-    entity_destroy(creature);
+    entity_set_flag(creature, FLAG_PENDING_DESTORY);
 
     return 1;
 }

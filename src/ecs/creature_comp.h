@@ -16,6 +16,7 @@
 #include "entity.h"
 
 #include "../core/text.h"
+#include "../core/util.h"
 #include "../core/zxnext.h"
 
 /***************************************************
@@ -46,6 +47,23 @@ typedef enum creature_kind_e {
     CREATURE_KIND_COUNT
 } creature_kind_t;
 
+typedef enum creature_speed_e {
+    SPEED_NONE = 0,
+    SPEED_5FT, 
+    SPEED_10FT,
+    SPEED_15FT,
+    SPEED_20FT,
+    SPEED_25FT,
+    SPEED_30FT,
+    SPEED_35FT,
+    SPEED_40FT,
+    SPEED_45FT,
+    SPEED_50FT,
+    SPEED_55FT,
+    SPEED_60FT,
+    SPEED_COUNT
+} creature_speed_t;
+
 /***************************************************
  * public function prototypes
  ***************************************************/
@@ -54,6 +72,8 @@ void creature_init(void);
 uint8_t creature_add(entity_id_t entity, creature_kind_t type);
 
 void creature_get_tile(entity_id_t id, zxnext_tile_t *tile);
+
+void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks);
 
 void creature_print_name(text_window_t *win, entity_id_t id);
 
