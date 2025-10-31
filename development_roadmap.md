@@ -15,7 +15,8 @@
 * [✅] Implement `entity_id_t` and `entity_t` structs
 * [✅] Implement `entity_create()` / `entity_destroy()`
 * [✅] Add free-list or active-list allocator
-* [✅] Add `Location` and `Renderable` components
+* [✅] Add `Location` and `Renderable` components - implement helper functions e.g. add() and remove()
+* [✅] Remove components on entity destroy
 * [✅] Create ECS system iteration (loop through active entities)
 * [✅] Implement `render_system()` to draw a test entity
 * [✅] Build a fixed arena at a known base address (e.g. 0x0000)
@@ -43,10 +44,11 @@
 
 > *Goal: multiple creatures and items exist on the map.*
 
-* [✅] Add `Creature` and `Item` components
+* [✅] Add `Creature` and `Item` components  - implement helper functions e.g. add() and remove()
 * [✅] Implement entity factory to spawn creatures
 * [✅] Implement entity factory to spawn items
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
+* [✅] Remove components on entity destroy
 * [ ] Prevent walking through blocking monsters and items
 * [ ] Basic FOV (optional, for performance)
   ✅ *End result: '@' can walk around rooms with visible creatures and items.*
@@ -57,15 +59,16 @@
 
 > *Goal: establish turn-based logic and per-entity speed.*
 
-* [✅] Add `Timer` component (turns + ticks)
+* [✅] Add `Timer` component (turns + ticks)  - implement helper functions e.g. add() and remove()
 * [✅] Implement global turn counter
 * [✅] Player and monsters acts when timer expires
+* [✅] Remove component on entity destroy
 * [✅] Add deferred destruction and alive flag
   ✅ *End result: Player → Monster → Player sequence is functional.*
 
 ---
 
-## 🪜 **Milestone 5 — Melee Combat & Events**
+## 🪜 **Milestone 5 — Basic Melee Combat & Events**
 
 > *Goal: entities can attack and die.*
 
@@ -73,9 +76,8 @@
 * [ ] Implement basic creature take damage
 * [ ] Add `event_entity_attacked`
 * [ ] Add `event_entity_damaged`
-* [ ] Add `event_entity_died'
+* [ ] Add `event_entity_died`
 * [ ] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
-* [ ] Remove dead entities from map
   ✅ *End result: You can attack and kill monsters.*
 
 ---
@@ -84,16 +86,18 @@
 
 > *Goal: pickup and drop items.*
 
-* [ ] Add `Container` component
-* [ ] Add `Contained` component
-* [ ] Implement `try_pickup()`
-* [ ] Implement `try_drop()`
-* [ ] Add `event_picked_up`
-* [ ] Add `event_dropped`
+* [✅] Add `Container` component
+* [✅] Add `Contained` component
+* [✅] Implement `try_pickup()`
+* [✅] Implement `try_drop()`
+* [✅] Add `event_picked_up`
+* [✅] Add `event_dropped`
 * [ ] Implement inventory window (simple list)
 * [ ] Implement item selection from inventory
 * [ ] Implement maximum number of items in container
-* [ ] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
+* [ ] Destroy contained components on container entity destroy
+* [✅] Remove components on entity destroy
+* [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
   ✅ *End result: Player can pick up and drop items.*
 
 ---
@@ -108,12 +112,13 @@
 * [ ] Add `event_door_opened`
 * [ ] Add `event_door_closed`
 * [ ] Prevent walking through closed doors
+* [ ] Destroy component on entity destroy
 * [ ] Add message log system for pick up and drop events e.g. (“You open the door.”)
 ✅ *End result: Player can open and close basic doors.*
 
 ---
 
-## 🪜 **Milestone 8 — Equipment**
+## 🪜 **Milestone 8 — Player Equipment**
 
 > *Goal: PLayer can equip and unequip items*
 
@@ -127,29 +132,68 @@
 * [ ] Add `event_item_equipped`
 * [ ] Add `event_item_unequipped`
 * [ ] Automatically try unequipping an item if item already in the slot when equipping
+* [ ] Destroy component on entity destroy
 * [ ] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
 ✅ *End result: Player can equip and uneqip items.*
 
 ---
 
-## 🪜 **Milestone 9 — Player equipment stat modifiers**
+## 🪜 **Milestone 9 — Player equipment stat modifier system**
 
 > *Goal: PLayer stats are modified by equipment*
-✅ *End result: Player stats are automatically modified by equipment.*
+
+* [ ] Implement `equipement system`
+* [ ] `event_item_equipped` and `event_item_unequipped` trigger recalculation of player stats and resistance/immunity
+
+✅ *End result: Player stats are automatically modified by equipping and removing equipment.*
 
 ---
 
 ## 🪜 **Milestone 10 — Potions**
 
 > *Goal: PLayer can quaff potions*
+
+* [ ] Implement potion items
+* [ ] Implement `try_quaf()`
+* [ ] Implement `consume_potion()`
+* [ ] Add `event_consumed_potion`
+
 ✅ *End result: Potion is destroyed and any effect applied.*
 
 ---
 
-## 🪜 **Milestone 11 — Timed events**
+## 🪜 **Milestone 11 — Creature resistance and immunity**
 
-> *Goal: Timed events - how to implement TBC*
-✅ *End result: Can set timed events in a deterministic way.*
+> *Goal: Creature can have damage resistence and immunity*
+
+* [ ] Add `Resistance` component - implement helper functions e.g. add(), remove(), set() and clear()
+* [ ] Update damage calculation to take resistance and immunity into account
+* [ ] Remove component on entity destroy
+✅ *End result: Damage calculation takes creature's resistance and immunity into account.*
+
+---
+
+## 🪜 **Milestone 12 — Melee weapons**
+
+> *Goal: Player can weild melee weapons*
+
+* [ ] Implement melee weapon items
+* [ ] Implement ability to equip and unequip melee weapons
+* [ ] Implement player stat recalculation for melee weapons
+
+✅ *End result: Player can equip a melee weapon and melee attack stats are updated.*
+
+---
+
+## 🪜 **Milestone 13 — Armour**
+
+> *Goal: Player can equip armour*
+
+* [ ] Implement armour items
+* [ ] Implement ability to equip and unequip armour
+* [ ] Implement player stat recalculation for armour
+
+✅ *End result: Player can equip armour and stats are updated.*
 
 ---
 
@@ -176,14 +220,6 @@
 
 ---
 
-## 🪜 **Milestone 202 — Player equipment stat modifiers**
-
-> *Goal: PLayer stats are modified by equipment*
-✅ *End result: Player stats are automatically modified by equipment.*
-
-* [ ] Implement 'resistence and immunity' component
-
----
 
 ## 🪜 **Milestone 300 — Game Loop Polish**
 
