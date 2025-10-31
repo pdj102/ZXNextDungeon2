@@ -48,7 +48,7 @@ void map_render(void)
             if (g.map.cell_head[x][y] != ENTITY_ID_INVALID)
             {
                 /* there is at least one entity at this location - render the top one */
-                zxnext_tilemap_set(x, y, &g.sprite_components[g.map.cell_head[x][y]].tile);
+                zxnext_tilemap_set(x, y, &g.renderable_components[g.map.cell_head[x][y]].tile);
             }
             else
             {

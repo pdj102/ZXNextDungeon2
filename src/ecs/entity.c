@@ -124,6 +124,7 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
     g.entity_components.entities[id].flags &= ~flag;
 }
 
+/* TODO - make clean up efficient e.g. set a flag if cleanup needed*/
 void entity_clean_up(void)
 {
     for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
@@ -167,7 +168,7 @@ void entity_destroy(entity_id_t id)
         player_ctrl_remove(id);
     }    
     if (entity_has_component(id, COMPONENT_SPRITE)) {
-        sprite_remove(id);
+        renderable_remove(id);
     }
     if (entity_has_component(id, COMPONENT_TIMER)) {
         timer_remove(id);

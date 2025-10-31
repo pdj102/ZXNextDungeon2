@@ -1,5 +1,5 @@
 /**
- * @file sprite_comp.h
+ * @file renderable_comp.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,8 +8,8 @@
  * 
  */
 
-#ifndef SPRITE_COMP_H
-#define SPRITE_COMP_H
+#ifndef renderable_COMP_H
+#define renderable_COMP_H
 
 #include <stdint.h>
 
@@ -27,8 +27,8 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void sprite_init(void);
-bool_t sprite_add(entity_id_t entity, const zxnext_tile_t *tile_p);
-void sprite_remove(entity_id_t entity);
+void renderable_init(void);
+bool_t renderable_add(entity_id_t entity, const zxnext_tile_t *tile_p);
+void renderable_remove(entity_id_t entity);
 
-#endif // SPRITE_COMP_H
+#endif // renderable_COMP_H

@@ -55,9 +55,9 @@
         return ENTITY_ID_INVALID;
     }
 
-    /* Add sprite component - use item tile */
+    /* Add renderable component - use item tile */
     item_get_tile(id, &tile);
-    if(sprite_add(id, &tile) == 0) {
+    if(renderable_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
@@ -79,9 +79,9 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
         return ENTITY_ID_INVALID;
     }
 
-    /* Add sprite component - use creature tile */
+    /* Add renderable component - use creature tile */
     creature_get_tile(id, &tile);
-    if(sprite_add(id, &tile) == 0) {
+    if(renderable_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
@@ -111,9 +111,9 @@ entity_id_t entity_factory_create_player( void )
         return ENTITY_ID_INVALID;
     }
 
-    /* Add sprite component - use creature tile */
+    /* Add renderable component - use creature tile */
     creature_get_tile(id, &tile);
-    if(sprite_add(id, &tile) == 0) {
+    if(renderable_add(id, &tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

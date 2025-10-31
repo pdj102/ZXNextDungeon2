@@ -46,11 +46,9 @@ int main(void) {
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
-    text_printf(&g.msg_win, "e:%u\n", e1);
     location_add(e1, 10, 10);
 
     entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
-    text_printf(&g.msg_win, "e:%u\n", e2);
     location_add(e2, 12, 10);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);

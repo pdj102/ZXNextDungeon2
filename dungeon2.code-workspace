@@ -43,7 +43,9 @@
 			"creature_actions.h": "c",
 			"movement_system.h": "c",
 			"player_system_priv.h": "c",
-			"map_render.h": "c"
+			"map_render.h": "c",
+			"renderable_comp_priv.h": "c",
+			"renderable_comp.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",

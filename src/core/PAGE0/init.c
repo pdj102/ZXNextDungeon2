@@ -21,7 +21,7 @@
 #include "../../ecs/item_comp.h"
 #include "../../ecs/location_comp.h"
 #include "../../ecs/player_ctrl_comp.h"
-#include "../../ecs/sprite_comp.h"
+#include "../../ecs/renderable_comp.h"
 
 #include "../../ecs/event_system.h"
 #include "../../ecs/movement_system.h"
@@ -119,7 +119,7 @@ void init_game_state(void)
     item_init();
     location_init();
     player_ctrl_init();
-    sprite_init();
+    renderable_init();
     timer_init();
 
     /* Init systems */

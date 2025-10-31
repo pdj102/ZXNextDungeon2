@@ -16,7 +16,7 @@
 #include "../ecs/entity_priv.h"
 #include "../ecs/item_comp_priv.h"
 #include "../ecs/location_comp_priv.h"
-#include "../ecs/sprite_comp_priv.h"
+#include "../ecs/renderable_comp_priv.h"
 #include "../ecs/creature_comp_priv.h"
 #include "../ecs/container_comp_priv.h"
 #include "../ecs/contained_comp_priv.h"
@@ -42,7 +42,7 @@ typedef struct
     entity_components_t entity_components; /* entity data */
     item_components_t item_components; /* item component data */
     location_components_t location_components; /* location component data */
-    sprite_components_t sprite_components; /* sprite component data */
+    renderable_components_t renderable_components; /* sprite component data */
     creature_components_t creature_components; /* creature component data */
     container_components_t container_components; /* container component data */
     contained_components_t contained_components; /* contained component data */

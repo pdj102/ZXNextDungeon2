@@ -1,5 +1,5 @@
 /**
- * @file sprite_comp.c
+ * @file renderable_comp.c
  * @author Paul Johnson
  * @brief 
  
@@ -8,7 +8,7 @@
  * 
  */
 
-#include "sprite_comp.h"
+#include "renderable_comp.h"
 
 #include <sys\types.h>      /* bool_t */
 
@@ -26,33 +26,33 @@
 /***************************************************
  * public functions
  ***************************************************/
-void sprite_init(void)
+void renderable_init(void)
 {
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        g.sprite_components[i].tile.tile_id = 'X'; 
-        g.sprite_components[i].tile.tile_attr = 0;
+        g.renderable_components[i].tile.tile_id = 'X'; 
+        g.renderable_components[i].tile.tile_attr = 0;
     }
 }
 
-bool_t sprite_add(entity_id_t id, const zxnext_tile_t *tile_p )
+bool_t renderable_add(entity_id_t id, const zxnext_tile_t *tile_p )
 {
     util_assert(id < MAX_ENTITIES);
 
-    g.sprite_components[id].tile = *tile_p;
+    g.renderable_components[id].tile = *tile_p;
 
-    entity_set_component(id, COMPONENT_SPRITE); /* set entity sprite component mask */
+    entity_set_component(id, COMPONENT_RENDERABLE); /* set entity renderable component mask */
 
     return 1; /* success */
 }
 
-void sprite_remove(entity_id_t entity)
+void renderable_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    if (!entity_has_component(entity, COMPONENT_SPRITE))
+    if (!entity_has_component(entity, COMPONENT_RENDERABLE))
     {
         return;
     }
 
-    entity_clear_component(entity, COMPONENT_SPRITE); /* clear entity sprite component mask */
+    entity_clear_component(entity, COMPONENT_RENDERABLE); /* clear entity renderable component mask */
 }
