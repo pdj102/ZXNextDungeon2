@@ -8,7 +8,9 @@
 
 ---
 
-## 🪜 **Milestone 1 — Core Engine Online**
+## 🪜 **Milestone 1XX - Core game mechanics**
+
+## 🪜 **Milestone 101 — Core Engine Online**
 
 > *Goal: get entities, components, and the game loop running in memory.*
 
@@ -25,37 +27,39 @@
 
 ---
 
-## 🪜 **Milestone 2 — Moving '@' on a Map**
+## 🪜 **Milestone 102 — Moving '@' on a Map**
 
 > *Goal: basic map & movement mechanics.*
 
 * [✅] Define `map_t` with terrain array
 * [✅] Implement terrain
-* [✅] Implement entity list at x, y 
+* [✅] Implement entity list at x, y
 * [✅] `map_is_walkable(x, y)` and boundary checks for terrain
-* [✅] Handle player input (arrow keys or numpad)
+* [✅] Add player `movement` commands (arrow keys or numpad)
 * [✅] Move player entity across map tiles
 * [✅] Prevent walking through walls
   ✅ *End result: '@' moves around a dungeon grid.*
 
 ---
 
-## 🪜 **Milestone 3 — Entity Spawning**
+## 🪜 **Milestone 103 — Entity Spawning**
 
 > *Goal: multiple creatures and items exist on the map.*
 
 * [✅] Add `Creature` and `Item` components  - implement helper functions e.g. add() and remove()
-* [✅] Implement entity factory to spawn creatures
+* [✅] Implement entity factory to spawn monsters
 * [✅] Implement entity factory to spawn items
+* [✅] Implement creature base
+* [✅] Implement item base
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
-* [✅] Remove components on entity destroy
+* [✅] Remove creature and item components on entity destroy
 * [ ] Prevent walking through blocking monsters and items
 * [ ] Basic FOV (optional, for performance)
   ✅ *End result: '@' can walk around rooms with visible creatures and items.*
 
 ---
 
-## 🪜 **Milestone 4 — Turn System & Timers**
+## 🪜 **Milestone 104 — Turn System & Timers**
 
 > *Goal: establish turn-based logic and per-entity speed.*
 
@@ -68,12 +72,13 @@
 
 ---
 
-## 🪜 **Milestone 5 — Basic Melee Combat & Events**
+## 🪜 **Milestone 105 — Basic Melee Combat & Events**
 
 > *Goal: entities can attack and die.*
 
-* [ ] Implement basic creature melee attack
-* [ ] Implement basic creature take damage
+* [ ] Add player `melee attack` command
+* [ ] Implement `creature_try_melee_attack` - basic creature melee attack
+* [ ] Implement `creature_try_take_damage` - apply damage amount
 * [ ] Add `event_entity_attacked`
 * [ ] Add `event_entity_damaged`
 * [ ] Add `event_entity_died`
@@ -82,98 +87,120 @@
 
 ---
 
-## 🪜 **Milestone 6 — Inventory & Items**
+## 🪜 **Milestone 106 — Containers**
 
-> *Goal: pickup and drop items.*
+> *Goal: implement container mechanic for use by chests, inventory etc.*
 
 * [✅] Add `Container` component
 * [✅] Add `Contained` component
-* [✅] Implement `try_pickup()`
-* [✅] Implement `try_drop()`
+* [✅] Add player `pickup` and `drop` commands
+* [✅] Implement `creature_try_pickup()`
+* [✅] Implement `creature_try_drop()`
 * [✅] Add `event_picked_up`
 * [✅] Add `event_dropped`
-* [ ] Implement inventory window (simple list)
-* [ ] Implement item selection from inventory
 * [ ] Implement maximum number of items in container
-* [ ] Destroy contained components on container entity destroy
-* [✅] Remove components on entity destroy
+* [ ] Destroy contained components when container entity is destroyed
+* [✅] Remove container and contained components on entity destroy
 * [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
-  ✅ *End result: Player can pick up and drop items.*
+  ✅ *End result: An entity can contain other items and player can pick up and drop items.*
 
 ---
 
-## 🪜 **Milestone 7 — Basic Doors**
+## 🪜 **Milestone 107 — Player Inventory**
 
-> *Goal: open and close doors.*
+> *Goal: inventory management.*
 
-* [ ] Add `Door` component
-* [ ] Implement `try_open()` for door
-* [ ] Implement `try_close()` for door
-* [ ] Add `event_door_opened`
-* [ ] Add `event_door_closed`
-* [ ] Prevent walking through closed doors
-* [ ] Destroy component on entity destroy
-* [ ] Add message log system for pick up and drop events e.g. (“You open the door.”)
-✅ *End result: Player can open and close basic doors.*
+* [✅] Add `view inventory` command
+* [✅] Update player `drop` command to select item from inventory
+* [ ] Implement inventory window (list container entities)
+* [ ] Implement player `item selection` input - select entity from container list or cancel
+  ✅ *End result: Player can view inventory and drop an item from inventory.*
 
 ---
 
-## 🪜 **Milestone 8 — Player Equipment**
+## 🪜 **Milestone 108 — Player Equipment**
 
 > *Goal: PLayer can equip and unequip items*
 
-* [ ] Add 'Equipment' component - this is a player only component
+* [ ] Add `Equipment` component - this is a player only component
 * [ ] Implement slots for hands (melee weapon, ranged weapon and shield)
 * [ ] Implement slot for quiver (ammo)
-* [ ] Implement slots for head (helmet), armour, feet (shoes/boots)
+* [ ] Implement slots for head (helmet), body (body armour), feet (shoes/boots)
 * [ ] Implement slots for fingers (rings), neck (necklace)
-* [ ] Implement `try_equip()`
-* [ ] Implement `try_unequip()`
+* [ ] Add player `equip` command - select from inventory
+* [ ] Add player `unequip` command - select slot
+* [ ] Implement `player_try_equip()` - try to remove entity from inventory and place in slot
+* [ ] Implement `player_try_unequip()` - try to remove entity from slot and place in inventory
 * [ ] Add `event_item_equipped`
 * [ ] Add `event_item_unequipped`
-* [ ] Automatically try unequipping an item if item already in the slot when equipping
-* [ ] Destroy component on entity destroy
+* [ ] Automatically try unequipping an item from a slot when equipping
+* [ ] Destroy equipment component on entity destroy
 * [ ] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
 ✅ *End result: Player can equip and uneqip items.*
 
 ---
 
-## 🪜 **Milestone 9 — Player equipment stat modifier system**
-
-> *Goal: PLayer stats are modified by equipment*
-
-* [ ] Implement `equipement system`
-* [ ] `event_item_equipped` and `event_item_unequipped` trigger recalculation of player stats and resistance/immunity
-
-✅ *End result: Player stats are automatically modified by equipping and removing equipment.*
-
----
-
-## 🪜 **Milestone 10 — Potions**
-
-> *Goal: PLayer can quaff potions*
-
-* [ ] Implement potion items
-* [ ] Implement `try_quaf()`
-* [ ] Implement `consume_potion()`
-* [ ] Add `event_consumed_potion`
-
-✅ *End result: Potion is destroyed and any effect applied.*
-
----
-
-## 🪜 **Milestone 11 — Creature resistance and immunity**
+## 🪜 **Milestone 109 — Creature resistance and immunity**
 
 > *Goal: Creature can have damage resistence and immunity*
 
 * [ ] Add `Resistance` component - implement helper functions e.g. add(), remove(), set() and clear()
 * [ ] Update damage calculation to take resistance and immunity into account
-* [ ] Remove component on entity destroy
+* [ ] Remove resistance component on entity destroy
 ✅ *End result: Damage calculation takes creature's resistance and immunity into account.*
 
 ---
 
-## 🪜 **Milestone 12 — Melee weapons**
+## 🪜 **Milestone 110 — Basic targetting and line of sight**
+
+> *Goal: entities can target.*
+
+* [ ] Add player `look` command (examine tile/entity)
+* [ ] Implement player target selection input
+* [ ] Implement line of sight test
+* [ ] Implement `player_try_look()`
+  ✅ *End result: Player can target a tile and examine a tile/entity if in line of sight.*
+
+## 🪜 **Milestone 111 — Basic Ranged Combat & Events**
+
+> *Goal: entities can range attack.*
+
+* [ ] Add player `fire` command (ranged attack)
+* [ ] Implement basic `creature_try_ranged_attack()`
+  ✅ *End result: You can range attack and kill monsters.*
+
+---
+
+## 🪜 **Milestone 2XX — Items**
+
+## 🪜 **Milestone 201 — Food**
+
+> *Goal: eat food to restore health.*
+
+* [ ] Implement food items
+* [ ] Implement `creature_try_eat()`
+* [ ] Implement `creature_consume_food()`
+* [ ] Implement `try_restore_health()` - add hp up to max_hp
+* [ ] Add `event_food_consumed`
+* [ ] Add message log system for food consumed events e.g. (“You eat the apple.”)
+✅ *End result: Player can restore health by eating food and food is destroyed.*
+
+---
+
+## 🪜 **Milestone 202 — Potions**
+
+> *Goal: PLayer can quaff potions*
+
+* [ ] Implement potion items
+* [ ] Implement `creature_try_quaf()`
+* [ ] Implement `creeature_quaff_potion()`
+* [ ] Add `event_consumed_potion`
+* [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
+✅ *End result: Potion is destroyed and any effect applied.*
+
+---
+
+## 🪜 **Milestone 203 — Melee weapons**
 
 > *Goal: Player can weild melee weapons*
 
@@ -185,11 +212,11 @@
 
 ---
 
-## 🪜 **Milestone 13 — Armour**
+## 🪜 **Milestone 204 — Armour**
 
 > *Goal: Player can equip armour*
 
-* [ ] Implement armour items
+* [ ] Implement armour items - helmets, body armour, boots/shoes
 * [ ] Implement ability to equip and unequip armour
 * [ ] Implement player stat recalculation for armour
 
@@ -197,7 +224,7 @@
 
 ---
 
-## 🪜 **Milestone 101 — Monster AI**
+## 🪜 **Milestone 205 — Monster AI**
 
 > *Goal: monsters can act intelligently.*
 
@@ -209,43 +236,85 @@
 
 ---
 
-## 🪜 **Milestone 201 — Ranged Combat & Events**
+## 🪜 **Milestone 3XX — Features**
 
-> *Goal: entities can range attack.*
+## 🪜 **Milestone 301 — Basic Doors**
 
-* [ ] Implement targetting system
-* [ ] Implement basic ranged attack
-* [ ] Implement anumition usage for ranged attacks
-  ✅ *End result: You can range attack and kill monsters.*
+> *Goal: open and close doors.*
+
+* [ ] Add `Feature` component
+* [ ] Implement `try_open()` for door
+* [ ] Implement `try_close()` for door
+* [ ] Add `event_door_opened`
+* [ ] Add `event_door_closed`
+* [ ] Prevent walking through closed doors
+* [ ] Destroy feature component on entity destroy
+* [ ] Add message log system for pick up and drop events e.g. (“You open the door.”)
+✅ *End result: Player can open and close basic doors.*
+
+## 🪜 **Milestone 302 — Basic Chests**
+
+> *Goal: chests can be opened and closed and items taken out.*
+
+* [ ] Implement `try_open()` for chest
+* [ ] Add `event_chest_opened`
+* [ ] Implement chest inventory and ability to take an item
+* [ ] Add message log system for opening chest and taking items e.g. (“You open the chest.”, "You take the ring.")
+✅ *End result: Player can open chest and take items.*
 
 ---
 
-
-## 🪜 **Milestone 300 — Game Loop Polish**
-
-> *Goal: complete gameplay cycle and turn sequencing.*
-
-* [ ] Integrate all systems: input → ECS → render
-* [ ] Ensure timers and turns sync correctly
-* [ ] Handle deferred destruction safely
-* [ ] Ensure no entity ID reuse bugs
-  ✅ *End result: Fully playable short dungeon run.*
+## 🪜 **Milestone 4XX — Performance and Stability**
 
 ---
 
-## 🪜 **Milestone 400 — Dungeon Generation & Progression**
+## 🪜 **Milestone 700 — Performance**
 
-> *Goal: explore multiple dungeon floors.*
+> *Goal: optimize for speed and memory.*
+
+* [ ] Implement optimised active entity iteration (if used)
+* [ ] Implement optimised iteration of entities at map x, y
+* [ ] Optimse deffered destruction of entities e.g. list of entities that need to be destroyed
+* [ ] Optimse the core game loop by only re-drawing map when needed e.g. only redraw when updated and players turn
+* [ ] Optimse the core game loop by only re-drawing the stats window
+* [ ] Optimse the core game loop by optimising timer system iteration
+  ✅ *End result: Smooth play experience on Spectrum Next.*
+
+  ## 🪜 **Milestone 700 — Game data structure verification**
+
+> *Goal: game data structure is in valid state.*
+
+  ✅ *End result: data structure validation tests pass.*
+
+## 🪜 **Milestone 5XX — Dungeon Generation & Progression**
+
+## 🪜 **Milestone 501 — Dungeon Generation**
+
+> *Goal: procedural map generator.*
 
 * [ ] Implement procedural map generator (rooms + corridors)
 * [ ] Place stairs up/down
-* [ ] Handle depth transitions (load next map)
+* [ ] Place player
 * [ ] Add new monsters per depth
-  ✅ *End result: Multi-level dungeon with new monsters per level.*
+* [ ] Add new items per depth
+* [ ] Add new features per depth
+  ✅ *End result: Dungeon with rooms, corridors and populated with entities.*
 
 ---
 
-## 🪜 **Milestone 500 — UI, Messages & Status**
+## 🪜 **Milestone 502 — Dungeon level transistion**
+
+> *Goal: handle depth transistions (load next map).*
+
+* [ ] Implement persistent entities with level
+* [ ] Implement persistance entity check (recursive)
+* [ ] Implement deletion of non persistent entities
+* [ ] Implement depth change including moving player to new depth
+* [ ] Update map generator to place persitent entities on level
+* [ ] Call map generator
+✅ *End result: Able to transistion levels and persistent entities are retained.*
+
+## 🪜 **Milestone 600 — UI, Messages & Status**
 
 > *Goal: a proper roguelike interface.*
 
@@ -254,20 +323,6 @@
 * [ ] Add color and tile graphics (Spectrum Next palette)
 * [ ] Add “look” command (examine tile/entity)
   ✅ *End result: Full playable interface with feedback.*
-
----
-
-## 🪜 **Milestone 600 — Performance & Stability**
-
-> *Goal: optimize for 8-bit constraints.*
-
-* [ ] Profile CPU cycles per frame
-* [ ] Optimize ECS iteration (active list)
-* [ ] Compress entity data structures
-* [ ] Optimse when and what parts of the map are redrawn e.g. only redraw when updated and players turn
-* [ ] Optimse deffered destruction of entities e.g. list of entities that need to be destroyed
-* [ ] Verify memory usage stays within limit
-  ✅ *End result: Smooth 50 Hz play experience on Spectrum Next.*
 
 ---
 
