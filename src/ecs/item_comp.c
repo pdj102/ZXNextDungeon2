@@ -58,7 +58,7 @@ void item_get_tile(entity_id_t id, zxnext_tile_t *tile)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(32); /* Map (bank 32) into ZX Spectrum 8k MMU slot 6 */
+    ZXN_WRITE_MMU6(PAGE_ITEM_BASE);     /* Map item base code into ZX Spectrum 8k MMU slot 6 */    
 
     tile->tile_attr = item_bases[g.item_components[id].kind].tile.tile_attr;
     tile->tile_id = item_bases[g.item_components[id].kind].tile.tile_id;
@@ -72,7 +72,7 @@ void item_print_name(text_window_t *win, entity_id_t item)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(32); /* Map (bank 32) into ZX Spectrum 8k MMU slot 6 */
+    ZXN_WRITE_MMU6(PAGE_ITEM_BASE);     /* Map item base code into ZX Spectrum 8k MMU slot 6 */   
 
     item_base_print_name(win, item);
 

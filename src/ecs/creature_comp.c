@@ -42,7 +42,7 @@ uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
     util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_CREATURE_BASE); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
     
     creature_base_init(entity, kind);
     
@@ -59,7 +59,7 @@ void creature_get_tile(entity_id_t id, zxnext_tile_t *tile)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */
+    ZXN_WRITE_MMU6(PAGE_CREATURE_BASE); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
 
     tile->tile_attr = creature_bases[g.creature_components[id].kind].tile.tile_attr;
     tile->tile_id = creature_bases[g.creature_components[id].kind].tile.tile_id;
@@ -74,7 +74,7 @@ void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks)
     creature_speed_t speed;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */   
+    ZXN_WRITE_MMU6(PAGE_CREATURE_BASE); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
 
     speed = g.creature_components[id].speed;
 
@@ -90,7 +90,7 @@ void creature_print_name(text_window_t *win, entity_id_t creature)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(30); /* Map (bank 30) into ZX Spectrum 8k MMU slot 6 */
+    ZXN_WRITE_MMU6(PAGE_CREATURE_BASE); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
 
     creature_base_print_name(win, creature);
 

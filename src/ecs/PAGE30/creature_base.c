@@ -8,8 +8,6 @@
  * 
  */
 
-#pragma output CRT_ORG_PAGE_30 = 0xC000
-
 #include "creature_base.h"
 
 #include "../creature_comp.h"

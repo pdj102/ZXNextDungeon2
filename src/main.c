@@ -43,6 +43,7 @@ int main(void) {
 
 
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
+   util_assert(sizeof(g) < 0x3FFF);
 
     // Create some items
     entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);

@@ -53,7 +53,7 @@ entity_id_t entity_create(void)
     {
         if(!entity_has_flag(i, FLAG_ALIVE))
         {
-            g.entity_components.entities[i].flags = FLAG_ALIVE;                    /* mark entity as in use */
+            g.entity_components.entities[i].flags = FLAG_NONE | FLAG_ALIVE;        /* clear flags and set entity in use flag */
             g.entity_components.entities[i].mask = COMPONENT_NONE;                 /* clear component mask */
 
             g.entity_components.active_list[g.entity_components.count++] = i;       /* store in active list */

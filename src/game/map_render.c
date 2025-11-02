@@ -40,14 +40,15 @@ void map_render(void)
 {
     zxnext_tile_t tile = {0};
 
-    for (uint8_t x = 0; x < MAP_TERRAIN_WIDTH; x++)
+    for (uint8_t x = 0; x < 30; x++)
     {
-        for (uint8_t y = 0; y < MAP_TERRAIN_HEIGHT; y++)
+        for (uint8_t y = 0; y < 24; y++)
         {
 
             if (g.map.cell_head[x][y] != ENTITY_ID_INVALID)
             {
                 /* there is at least one entity at this location - render the top one */
+                /* TODO implement a while loop to determine the highest priority entity to draw*/
                 zxnext_tilemap_set(x, y, &g.renderable_components[g.map.cell_head[x][y]].tile);
             }
             else

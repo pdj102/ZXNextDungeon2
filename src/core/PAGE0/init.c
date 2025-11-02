@@ -144,9 +144,9 @@ void init_ui(void)
     g.msg_win.tile.tile_id = ' ';
     g.msg_win.tile.tile_attr = 0;
 
-    g.stat_win.x = 32;
+    g.stat_win.x = 30;
     g.stat_win.y = 0;
-    g.stat_win.w = 8;
+    g.stat_win.w = 10;
     g.stat_win.h = 24;
     g.stat_win.c_x = 0;
     g.stat_win.c_y = 0;

@@ -14,6 +14,8 @@
 
 #include "map_terrain.h"
 
+#include "map.h"
+
 /***************************************************
  * private defines
  ***************************************************/
@@ -26,7 +28,7 @@
 
 /* Map_terrain structure */
  typedef struct {
-    terrain_type_t terrain[MAP_TERRAIN_WIDTH][MAP_TERRAIN_HEIGHT]; /* terrain data for the map_terrain */
+    terrain_type_t terrain[MAP_WIDTH][MAP_HEIGHT]; /* terrain data for the map_terrain */
 } map_terrain_t;
 
 /***************************************************

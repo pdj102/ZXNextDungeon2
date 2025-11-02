@@ -44,12 +44,14 @@ void player_system_update(void)
     uint8_t entity = g.player.id;
     int key;
 
-    if ( (entity == ENTITY_ID_INVALID) || (!entity_has_component(entity, COMPONENT_PLAYER_CTRL) ))
-    {
-        return; /* no player */
-    }
+    util_assert(entity != ENTITY_ID_INVALID);
+    util_assert(entity_has_component(entity, COMPONENT_PLAYER_CTRL));
 
-    /* TODO checking if creature component is alive */
+
+    if ( !entity_has_flag(entity, FLAG_ALIVE))
+    {
+        return; /* player is dead */
+    }
 
     key = key_press();
 
