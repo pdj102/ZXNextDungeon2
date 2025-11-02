@@ -73,6 +73,8 @@ entity_id_t entity_factory_create_monster(creature_kind_t kind)
     if (id == ENTITY_ID_INVALID)
         return id;
 
+    entity_set_flag(id, FLAG_BLOCKING);
+
     /* Add creature component */
     if (creature_add(id, kind) == 0) {
         entity_destroy(id);
@@ -104,6 +106,8 @@ entity_id_t entity_factory_create_player( void )
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
         return id;
+
+    entity_set_flag(id, FLAG_BLOCKING);
 
     /* Add creature component */
     if (creature_add(id, CREATURE_PLAYER) == 0) {

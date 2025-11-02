@@ -11,6 +11,7 @@
 #include "init.h"
 
 #include <arch/zxn.h>
+/* #include <config_zxn.h> */
 #include <stdint.h>
 
 #include "../../ecs/entity.h"
@@ -78,7 +79,8 @@ void init_zxnext_palette(void);
 /***************************************************
  * private variables 
  ***************************************************/
-/**
+
+ /**
  * @brief Tile palette data
  * 
  */
@@ -130,7 +132,6 @@ void init_game_state(void)
 
     /* Init game */
     map_init();
-    map_terrain_init();
 }
 
 void init_ui(void)

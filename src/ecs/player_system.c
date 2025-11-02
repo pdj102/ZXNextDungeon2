@@ -70,6 +70,9 @@ void player_system_update(void)
         case 10: /* down */
             movement_system_try_move(entity, 0, 1);
             break;
+        case 56: /* camera right */
+            g.map.camera.x++;
+            break;            
         case 97: /* melee attack */
             melee_attack();
             break;            

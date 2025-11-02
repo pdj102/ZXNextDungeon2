@@ -23,7 +23,7 @@
 #include "ecs/player_system.h"
 #include "ecs/timer_system.h"
 
-#include "game/map_terrain.h"
+#include "game/map.h"
 #include "game/map_render.h"
 
 #include "game/global_state.h"
@@ -40,7 +40,7 @@ int main(void) {
    init_zxnext();
    init_game_state();
    init_ui();
-
+   map_gen();
 
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
    util_assert(sizeof(g) < 0x3FFF);
@@ -70,10 +70,6 @@ int main(void) {
     {
         // Main loop code here
         map_render();
-
-        text_cls(&g.stat_win);
-        text_printf(&g.stat_win, "hp:%u\n", g.creature_components[g.player.id].cur_hp);
-        text_printf(&g.stat_win, "ac:%u\n", g.creature_components[g.player.id].ac);
 
         // player_system_update();
         timer_system_update();

@@ -24,7 +24,6 @@
 #include "../ecs/timer_comp_priv.h"
 
 #include "../game/map_priv.h"
-#include "../game/map_terrain_priv.h"
 
 #include "../core/text.h"
 

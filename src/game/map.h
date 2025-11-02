@@ -36,5 +36,6 @@
  ***************************************************/
 void map_init(void);
 bool_t map_can_enter(entity_id_t entity, uint8_t x, uint8_t y);
+void map_gen(void);
 
 #endif // MAP_H

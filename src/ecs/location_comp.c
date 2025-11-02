@@ -28,19 +28,13 @@ void location_init(void)
     {
         g.location_components[i].next_in_location = ENTITY_ID_INVALID; /* clear next in location */
     }
-
-    for (uint8_t x = 0; x < MAP_TERRAIN_WIDTH; x++) {
-        for (uint8_t y = 0; y < MAP_TERRAIN_HEIGHT; y++) {
-            g.map.cell_head[x][y] = ENTITY_ID_INVALID; /* mark all map cells as empty */
-        }
-    }
 }
 
 bool_t location_add(entity_id_t entity, uint8_t x, uint8_t y)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(x < MAP_TERRAIN_WIDTH);
-    util_assert(y < MAP_TERRAIN_HEIGHT);
+    util_assert(x < MAP_WIDTH);
+    util_assert(y < MAP_HEIGHT);
     util_assert(!entity_has_component(entity, COMPONENT_LOCATION));  /* entity must not already have a location component */
     util_assert(!entity_has_component(entity, COMPONENT_CONTAINED)); /* entity must not be contained */
 
@@ -57,8 +51,8 @@ bool_t location_add(entity_id_t entity, uint8_t x, uint8_t y)
 void location_move(entity_id_t entity, uint8_t x, uint8_t y)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(x < MAP_TERRAIN_WIDTH);
-    util_assert(y < MAP_TERRAIN_WIDTH);
+    util_assert(x < MAP_WIDTH);
+    util_assert(y < MAP_WIDTH);
     util_assert(entity_has_component(entity, COMPONENT_LOCATION));
 
     location_unlink(entity);

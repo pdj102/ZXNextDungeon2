@@ -52,7 +52,7 @@
 * [✅] Implement item base
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
 * [✅] Remove creature and item components on entity destroy
-* [ ] Prevent walking through blocking monsters and items
+* [✅] Prevent walking through blocking monsters and items
 
 ✅ *End result: '@' can walk around rooms with visible creatures and items.*
 
@@ -110,7 +110,7 @@
 * [✅] Implement `creature_try_drop()`
 * [✅] Add `event_picked_up`
 * [✅] Add `event_dropped`
-* [ ] Implement maximum number of items in container
+* [✅] Implement maximum number of items in container
 * [ ] Destroy contained components when container entity is destroyed
 * [✅] Remove container and contained components on entity destroy
 * [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
@@ -193,8 +193,9 @@
 
 > *Goal: camera follows player as they move around the map.*
 
-* [ ] Implement largr map
-* [ ] Implement camera position and automatic update
+* [✅] Implement larger map
+* [ ] Implement camera position and ability to pan camera
+* [ ] Implement camera following player
 
 ✅ *End result: camera follows player.*
 
@@ -289,7 +290,7 @@
 * [ ] Define `ai_state_t`
 * [ ] Implement `ai_on_event()` to process events and transition between states
 * [ ] Add `ai_system_update()` - entity takes it turn
-* [ ] Implement `ai_sleep_state()` - monster does nothing 
+* [ ] Implement `ai_sleep_state()` - monster does nothing
 * [ ] Implement `ai_guard_state()` - monster will melee attack a creature in range
 
 ✅ *End result: Monsters can attack the player.*
@@ -364,9 +365,9 @@
 
 ### 🪜 **Milestone 501 — Dungeon Generation**
 
-> *Goal: procedural map generator.*
+> *Goal: procedural dungeon generator.*
 
-* [ ] Implement procedural map generator (rooms + corridors)
+* [✅] Implement procedural map generator (rooms + corridors)
 * [ ] Place stairs up/down
 * [ ] Place player
 * [ ] Add new monsters per depth
@@ -390,6 +391,8 @@
 
 ✅ *End result: Able to transistion levels and persistent entities are retained.*
 
+---
+
 ## 🪜 **Milestone 6XX — UI, Messages & Status**
 
 ### 🪜 **Milestone 601 — Message log UI**
@@ -409,6 +412,8 @@
 
 ✅ *End result: Player can see current status.*
 
+---
+
 ## 🪜 **Milestone 7XX — Performance and Stability**
 
 ### 🪜 **Milestone 700 — Performance**
@@ -427,7 +432,8 @@
 
 > *Goal: game data structure is in valid state.*
 
-* [ ] Implement assert() global game struct is less than 8KB
+* [✅] Implement assert() global game struct is less than 16KB
+* [ ] Implement global data structure validation tests
 
 ✅ *End result: data structure validation tests pass.*
 

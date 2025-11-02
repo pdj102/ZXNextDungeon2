@@ -11,10 +11,12 @@
 #define MAP_PRIV_H
 
 #include "map.h"
+#include "map_terrain.h"
+#include "map_render.h"
 
 #include "../ecs/entity.h"
 
-#include "map_terrain_priv.h"
+
 
 /***************************************************
  * private defines
@@ -24,8 +26,9 @@
  * private types
  ***************************************************/
 typedef struct {
-    map_terrain_t terrain;
+    terrain_type_t terrain[MAP_WIDTH][MAP_HEIGHT]; /* terrain data for the map_terrain */
     entity_id_t cell_head[MAP_WIDTH][MAP_HEIGHT];
+    camera_t camera;
 } map_t;
 
 /***************************************************

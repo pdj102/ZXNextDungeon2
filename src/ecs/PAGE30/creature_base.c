@@ -2,9 +2,6 @@
  * @file creature_base.c
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
  * 
  */
 

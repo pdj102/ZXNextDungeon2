@@ -53,6 +53,7 @@
 #define PAGE_PALETTE        1
 #define PAGE_CREATURE_BASE  30
 #define PAGE_ITEM_BASE      32
+#define PAGE_DUNGEON_GEN    34
 
 
 /***************************************************

@@ -1,16 +1,12 @@
 /**
- * @file creature_base.h
+ * @file dungeon_gen.h
  * @author Paul Johnson
  * @brief 
  * 
  */
 
-#ifndef CREATURE_BASE_H
-#define CREATURE_BASE_H
-
-#include "../creature_comp_priv.h"
-
-#include "../../core/text.h"
+#ifndef DUNGEON_GEN_H
+#define DUNGEON_GEN_H
 
 
 /***************************************************
@@ -20,15 +16,11 @@
 /***************************************************
  * public types
  ***************************************************/
-extern const creature_comp_base_t creature_bases[];
-extern const turn_tick_t creature_speeds_conversion[];
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 
-void creature_base_init(uint8_t creature, uint8_t kind);
+void dungeon_gen(void);
 
-void creature_base_print_name(text_window_t *win, entity_id_t creature);
-
-#endif // CREATURE_BASE_H
+#endif // DUNGEON_GEN_H

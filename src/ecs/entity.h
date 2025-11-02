@@ -32,6 +32,7 @@
 #define FLAG_NONE 0
 #define FLAG_ALIVE 1 << 0
 #define FLAG_PENDING_DESTORY 1 << 1
+#define FLAG_BLOCKING 1 << 2
 
 /***************************************************
  * public types

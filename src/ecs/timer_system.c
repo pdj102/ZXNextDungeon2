@@ -35,7 +35,7 @@ void timer_system_init(void)
 
 void timer_system_update(void)
 {
-    text_print_string(&g.msg_win, ".");
+    /* Check all active timer components for expiration */
     for (uint8_t i = 0; i < g.timer_components.count; ) {
         entity_id_t e = g.timer_components.active_list[i];
         if (timer_tick(e))
