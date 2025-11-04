@@ -58,8 +58,10 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/core/PAGE0/*.c) \
 	   $(wildcard $(SRCDIR)/core/PAGE1/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/*.c) \
-	   $(wildcard $(SRCDIR)/ecs/PAGE30/*.c) \
-	   $(wildcard $(SRCDIR)/ecs/PAGE32/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/components/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/components/PAGE30/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/components/PAGE32/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/*.c) \
 	   $(wildcard $(SRCDIR)/game/*.c) \
 	   $(wildcard $(SRCDIR)/game/PAGE34/*.c)
 

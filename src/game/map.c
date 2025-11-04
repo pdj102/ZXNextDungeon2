@@ -14,7 +14,7 @@
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
 #include "../ecs/entity.h"
-#include "../ecs/location_comp.h"
+#include "../ecs/components/location_comp.h"
 
 #include "map_terrain.h"
 #include "PAGE34/dungeon_gen.h"

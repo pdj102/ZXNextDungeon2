@@ -45,7 +45,13 @@
 			"player_system_priv.h": "c",
 			"map_render.h": "c",
 			"renderable_comp_priv.h": "c",
-			"renderable_comp.h": "c"
+			"renderable_comp.h": "c",
+			"event_system.h": "c",
+			"timer_comp_priv.h": "c",
+			"timer_comp.h": "c",
+			"timer_system.h": "c",
+			"ui.h": "c",
+			"item_base.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",

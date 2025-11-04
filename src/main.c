@@ -14,14 +14,14 @@
 #include "main.h"
 
 #include "ecs/entity.h"
-#include "ecs/item_comp.h"
-#include "ecs/creature_comp.h"
-#include "ecs/location_comp.h"
+#include "ecs/components/item_comp.h"
+#include "ecs/components/creature_comp.h"
+#include "ecs/components/location_comp.h"
 
 #include "ecs/entity_factory.h"
 
-#include "ecs/player_system.h"
-#include "ecs/timer_system.h"
+#include "ecs/systems/player_system.h"
+#include "ecs/systems/timer_system.h"
 
 #include "game/map.h"
 #include "game/map_render.h"

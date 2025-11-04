@@ -14,8 +14,8 @@
 #include <sys/types.h>
 
 #include "entity.h"
-#include "item_comp.h"
-#include "creature_comp.h"
+#include "components/item_comp.h"
+#include "components/creature_comp.h"
 
 /***************************************************
  * public defines

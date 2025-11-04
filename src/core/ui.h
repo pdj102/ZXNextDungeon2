@@ -12,7 +12,7 @@
 
 #include <stdint.h>
 
-#include "../ecs/event_system.h"
+#include "../ecs/systems/event_system.h"
 
  /***************************************************
  * public types

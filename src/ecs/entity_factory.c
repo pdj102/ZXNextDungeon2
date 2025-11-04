@@ -14,9 +14,9 @@
 #include <sys/types.h> /* bool_t */
 
 #include "entity.h"
-#include "location_comp.h"
-#include "item_comp.h"
-#include "creature_comp.h"
+#include "components/location_comp.h"
+#include "components/item_comp.h"
+#include "components/creature_comp.h"
 
 #include "../game/global_state.h"
 #include "../core/util.h"
