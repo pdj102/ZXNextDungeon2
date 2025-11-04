@@ -75,4 +75,20 @@ void container_remove_entity(entity_id_t entity)
     entity_id_t container = g.contained_components[entity].container;
     contained_remove(entity);
     g.container_components[container].count--;
+
+    /* TODO move the removal code here and make contained_remove just remove the component checking not longer contained*/
+}
+
+void container_destroy_contents(entity_id_t container)
+{
+    entity_id_t entity;
+
+    entity = g.container_components[container].head;
+
+    while (entity != ENTITY_ID_INVALID)
+    {
+        container_remove_entity(entity);
+        entity_set_flag(entity, FLAG_PENDING_DESTORY);
+    }
+
 }

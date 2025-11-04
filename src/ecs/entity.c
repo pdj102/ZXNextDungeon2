@@ -51,9 +51,9 @@ entity_id_t entity_create(void)
 
     for(uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        if(!entity_has_flag(i, FLAG_ALIVE))
+        if(!entity_has_flag(i, FLAG_IN_USE))
         {
-            g.entity_components.entities[i].flags = FLAG_NONE | FLAG_ALIVE;        /* clear flags and set entity in use flag */
+            g.entity_components.entities[i].flags = FLAG_NONE | FLAG_IN_USE;        /* clear flags and set entity in use flag */
             g.entity_components.entities[i].mask = COMPONENT_NONE;                 /* clear component mask */
 
             g.entity_components.active_list[g.entity_components.count++] = i;       /* store in active list */
@@ -137,13 +137,13 @@ void entity_clean_up(void)
 }
 
 /* 
- * NB  items must have been from container first or will abort. 
+ * NB  items must have been removed from container first or will abort. 
  * TODO
  * - destroy contained items
 */
 void entity_destroy(entity_id_t id)
 {
-    if (id >= MAX_ENTITIES || !entity_has_flag(id, FLAG_ALIVE))
+    if (id >= MAX_ENTITIES || !entity_has_flag(id, FLAG_IN_USE))
     {
         return; /* invalid ID or entity not in use */
     }
@@ -153,6 +153,7 @@ void entity_destroy(entity_id_t id)
         contained_remove(id);
     }
     if (entity_has_component(id, COMPONENT_CONTAINER)) {
+        container_destroy_contents(id);
         container_remove(id);
     } 
     if (entity_has_component(id, COMPONENT_CREATURE)) {
@@ -175,7 +176,7 @@ void entity_destroy(entity_id_t id)
     }         
 
     /* mark entity as free to use */
-    g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including inuse */
+    g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
     g.entity_components.entities[id].mask = COMPONENT_NONE;         /* clear component mask */
 
     /* remove from active list */

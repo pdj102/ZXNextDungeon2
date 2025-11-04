@@ -48,9 +48,9 @@ void player_system_update(void)
     util_assert(entity_has_component(entity, COMPONENT_PLAYER_CTRL));
 
 
-    if ( !entity_has_flag(entity, FLAG_ALIVE))
+    if ( !entity_has_flag(entity, FLAG_IN_USE))
     {
-        return; /* player is dead */
+        return; /* player entity is not in use */
     }
 
     key = key_press();

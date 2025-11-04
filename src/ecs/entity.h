@@ -30,7 +30,7 @@
 #define COMPONENT_TIMER 1 << 8
 
 #define FLAG_NONE 0
-#define FLAG_ALIVE 1 << 0
+#define FLAG_IN_USE 1 << 0
 #define FLAG_PENDING_DESTORY 1 << 1
 #define FLAG_BLOCKING 1 << 2
 
