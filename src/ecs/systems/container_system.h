@@ -1,17 +1,14 @@
 /**
- * @file contained_comp.h
+ * @file container_system.h
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef CONTAINED_COMP_H
-#define CONTAINED_COMP_H
+#ifndef CONTAINER_SYSTEM_H
+#define CONTAINER_SYSTEM_H
 
-#include <stdint.h>
+#include <sys\types.h>
 
 #include "../entity.h"
 
@@ -26,8 +23,8 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void contained_init(void);
-void contained_add(entity_id_t entity);
-void contained_remove(entity_id_t entity);
+void container_system_init(void);
+bool_t container_place_item_in_container(entity_id_t container, entity_id_t item);
+void container_remove_item_from_container(entity_id_t container, entity_id_t item);
 
-#endif // CONTAINED_COMP_H
+#endif // CONTAINER_SYSTEM_H
