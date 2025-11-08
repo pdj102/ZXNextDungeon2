@@ -114,18 +114,18 @@ The Action System validates and resolves intents (collision, blocking, etc.).
 
 This ensures deterministic and easily testable simulation.
 
-9. Event System
+## 9. Event System
 
 Systems can raise game events (e.g., EVENT_DAMAGE, EVENT_ITEM_PICKUP).
 
 Events represent things that have happened, not requests.
 
-The engine may process them immediately (no event queue) to minimize memory usage.
+The engine processes them immediately (no event queue) to minimize memory usage.
 
 Example:
 event_emit(EVENT_DAMAGE, source, target);
 
-10. AI and Turn System
+## 10. AI and Turn System
 
 The Timer Component controls turn scheduling.
 
@@ -133,17 +133,14 @@ When a timer reaches zero, an entity’s system (player or AI) is triggered.
 
 AI States:
 
-AI_IDLE
-
-AI_CHASE
-
-AI_ATTACK
-
-AI_FLEE
+- AI_IDLE
+- AI_CHASE
+- AI_ATTACK
+- AI_FLEE
 
 State transitions are instantaneous — they do not consume turns.
 
-11. Cleanup Phase
+## 11. Cleanup Phase
 
 To maintain determinism and avoid modifying collections mid-update:
 
@@ -156,7 +153,8 @@ system_combat_cleanup();
 entity_cleanup();
 entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 
-12. Naming Conventions
+## 12. Naming Conventions
+
 | Category           | Convention                   | Example                              |
 | ------------------ | ---------------------------- | ------------------------------------ |
 | System function    | `system_<name>()`            | `system_ai_update()`                 |
@@ -166,7 +164,7 @@ entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 | Global data        | `g.<subsystem>`              | `g.entity`, `g.map`                  |
 | Flags              | `FLAG_<NAME>`                | `FLAG_ALIVE`, `FLAG_DESTROY_PENDING` |
 
-13. Performance Guidelines
+## 13. Performance Guidelines
 
 Prefer static arrays over linked lists except for containers.
 
@@ -178,19 +176,24 @@ Limit function call depth; inline where beneficial.
 
 Use 8-bit integers wherever possible.
 
-14. Design Philosophy
+## 14. Design Philosophy
 
-Data-oriented: Structure memory for cache and simplicity.
+Data-oriented: Structure memory for simplicity.
 
 Deterministic: Identical inputs always yield identical results.
 
-Minimal coupling: Systems do not call each other directly.
+Minimal coupling:
+
+- Systems do not call each other directly
+- Components do not call each other directly
+- System files should not include other system headers
+- Component files should not include other component headers
 
 Deferred side effects: Creation and destruction happen in cleanup passes.
 
 Small code footprint: Simplicity over generality.
 
-15. Future Extensions
+## 15. Future Extensions
 
 Pathfinding system (A* or Dijkstra) with caching per monster group.
 
@@ -200,4 +203,4 @@ Status effect system driven by timers.
 
 Simple scripting or event-driven encounters.
 
-Persistent save/load of arena data to disk.
+Persistent save/load of arena data to disk
