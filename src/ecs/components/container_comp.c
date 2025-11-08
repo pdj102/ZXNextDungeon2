@@ -8,7 +8,7 @@
 #include "container_comp.h"
 
 #include "container_comp_priv.h"
-#include "contained_comp.h"
+
 #include "../entity.h"
 
 #include "../../game/global_state.h"

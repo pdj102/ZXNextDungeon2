@@ -70,11 +70,12 @@ int main(void) {
 
     while(1)
     {
-        // Main loop code here
-        map_render();
 
         // player_system_update();
         timer_system_update();
+
+        // Main loop code here
+        map_render();        
 
         // container system cleanup
         container_system_clean_up();

@@ -17,7 +17,7 @@
 #include "../entity.h"
 #include "../components/location_comp.h"
 #include "movement_system.h"
-#include "creature_actions.h"
+#include "actions_system.h"
 
 #include "../../game/global_state.h"
 #include "../../game/map.h"
@@ -109,7 +109,7 @@ void melee_attack(void)
     {
         if (entity_has_component(target, COMPONENT_CREATURE))
         {
-            creature_actions_try_melee_attack(g.player.id, target);
+            actions_system_try_melee_attack(g.player.id, target);
             return;
         }
         target = g.location_components[target].next_in_location;
@@ -129,7 +129,7 @@ void melee_attack(void)
         return;
    }
 
-   creature_actions_try_drop(g.player.id, item);
+   actions_system_try_drop(g.player.id, item);
 }
 
 void pickup(void)
@@ -144,7 +144,7 @@ void pickup(void)
     {
         if (entity_has_component(item, COMPONENT_ITEM))
         {
-            creature_actions_try_pickup(g.player.id, item);
+            actions_system_try_pickup(g.player.id, item);
             return;
         }
         item = g.location_components[item].next_in_location;

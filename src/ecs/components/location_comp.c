@@ -11,7 +11,6 @@
 
 #include "../entity.h"
 #include "location_comp_priv.h"
-#include "container_comp.h"
 
 #include "../../game/global_state.h"
 #include "../../game/map_terrain.h"

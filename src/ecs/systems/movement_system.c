@@ -33,6 +33,7 @@ void movement_system_init(void)
 {
 }
 
+/* TODO return bool_t */
  void movement_system_try_move(entity_id_t entity, int8_t dx, int8_t dy)
  {
     uint8_t tx;

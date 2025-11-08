@@ -129,6 +129,7 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
 
 void entity_mark_for_destruction(entity_id_t entity) 
 {
+    /* TODO should not be calling container from here. Container system should check FLAG_PENDING_DESCRUTION and apply pre-destruction logic e.g. release contained items */
     if (entity_has_component(entity, COMPONENT_CONTAINER))
     {
         container_mark_contents_for_destruction(entity);

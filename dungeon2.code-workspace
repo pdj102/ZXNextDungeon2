@@ -40,7 +40,7 @@
 			"map.h": "c",
 			"map_terrain_priv.h": "c",
 			"player_system.h": "c",
-			"creature_actions.h": "c",
+			"actions_system.h": "c",
 			"movement_system.h": "c",
 			"player_system_priv.h": "c",
 			"map_render.h": "c",
@@ -51,7 +51,8 @@
 			"timer_comp.h": "c",
 			"timer_system.h": "c",
 			"ui.h": "c",
-			"item_base.h": "c"
+			"item_base.h": "c",
+			"container_system.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",

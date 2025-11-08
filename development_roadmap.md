@@ -111,11 +111,11 @@
 * [✅] Add `event_picked_up`
 * [✅] Add `event_dropped`
 * [✅] Implement maximum number of items in container
-* [ ] Destroy contained components when container entity is destroyed
+* [✅] Cleanup and flag contained components to be destroyed when container entity is destroyed
 * [✅] Remove container and contained components on entity destroy
 * [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
 
-[ ] *End result: An entity can contain other items and player can pick up and drop items.*
+[✅] *End result: An entity can contain other items and player can pick up and drop items.*
 
 ---
 
@@ -124,9 +124,9 @@
 > *Goal: inventory management.*
 
 * [ ] Add `view inventory` command
+* [ ] Implement view inventory window (list container entities)
+* [ ] Implement generic player 'inventory_select_item' input - returns the selected item or if the player cancelled
 * [ ] Update player `drop` command to select item from inventory
-* [ ] Implement inventory window (list container entities)
-* [ ] Implement player `item selection` input - select entity from container list or cancel
 
 [ ] *End result: Player can view inventory and drop an item from inventory.*
 
@@ -141,6 +141,7 @@
 * [ ] Implement one slot for quiver (ammo)
 * [ ] Implement slots for head (helmet), body (body armour), feet (shoes/boots)
 * [ ] Implement two slots for fingers (rings), neck (necklace)
+* [ ] Update view inventory window to show equipped items
 * [ ] Add player `equip` command - select from inventory
 * [ ] Add player `unequip` command - select slot
 * [ ] Implement `player_try_equip()` - try to remove entity from inventory and place in slot
@@ -421,7 +422,8 @@
 > *Goal: optimize for speed and memory.*
 
 * [ ] Implement optimised active entity iteration (if used)
-* [ ] Optimse deffered destruction of entities e.g. list of entities that need to be destroyed
+* [ ] Optimse clean up of entities flagged for destruction e.g. set and check flag for when there are entities flagged to be destroyed
+* [ ] Optimse clean up of container system e.g. set and check flag for when there are entities flagged to be destroyed
 * [ ] Optimse the core game loop by only re-drawing map when needed e.g. only redraw when updated and players turn
 * [ ] Optimse the core game loop by only re-drawing the stats window
 * [ ] Optimse the core game loop by optimising timer system iteration

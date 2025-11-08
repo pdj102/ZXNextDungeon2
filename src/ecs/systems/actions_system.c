@@ -1,5 +1,5 @@
 /**
- * @file creature_actions.c
+ * @file actions_system.c
  * @author Paul Johnson
  * @brief 
  
@@ -8,12 +8,11 @@
  * 
  */
 
-#include "creature_actions.h"
+#include "actions_system.h"
 
 #include "../entity.h"
 
 #include "../components/location_comp.h"
-// #include "../components/container_comp.h"
 
 #include "../systems/container_system.h"
 #include "../systems/event_system.h"
@@ -32,7 +31,7 @@
  * public functions
  ***************************************************/
 
-bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
+bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target)
 {
     int8_t attack_roll;
     int8_t damage_roll;
@@ -60,7 +59,7 @@ bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t targe
 
         event_emit(EVENT_ENTITY_ATTACKED, creature, target, 0);
 
-        creature_actions_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
+        actions_system_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
         return 1;
     }
     else
@@ -70,13 +69,13 @@ bool_t creature_actions_try_melee_attack(entity_id_t creature, entity_id_t targe
     }
 }
 
-int8_t creature_actions_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
+int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
 {
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
     if (g.creature_components[creature].cur_hp <= damage)
     {
         g.creature_components[creature].cur_hp = 0;
-        creature_actions_try_die(creature);
+        actions_system_try_die(creature);
     }
     else
     {
@@ -86,7 +85,7 @@ int8_t creature_actions_try_take_damage(entity_id_t creature, int8_t damage, dam
     return damage;
 }
 
-bool_t creature_actions_try_die(entity_id_t creature)
+bool_t actions_system_try_die(entity_id_t creature)
 {
     event_emit(EVENT_ENTITY_DIED, creature, ENTITY_ID_INVALID, 0);
 
@@ -95,7 +94,7 @@ bool_t creature_actions_try_die(entity_id_t creature)
     return 1;
 }
 
-bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
 {  
     /* entity to be picked up has item and location components */
     util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION));
@@ -124,7 +123,7 @@ bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
 
 }
 
-bool_t creature_actions_try_drop(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
 {
     uint8_t x, y;
 
