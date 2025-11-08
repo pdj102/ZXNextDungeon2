@@ -13,7 +13,9 @@
 #include "../entity.h"
 
 #include "../components/location_comp.h"
-#include "../components/container_comp.h"
+// #include "../components/container_comp.h"
+
+#include "../systems/container_system.h"
 #include "../systems/event_system.h"
 
 #include "../../game/global_state.h"
@@ -109,7 +111,7 @@ bool_t creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
 
     location_remove(item);
     
-    if (container_add_entity(creature, item))
+    if (container_place_item_in_container(creature, item))
     {
         event_emit(EVENT_ITEM_PICKED_UP, creature, item, 0);
         return 1;
@@ -138,7 +140,8 @@ bool_t creature_actions_try_drop(entity_id_t creature, entity_id_t item)
         return 0;
     }
 
-    container_remove_entity(item);
+    container_remove_item_from_container(creature, item);
+    
     x = g.location_components[creature].x;
     y = g.location_components[creature].y;
     location_add(item, x, y);

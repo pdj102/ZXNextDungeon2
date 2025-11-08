@@ -36,6 +36,10 @@ void container_system_init(void)
 
 bool_t container_place_item_in_container(entity_id_t container, entity_id_t item)
 {
+    util_assert(item < MAX_ENTITIES);
+    util_assert(container < MAX_ENTITIES);
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER)); /* must not already be contained */
+    util_assert(!entity_has_component(item, COMPONENT_LOCATION)); /* must not be placed on the map */
 
     if (g.container_components[container].count == g.container_components[container].capacity)
     {
