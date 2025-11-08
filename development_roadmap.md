@@ -24,7 +24,7 @@
 * [✅] Build a fixed arena at a known base address (e.g. 0x0000)
 * [✅] Display a single `'@'` on screen
 
-✅ *End result: a single player entity renders successfully.*
+[✅] *End result: a single player entity renders successfully.*
 
 ---
 
@@ -37,7 +37,7 @@
 * [✅] Implement map which is a composite of map_terrain and entity lists
 * [✅] `map_is_walkable(x, y)` with checks for terrain
 
-✅ *End result: '@' moves around a dungeon grid.*
+[✅] *End result: '@' moves around a dungeon grid.*
 
 ---
 
@@ -54,7 +54,7 @@
 * [✅] Remove creature and item components on entity destroy
 * [✅] Prevent walking through blocking monsters and items
 
-✅ *End result: '@' can walk around rooms with visible creatures and items.*
+[✅] *End result: '@' can walk around rooms with visible creatures and items.*
 
 ---
 
@@ -67,7 +67,7 @@
 * [✅] Remove component on entity destroy
 * [✅] Add deferred destruction and alive flag
 
-✅ *End result: Player → Monster → Player sequence is functional.*
+[✅] *End result: Player → Monster → Player sequence is functional.*
 
 ---
 
@@ -79,7 +79,7 @@
 * [✅] Move player entity across map tiles
 * [✅] Prevent walking through walls
 
-✅ *End result: '@' moves around a dungeon grid.*
+[✅] *End result: '@' moves around a dungeon grid.*
 
 ---
 
@@ -95,7 +95,7 @@
 * [✅] Add `event_entity_died`
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
 
-✅ *End result: You can attack and kill monsters.*
+[✅] *End result: You can attack and kill monsters.*
 
 ---
 
@@ -115,7 +115,7 @@
 * [✅] Remove container and contained components on entity destroy
 * [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
 
-✅ *End result: An entity can contain other items and player can pick up and drop items.*
+[ ] *End result: An entity can contain other items and player can pick up and drop items.*
 
 ---
 
@@ -128,7 +128,7 @@
 * [ ] Implement inventory window (list container entities)
 * [ ] Implement player `item selection` input - select entity from container list or cancel
 
-✅ *End result: Player can view inventory and drop an item from inventory.*
+[ ] *End result: Player can view inventory and drop an item from inventory.*
 
 ---
 
@@ -151,7 +151,7 @@
 * [ ] Destroy equipment component on entity destroy
 * [ ] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
 
-✅ *End result: Player can equip and uneqip items.*
+[ ] *End result: Player can equip and uneqip items.*
 
 ---
 
@@ -163,7 +163,7 @@
 * [ ] Update damage calculation to take resistance and immunity into account
 * [ ] Remove resistance component on entity destroy
 
-✅ *End result: Damage calculation takes creature's resistance and immunity into account.*
+[ ] *End result: Damage calculation takes creature's resistance and immunity into account.*
 
 ---
 
@@ -176,7 +176,7 @@
 * [ ] Implement line of sight test
 * [ ] Implement `player_try_look()`
 
-✅ *End result: Player can target a tile and examine a tile/entity if in line of sight.*
+[ ] *End result: Player can target a tile and examine a tile/entity if in line of sight.*
 
 ### 🪜 **Milestone 111 — Basic Ranged Combat & Events**
 
@@ -185,7 +185,7 @@
 * [ ] Add player `fire` command (ranged attack)
 * [ ] Implement basic `creature_try_ranged_attack()`
 
-✅ *End result: You can range attack and kill monsters.*
+[ ] *End result: You can range attack and kill monsters.*
 
 ---
 
@@ -197,7 +197,7 @@
 * [ ] Implement camera position and ability to pan camera
 * [ ] Implement camera following player
 
-✅ *End result: camera follows player.*
+[ ] *End result: camera follows player.*
 
 ---
 
@@ -210,7 +210,7 @@
 * [ ] Implement player levels
 * [ ] Implement player levelling up
 
-✅ *End result: player gains experience and levels up.*
+[ ] *End result: player gains experience and levels up.*
 
 ---
 
@@ -221,7 +221,7 @@
 * [ ] Implement `name` component - implement helper functions e.g. add() and remove()
 * [ ] Implement add() copies from base
 
-✅ *End result: entities have a name component.*
+[ ] *End result: entities have a name component.*
 
 ## 🪜 **Milestone 2XX — Items**
 
@@ -237,7 +237,7 @@
 * [ ] Add `event_food_consumed`
 * [ ] Add message log system for food consumed events e.g. (“You eat the apple.”)
 
-✅ *End result: Player can restore health by eating food and food is destroyed.*
+[ ] *End result: Player can restore health by eating food and food is destroyed.*
 
 ---
 
@@ -252,7 +252,7 @@
 * [ ] Add `event_consumed_potion`
 * [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
 
-✅ *End result: Potion is destroyed and any effect applied.*
+[ ] *End result: Potion is destroyed and any effect applied.*
 
 ---
 
@@ -264,7 +264,7 @@
 * [ ] Implement ability to equip and unequip melee weapons
 * [ ] Implement player stat recalculation for melee weapons
 
-✅ *End result: Player can equip a melee weapon and melee attack stats are updated.*
+[ ] *End result: Player can equip a melee weapon and melee attack stats are updated.*
 
 ---
 
@@ -276,7 +276,7 @@
 * [ ] Implement ability to equip and unequip armour (tbc implement base AC)
 * [ ] Implement player stat recalculation for armour
 
-✅ *End result: Player can equip armour and stats are updated.*
+[ ] *End result: Player can equip armour and stats are updated.*
 
 ---
 
@@ -293,7 +293,7 @@
 * [ ] Implement `ai_sleep_state()` - monster does nothing
 * [ ] Implement `ai_guard_state()` - monster will melee attack a creature in range
 
-✅ *End result: Monsters can attack the player.*
+[ ] *End result: Monsters can attack the player.*
 
 ---
 
@@ -303,7 +303,7 @@
 
 * [ ] Implement `ai_wandering_state()` - monster performs 'drunk' walk
 
-✅ *End result: Monsters can drunken walk.*
+[ ] *End result: Monsters can drunken walk.*
 
 ---
 
@@ -327,7 +327,7 @@
 * [ ] Destroy feature component on entity destroy
 * [ ] Add message log system for open/close door events e.g. (“You open the door.”)
 
-✅ *End result: Player can open and close basic doors.*
+[ ] *End result: Player can open and close basic doors.*
 
 ---
 
@@ -342,7 +342,7 @@
 * [ ] Implement chest inventory and ability to take an item
 * [ ] Add message log system for opening chest and taking items e.g. (“You open the chest.”, "You take the ring.")
 
-✅ *End result: Player can open chest and take items.*
+[ ] *End result: Player can open chest and take items.*
 
 ---
 
@@ -357,7 +357,7 @@
 * [ ] Implement chest inventory and ability to take an item
 * [ ] Add message log system for opening chest and taking items e.g. (“You open the chest.”, "You take the ring.")
 
-✅ *End result: Player can open chest and take items.*
+[ ] *End result: Player can open chest and take items.*
 
 ---
 
@@ -374,7 +374,7 @@
 * [ ] Add new items per depth
 * [ ] Add new features per depth
 
-✅ *End result: Dungeon with rooms, corridors and populated with entities.*
+[ ] *End result: Dungeon with rooms, corridors and populated with entities.*
 
 ---
 
@@ -389,7 +389,7 @@
 * [ ] Update map generator to place persitent entities on level
 * [ ] Call map generator
 
-✅ *End result: Able to transistion levels and persistent entities are retained.*
+[ ] *End result: Able to transistion levels and persistent entities are retained.*
 
 ---
 
@@ -402,7 +402,7 @@
 * [✅] Implement message log window
 * [ ] Implement 'press key to continue' if messages exceeds window size before players next turn
 
-✅ *End result: Player is notified of game events.*
+[ ] *End result: Player is notified of game events.*
 
 ### 🪜 **Milestone 602 — Status UI**
 
@@ -410,7 +410,7 @@
 
 * [ ] Display player status (HP, depth etc)
 
-✅ *End result: Player can see current status.*
+[ ] *End result: Player can see current status.*
 
 ---
 
@@ -426,7 +426,7 @@
 * [ ] Optimse the core game loop by only re-drawing the stats window
 * [ ] Optimse the core game loop by optimising timer system iteration
 
-✅ *End result: Smooth play experience on Spectrum Next.*
+[ ] *End result: Smooth play experience on Spectrum Next.*
 
 ### 🪜 **Milestone 700 — Game data structure verification**
 
@@ -435,7 +435,7 @@
 * [✅] Implement assert() global game struct is less than 16KB
 * [ ] Implement global data structure validation tests
 
-✅ *End result: data structure validation tests pass.*
+[ ] *End result: data structure validation tests pass.*
 
 ---
 
@@ -449,7 +449,7 @@
 * [ ] Add death screen
 * [ ] Credits / end text
 
-✅ *End result: Fully playable, finished roguelike.*
+[ ] *End result: Fully playable, finished roguelike.*
 
 ---
 

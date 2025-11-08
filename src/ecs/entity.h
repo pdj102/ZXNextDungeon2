@@ -67,6 +67,7 @@ bool_t entity_has_flag(entity_id_t id, uint8_t flag);
 void entity_set_flag(entity_id_t id, uint8_t flag);
 void entity_clear_flag(entity_id_t id, uint8_t flag);
 
+void entity_mark_for_destruction(entity_id_t entity);
 void entity_clean_up(void);
 
 void entity_destroy(entity_id_t id);

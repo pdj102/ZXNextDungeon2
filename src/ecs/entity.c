@@ -18,8 +18,11 @@
 #include "components/location_comp.h"
 #include "components/item_comp.h"
 
+#include "systems/container_system.h"
+
 #include "../game/global_state.h"
 
+#include "../core/text.h"
 
 
 
@@ -124,6 +127,16 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
     g.entity_components.entities[id].flags &= ~flag;
 }
 
+void entity_mark_for_destruction(entity_id_t entity) 
+{
+    if (entity_has_component(entity, COMPONENT_CONTAINER))
+    {
+        container_mark_contents_for_destruction(entity);
+    }
+    
+    entity_set_flag(entity, FLAG_PENDING_DESTORY);
+}
+
 /* TODO - make clean up efficient e.g. set a flag if cleanup needed*/
 void entity_clean_up(void)
 {
@@ -137,10 +150,10 @@ void entity_clean_up(void)
 }
 
 /* 
- * NB  items must have been removed from container first or will abort. 
- * TODO
- * - destroy contained items
-*/
+ * NB   Entity destroy will abort if 
+ *      1) entity is within a container  
+ *      2) container contains entities 
+ */
 void entity_destroy(entity_id_t id)
 {
     if (id >= MAX_ENTITIES || !entity_has_flag(id, FLAG_IN_USE))
@@ -148,12 +161,13 @@ void entity_destroy(entity_id_t id)
         return; /* invalid ID or entity not in use */
     }
 
+    text_printf(&g.msg_win, "Destroying entity %d\n",id);
+
     /* Clear all components associated with this entity */
     if (entity_has_component(id, COMPONENT_CONTAINED)) {
         contained_remove(id);
     }
     if (entity_has_component(id, COMPONENT_CONTAINER)) {
-        container_destroy_contents(id);
         container_remove(id);
     } 
     if (entity_has_component(id, COMPONENT_CREATURE)) {

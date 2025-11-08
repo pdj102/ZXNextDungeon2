@@ -75,8 +75,9 @@ void container_remove_item_from_container(entity_id_t container, entity_id_t ite
             } else {
                 g.contained_components[prev].next = g.contained_components[current].next; /* bypass current */
             }
-            /* remove container component*/
-            contained_remove(item);
+            g.contained_components[item].container = ENTITY_ID_INVALID; /* must clear .container to remove contained */
+            contained_remove(item); /* remove contained component*/
+            g.container_components[container].count--;
             return;
         }
         prev = current; 
@@ -85,25 +86,44 @@ void container_remove_item_from_container(entity_id_t container, entity_id_t ite
     util_abort("Entity not found in container");
 }
 
-void container_remove_entity(entity_id_t entity)
+/*
+ * @brief If entity flagged for destruction, remove from any containing entity and mark all contained entities for destruction
+ */
+void container_system_clean_up(void)
 {
-    entity_id_t container = g.contained_components[entity].container;
-    contained_remove(entity);
-    g.container_components[container].count--;
-
-    /* TODO move the removal code here and make contained_remove just remove the component checking not longer contained*/
+for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
+    {
+        if (entity_has_flag(i, FLAG_PENDING_DESTORY))
+        {
+            if (entity_has_component(i, COMPONENT_CONTAINED))
+            {
+                container_remove_item_from_container(g.contained_components[i].container, i);
+            }
+            if (entity_has_component(i, COMPONENT_CONTAINER))
+            {
+                container_mark_contents_for_destruction(i);
+            }
+            entity_mark_for_destruction(i);
+        }
+    }    
 }
 
-void container_destroy_contents(entity_id_t container)
+/*
+ * @brief Remove every item from the container and flag pending destruction
+*/
+void container_mark_contents_for_destruction(entity_id_t container)
 {
     entity_id_t entity;
 
     entity = g.container_components[container].head;
 
+    /* Keep removing items until head is empty */
     while (entity != ENTITY_ID_INVALID)
     {
-        container_remove_entity(entity);
-        entity_set_flag(entity, FLAG_PENDING_DESTORY);
+        container_remove_item_from_container(container, entity);
+        entity_mark_for_destruction(entity);
+
+        entity = g.container_components[container].head;
     }
 
 }

@@ -90,7 +90,7 @@ bool_t creature_actions_try_die(entity_id_t creature)
 {
     event_emit(EVENT_ENTITY_DIED, creature, ENTITY_ID_INVALID, 0);
 
-    entity_set_flag(creature, FLAG_PENDING_DESTORY);
+    entity_mark_for_destruction(creature);
 
     return 1;
 }

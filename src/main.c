@@ -20,6 +20,7 @@
 
 #include "ecs/entity_factory.h"
 
+#include "ecs/systems/container_system.h"
 #include "ecs/systems/player_system.h"
 #include "ecs/systems/timer_system.h"
 
@@ -53,9 +54,10 @@ int main(void) {
     location_add(e2, 12, 10);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
-    location_add(e3, 14, 10);
+    // location_add(e3, 14, 10);
 
     entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);  
+    container_place_item_in_container(e4, e3);
     location_add(e4, 10, 12);
 
     entity_id_t e5 = entity_factory_create_monster(CREATURE_WITHERWEED);
@@ -74,6 +76,8 @@ int main(void) {
         // player_system_update();
         timer_system_update();
 
+        // container system cleanup
+        container_system_clean_up();
         // entity cleanup
         entity_clean_up();
     }

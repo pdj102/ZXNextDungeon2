@@ -51,6 +51,7 @@ void contained_add(entity_id_t entity)
 void contained_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
+    util_assert(g.contained_components[entity].container == ENTITY_ID_INVALID); /* entity must not be in a container */
 
     entity_clear_component(entity, COMPONENT_CONTAINED);
 }
