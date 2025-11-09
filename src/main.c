@@ -68,13 +68,15 @@ int main(void) {
 
     map_render();
 
+    // Main loop code here
     while(1)
     {
-
-        // player_system_update();
         timer_system_update();
 
-        // Main loop code here
+        text_print_string(&g.msg_win, ".");
+
+        player_system_update();
+
         map_render();        
 
         // container system cleanup

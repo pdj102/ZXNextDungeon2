@@ -36,8 +36,9 @@ bool_t timer_add(entity_id_t entity)
     g.timer_components.timers[entity].base_ticks = 0;
     g.timer_components.timers[entity].ticks = 0; 
     g.timer_components.timers[entity].active = 0; 
+    g.timer_components.timers[entity].fired = 0;
 
-    g.timer_components.active_list[g.timer_components.count++] = entity;
+    g.timer_components.list[g.timer_components.count++] = entity;
 
     entity_set_component(entity, COMPONENT_TIMER); /* set entity timer component mask */
 
@@ -53,7 +54,8 @@ void timer_set(entity_id_t entity, uint8_t turns, uint8_t ticks)
 
     g.timer_components.timers[entity].base_ticks = ticks;
     g.timer_components.timers[entity].ticks = ticks; 
-    g.timer_components.timers[entity].active = 1; 
+    g.timer_components.timers[entity].active = 1;
+    g.timer_components.timers[entity].fired = 0;
     
     return;
 }
@@ -65,6 +67,7 @@ void timer_reset(entity_id_t entity)
 
     g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
     g.timer_components.timers[entity].active = 1; 
+    g.timer_components.timers[entity].fired = 0;
     
     return;
 }
@@ -86,11 +89,18 @@ bool_t timer_tick(entity_id_t entity)
 
     if (g.timer_components.timers[entity].ticks == 0)
     {
-        /* timer reached zero*/
-        timer_reset(entity);
+        /* one shot timer reached zero */
+        /* to implement a repeating timer would need to reset */
+        g.timer_components.timers[entity].active = 0;
+        g.timer_components.timers[entity].fired = 1;
         return 1;
     }
     return 0;
+}
+
+bool_t timer_fired(entity_id_t entity)
+{
+    return g.timer_components.timers[entity].fired;
 }
 
 void timer_remove(entity_id_t entity)
@@ -104,8 +114,8 @@ void timer_remove(entity_id_t entity)
     g.timer_components.timers[entity].active = 0;
 
     for (uint8_t i = 0; i < g.timer_components.count; i++) {
-        if (g.timer_components.active_list[i] == entity) {
-            g.timer_components.active_list[i] = g.timer_components.active_list[--g.timer_components.count];
+        if (g.timer_components.list[i] == entity) {
+            g.timer_components.list[i] = g.timer_components.list[--g.timer_components.count];
             break;
         }
     }    

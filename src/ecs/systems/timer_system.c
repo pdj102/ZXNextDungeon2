@@ -35,20 +35,9 @@ void timer_system_init(void)
 
 void timer_system_update(void)
 {
-    /* Check all active timer components for expiration */
-    for (uint8_t i = 0; i < g.timer_components.count; ) {
-        entity_id_t e = g.timer_components.active_list[i];
-        if (timer_tick(e))
-        {
-            if (entity_has_component(e, COMPONENT_PLAYER_CTRL))
-            {
-                player_system_update();
-            }
-            else if (entity_has_component(e, COMPONENT_AI_CTRL))
-            {
-                /* ai_system_update(e); */
-            }
-        }
-        i++;
+    /* Tick all timer components */
+    for (uint8_t i = 0; i < g.timer_components.count; i++)
+    {
+        timer_tick(g.timer_components.list[i]);
     }
  }

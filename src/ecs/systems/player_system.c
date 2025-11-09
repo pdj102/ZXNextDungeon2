@@ -15,6 +15,7 @@
 #include <sys\types.h>      /* bool_t */
 
 #include "../entity.h"
+#include "../components/timer_comp.h"
 #include "../components/location_comp.h"
 #include "movement_system.h"
 #include "actions_system.h"
@@ -46,12 +47,16 @@ void player_system_update(void)
 
     util_assert(entity != ENTITY_ID_INVALID);
     util_assert(entity_has_component(entity, COMPONENT_PLAYER_CTRL));
+    util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
-
-    if ( !entity_has_flag(entity, FLAG_IN_USE))
+    /* Check if player's turn*/
+    if (timer_fired(entity) == 0)
     {
-        return; /* player entity is not in use */
+        return;
     }
+
+    /* Reset timer */
+    timer_reset(entity);
 
     key = key_press();
 
