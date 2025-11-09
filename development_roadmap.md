@@ -63,11 +63,10 @@
 > *Goal: establish turn-based logic and per-entity speed.*
 
 * [✅] Add `Timer` component (turns + ticks)  - implement helper functions e.g. add(), remove(), set(), reset(), and tick()
-* [✅] Implement `Timer` system, player and monsters act when timer expires
+* [✅] Implement `Timer` system, timers decrease and set fired flag when they expire
 * [✅] Remove component on entity destroy
-* [✅] Add deferred destruction and alive flag
 
-[✅] *End result: Player → Monster → Player sequence is functional.*
+[✅] *End result: Entities have one shot timer that controls their turn.*
 
 ---
 

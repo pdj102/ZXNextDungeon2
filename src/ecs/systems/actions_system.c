@@ -117,6 +117,8 @@ bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
     }
     else
     {
+        // TODO put the item back on the map
+        // location_add(item, x, y);
         return 0;
     }
 

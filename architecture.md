@@ -37,13 +37,13 @@ Access to components is controlled by a mask bitfield on the entity.
 
 ## 3. ECS Update Flow
 
-Each game turn or tick runs a fixed update pipeline:
+Each game tick runs a fixed update pipeline:
 +----------------------+
-|                      |
+| Timer system         |
 +----------------------+
-|                      |
+| Player system        |
 +----------------------+
-| Timer System         |
+| AI systen            |
 +----------------------+
 | Render               |
 +----------------------+
@@ -125,11 +125,16 @@ The engine processes them immediately (no event queue) to minimize memory usage.
 Example:
 event_emit(EVENT_DAMAGE, source, target);
 
-## 10. AI and Turn System
+## 10. Turn System
 
 The Timer Component controls turn scheduling.
 
-When a timer reaches zero, an entity’s system (player or AI) is triggered.
+When a timer reaches zero, it's `fired` flag is set.
+The player and AI systems check whether the `fired` flag is set and take a turn if it is.
+
+## 11. AI system
+
+The AI system is state machine based.
 
 AI States:
 
@@ -138,9 +143,12 @@ AI States:
 - AI_ATTACK
 - AI_FLEE
 
+The AI system processes events immediately and changes state.
 State transitions are instantaneous — they do not consume turns.
 
-## 11. Cleanup Phase
+AI_system_update determines if it is the monsters turn and takes a turn if it is.
+
+## 12. Cleanup Phase
 
 To maintain determinism and avoid modifying collections mid-update:
 
@@ -153,7 +161,7 @@ system_combat_cleanup();
 entity_cleanup();
 entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 
-## 12. Naming Conventions
+## 13. Naming Conventions
 
 | Category           | Convention                   | Example                              |
 | ------------------ | ---------------------------- | ------------------------------------ |
@@ -164,7 +172,7 @@ entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 | Global data        | `g.<subsystem>`              | `g.entity`, `g.map`                  |
 | Flags              | `FLAG_<NAME>`                | `FLAG_ALIVE`, `FLAG_DESTROY_PENDING` |
 
-## 13. Performance Guidelines
+## 14. Performance Guidelines
 
 Prefer static arrays over linked lists except for containers.
 
@@ -176,24 +184,19 @@ Limit function call depth; inline where beneficial.
 
 Use 8-bit integers wherever possible.
 
-## 14. Design Philosophy
+## 15. Design Philosophy
 
-Data-oriented: Structure memory for simplicity.
+| **Layer**                                          | **May Contain / Reference**                              | **May Call / Access**                                                        | **Must Not Call / Access**                                                    | **Notes & Rationale**                                                                                                                     |
+| -------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Entity Manager** (`entity.c`)                    | - Entity IDs<br>- Component masks<br>- Entity flags e.g. alive flag       | - Component add/remove helpers<br>- Component bitmask queries                | - System functions<br>- Direct game logic                                     | Manages entity lifecycle only. No gameplay logic — pure data ownership.                                                                   |
+| **Components** (`component_*.c` / `component_*.h`) | - Raw data structs (position, health, timer, etc.)       | - Inline helpers: `*_add()`, `*_remove()`, `*_init()`                        | - Other components<br>- Systems<br>- Game logic                               | Components are **dumb data containers**. They can define small helpers to manipulate *their own* data only.                               |
+| **Systems** (`system_*.c`)                         | - Arrays of components they operate on<br>- Entity masks | - The components they depend on<br>- Global systems via *explicit interface* | - Direct calls to other systems<br>- Creating/destroying entities arbitrarily | Systems implement behavior by processing entities with required components. They never know about “entities” beyond their component data. |
+| **Game Loop / Scheduler** (`game.c`)               | - Global state and system list                           | - Systems (`system_update_*()`)                                              | - Components directly<br>- Entity internals                                   | Calls each system in turn. This is the only place that coordinates systems.                                                               |
+| **Events / Messaging (optional)**                  | - Events / flags                                    | - Systems that subscribe                                                     | - Direct component access                                                     | Used to decouple system reactions (e.g., damage, death, sound).                                                                           |
+| **Utility Modules** (`map.c`, `rng.c`, `path.c`)   | - Non-ECS data like map, RNG, path grid            | - Systems                                                                    | - Entities, components, or system state                                       | Used for external data that interacts with ECS but isn’t part of it.                                                                      |
 
-Deterministic: Identical inputs always yield identical results.
 
-Minimal coupling:
-
-- Systems do not call each other directly
-- Components do not call each other directly
-- System files should not include other system headers
-- Component files should not include other component headers
-
-Deferred side effects: Creation and destruction happen in cleanup passes.
-
-Small code footprint: Simplicity over generality.
-
-## 15. Future Extensions
+## 16. Future Extensions
 
 Pathfinding system (A* or Dijkstra) with caching per monster group.
 
