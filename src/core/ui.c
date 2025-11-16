@@ -45,31 +45,32 @@
     {
         case EVENT_NONE:
             break;
-        case EVENT_ITEM_PICKED_UP:
+        case EVENT_PICKED_UP:
             creature_print_name(&g.msg_win, src);
             text_printf(&g.msg_win, " picked up ");
             item_print_name(&g.msg_win, tgt);
             text_print_string(&g.msg_win, "\n");
             break;
-        case EVENT_ITEM_DROPPED:
+        case EVENT_DROPPED:
             creature_print_name(&g.msg_win, src);
             text_printf(&g.msg_win, " dropped ");
             item_print_name(&g.msg_win, tgt);
             text_print_string(&g.msg_win, "\n");            
             break;
-        case EVENT_ENTITY_ATTACKED:
+        case EVENT_ATTACKED:
             creature_print_name(&g.msg_win, src);
-            text_printf(&g.msg_win, " attacked ");
+
+            if (val == 1)
+            {
+                text_printf(&g.msg_win, " attacked ");
+            } else
+            {
+                text_printf(&g.msg_win, " missed ");    
+            }
             creature_print_name(&g.msg_win, tgt);
             text_print_string(&g.msg_win, "\n");
             break;
-        case EVENT_ENTITY_ATTACKED_MISSED:
-            creature_print_name(&g.msg_win, src);
-            text_printf(&g.msg_win, " missed ");
-            creature_print_name(&g.msg_win, tgt);
-            text_print_string(&g.msg_win, "\n");
-            break;            
-        case EVENT_ENTITY_DIED:
+        case EVENT_DIED:
             creature_print_name(&g.msg_win, src);
             text_printf(&g.msg_win, " died\n");
             break;

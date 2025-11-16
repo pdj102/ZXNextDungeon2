@@ -33,18 +33,18 @@ void event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
 /*
     switch (e->type)
     {
-        case EVENT_ENTITY_ATTACKED:
+        case EVENT_ATTACKED:
             ui_on_damage(e);
             sound_on_damage(e);
             log_on_damage(e);
             break;
 
-        case EVENT_ENTITY_DIED:
+        case EVENT_DIED:
             ui_on_death(e);
             sound_on_death(e);
             break;
 
-        case EVENT_ITEM_PICKED_UP:
+        case EVENT_PICKED_UP:
             ui_on_item_pickup(e);
             log_on_item_pickup(e);
             break;

@@ -57,14 +57,14 @@ bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target)
         damage_roll = util_roll_dice(g.creature_components[creature].melee.damage_roll);
         damage_roll += g.creature_components[creature].melee.to_damage;
 
-        event_emit(EVENT_ENTITY_ATTACKED, creature, target, 0);
+        event_emit(EVENT_ATTACKED, creature, target, 1);
 
         actions_system_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
         return 1;
     }
     else
     {
-        event_emit(EVENT_ENTITY_ATTACKED_MISSED, creature, target, 0);
+        event_emit(EVENT_ATTACKED, creature, target, 0);
         return 0;
     }
 }
@@ -87,7 +87,7 @@ int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damag
 
 bool_t actions_system_try_die(entity_id_t creature)
 {
-    event_emit(EVENT_ENTITY_DIED, creature, ENTITY_ID_INVALID, 0);
+    event_emit(EVENT_DIED, creature, ENTITY_ID_INVALID, 0);
 
     entity_mark_for_destruction(creature);
 
@@ -112,7 +112,7 @@ bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
     
     if (container_place_item_in_container(creature, item))
     {
-        event_emit(EVENT_ITEM_PICKED_UP, creature, item, 0);
+        event_emit(EVENT_PICKED_UP, creature, item, 0);
         return 1;
     }
     else
@@ -147,7 +147,7 @@ bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
     y = g.location_components[creature].y;
     location_add(item, x, y);
 
-    event_emit(EVENT_ITEM_DROPPED, creature, item, 0);    
+    event_emit(EVENT_DROPPED, creature, item, 0);    
 
     return 1;
 }

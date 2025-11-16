@@ -116,11 +116,11 @@ This ensures deterministic and easily testable simulation.
 
 ## 9. Event System
 
-Systems can raise game events (e.g., EVENT_DAMAGE, EVENT_ITEM_PICKUP).
+Systems can raise game events (e.g., EVENT_DAMAGE, EVENT_PICKUP).
 
 Events represent things that have happened, not requests.
 
-The engine processes them immediately (no event queue) to minimize memory usage.
+The engine processes them immediately (no event queue) to minimise memory usage.
 
 Example:
 event_emit(EVENT_DAMAGE, source, target);

@@ -89,9 +89,9 @@
 * [✅] Add player `melee attack` command
 * [✅] Implement `creature_try_melee_attack` - basic creature melee attack
 * [✅] Implement `creature_try_take_damage` - apply damage amount
-* [✅] Add `event_entity_attacked`
+* [✅] Add `EVENT_ATTACKED`
 * [✅] Add `event_entity_damaged`
-* [✅] Add `event_entity_died`
+* [✅] Add `EVENT_DIED`
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
 
 [✅] *End result: You can attack and kill monsters.*
@@ -222,6 +222,27 @@
 * [ ] Implement add() copies from base
 
 [ ] *End result: entities have a name component.*
+
+### 🪜 **Milestone 115 — Implement steppable entities*
+
+> *Goal: Entities can react to being stood on*
+
+* [ ] Add `Steppable` component with step_effect and single_use
+* [ ] Add `EVENT_STOOD_ON` event
+* [ ] Update movement system to check for entities at entered location and emit an `EVENT_STOOD_ON` for each
+* [ ] Inplement steppable_system
+* [ ] Implement `steppable_system_on_stood_on()`to handle events e.g. check for stappable component and take action
+* [ ] Implement trap feature
+* [ ] Add message log system for stood on events e.g. (“You stood on the trap.”)
+* [ ] Remove steppable components on entity destroy
+
+[ ] *End result: Traps react to being stood on*
+
+### 🪜 **Milestone 116 — Implement bumpable entities*
+
+> *Goal: Entities can react to bumped into*
+
+[ ] *End result: Unlocked doors open if you walk into them*
 
 ## 🪜 **Milestone 2XX — Items**
 
