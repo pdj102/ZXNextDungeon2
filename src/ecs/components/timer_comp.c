@@ -45,64 +45,6 @@ bool_t timer_add(entity_id_t entity)
     return 1; /* success */
 }
 
-void timer_set(entity_id_t entity, uint8_t turns, uint8_t ticks)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
-
-    ticks = ticks + (turns * 10);
-
-    g.timer_components.timers[entity].base_ticks = ticks;
-    g.timer_components.timers[entity].ticks = ticks; 
-    g.timer_components.timers[entity].active = 1;
-    g.timer_components.timers[entity].fired = 0;
-    
-    return;
-}
-
-void timer_reset(entity_id_t entity)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
-
-    g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
-    g.timer_components.timers[entity].active = 1; 
-    g.timer_components.timers[entity].fired = 0;
-    
-    return;
-}
-
-bool_t timer_tick(entity_id_t entity)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
-    
-    if ( g.timer_components.timers[entity].active == 0)
-    {
-        return 0;
-    }
-
-    if (g.timer_components.timers[entity].ticks > 0)
-    {
-        g.timer_components.timers[entity].ticks--;
-    }
-
-    if (g.timer_components.timers[entity].ticks == 0)
-    {
-        /* one shot timer reached zero */
-        /* to implement a repeating timer would need to reset */
-        g.timer_components.timers[entity].active = 0;
-        g.timer_components.timers[entity].fired = 1;
-        return 1;
-    }
-    return 0;
-}
-
-bool_t timer_fired(entity_id_t entity)
-{
-    return g.timer_components.timers[entity].fired;
-}
-
 void timer_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
@@ -121,4 +63,36 @@ void timer_remove(entity_id_t entity)
     }    
 
     entity_clear_component(entity, COMPONENT_TIMER); /* clear entity timer component mask */
+}
+
+void timer_set(entity_id_t entity, uint8_t turns, uint8_t ticks)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
+
+    ticks = ticks + (turns * 10);
+
+    g.timer_components.timers[entity].base_ticks = ticks;
+    g.timer_components.timers[entity].ticks = ticks; 
+    g.timer_components.timers[entity].active = 1;
+    g.timer_components.timers[entity].fired = 0;
+    
+    return;
+}
+
+bool_t timer_has_fired(entity_id_t entity)
+{
+    return g.timer_components.timers[entity].fired;
+}
+
+void timer_reset(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
+
+    g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
+    g.timer_components.timers[entity].active = 1; 
+    g.timer_components.timers[entity].fired = 0;
+    
+    return;
 }

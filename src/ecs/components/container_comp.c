@@ -44,6 +44,20 @@ bool_t container_add(entity_id_t entity)
     return 1; /* success */
 }
 
+entity_id_t container_get_first(entity_id_t container)
+{
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+
+    return g.container_components[container].head;
+}
+
+uint8_t container_count(entity_id_t container)
+{
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+
+    return g.container_components[container].count;
+}
+
 void container_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);

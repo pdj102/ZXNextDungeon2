@@ -10,16 +10,17 @@
 
 #include "player_system.h"
 
-#include "player_system_priv.h"
-
 #include <sys\types.h>      /* bool_t */
 
 #include "../entity.h"
+#include "../components/container_comp.h"
+#include "../components/contained_comp.h"
 #include "../components/timer_comp.h"
 #include "../components/location_comp.h"
+
+#include "../../core/systems_dispatch.h"
 #include "movement_system.h"
 #include "actions_system.h"
-#include "container_system.h"
 
 #include "../../game/global_state.h"
 #include "../../game/map.h"
@@ -31,6 +32,16 @@
 /***************************************************
  * private variables
  * ***************************************************/
+
+/***************************************************
+ * private function prototypes
+ ***************************************************/
+void melee_attack(void);
+void pickup(void);
+void drop(void);
+void inventory(void);
+void display_inventory(void);
+int8_t prompt_letter(uint8_t max_index);
 
 
 
@@ -51,7 +62,7 @@ void player_system_update(void)
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check if player's turn*/
-    if (timer_fired(entity) == 0)
+    if (timer_has_fired(entity) == 0)
     {
         return;
     }
@@ -195,7 +206,7 @@ void display_inventory(void)
         text_print_string(&g.main_win, "\n");
 
         c++;
-        entity = container_get_next(entity);
+        entity = contained_get_next(entity);
     }
 }
 
@@ -211,8 +222,8 @@ int8_t prompt_letter(uint8_t max_index)
 
     uint8_t max_char = 'a' + max_index;
 
-    // text_printf(&g.msg_win, "Press a letter between 'a' and '%c' (or any other key to cancel)\n", max_char);
-     text_printf(&g.msg_win, "'%d'\n", max_char);
+    text_printf(&g.msg_win, "Press a letter between 'a' and '%c' (or any other key to cancel)\n", max_char);
+    // text_printf(&g.msg_win, "'%d'\n", max_char);
 
     /* Get a single character */
     int ch = key_press();

@@ -14,10 +14,11 @@
 
 #include "../components/location_comp.h"
 
-#include "../systems/container_system.h"
 #include "../systems/event_system.h"
 
 #include "../../game/global_state.h"
+
+#include "../../core/systems_dispatch.h"
 #include "../../core/text.h"
 #include "../../core/util.h"
 
@@ -110,7 +111,7 @@ bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
 
     location_remove(item);
     
-    if (container_place_item_in_container(creature, item))
+    if (system_container_place_item_in(creature, item))
     {
         event_emit(EVENT_PICKED_UP, creature, item, 0);
         return 1;
@@ -141,7 +142,7 @@ bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
         return 0;
     }
 
-    container_remove_item_from_container(creature, item);
+    system_container_remove_item_from(creature, item);
     
     x = g.location_components[creature].x;
     y = g.location_components[creature].y;

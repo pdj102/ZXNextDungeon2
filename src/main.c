@@ -20,9 +20,9 @@
 
 #include "ecs/entity_factory.h"
 
-#include "ecs/systems/container_system.h"
+#include "core/systems_dispatch.h"
 #include "ecs/systems/player_system.h"
-#include "ecs/systems/timer_system.h"
+
 
 #include "game/map.h"
 #include "game/map_render.h"
@@ -31,16 +31,16 @@
 
 #include "core/util.h"
 #include "core/text.h"
-
-#include "core/PAGE0/init.h"
+#include "core/init_bank.h"
+#include "core/systems_dispatch.h"
 
 
  
 int main(void) {
 
-   init_zxnext();
-   init_game_state();
-   init_ui();
+   init_zxnext_bank();
+   init_game_state_bank();
+   init_ui_bank();
    map_gen();
 
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
@@ -57,7 +57,7 @@ int main(void) {
     // location_add(e3, 14, 10);
 
     entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);  
-    container_place_item_in_container(e4, e3);
+    system_container_place_item_in(e4, e3);
     location_add(e4, 10, 12);
 
     entity_id_t e5 = entity_factory_create_monster(CREATURE_WITHERWEED);
@@ -71,7 +71,7 @@ int main(void) {
     // Main loop code here
     while(1)
     {
-        timer_system_update();
+        system_timer_update();
 
         text_print_string(&g.msg_win, ".");
 
@@ -80,7 +80,7 @@ int main(void) {
         map_render();        
 
         // container system cleanup
-        container_system_clean_up();
+        system_container_clean_up();
         // entity cleanup
         entity_clean_up();
     }

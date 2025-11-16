@@ -25,14 +25,14 @@
 /*
  * Memory map - Next 8KB banking scheme
  *
- * slot 1 (0x000)     Fixed global game state (by default would contain the ROM)
- * slot 2 (0x2000)    Fixed global game state (by default would contain the ROM) 
- * slot 3 (0x4000)    Fixed tilemap and tilesets (bank 5)
- * slot 4 (0x6000)    Fixed tilemap and tilesets (bank 5)
- * slot 5 (0x8000)    Fixed non banking core game code (bank 2)
- * slot 6 (0xa000)    Fixed non banking core game code (bank 2)
- * slot 7 (0xc000)    Banked game code and data (bank 0) 
- * slot 8 (0xe000)    Banked game code and data (bank 0)
+ * slot 0 (0x000)     Fixed global game state (by default would contain the ROM)
+ * slot 1 (0x2000)    Fixed global game state (by default would contain the ROM) 
+ * slot 2 (0x4000)    Fixed tilemap and tilesets (bank 5)
+ * slot 3 (0x6000)    Fixed tilemap and tilesets (bank 5)
+ * slot 4 (0x8000)    Fixed non banking core game code (bank 2)
+ * slot 5 (0xa000)    Fixed non banking core game code (bank 2)
+ * slot 6 (0xc000)    Banked game code and data (bank 0) 
+ * slot 7 (0xe000)    Banked game code and data (bank 0)
  *
  *
  * 0x4000 - 0x49FF      Tilemap - 40 * 32 tiles * 2 bytes per tile = 0xA00 (2,560) bytes
@@ -49,13 +49,16 @@
   *     use even page numbers for default ORG 0xc000 e.g. page 30, 32
   *     use odd page numbers for default ORG 0xe000 e.g. page 31, 33
   */
-#define PAGE_INIT           0
-#define PAGE_PALETTE        1
+
 #define PAGE_GLOBAL_STATE   28 /* 8k bank number for global state */
 #define PAGE_GLOBAL_STATE_2 29 /* 8k bank number for global state second part */
 #define PAGE_CREATURE_BASE  30
 #define PAGE_ITEM_BASE      32
 #define PAGE_DUNGEON_GEN    34
+#define PAGE_INIT           36
+#define PAGE_PALETTE        37
+#define PAGE_TIMER_SYSTEM   38
+#define PAGE_CONTAINER_SYSTEM   40
 
 
 /***************************************************

@@ -55,13 +55,14 @@ OBJDIR=./obj
 # Add other source file directories as needed
 CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/core/*.c) \
-	   $(wildcard $(SRCDIR)/core/PAGE0/*.c) \
-	   $(wildcard $(SRCDIR)/core/PAGE1/*.c) \
+	   $(wildcard $(SRCDIR)/core/PAGE36/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/components/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/components/PAGE30/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/components/PAGE32/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE38/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE40/*.c) \
 	   $(wildcard $(SRCDIR)/game/*.c) \
 	   $(wildcard $(SRCDIR)/game/PAGE34/*.c)
 
@@ -69,7 +70,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 # Add other source file directories as needed
 # Note don't use the same file name for both C and ASM files
 AFILES=$(wildcard $(SRCDIR)/core/*.asm) \
-	   $(wildcard $(SRCDIR)/core/PAGE1/*.asm)
+	   $(wildcard $(SRCDIR)/core/PAGE37/*.asm)
 
 # Set object files
 # Convert source file names to object file names

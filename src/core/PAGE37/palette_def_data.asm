@@ -1,4 +1,4 @@
-SECTION PAGE_1
+SECTION PAGE_37
 
 PUBLIC _tile_palette
 

@@ -26,10 +26,9 @@
  ***************************************************/
 void timer_init(void);
 bool_t timer_add(entity_id_t entity);
-void timer_set(entity_id_t entity, uint8_t turns, uint8_t ticks);
-bool_t timer_tick(entity_id_t entity);
-void timer_reset(entity_id_t entity);
-bool_t timer_fired(entity_id_t entity);
 void timer_remove(entity_id_t entity);
+void timer_set(entity_id_t entity, uint8_t turns, uint8_t ticks);
+bool_t timer_has_fired(entity_id_t entity);
+void timer_reset(entity_id_t entity);
 
 #endif // TIMER_COMP_H

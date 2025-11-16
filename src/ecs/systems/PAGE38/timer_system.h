@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-#include "../entity.h"
+#include "../../entity.h"
 
 /***************************************************
  * public defines

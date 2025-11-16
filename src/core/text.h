@@ -2,11 +2,6 @@
  * @file text.h
  * @author Paul Johnson
  * @brief 
- * @version 0.1
- 
- * 
- * @copyright Copyright (c) 2025
- * 
  */
 
 #ifndef TEXT_H

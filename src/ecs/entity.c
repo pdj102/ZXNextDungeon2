@@ -18,10 +18,9 @@
 #include "components/location_comp.h"
 #include "components/item_comp.h"
 
-#include "systems/container_system.h"
-
 #include "../game/global_state.h"
 
+#include "../core/systems_dispatch.h"
 #include "../core/text.h"
 
 
@@ -132,7 +131,7 @@ void entity_mark_for_destruction(entity_id_t entity)
     /* TODO should not be calling container from here. Container system should check FLAG_PENDING_DESCRUTION and apply pre-destruction logic e.g. release contained items */
     if (entity_has_component(entity, COMPONENT_CONTAINER))
     {
-        container_mark_contents_for_destruction(entity);
+        system_container_mark_contents_for_destruction(entity);
     }
     
     entity_set_flag(entity, FLAG_PENDING_DESTORY);

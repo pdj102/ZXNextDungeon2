@@ -12,11 +12,11 @@
 
 #include <sys\types.h>
 
-#include "../entity.h"
-#include "../components/contained_comp.h"
+#include "../../entity.h"
+#include "../../components/contained_comp.h"
 
-#include "../../core/util.h"
-#include "../../game/global_state.h"
+#include "../../../core/util.h"
+#include "../../../game/global_state.h"
 
 
 
@@ -34,7 +34,7 @@ void container_system_init(void)
 
 }
 
-bool_t container_place_item_in_container(entity_id_t container, entity_id_t item)
+bool_t container_system_place_item_in(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
@@ -58,7 +58,7 @@ bool_t container_place_item_in_container(entity_id_t container, entity_id_t item
 }
 
 
-void container_remove_item_from_container(entity_id_t container, entity_id_t item)
+void container_system_remove_item_from(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
@@ -86,27 +86,6 @@ void container_remove_item_from_container(entity_id_t container, entity_id_t ite
     util_abort("Entity not found in container");
 }
 
-entity_id_t container_get_first(entity_id_t container)
-{
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
-
-    return g.container_components[container].head;
-}
-
-uint8_t container_count(entity_id_t container)
-{
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
-
-    return g.container_components[container].count;
-}
-
-entity_id_t container_get_next(entity_id_t entity)
-{
-    util_assert(entity_has_component(entity, COMPONENT_CONTAINED));
-
-    return g.contained_components[entity].next;
-}
-
 /*
  * @brief If entity flagged for destruction, remove from any containing entity and mark all contained entities for destruction
  */
@@ -118,11 +97,11 @@ for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
         {
             if (entity_has_component(i, COMPONENT_CONTAINED))
             {
-                container_remove_item_from_container(g.contained_components[i].container, i);
+                container_system_remove_item_from(g.contained_components[i].container, i);
             }
             if (entity_has_component(i, COMPONENT_CONTAINER))
             {
-                container_mark_contents_for_destruction(i);
+                container_system_mark_contents_for_destruction(i);
             }
             entity_mark_for_destruction(i);
         }
@@ -132,7 +111,7 @@ for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
 /*
  * @brief Remove every item from the container and flag pending destruction
 */
-void container_mark_contents_for_destruction(entity_id_t container)
+void container_system_mark_contents_for_destruction(entity_id_t container)
 {
     entity_id_t entity;
 
@@ -141,7 +120,7 @@ void container_mark_contents_for_destruction(entity_id_t container)
     /* Keep removing items until head is empty */
     while (entity != ENTITY_ID_INVALID)
     {
-        container_remove_item_from_container(container, entity);
+        container_system_remove_item_from(container, entity);
         entity_mark_for_destruction(entity);
 
         entity = g.container_components[container].head;

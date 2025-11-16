@@ -27,8 +27,8 @@
 #include "../../ecs/systems/event_system.h"
 #include "../../ecs/systems/movement_system.h"
 #include "../../ecs/systems/player_system.h"
-#include "../../ecs/systems/timer_system.h"
 
+#include "../../core/systems_dispatch.h"
 #include "../../game/map_terrain.h"
 #include "../../game/map_render.h"
 #include "../../game/global_state.h"
@@ -127,7 +127,7 @@ void init_game_state(void)
     event_system_init();
     movement_system_init();
     player_system_init();
-    timer_system_init();
+    system_timer_init();
 
     /* Init game */
     map_init();
