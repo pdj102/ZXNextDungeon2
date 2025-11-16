@@ -86,6 +86,27 @@ void container_remove_item_from_container(entity_id_t container, entity_id_t ite
     util_abort("Entity not found in container");
 }
 
+entity_id_t container_get_first(entity_id_t container)
+{
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+
+    return g.container_components[container].head;
+}
+
+uint8_t container_count(entity_id_t container)
+{
+    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+
+    return g.container_components[container].count;
+}
+
+entity_id_t container_get_next(entity_id_t entity)
+{
+    util_assert(entity_has_component(entity, COMPONENT_CONTAINED));
+
+    return g.contained_components[entity].next;
+}
+
 /*
  * @brief If entity flagged for destruction, remove from any containing entity and mark all contained entities for destruction
  */

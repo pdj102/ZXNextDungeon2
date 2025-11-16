@@ -53,6 +53,7 @@
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
 * [✅] Remove creature and item components on entity destroy
 * [✅] Prevent walking through blocking monsters and items
+* [ ] Refactor entity factory code to spawn monsters not creatures - mosnters are more than a creature component
 
 [✅] *End result: '@' can walk around rooms with visible creatures and items.*
 
@@ -122,8 +123,8 @@
 
 > *Goal: inventory management.*
 
-* [ ] Add `view inventory` command
-* [ ] Implement view inventory window (list container entities)
+* [✅] Add `view inventory` command
+* [✅] Implement view inventory window (list container entities)
 * [ ] Implement generic player 'inventory_select_item' input - returns the selected item or if the player cancelled
 * [ ] Update player `drop` command to select item from inventory
 

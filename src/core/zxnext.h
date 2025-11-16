@@ -51,6 +51,8 @@
   */
 #define PAGE_INIT           0
 #define PAGE_PALETTE        1
+#define PAGE_GLOBAL_STATE   28 /* 8k bank number for global state */
+#define PAGE_GLOBAL_STATE_2 29 /* 8k bank number for global state second part */
 #define PAGE_CREATURE_BASE  30
 #define PAGE_ITEM_BASE      32
 #define PAGE_DUNGEON_GEN    34

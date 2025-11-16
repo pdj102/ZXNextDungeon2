@@ -67,8 +67,7 @@
 #define TILE_PALETTE_SIZE_8_BIT 256 /* 256 bytes for 8-bit palette */
 #define TILE_PALETTE_SIZE_9_BIT 512 /* 512 bytes for 9-bit palette */
 
-#define PAGE_GLOBAL_STATE 28 /* 8k bank number for global state */
-#define PAGE_GLOBAL_STATE_2 29 /* 8k bank number for global state second part */
+
 
 /***************************************************
  * private function prototypes
@@ -153,6 +152,15 @@ void init_ui(void)
     g.stat_win.c_y = 0;
     g.stat_win.tile.tile_id = ' ';
     g.stat_win.tile.tile_attr = 0;
+
+    g.main_win.x = 0;
+    g.main_win.y = 0;
+    g.main_win.w = 30;
+    g.main_win.h = 24;
+    g.main_win.c_x = 0;
+    g.main_win.c_y = 0;
+    g.main_win.tile.tile_id = ' ';
+    g.main_win.tile.tile_attr = 0;    
 
     g.assert_win.x = 0;
     g.assert_win.y = 0;

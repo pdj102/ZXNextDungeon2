@@ -27,5 +27,8 @@
 void melee_attack(void);
 void pickup(void);
 void drop(void);
+void inventory(void);
+void display_inventory(void);
+int8_t prompt_letter(uint8_t max_index);
 
 #endif // PLAYER_SYSTEM_PRIV_H

@@ -52,8 +52,9 @@ typedef struct
     map_t map; /* the map */
 
     /* UI */
-    text_window_t stat_win;      
+    text_window_t stat_win;
     text_window_t msg_win;
+    text_window_t main_win;
     text_window_t assert_win;
 
 

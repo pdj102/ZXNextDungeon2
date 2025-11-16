@@ -19,6 +19,7 @@
 #include "../components/location_comp.h"
 #include "movement_system.h"
 #include "actions_system.h"
+#include "container_system.h"
 
 #include "../../game/global_state.h"
 #include "../../game/map.h"
@@ -86,7 +87,10 @@ void player_system_update(void)
             break;
         case 103: /* get object from floor */
             pickup();
-            break;            
+            break;
+        case 105: /* view inventory */
+            inventory();
+            break;                      
         default:
             break;
     }
@@ -124,17 +128,23 @@ void melee_attack(void)
 
  void drop(void)
 {
-   entity_id_t item;
-   
-   item = g.container_components[g.player.id].head;
+    entity_id_t item;
+    int key;
+    uint8_t count;
 
-   if (item == ENTITY_ID_INVALID)
-   {
+    count = container_count(g.player.id);
+
+    if (count == 0)
+    {
         text_printf(&g.msg_win, "Nothing to drop\n");
         return;
-   }
+    }
 
-   actions_system_try_drop(g.player.id, item);
+    display_inventory();
+
+    prompt_letter(count - 1);
+   
+    // actions_system_try_drop(g.player.id, item);
 }
 
 void pickup(void)
@@ -157,3 +167,63 @@ void pickup(void)
     text_printf(&g.msg_win, "Nothing to pick up here\n");
 }
 
+void inventory(void)
+{
+    int key;
+
+    display_inventory();
+
+    text_print_string(&g.main_win, "Press any key to continue...\n");
+
+    key = key_press();
+}
+
+void display_inventory(void)
+{
+    entity_id_t entity;
+    unsigned char c = 'a';
+
+    text_cls(&g.main_win);
+    text_print_string(&g.main_win, "Inventory\n");
+
+    entity = container_get_first(g.player.id);
+
+    while (entity != ENTITY_ID_INVALID)
+    {
+        text_printf(&g.main_win, "(%c) ", c);
+        item_print_name(&g.main_win, entity);
+        text_print_string(&g.main_win, "\n");
+
+        c++;
+        entity = container_get_next(entity);
+    }
+}
+
+#include <stdint.h>
+
+int8_t prompt_letter(uint8_t max_index)
+{
+    /* max_index = highest allowed letter index
+       e.g. 0 -> only 'a'
+            1 -> 'a'..'b'
+            5 -> 'a'..'f'
+    */
+
+    uint8_t max_char = 'a' + max_index;
+
+    // text_printf(&g.msg_win, "Press a letter between 'a' and '%c' (or any other key to cancel)\n", max_char);
+     text_printf(&g.msg_win, "'%d'\n", max_char);
+
+    /* Get a single character */
+    int ch = key_press();
+
+    /* Convert to lowercase if needed */
+    if (ch >= 'A' && ch <= 'Z')
+        ch = ch - 'A' + 'a';
+
+    /* Validate range */
+    if (ch < 'a' || ch > max_char)
+        return -1;            /* Cancel */
+
+    return (int8_t)(ch - 'a');
+}

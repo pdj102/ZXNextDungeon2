@@ -195,7 +195,6 @@ Use 8-bit integers wherever possible.
 | **Events / Messaging (optional)**                  | - Events / flags                                    | - Systems that subscribe                                                     | - Direct component access                                                     | Used to decouple system reactions (e.g., damage, death, sound).                                                                           |
 | **Utility Modules** (`map.c`, `rng.c`, `path.c`)   | - Non-ECS data like map, RNG, path grid            | - Systems                                                                    | - Entities, components, or system state                                       | Used for external data that interacts with ECS but isn’t part of it.                                                                      |
 
-
 ## 16. Future Extensions
 
 Pathfinding system (A* or Dijkstra) with caching per monster group.
