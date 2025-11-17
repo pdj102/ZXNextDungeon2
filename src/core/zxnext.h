@@ -59,6 +59,9 @@
 #define PAGE_PALETTE        37
 #define PAGE_TIMER_SYSTEM   38
 #define PAGE_CONTAINER_SYSTEM   40
+#define PAGE_EVENT_SYSTEM   42
+#define PAGE_ACTIONS_SYSTEM   44
+
 
 
 /***************************************************

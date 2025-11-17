@@ -19,8 +19,6 @@
 #include "../components/location_comp.h"
 
 #include "../../core/systems_dispatch.h"
-#include "movement_system.h"
-#include "actions_system.h"
 
 #include "../../game/global_state.h"
 #include "../../game/map.h"
@@ -76,16 +74,16 @@ void player_system_update(void)
 
     switch(key) {
         case 8: /* left */
-            movement_system_try_move(entity, -1, 0);
+            system_actions_try_move(entity, -1, 0);
             break;
         case 9: /* right */
-            movement_system_try_move(entity, 1, 0);
+            system_actions_try_move(entity, 1, 0);
             break;
         case 11: /* up */
-            movement_system_try_move(entity, 0, -1);
+            system_actions_try_move(entity, 0, -1);
             break;
         case 10: /* down */
-            movement_system_try_move(entity, 0, 1);
+            system_actions_try_move(entity, 0, 1);
             break;
         case 56: /* camera right */
             g.map.camera.x++;
@@ -129,7 +127,7 @@ void melee_attack(void)
     {
         if (entity_has_component(target, COMPONENT_CREATURE))
         {
-            actions_system_try_melee_attack(g.player.id, target);
+            system_actions_try_melee_attack(g.player.id, target);
             return;
         }
         target = g.location_components[target].next_in_location;
@@ -155,7 +153,7 @@ void melee_attack(void)
 
     prompt_letter(count - 1);
    
-    // actions_system_try_drop(g.player.id, item);
+    // system_actions_try_drop(g.player.id, item);
 }
 
 void pickup(void)
@@ -170,7 +168,7 @@ void pickup(void)
     {
         if (entity_has_component(item, COMPONENT_ITEM))
         {
-            actions_system_try_pickup(g.player.id, item);
+            system_actions_try_pickup(g.player.id, item);
             return;
         }
         item = g.location_components[item].next_in_location;

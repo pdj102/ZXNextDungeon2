@@ -10,9 +10,9 @@
 
 #include "event_system.h"
 
-#include "../entity.h"
+#include "../../entity.h"
 
-#include "../../core/ui.h"
+#include "../../../core/ui.h"
 
 /***************************************************
  * private variables
@@ -27,7 +27,7 @@ void event_system_init(void)
 {
 }
 
-void event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
+void event_system_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
  {
     ui_on_event(type, src, tgt, val);
 /*

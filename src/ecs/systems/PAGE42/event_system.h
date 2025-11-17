@@ -13,7 +13,7 @@
 
 #include <stdint.h>
 
-#include "../entity.h"
+#include "../../entity.h"
 
 /***************************************************
  * public defines
@@ -49,6 +49,6 @@ void event_system_init(void);
  * @example  event_emit(EVENT_ATTACKED, PLAYER, RAT, 50); Player attacked the rat  
 
  */
-void event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+void event_system_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
 
 #endif // EVENT_SYSTEM_H

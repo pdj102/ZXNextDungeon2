@@ -24,8 +24,7 @@
 #include "../../ecs/components/player_ctrl_comp.h"
 #include "../../ecs/components/renderable_comp.h"
 
-#include "../../ecs/systems/event_system.h"
-#include "../../ecs/systems/movement_system.h"
+#include "../../ecs/systems/PAGE42/event_system.h"
 #include "../../ecs/systems/player_system.h"
 
 #include "../../core/systems_dispatch.h"
@@ -125,7 +124,6 @@ void init_game_state(void)
 
     /* Init systems */
     event_system_init();
-    movement_system_init();
     player_system_init();
     system_timer_init();
 
