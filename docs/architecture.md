@@ -19,11 +19,14 @@ The engine uses an **Entity-Component-System (ECS)** model optimized for 8-bit c
 - Entities represent unique game objects (player, monsters, items, map features, etc.).
 - Identified by a small integer ID (`entity_id_t`).
 - Entities contain no logic, only an ID and limited flags.
+- `MAX_ENTITIES` defines the maximum number of entities
+- `ENTITY_ID_INVALID` refers to an invalid entity ID
 
 ### Components
 
-- Components store data for one aspect of an entity (e.g. position, AI, health, timer, container).
-- Implemented as **parallel arrays** for efficient access:
+- Components store data for one aspect of an entity e.g. position, AI, health, timer, container.
+- Components contain only data and simple helper functions (no logic) that only operate on the component's data
+- Implemented as **arrays** for efficient access:
   - location_t location[MAX_ENTITIES];
   - health_t health[MAX_ENTITIES];
 
@@ -60,17 +63,23 @@ Creation:
 
 Deferred Destruction:
 
-- Entities are marked for destruction using entity_mark_for_destruction() to flag entities for later removal
-- Each system checks for FLAG_DESTROY_PENDING and can perform pre-destroy logic e.g. containers release their contents
-- Prevents invalidating iteration when systems are looping over entities.
+- Entities are marked for destruction using entity_mark_for_destruction()
+- Prevents invalidating iteration when systems are looping over entities
 
 Cleanup:
 
-- Cleanup calls entity_destroy() to remove flagged entities and recycle IDs.
+- During the Cleanup step systems can check for FLAG_DESTROY_PENDING and perform pre-destroy logic e.g. containers release their contents
+- Finally, cleanup calls entity_destroy() to remove flagged entities and recycle IDs.
+
+A cleanup sequence is run in a fixed order:
+
+- system_container_cleanup();
+- system_ai_cleanup();
+- entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 
 ## 5. Component Lifecycle
 
-Each component type should provide:
+Each component should provide the following functions:
 
 - void component_init(entity_id_t e); Initialises all components to a known state
 - void component_add(entity_id_t e); Adds the component to the entity
@@ -148,18 +157,6 @@ State transitions are instantaneous — they do not consume turns.
 
 AI_system_update determines if it is the monsters turn and takes a turn if it is.
 
-## 12. Cleanup Phase
-
-To maintain determinism and avoid modifying collections mid-update:
-
-Systems mark entities or components for destruction.
-
-A cleanup sequence is run in a fixed order:
-system_container_cleanup();
-system_ai_cleanup();
-system_combat_cleanup();
-entity_cleanup();
-entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 
 ## 13. Naming Conventions
 
@@ -174,17 +171,17 @@ entity_cleanup() destroys all entities marked FLAG_DESTROY_PENDING.
 
 ## 14. Performance Guidelines
 
-Prefer static arrays over linked lists except for containers.
+Use fixed sized arrays.
 
-Keep systems O(n_active_entities) — no deep searches.
+No use of malloc or dynamic memory allocation.
 
-Avoid recursion; use iterative logic and small lookup tables.
-
-Limit function call depth; inline where beneficial.
+Rather than iterating all entities systems can create lists of entities for common iterations
 
 Use 8-bit integers wherever possible.
 
 ## 15. Design Philosophy
+
+### 
 
 | **Layer**                                          | **May Contain / Reference**                              | **May Call / Access**                                                        | **Must Not Call / Access**                                                    | **Notes & Rationale**                                                                                                                     |
 | -------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -195,14 +192,13 @@ Use 8-bit integers wherever possible.
 | **Events / Messaging (optional)**                  | - Events / flags                                    | - Systems that subscribe                                                     | - Direct component access                                                     | Used to decouple system reactions (e.g., damage, death, sound).                                                                           |
 | **Utility Modules** (`map.c`, `rng.c`, `path.c`)   | - Non-ECS data like map, RNG, path grid            | - Systems                                                                    | - Entities, components, or system state                                       | Used for external data that interacts with ECS but isn’t part of it.                                                                      |
 
-## 16. Future Extensions
+## 17. File organisation standards
 
-Pathfinding system (A* or Dijkstra) with caching per monster group.
-
-FOV (field of view) and lighting system.
-
-Status effect system driven by timers.
-
-Simple scripting or event-driven encounters.
-
-Persistent save/load of arena data to disk
+/ecs  - Contains all the code related to the Entity Component System (ECS) framework.
+  /components - Contains all the component definitions and their associated functions.
+  /entity - Contains all the entity-related functions and structures.
+  /systems - Contains all the system implementations and structures.
+    /PAGEXX - Contains banked code
+/core - Contains enabling modules like UI, utils, spectrum next hardware etc.
+/game - Contains game specific code like global game state, map, dungeon generator etc
+  /PAGEXX - Contains banked code
