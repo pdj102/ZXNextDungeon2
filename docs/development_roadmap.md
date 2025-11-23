@@ -105,21 +105,16 @@
 
 * [✅] Add `Container` component
 * [✅] Add `Contained` component
-* [✅] Add player `pickup` and `drop` commands
-* [✅] Implement `creature_try_pickup()`
-* [✅] Implement `creature_try_drop()`
-* [✅] Add `event_picked_up`
-* [✅] Add `event_dropped`
+* [✅] Implement Container System 
 * [✅] Implement maximum number of items in container
 * [✅] Cleanup and flag contained components to be destroyed when container entity is destroyed
 * [✅] Remove container and contained components on entity destroy
-* [✅] Add message log system for pick up and drop events e.g. (“You drop the potion.”)
 
-[✅] *End result: An entity can contain other items and player can pick up and drop items.*
+[✅] *End result: An entity can contain other items.*
 
 ---
 
-### 🪜 **Milestone 107 — Player Inventory**
+### 🪜 **Milestone 107a — Player Inventory**
 
 > *Goal: inventory management.*
 
@@ -131,6 +126,30 @@
 [✅] *End result: Player can view inventory and drop an item from inventory.*
 
 ---
+
+### 🪜 **Milestone 107b — Pickup**
+
+> *Goal: implement pickup action*
+
+* [✅] Add player `pickup` command
+* [ ] Add selection mechanic if there are multiple items on the tile
+* [✅] Implement `creature_try_pickup()`
+* [✅] Add `event_picked_up`
+* [✅] Add message log system for pick up events e.g. (“You pickup the potion.”)
+
+[ ] *End result: Player can pick up items.*
+
+### 🪜 **Milestone 107c — Drop**
+
+> *Goal: implement drop action*
+
+* [✅] Add player `drop` command
+* [✅] Add mechanic to select item to drop from inventory
+* [✅] Implement `creature_try_drop()`
+* [✅] Add `event_dropped_up`
+* [✅] Add message log system for pick up events e.g. (“You drop the potion.”)
+
+[✅] *End result: Player can drop items.*
 
 ### 🪜 **Milestone 108 — Player Equipment**
 
