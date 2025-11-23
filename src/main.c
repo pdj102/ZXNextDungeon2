@@ -21,8 +21,6 @@
 #include "ecs/entity_factory.h"
 
 #include "core/systems_dispatch.h"
-#include "ecs/systems/player_system.h"
-
 
 #include "game/map.h"
 #include "game/map_render.h"
@@ -75,7 +73,7 @@ int main(void) {
 
         text_print_string(&g.msg_win, ".");
 
-        player_system_update();
+        system_player_update();
 
         map_render();        
 

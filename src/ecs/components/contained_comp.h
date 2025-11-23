@@ -28,7 +28,6 @@
  ***************************************************/
 void contained_init(void);
 void contained_add(entity_id_t entity);
-entity_id_t contained_get_next(entity_id_t entity);
 void contained_remove(entity_id_t entity);
 
 #endif // CONTAINED_COMP_H

@@ -14,7 +14,7 @@
 #include "../ecs/systems/PAGE40/container_system.h"
 #include "../ecs/systems/PAGE42/event_system.h"
 #include "../ecs/systems/PAGE44/actions_system.h"
-
+#include "../ecs/systems/PAGE46/player_system.h"
 
 /***************************************************
  * private defines
@@ -256,6 +256,63 @@ void system_container_remove_item_from(entity_id_t container, entity_id_t item)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
+uint8_t system_container_count(entity_id_t container)
+{
+    uint8_t current_bank;
+    uint8_t count;
+
+    current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
+
+    count = container_system_count(container);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return count;
+}
+entity_id_t system_container_get_first(entity_id_t container)
+{
+    uint8_t current_bank;
+    entity_id_t first;
+
+    current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
+
+    first = container_system_get_first(container);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return first;
+}
+entity_id_t system_container_get_next(entity_id_t entity)
+{
+    uint8_t current_bank;
+    entity_id_t next;    
+
+    current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
+
+    next = container_system_get_next(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return next;
+}
+entity_id_t system_container_get_at(entity_id_t container, uint8_t position)
+{
+    uint8_t current_bank;
+    entity_id_t entity;    
+
+    current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
+
+    entity = container_system_get_at(container, position);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return entity;
+}
+
 void system_container_mark_contents_for_destruction(entity_id_t container)
 {
     uint8_t current_bank;
@@ -304,6 +361,31 @@ void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 
+}
+
+/* Player System */
+void system_player_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
+
+    player_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+void system_player_update(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
+
+    player_system_update();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }
 
 /* Timer system*/

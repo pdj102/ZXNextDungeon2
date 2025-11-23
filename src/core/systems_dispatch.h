@@ -41,12 +41,20 @@ bool_t system_actions_try_move(entity_id_t entity, int8_t dx, int8_t dy);
 void system_container_init(void);
 bool_t system_container_place_item_in(entity_id_t container, entity_id_t item);
 void system_container_remove_item_from(entity_id_t container, entity_id_t item);
+uint8_t system_container_count(entity_id_t container);
+entity_id_t system_container_get_first(entity_id_t container);
+entity_id_t system_container_get_next(entity_id_t entity);
+entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
 void system_container_clean_up(void);
 
 /* Event System */
 void system_event_init(void);
 void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+
+/* Player System */
+void system_player_init(void);
+void system_player_update(void);
 
 /* Timer System */
 void system_timer_init(void);

@@ -65,6 +65,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE40/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE42/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE44/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE46/*.c) \
 	   $(wildcard $(SRCDIR)/game/*.c) \
 	   $(wildcard $(SRCDIR)/game/PAGE34/*.c)
 

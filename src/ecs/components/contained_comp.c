@@ -45,13 +45,6 @@ void contained_add(entity_id_t entity)
     entity_set_component(entity, COMPONENT_CONTAINED); /* set entity contained component mask */    
 }
 
-entity_id_t contained_get_next(entity_id_t entity)
-{
-    util_assert(entity_has_component(entity, COMPONENT_CONTAINED));
-
-    return g.contained_components[entity].next;
-}
-
 /*
  * @brief Remove the contained entity from its container and remove its contained component e.g. remove potion (item) from a chest (container)
 */

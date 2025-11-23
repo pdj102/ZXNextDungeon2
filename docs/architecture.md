@@ -181,16 +181,37 @@ Use 8-bit integers wherever possible.
 
 ## 15. Design Philosophy
 
-### 
+### Entity design rules
 
-| **Layer**                                          | **May Contain / Reference**                              | **May Call / Access**                                                        | **Must Not Call / Access**                                                    | **Notes & Rationale**                                                                                                                     |
-| -------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| **Entity Manager** (`entity.c`)                    | - Entity IDs<br>- Component masks<br>- Entity flags e.g. alive flag       | - Component add/remove helpers<br>- Component bitmask queries                | - System functions<br>- Direct game logic                                     | Manages entity lifecycle only. No gameplay logic — pure data ownership.                                                                   |
-| **Components** (`component_*.c` / `component_*.h`) | - Raw data structs (position, health, timer, etc.)       | - Inline helpers: `*_add()`, `*_remove()`, `*_init()`                        | - Other components<br>- Systems<br>- Game logic                               | Components are **dumb data containers**. They can define small helpers to manipulate *their own* data only.                               |
-| **Systems** (`system_*.c`)                         | - Arrays of components they operate on<br>- Entity masks | - The components they depend on<br>- Global systems via *explicit interface* | - Direct calls to other systems<br>- Creating/destroying entities arbitrarily | Systems implement behavior by processing entities with required components. They never know about “entities” beyond their component data. |
-| **Game Loop / Scheduler** (`game.c`)               | - Global state and system list                           | - Systems (`system_update_*()`)                                              | - Components directly<br>- Entity internals                                   | Calls each system in turn. This is the only place that coordinates systems.                                                               |
-| **Events / Messaging (optional)**                  | - Events / flags                                    | - Systems that subscribe                                                     | - Direct component access                                                     | Used to decouple system reactions (e.g., damage, death, sound).                                                                           |
-| **Utility Modules** (`map.c`, `rng.c`, `path.c`)   | - Non-ECS data like map, RNG, path grid            | - Systems                                                                    | - Entities, components, or system state                                       | Used for external data that interacts with ECS but isn’t part of it.                                                                      |
+`entity.c`
+
+May contain / reference:
+
+- Entity IDs
+- Component masks
+- Entity flags
+
+May call / access:
+
+- entity functions
+- component add/remove helpers
+
+Must not call / access 
+
+- system functions
+- game logic
+
+Notes & Rationale:
+
+Manges entity lifecycle only. No gameplay logic - pure data ownership
+
+### Design rules
+
+| Type | File naming | May contain / reference | May call / access | Must not call / access | Notes & Rationale |
+| --- | --- | --- | --- | --- | --- |
+| Components | `*_comp.c` </br> `*_comp.h` | - Raw data </br> - Simple helpers that operate on the raw data | - Simple helpers | - Other components </br> - Systems </br> - Game logic | Components are dumb data containers. They can define small helpers to manipulate their own data only. |
+| Systems | `*_system.c` </br> `*_system.h` | - Arrays of components they operate on </br> - System logic </br> - Event handling | - Components they depend upon </br> - Other systems via well defined entry points |  - Directly destroy entities | Systems implement behavior by processing entities with required components. They never know about “entities” beyond their component data. Ideally they should interact with other systems via events and component data but can call other systems directly where it makes sesne for performance reasons |
+| Game logic | - `*.c` - `*.h` | - World game data that is not part of the ECS | - Components | - Systems | Game logic implements game world rules and behaviors that are not part of the ECS e.g. map. It should not interact with other systems directly. Instead it should interact with them via events and component data.|
 
 ## 17. File organisation standards
 
@@ -200,5 +221,19 @@ Use 8-bit integers wherever possible.
   /systems - Contains all the system implementations and structures.
     /PAGEXX - Contains banked code
 /core - Contains enabling modules like UI, utils, spectrum next hardware etc.
+  /PAGEXX - Contains banked code
 /game - Contains game specific code like global game state, map, dungeon generator etc
   /PAGEXX - Contains banked code
+
+## 18. Memory bank standards
+
+To create a new bank, follow these steps:
+
+- Define the page number in `zxnext.h`
+- Create a directory named /src/*/PAGEXX and put the banked code in heere
+- Add functions to call the banked code in `systems_dispatch.c`
+- DO NOT call banked code directly!
+- Update the make file to include the /src/*/PAGEXX directory in the build process
+- Manually create the corresponding /obj/PAGEXX directory
+
+The make file will automatically assign the correct bank for each source file based on its location within the project structure.

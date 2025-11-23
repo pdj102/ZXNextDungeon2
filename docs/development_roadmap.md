@@ -125,10 +125,10 @@
 
 * [✅] Add `view inventory` command
 * [✅] Implement view inventory window (list container entities)
-* [ ] Implement generic player 'inventory_select_item' input - returns the selected item or if the player cancelled
-* [ ] Update player `drop` command to select item from inventory
+* [✅] Implement `uint8_t prompt_letter(uint8_t max_index)` input - returns the selected item or if the player cancelled
+* [✅] Update player `drop` command to select item from inventory
 
-[ ] *End result: Player can view inventory and drop an item from inventory.*
+[✅] *End result: Player can view inventory and drop an item from inventory.*
 
 ---
 

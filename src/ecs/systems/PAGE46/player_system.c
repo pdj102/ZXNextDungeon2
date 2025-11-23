@@ -10,21 +10,20 @@
 
 #include "player_system.h"
 
+#include <stdint.h>
 #include <sys\types.h>      /* bool_t */
 
-#include "../entity.h"
-#include "../components/container_comp.h"
-#include "../components/contained_comp.h"
-#include "../components/timer_comp.h"
-#include "../components/location_comp.h"
+#include "../../entity.h"
+#include "../../components/timer_comp.h"
+#include "../../components/location_comp.h"
 
-#include "../../core/systems_dispatch.h"
+#include "../../../core/systems_dispatch.h"
 
-#include "../../game/global_state.h"
-#include "../../game/map.h"
+#include "../../../game/global_state.h"
+#include "../../../game/map.h"
 
-#include "../../core/util.h"
-#include "../../core/zxnext.h"
+#include "../../../core/util.h"
+#include "../../../core/zxnext.h"
 
 
 /***************************************************
@@ -39,7 +38,7 @@ void pickup(void);
 void drop(void);
 void inventory(void);
 void display_inventory(void);
-int8_t prompt_letter(uint8_t max_index);
+uint8_t prompt_letter(uint8_t max_index);
 
 
 
@@ -138,10 +137,10 @@ void melee_attack(void)
  void drop(void)
 {
     entity_id_t item;
-    int key;
+    uint8_t index;
     uint8_t count;
 
-    count = container_count(g.player.id);
+    count = system_container_count(g.player.id);
 
     if (count == 0)
     {
@@ -151,9 +150,15 @@ void melee_attack(void)
 
     display_inventory();
 
-    prompt_letter(count - 1);
+    index = prompt_letter(count - 1);
+
+    if (index == 99)
+    {
+        return;
+    }
    
-    // system_actions_try_drop(g.player.id, item);
+    item = system_container_get_at(g.player.id, index);
+    system_actions_try_drop(g.player.id, item);
 }
 
 void pickup(void)
@@ -195,7 +200,7 @@ void display_inventory(void)
     text_cls(&g.main_win);
     text_print_string(&g.main_win, "Inventory\n");
 
-    entity = container_get_first(g.player.id);
+    entity = system_container_get_first(g.player.id);
 
     while (entity != ENTITY_ID_INVALID)
     {
@@ -204,24 +209,20 @@ void display_inventory(void)
         text_print_string(&g.main_win, "\n");
 
         c++;
-        entity = contained_get_next(entity);
+        entity = system_container_get_next(entity);
     }
 }
 
-#include <stdint.h>
-
-int8_t prompt_letter(uint8_t max_index)
+/*
+ * @brief Prompt the user for a letter within a specified range. 
+ * @param max_index The maximum index of the letter range .e.g. 0 -> only 'a', 1 -> 'a'..'b', 5 -> 'a'..'f'
+ * @return The selected letter as an integer, 'a' -> 0, 'b' -> 1 etc, or 99 for cancel.
+ */
+uint8_t prompt_letter(uint8_t max_index)
 {
-    /* max_index = highest allowed letter index
-       e.g. 0 -> only 'a'
-            1 -> 'a'..'b'
-            5 -> 'a'..'f'
-    */
-
     uint8_t max_char = 'a' + max_index;
 
-    text_printf(&g.msg_win, "Press a letter between 'a' and '%c' (or any other key to cancel)\n", max_char);
-    // text_printf(&g.msg_win, "'%d'\n", max_char);
+    text_printf(&g.msg_win, "[a-%c] (or any other key to cancel)\n", max_char);
 
     /* Get a single character */
     int ch = key_press();
@@ -232,7 +233,7 @@ int8_t prompt_letter(uint8_t max_index)
 
     /* Validate range */
     if (ch < 'a' || ch > max_char)
-        return -1;            /* Cancel */
+        return 99;            /* Cancel */
 
-    return (int8_t)(ch - 'a');
+    return (uint8_t)(ch - 'a');
 }
