@@ -21,11 +21,13 @@
  * private variables
  * ***************************************************/
 const item_comp_base_t item_bases[ITEM_KIND_COUNT] = {
-    [ITEM_NONE]   = { "None",   {' ', 0}, 0, 0, 0, 0 },
-    [ITEM_SWORD]  = { "Sword",  {'s', 0}, 10, 2, 5, 20 },
-    [ITEM_SHIELD] = { "Shield", {'s', 0}, 11, 3, 0, 15 },
-    [ITEM_POTION] = { "Potion", {'p', 0}, 12, 1, 0, 5 },
-    [ITEM_KEY]    = { "Key",    {'k', 0}, 13, 0, 0, 1 },
+    [ITEM_NONE]             = { .class=ITEM_CLASS_NONE,     .name="None",           {.tile_id=' ',.tile_attr=0},   .weight=0,.value=0,.flags=0},
+    [ITEM_CLUB]             = { .class=ITEM_CLASS_MELEE,    .name="Club",           {.tile_id='s', .tile_attr=0},  .weight=2, .value=1, .flags=0 },    
+    [ITEM_SHORT_SWORD]      = { .class=ITEM_CLASS_MELEE,    .name="Short sword",    {.tile_id='s', .tile_attr=0},  .weight=2, .value=10, .flags=0 },
+    [ITEM_LEATHER_ARMOUR]   = { .class=ITEM_CLASS_ARMOUR,   .name="Leather armour", {.tile_id='s', .tile_attr=0},  .weight=10, .value=10, .flags=0 },
+    [ITEM_SHIELD]           = { .class=ITEM_CLASS_SHIELD,   .name="Shield",         {.tile_id='s', .tile_attr=0},  .weight=6, .value=10, .flags=0 },
+    [ITEM_POTION_OF_HEALING]= { .class=ITEM_CLASS_POTION,   .name="Potion of healing", {.tile_id='p', .tile_attr=0}, .weight=1, .value=50, .flags=0 },
+    [ITEM_KEY]              = { .class=ITEM_CLASS_KEY,      .name="Iron key",       {.tile_id='k', .tile_attr=0},   .weight=1, .value=0, .flags=0 },
 };
 
 /***************************************************

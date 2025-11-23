@@ -39,7 +39,7 @@ void drop(void);
 void inventory(void);
 void display_inventory(void);
 uint8_t prompt_letter(uint8_t max_index);
-
+bool_t is_equipped(entity_id_t entity);
 
 
  /***************************************************
@@ -206,6 +206,10 @@ void display_inventory(void)
     {
         text_printf(&g.main_win, "(%c) ", c);
         item_print_name(&g.main_win, entity);
+        if (is_equipped(entity))
+        {
+        text_print_string(&g.main_win, "(equipped)");    
+        }
         text_print_string(&g.main_win, "\n");
 
         c++;
@@ -236,4 +240,24 @@ uint8_t prompt_letter(uint8_t max_index)
         return 99;            /* Cancel */
 
     return (uint8_t)(ch - 'a');
+}
+
+bool_t is_equipped(entity_id_t entity)
+{
+    if (g.player.head == entity ||
+        g.player.neck == entity || 
+        g.player.body == entity ||
+        g.player.hands == entity ||
+        g.player.left_finger == entity ||
+        g.player.right_finger == entity ||
+        g.player.legs == entity ||
+        g.player.feet == entity ||
+        g.player.melee_weapon == entity ||
+        g.player.ranged_weapon == entity ||
+        g.player.quiver == entity)
+        {
+            return 1;
+        }
+        
+    return 0;       
 }

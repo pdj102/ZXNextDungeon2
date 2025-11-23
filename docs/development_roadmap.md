@@ -105,7 +105,7 @@
 
 * [✅] Add `Container` component
 * [✅] Add `Contained` component
-* [✅] Implement Container System 
+* [✅] Implement Container System
 * [✅] Implement maximum number of items in container
 * [✅] Cleanup and flag contained components to be destroyed when container entity is destroyed
 * [✅] Remove container and contained components on entity destroy
@@ -121,7 +121,6 @@
 * [✅] Add `view inventory` command
 * [✅] Implement view inventory window (list container entities)
 * [✅] Implement `uint8_t prompt_letter(uint8_t max_index)` input - returns the selected item or if the player cancelled
-* [✅] Update player `drop` command to select item from inventory
 
 [✅] *End result: Player can view inventory and drop an item from inventory.*
 
@@ -155,11 +154,11 @@
 
 > *Goal: PLayer can equip and unequip items*
 
-* [ ] Add `Equipment` component - this is a player only component
-* [ ] Implement two slots for hands (melee weapon, ranged weapon and shield)
-* [ ] Implement one slot for quiver (ammo)
-* [ ] Implement slots for head (helmet), body (body armour), feet (shoes/boots)
-* [ ] Implement two slots for fingers (rings), neck (necklace)
+* [✅] Add `Equipment` component - this is a player only component
+* [✅] Implement slot for melee weapon and ranged weapon
+* [✅] Implement one slot for quiver (ammo)
+* [✅] Implement slots for head (helmet), body (body armour), legs, feet (shoes/boots)
+* [✅] Implement two slots for fingers (rings), neck (necklace)
 * [ ] Update view inventory window to show equipped items
 * [ ] Add player `equip` command - select from inventory
 * [ ] Add player `unequip` command - select slot

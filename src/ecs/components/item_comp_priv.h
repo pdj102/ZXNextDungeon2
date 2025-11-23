@@ -25,7 +25,8 @@
 
 /* Item type base attributes - read only  */
 typedef struct {
-    const char *name;   
+    item_class_t class;  // type of item (e.g. weapon, armor, consumable)
+    const char *name;
     zxnext_tile_t tile; 
     uint8_t weight;
     uint8_t value;

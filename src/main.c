@@ -45,10 +45,10 @@ int main(void) {
    util_assert(sizeof(g) < 0x3FFF);
 
     // Create some items
-    entity_id_t e1 = entity_factory_create_item(ITEM_SWORD, 1);
+    entity_id_t e1 = entity_factory_create_item(ITEM_SHORT_SWORD, 1);
     location_add(e1, 10, 10);
 
-    entity_id_t e2 = entity_factory_create_item(ITEM_POTION, 1);
+    entity_id_t e2 = entity_factory_create_item(ITEM_POTION_OF_HEALING, 1);
     location_add(e2, 12, 10);
 
     entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
