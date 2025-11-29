@@ -53,7 +53,8 @@
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
 * [✅] Remove creature and item components on entity destroy
 * [✅] Prevent walking through blocking monsters and items
-* [ ] Refactor entity factory code to spawn monsters not creatures - mosnters are more than a creature component
+* [ ] Refactor entity factory code to spawn monsters not creatures - monsters are more than a creature component
+* [ ] Refactor entity factory code to spawn equipment not items - equipment is more than an item component
 
 [✅] *End result: '@' can walk around rooms with visible creatures and items.*
 

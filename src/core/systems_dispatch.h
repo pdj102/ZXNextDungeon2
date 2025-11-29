@@ -13,7 +13,11 @@
 #include <stdint.h>
 
 #include "../ecs/entity.h"
+#include "../ecs/components/item_comp.h"
+#include "../ecs/components/creature_comp.h"
 #include "../ecs/systems/PAGE42/event_system.h"
+
+#include "text.h"
 
  /***************************************************
  * public types
@@ -48,9 +52,22 @@ entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
 void system_container_clean_up(void);
 
+/* Equipment system*/
+void system_equipment_init(void);
+entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity);
+void system_equipment_print_name(text_window_t *win, item_kind_t kind);
+void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile);
+
 /* Event System */
 void system_event_init(void);
 void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+
+/* Monster system*/
+void system_monster_init(void);
+entity_id_t system_monster_create(creature_kind_t kind);
+entity_id_t system_monster_create_player( void );
+void system_monster_print_name(text_window_t *win, creature_kind_t kind);
+void system_monster_get_tile(entity_id_t id, zxnext_tile_t *tile);
 
 /* Player System */
 void system_player_init(void);
@@ -59,5 +76,10 @@ void system_player_update(void);
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);
+
+
+
+
+
 
 #endif // SYSTEMS_DISPATCH_H

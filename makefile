@@ -58,9 +58,9 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/core/PAGE36/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/components/*.c) \
-	   $(wildcard $(SRCDIR)/ecs/components/PAGE30/*.c) \
-	   $(wildcard $(SRCDIR)/ecs/components/PAGE32/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE30/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE32/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE38/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE40/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE42/*.c) \

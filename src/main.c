@@ -18,8 +18,6 @@
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/location_comp.h"
 
-#include "ecs/entity_factory.h"
-
 #include "core/systems_dispatch.h"
 
 #include "game/map.h"
@@ -45,23 +43,23 @@ int main(void) {
    util_assert(sizeof(g) < 0x3FFF);
 
     // Create some items
-    entity_id_t e1 = entity_factory_create_item(ITEM_SHORT_SWORD, 1);
+    entity_id_t e1 = system_equipment_create(ITEM_SHORT_SWORD, 1);
     location_add(e1, 10, 10);
 
-    entity_id_t e2 = entity_factory_create_item(ITEM_POTION_OF_HEALING, 1);
+    entity_id_t e2 = system_equipment_create(ITEM_POTION_OF_HEALING, 1);
     location_add(e2, 12, 10);
 
-    entity_id_t e3 = entity_factory_create_item(ITEM_KEY, 1);
+    entity_id_t e3 = system_equipment_create(ITEM_KEY, 1);
     // location_add(e3, 14, 10);
 
-    entity_id_t e4 = entity_factory_create_monster(CREATURE_RAT);  
+    entity_id_t e4 = system_monster_create(CREATURE_RAT);  
     system_container_place_item_in(e4, e3);
     location_add(e4, 10, 12);
 
-    entity_id_t e5 = entity_factory_create_monster(CREATURE_WITHERWEED);
+    entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
     location_add(e5, 12, 12);    
 
-    entity_id_t e6 = entity_factory_create_player();
+    entity_id_t e6 = system_monster_create_player();
     location_add(e6, 10, 15);
 
     map_render();

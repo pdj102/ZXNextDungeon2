@@ -23,16 +23,6 @@
  * private types
  ***************************************************/
 
-/* Item type base attributes - read only  */
-typedef struct {
-    item_class_t class;  // type of item (e.g. weapon, armor, consumable)
-    const char *name;
-    zxnext_tile_t tile; 
-    uint8_t weight;
-    uint8_t value;
-    uint8_t flags;
-} item_comp_base_t;
-
 /* Item component data per entity */
 typedef struct {
     item_kind_t kind;       // index into item_comp_bases[]

@@ -51,26 +51,6 @@ typedef struct creature_attack_s {
     uint8_t to_damage; 
 } creature_attack_t;
 
-/* Creature type base attributes - read only  */
-typedef struct {
-    const char *name;
-    zxnext_tile_t tile;
-    creature_class_t c_class;
-    uint8_t ac;
-    uint8_t hp;
-    creature_speed_t speed;
-    uint8_t str;
-    uint8_t dex;
-    uint8_t con;
-    uint8_t inte;
-    uint8_t wis;
-    uint8_t cha;
-    uint8_t challenge;
-    struct creature_attack_s melee;
-    struct creature_attack_s ranged;
-} creature_comp_base_t;
-
-
 /* Creature component data per entity */
 typedef struct {
     creature_kind_t kind;   // index into creature_comp_bases[]

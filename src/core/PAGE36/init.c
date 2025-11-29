@@ -53,8 +53,8 @@
 
 #define REG_TILEDEFS_BASE_ADDR 0x6F /* Tile Definitions Base Address Register */
 
-#define RPC_SELECT_TILEMAP_PALETTE_0  0b00110000 /* select tilemap first palette*/
-#define RPC_SELECT_TILEMAP_PALETTE_1  0b01110000 /* select tilemap second palette*/
+// #define RPC_SELECT_TILEMAP_PALETTE_0  0b00110000 /* select tilemap first palette*/
+// #define RPC_SELECT_TILEMAP_PALETTE_1  0b01110000 /* select tilemap second palette*/
 
 #define REG_ENHANCED_ULA_PALETTE_EXTENSION  0x44 /* Enhanced Palette Data Register */
 

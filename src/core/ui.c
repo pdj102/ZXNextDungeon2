@@ -10,6 +10,9 @@
 #include "ui.h"
 
 #include "../ecs/systems/PAGE42/event_system.h"
+
+#include "systems_dispatch.h"
+
 #include "../ecs/components/creature_comp.h"
 #include "../ecs/components/item_comp.h"
 
@@ -46,19 +49,19 @@
         case EVENT_NONE:
             break;
         case EVENT_PICKED_UP:
-            creature_print_name(&g.msg_win, src);
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
             text_printf(&g.msg_win, " picked up ");
-            item_print_name(&g.msg_win, tgt);
+            system_equipment_print_name(&g.msg_win, g.item_components[tgt].kind);
             text_print_string(&g.msg_win, "\n");
             break;
         case EVENT_DROPPED:
-            creature_print_name(&g.msg_win, src);
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
             text_printf(&g.msg_win, " dropped ");
-            item_print_name(&g.msg_win, tgt);
+            system_equipment_print_name(&g.msg_win, g.item_components[tgt].kind);
             text_print_string(&g.msg_win, "\n");            
             break;
         case EVENT_ATTACKED:
-            creature_print_name(&g.msg_win, src);
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
 
             if (val == 1)
             {
@@ -67,11 +70,11 @@
             {
                 text_printf(&g.msg_win, " missed ");    
             }
-            creature_print_name(&g.msg_win, tgt);
+            system_monster_print_name(&g.msg_win, tgt);
             text_print_string(&g.msg_win, "\n");
             break;
         case EVENT_DIED:
-            creature_print_name(&g.msg_win, src);
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
             text_printf(&g.msg_win, " died\n");
             break;
         default:

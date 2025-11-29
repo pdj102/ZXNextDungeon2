@@ -205,7 +205,7 @@ void display_inventory(void)
     while (entity != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
-        item_print_name(&g.main_win, entity);
+//        item_print_name(&g.main_win, entity);
         if (is_equipped(entity))
         {
         text_print_string(&g.main_win, "(equipped)");    

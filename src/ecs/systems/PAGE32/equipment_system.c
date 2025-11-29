@@ -1,5 +1,5 @@
 /**
- * @file item_base.c
+ * @file equipment_system.c
  * @author Paul Johnson
  * @brief 
  
@@ -8,10 +8,10 @@
  * 
  */
 
-#include "item_base.h"
+#include "equipment_system.h"
 
-#include "../item_comp.h"
-#include "../item_comp_priv.h"
+#include "../../components/item_comp.h"
+#include "../../components/item_comp_priv.h"
 
 #include "../../../game/global_state.h"
 
@@ -20,7 +20,7 @@
 /***************************************************
  * private variables
  * ***************************************************/
-const item_comp_base_t item_bases[ITEM_KIND_COUNT] = {
+const equipment_base_t equipment_bases[ITEM_KIND_COUNT] = {
     [ITEM_NONE]             = { .class=ITEM_CLASS_NONE,     .name="None",           {.tile_id=' ',.tile_attr=0},   .weight=0,.value=0,.flags=0},
     [ITEM_CLUB]             = { .class=ITEM_CLASS_MELEE,    .name="Club",           {.tile_id='s', .tile_attr=0},  .weight=2, .value=1, .flags=0 },    
     [ITEM_SHORT_SWORD]      = { .class=ITEM_CLASS_MELEE,    .name="Short sword",    {.tile_id='s', .tile_attr=0},  .weight=2, .value=10, .flags=0 },
@@ -34,13 +34,42 @@ const item_comp_base_t item_bases[ITEM_KIND_COUNT] = {
  * public functions
  ***************************************************/
 
- void item_base_init(uint8_t item, uint8_t kind)
+ void equipment_system_init(void)
  {
 
  }
 
- void item_base_print_name(text_window_t *win, entity_id_t item)
+entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
+{
+    zxnext_tile_t tile; 
+
+    entity_id_t id = entity_create(); 
+    if (id == ENTITY_ID_INVALID)
+        return id;
+
+    /* Add item component */
+    if (item_add(id, kind, quantity) == 0) {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }
+
+    /* Add renderable component - use item tile */
+    equipment_system_get_tile(id, &tile);
+    if(renderable_add(id, &tile) == 0) {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }
+
+    return id;
+}
+
+ void equipment_system_print_name(text_window_t *win, item_kind_t kind)
  {
-    item_kind_t kind = g.item_components[item].kind;
-    text_print_string(win, item_bases[kind].name);
+    text_print_string(win, equipment_bases[kind].name);
  }
+
+ void equipment_system_get_tile(entity_id_t id, zxnext_tile_t *tile)
+{
+    tile->tile_attr = equipment_bases[g.item_components[id].kind].tile.tile_attr;
+    tile->tile_id = equipment_bases[g.item_components[id].kind].tile.tile_id;
+}

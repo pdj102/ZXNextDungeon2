@@ -10,6 +10,8 @@
 
 #include "zxnext.h"
 
+#include "../ecs/systems/PAGE30/monster_system.h"
+#include "../ecs/systems/PAGE32/equipment_system.h"
 #include "../ecs/systems/PAGE38/timer_system.h"
 #include "../ecs/systems/PAGE40/container_system.h"
 #include "../ecs/systems/PAGE42/event_system.h"
@@ -412,4 +414,128 @@ void system_timer_update(void)
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
+}
+
+/* Monster system*/
+void system_monster_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    monster_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+}
+
+entity_id_t system_monster_create(creature_kind_t kind)
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = monster_system_create(kind);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
+entity_id_t system_monster_create_player( void )
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = monster_system_create_player();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
+void system_monster_print_name(text_window_t *win, creature_kind_t kind)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    monster_system_print_name(win, kind);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+
+}
+
+void system_monster_get_tile(entity_id_t id, zxnext_tile_t *tile)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
+
+    monster_system_get_tile(id, tile);
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);    
+}
+
+/* Equipment system*/
+
+void system_equipment_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    equipment_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+}
+
+entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity)
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = equipment_system_create(kind, quantity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
+void system_equipment_print_name(text_window_t *win, item_kind_t kind)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    equipment_system_print_name(win, kind);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+
+}
+
+void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);     /* Map item base code into ZX Spectrum 8k MMU slot 6 */  
+    
+    equipment_system_get_tile(id, tile);
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);   
 }
