@@ -45,6 +45,8 @@ PROGRAM=dungeon2.nex
 # DDEBUG_ERROR - Enable debug error information
 DEFINES=-DDEBUG_INFO -DDEBUG_ERROR
 
+# Set any C include directories here (e.g. -I./src)
+INCLUDES += -I./src
 
 # Set source and build directories
 SRCDIR=./src
@@ -100,6 +102,14 @@ CC=zcc
 # -pragma-include:$(PRAGMAS) tells zcc to include the pragmas
 ASFLAGS=$(TARGET) $(VERBOSITY) $(C_OPT_FLAGS) -c -compiler=sdcc -pragma-include:$(PRAGMAS)
 
+# CPPFLAGS - Flags for the C preprocessor
+# Used to create object files
+# Note: there is no linking at this stage of the build
+# -I specifies the directory where header files are located
+# -D specifies preprocessor macros
+# -U specifies preprocessor macros to be undefined
+CPPFLAGS += $(INCLUDES) $(DEFINES)
+
 # CFLAGS - Flags for the C compiler
 # Used to create object files from C source files
 # Note: there is no linking at this stage of the build
@@ -111,7 +121,7 @@ ASFLAGS=$(TARGET) $(VERBOSITY) $(C_OPT_FLAGS) -c -compiler=sdcc -pragma-include:
 # -clib=sdcc_iy tells zcc to use the sdcc_iy C library
 # -pragma-include:$(PRAGMAS) tells zcc to include the pragmas
 # $(DEFINES) includes any preprocessor definitions
-CFLAGS=$(TARGET) $(VERBOSITY) $(C_OPT_FLAGS) -c -compiler=sdcc -pragma-include:$(PRAGMAS) $(DEFINES)
+CFLAGS += $(TARGET) $(VERBOSITY) $(C_OPT_FLAGS) -compiler=sdcc -pragma-include:$(PRAGMAS) 
 
 # LDFLAGS - Flags for the linker, sucj as -L [Libraries (-lfoo) should be added to LDLIBS]
 # Used to link object files into the final executable
@@ -132,8 +142,6 @@ LDLIBS=
 # Usage: $(call bankflags_for,<file_path>)
 # Example: $(call bankflags_for,src/init_page1/startup.asm) -> --codesegPAGE_1 --constsegPAGE_1
 # Note: This function assumes that the PAGE## directory is directly under the src directory
-
-
 bankflags_for = $(strip \
 $(patsubst PAGE%,--codesegPAGE_%, \
 $(notdir $(word 1,$(filter PAGE%,$(subst /, ,$(dir $(1)))))) \
@@ -177,7 +185,7 @@ test_bankflags:
 
 # Rule to build object files from C source files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) $(call bankflags_for,$@) $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(call bankflags_for,$@) -c $< -o $@
 	@echo "Compiled C: $< -> $@"
 
 # Rule to build object files from assembly source files
@@ -187,5 +195,5 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.asm
 
 # Rule to build the program
 $(PROGRAM): $(OFILES)
-	$(CC) $(LDFLAGS) $(OFILES) $(LDLIBS) -o $(BINDIR)/$(PROGRAM)
+	$(CC) $(LDFLAGS) -o $(BINDIR)/$(PROGRAM) $(OFILES) $(LDLIBS)
 	@echo "Build complete: $(BINDIR)/$(PROGRAM)"
