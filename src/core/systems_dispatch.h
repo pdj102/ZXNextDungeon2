@@ -57,6 +57,7 @@ void system_equipment_init(void);
 entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity);
 void system_equipment_print_name(text_window_t *win, item_kind_t kind);
 void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile);
+item_class_t system_equipment_get_class(item_kind_t kind);
 
 /* Event System */
 void system_event_init(void);

@@ -14,9 +14,6 @@
 #include "ecs/components/creature_comp.h"
 #include "ecs/entity.h"
 
-#include "core/util.h"
-#include "core/zxnext.h"
-
 /***************************************************
  * private defines
  ***************************************************/

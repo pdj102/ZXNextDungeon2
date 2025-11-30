@@ -63,13 +63,19 @@ entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
     return id;
 }
 
- void equipment_system_print_name(text_window_t *win, item_kind_t kind)
- {
+void equipment_system_print_name(text_window_t *win, item_kind_t kind)
+{
     text_print_string(win, equipment_bases[kind].name);
- }
+}
 
- void equipment_system_get_tile(entity_id_t id, zxnext_tile_t *tile)
+/* TODO change to use kind */
+void equipment_system_get_tile(entity_id_t id, zxnext_tile_t *tile)
 {
     tile->tile_attr = equipment_bases[g.item_components[id].kind].tile.tile_attr;
     tile->tile_id = equipment_bases[g.item_components[id].kind].tile.tile_id;
+}
+
+item_class_t equipment_system_get_class(item_kind_t kind)
+{
+    return equipment_bases[kind].class;
 }

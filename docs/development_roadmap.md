@@ -53,8 +53,8 @@
 * [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
 * [✅] Remove creature and item components on entity destroy
 * [✅] Prevent walking through blocking monsters and items
-* [ ] Refactor entity factory code to spawn monsters not creatures - monsters are more than a creature component
-* [ ] Refactor entity factory code to spawn equipment not items - equipment is more than an item component
+* [✅] Refactor entity factory code to spawn monsters not creatures - monsters are more than a creature component
+* [✅] Refactor entity factory code to spawn equipment not items - equipment is more than an item component
 
 [✅] *End result: '@' can walk around rooms with visible creatures and items.*
 
@@ -160,12 +160,12 @@
 * [✅] Implement one slot for quiver (ammo)
 * [✅] Implement slots for head (helmet), body (body armour), legs, feet (shoes/boots)
 * [✅] Implement two slots for fingers (rings), neck (necklace)
-* [ ] Update view inventory window to show equipped items
-* [ ] Add player `equip` command - select from inventory
+* [✅] Update view inventory window to show equipped items
+* [✅] Add player `equip` command - select from inventory
 * [ ] Add player `unequip` command - select slot
-* [ ] Implement `player_try_equip()` - try to remove entity from inventory and place in slot
+* [✅] Implement `player_try_equip()` - try to remove entity from inventory and place in slot
 * [ ] Implement `player_try_unequip()` - try to remove entity from slot and place in inventory
-* [ ] Add `event_item_equipped`
+* [✅] Add `event_item_equipped`
 * [ ] Add `event_item_unequipped`
 * [ ] Automatically try unequipping an item from a slot when equipping
 * [ ] Destroy equipment component on entity destroy

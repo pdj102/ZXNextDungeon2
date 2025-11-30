@@ -15,9 +15,6 @@
 
 #include "ecs/entity.h"
 
-#include "core/text.h"
-#include "core/zxnext.h"
-
 /***************************************************
  * public defines
  ***************************************************/

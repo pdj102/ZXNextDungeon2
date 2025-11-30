@@ -14,7 +14,6 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "core/zxnext.h"
 
 /***************************************************
  * public defines

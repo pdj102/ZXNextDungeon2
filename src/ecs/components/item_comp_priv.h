@@ -13,8 +13,6 @@
 
 #include "ecs/components/item_comp.h"
 
-#include "core/zxnext.h"
-
 /***************************************************
  * private defines
  ***************************************************/

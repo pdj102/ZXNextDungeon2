@@ -539,3 +539,19 @@ void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile)
     /* restore previous bank */
     ZXN_WRITE_MMU6(current_bank);   
 }
+
+item_class_t system_equipment_get_class(item_kind_t kind)
+{
+    uint8_t current_bank;
+    item_class_t class;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);     /* Map item base code into ZX Spectrum 8k MMU slot 6 */  
+    
+    class = equipment_system_get_class(kind);
+
+    /* restore previous bank */
+    ZXN_WRITE_MMU6(current_bank);      
+
+    return class;
+}

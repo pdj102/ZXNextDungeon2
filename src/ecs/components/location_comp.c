@@ -15,8 +15,6 @@
 #include "game/global_state.h"
 #include "game/map_terrain.h"
 
-#include "core/util.h"
-
 /***************************************************
  * public functions
  ***************************************************/

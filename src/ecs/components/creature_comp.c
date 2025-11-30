@@ -13,8 +13,6 @@
 #include "ecs/components/creature_comp_priv.h"
 
 #include "game/global_state.h"
-#include "core/text.h"
-#include "core/util.h"
 
 
 /***************************************************

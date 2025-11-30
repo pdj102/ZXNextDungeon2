@@ -36,6 +36,7 @@
 void melee_attack(void);
 void pickup(void);
 void drop(void);
+void equip(void);
 void inventory(void);
 void display_inventory(void);
 uint8_t prompt_letter(uint8_t max_index);
@@ -92,6 +93,9 @@ void player_system_update(void)
             break;            
         case 100: /* drop an item */
             drop();
+            break;
+        case 101: /* equip an item */
+            equip();            
             break;
         case 103: /* get object from floor */
             pickup();
@@ -158,6 +162,12 @@ void melee_attack(void)
     }
    
     item = system_container_get_at(g.player.id, index);
+
+    if (is_equipped(item))
+    {
+        text_printf(&g.msg_win, "You can not drop an equipped item\n");
+        return;
+    }
     system_actions_try_drop(g.player.id, item);
 }
 
@@ -192,6 +202,33 @@ void inventory(void)
     key = key_press();
 }
 
+void equip(void)
+{
+    entity_id_t item;
+    uint8_t index;
+    uint8_t count;
+
+    count = system_container_count(g.player.id);
+
+    if (count == 0)
+    {
+        text_printf(&g.msg_win, "Nothing in inventory\n");
+        return;
+    }
+
+    display_inventory();
+
+    index = prompt_letter(count - 1);
+
+    if (index == 99)
+    {
+        return;
+    }
+   
+    item = system_container_get_at(g.player.id, index);
+    system_actions_try_equip(g.player.id, item);
+}
+
 void display_inventory(void)
 {
     entity_id_t entity;
@@ -205,7 +242,6 @@ void display_inventory(void)
     while (entity != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
-//        item_print_name(&g.main_win, entity);
         system_equipment_print_name(&g.main_win, g.item_components[entity].kind);
 
         if (is_equipped(entity))

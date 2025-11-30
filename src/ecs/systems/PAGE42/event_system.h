@@ -31,6 +31,7 @@ typedef enum {
     EVENT_DIED,
     EVENT_PICKED_UP,
     EVENT_DROPPED,
+    EVENT_EQUIPPED,
     EVENT_COUNT
 } event_type_t;
 

@@ -58,6 +58,8 @@ bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
         return 0;
     }
 
+    /* TODO check not equipped */
+
     system_container_remove_item_from(creature, item);
     
     x = g.location_components[creature].x;
@@ -76,7 +78,39 @@ bool_t actions_system_try_eat(entity_id_t creature, entity_id_t item)
 
 bool_t actions_system_try_equip(entity_id_t creature, entity_id_t item)
 {
+    /* entity to be equipped has item and contained components */
+    util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED));
 
+    /* actor has creature, container and player_ctrl components */
+    util_assert(entity_has_component(creature, COMPONENT_PLAYER_CTRL | COMPONENT_CONTAINER ));
+
+    /* check creature is holding the item */
+    if (g.contained_components[item].container != creature)
+    {
+        return 0;
+    }
+
+    switch (system_equipment_get_class(g.item_components[item].kind))
+    {
+        case ITEM_CLASS_MELEE:
+        {
+            g.player.hands = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case ITEM_CLASS_RING:
+        {
+            /* TODO left and rgith fingers */
+            g.player.left_finger = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+        }
+        default:
+        {
+            system_event_emit(EVENT_EQUIPPED, creature, item, 0);
+            return 0;
+        }
+    }
+    return 1;
 }
 
 bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
