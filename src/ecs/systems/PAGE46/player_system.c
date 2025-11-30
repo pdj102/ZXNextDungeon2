@@ -206,6 +206,8 @@ void display_inventory(void)
     {
         text_printf(&g.main_win, "(%c) ", c);
 //        item_print_name(&g.main_win, entity);
+        system_equipment_print_name(&g.main_win, g.item_components[entity].kind);
+
         if (is_equipped(entity))
         {
         text_print_string(&g.main_win, "(equipped)");    
