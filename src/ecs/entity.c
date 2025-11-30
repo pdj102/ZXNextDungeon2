@@ -8,20 +8,20 @@
  *
  */
 
-#include "entity.h"
+#include "ecs/entity.h"
 
 #include <stddef.h> /* NULL */
 #include <stdint.h> /* uint8_t, uint16_t etc */
 #include <sys/types.h> /* bool_t */
 
-#include "entity_priv.h"
-#include "components/location_comp.h"
+#include "ecs/entity.h"
+#include "ecs/components/location_comp.h"
 #include "ecs/components/item_comp.h"
 
 #include "game/global_state.h"
 
-#include "../core/systems_dispatch.h"
-#include "../core/text.h"
+#include "core/systems_dispatch.h"
+#include "core/text.h"
 
 
 

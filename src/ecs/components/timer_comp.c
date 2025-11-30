@@ -5,11 +5,11 @@
  * 
  */
 
-#include "timer_comp.h"
+#include "ecs/components/timer_comp.h"
 
-#include "timer_comp_priv.h"
-#include "contained_comp.h"
-#include "../entity.h"
+#include "ecs/components/timer_comp_priv.h"
+#include "ecs/components/contained_comp.h"
+#include "ecs/entity.h"
 
 #include "game/global_state.h"
 #include "core/util.h"

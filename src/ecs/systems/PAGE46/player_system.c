@@ -13,14 +13,14 @@
 #include <stdint.h>
 #include <sys\types.h>      /* bool_t */
 
-#include "../../entity.h"
-#include "../../components/timer_comp.h"
-#include "../../components/location_comp.h"
+#include "ecs/entity.h"
+#include "ecs/components/timer_comp.h"
+#include "ecs/components/location_comp.h"
 
-#include "../../../core/systems_dispatch.h"
+#include "core/systems_dispatch.h"
 
 #include "game/global_state.h"
-#include "../../../game/map.h"
+#include "game/map.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"

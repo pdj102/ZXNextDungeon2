@@ -7,9 +7,9 @@
 
 #include "container_comp.h"
 
-#include "container_comp_priv.h"
+#include "ecs/components/container_comp_priv.h"
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
 #include "game/global_state.h"
 #include "core/util.h"

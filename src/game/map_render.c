@@ -10,9 +10,9 @@
 
 #include "map_render.h"
 
-#include "map_terrain.h"
+#include "game/map_terrain.h"
 
-#include "global_state.h"
+#include "game/global_state.h"
 
 #include "core/zxnext.h"
 

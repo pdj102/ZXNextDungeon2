@@ -9,9 +9,9 @@
 #ifndef CONTAINED_COMP_PRIV_H
 #define CONTAINED_COMP_PRIV_H
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
-#include "contained_comp.h" 
+#include "ecs/components/contained_comp.h" 
 
 /***************************************************
  * private defines

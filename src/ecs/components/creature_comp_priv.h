@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #include "ecs/components/creature_comp.h"
-#include "../entity_priv.h"
+#include "ecs/entity.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"

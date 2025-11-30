@@ -12,7 +12,7 @@
 
 #include <sys\types.h>      /* bool_t */
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
 #include "game/global_state.h"
 #include "core/util.h"

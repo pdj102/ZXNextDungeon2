@@ -5,7 +5,7 @@
  * 
  */
 
- #include "text.h"
+ #include "core/text.h"
 
  #include <stddef.h>   /* NULL */
  #include <stdint.h>    /* uint8_t, uint16_t etc */

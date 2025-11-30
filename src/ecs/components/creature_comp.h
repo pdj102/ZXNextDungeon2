@@ -13,9 +13,9 @@
 
 #include <stdint.h>
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
-#include "../../core/text.h"
+#include "core/text.h"
 #include "core/util.h"
 #include "core/zxnext.h"
 

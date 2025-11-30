@@ -10,7 +10,7 @@
 
 #include "ecs/components/creature_comp_priv.h"
 
-#include "../../../core/text.h"
+#include "core/text.h"
 
 
 /***************************************************

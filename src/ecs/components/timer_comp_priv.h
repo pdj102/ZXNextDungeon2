@@ -9,9 +9,9 @@
 #ifndef TIMER_COMP_PRIV_H
 #define TIMER_COMP_PRIV_H
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
-#include "timer_comp.h" 
+#include "ecs/components/timer_comp.h" 
 
 /***************************************************
  * private defines

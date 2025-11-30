@@ -10,7 +10,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "../ecs/entity.h"
+#include "ecs/entity.h"
 
 #include <stdint.h>
 

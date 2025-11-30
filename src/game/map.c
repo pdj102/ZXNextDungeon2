@@ -8,17 +8,17 @@
  * 
  */
 
-#include "map.h"
+#include "game/map.h"
 
 #include <sys\types.h>      /* bool_t */
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
-#include "../ecs/entity.h"
-#include "../ecs/components/location_comp.h"
+#include "ecs/entity.h"
+#include "ecs/components/location_comp.h"
 
-#include "map_terrain.h"
-#include "PAGE34/dungeon_gen.h"
-#include "global_state.h"
+#include "game/map_terrain.h"
+#include "game/PAGE34/dungeon_gen.h"
+#include "game/global_state.h"
 
 #include "core/util.h"
 

@@ -10,11 +10,11 @@
 #ifndef MAP_PRIV_H
 #define MAP_PRIV_H
 
-#include "map.h"
-#include "map_terrain.h"
+#include "game/map.h"
+#include "game/map_terrain.h"
 #include "map_render.h"
 
-#include "../ecs/entity.h"
+#include "ecs/entity.h"
 
 
 

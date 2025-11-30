@@ -13,7 +13,7 @@
 
 #include "ecs/components/item_comp_priv.h"
 
-#include "../../../core/text.h"
+#include "core/text.h"
 
 
 /***************************************************

@@ -13,7 +13,7 @@
 
 #include "player_ctrl_comp.h" /* pull in public player_ctrl_comp_type_t and PLAYER_CTRL_KIND_COUNT */
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
 /***************************************************
  * private defines

@@ -10,9 +10,9 @@
 
 #include "event_system.h"
 
-#include "../../entity.h"
+#include "ecs/entity.h"
 
-#include "../../../core/ui.h"
+#include "core/ui.h"
 
 /***************************************************
  * private variables

@@ -7,17 +7,17 @@
  * 
  */
 
-#include "ui.h"
+#include "core/ui.h"
 
 #include "../ecs/systems/PAGE42/event_system.h"
 
-#include "systems_dispatch.h"
+#include "core/systems_dispatch.h"
 
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/item_comp.h"
 
 #include "game/global_state.h"
-#include "../core/text.h"
+#include "core/text.h"
 
 /***************************************************
  * private defines

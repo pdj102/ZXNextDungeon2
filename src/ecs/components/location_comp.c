@@ -7,13 +7,13 @@
  * 
  */
 
-#include "location_comp.h"
+#include "ecs/components/location_comp.h"
 
-#include "../entity.h"
-#include "location_comp_priv.h"
+#include "ecs/entity.h"
+#include "ecs/components/location_comp_priv.h"
 
 #include "game/global_state.h"
-#include "../../game/map_terrain.h"
+#include "game/map_terrain.h"
 
 #include "core/util.h"
 

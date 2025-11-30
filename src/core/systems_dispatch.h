@@ -12,12 +12,12 @@
 
 #include <stdint.h>
 
-#include "../ecs/entity.h"
+#include "ecs/entity.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "../ecs/systems/PAGE42/event_system.h"
 
-#include "text.h"
+#include "core/text.h"
 
  /***************************************************
  * public types

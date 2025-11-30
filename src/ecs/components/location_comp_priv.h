@@ -15,7 +15,7 @@
 
 #include <stdint.h>
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
 /***************************************************
  * private types

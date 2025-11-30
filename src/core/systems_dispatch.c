@@ -4,7 +4,7 @@
  * @brief Game SYSTEMS_DISPATCH
  */
 
-#include "systems_dispatch.h"
+#include "core/systems_dispatch.h"
 
 #include <arch/zxn.h>
 

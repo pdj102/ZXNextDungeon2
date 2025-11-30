@@ -8,9 +8,9 @@
  * 
  */
 
-#include "map_terrain.h"
+#include "game/map_terrain.h"
 
-#include "global_state.h"
+#include "game/global_state.h"
 
 /***************************************************
  * private variables

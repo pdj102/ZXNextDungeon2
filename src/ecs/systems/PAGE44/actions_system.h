@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-#include "../../entity.h"
+#include "ecs/entity.h"
 
 #include "core/zxnext.h"
 

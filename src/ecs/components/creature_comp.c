@@ -9,11 +9,11 @@
 
 #include <arch/zxn.h>
 
-#include "../entity.h"
+#include "ecs/entity.h"
 #include "ecs/components/creature_comp_priv.h"
 
 #include "game/global_state.h"
-#include "../../core/text.h"
+#include "core/text.h"
 #include "core/util.h"
 
 

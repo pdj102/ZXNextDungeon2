@@ -9,7 +9,7 @@
 #ifndef CONTAINER_COMP_PRIV_H
 #define CONTAINER_COMP_PRIV_H
 
-#include "../entity.h"
+#include "ecs/entity.h"
 
 #include "container_comp.h" 
 

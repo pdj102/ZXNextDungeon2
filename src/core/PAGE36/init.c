@@ -14,18 +14,18 @@
 /* #include <config_zxn.h> */
 #include <stdint.h>
 
-#include "../../ecs/entity.h"
+#include "ecs/entity.h"
 
-#include "../../ecs/components/contained_comp.h"
+#include "ecs/components/contained_comp.h"
 #include "../../ecs/components/container_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/item_comp.h"
-#include "../../ecs/components/location_comp.h"
+#include "ecs/components/location_comp.h"
 #include "../../ecs/components/player_ctrl_comp.h"
 #include "../../ecs/components/renderable_comp.h"
 
-#include "../../core/systems_dispatch.h"
-#include "../../game/map_terrain.h"
+#include "core/systems_dispatch.h"
+#include "game/map_terrain.h"
 #include "../../game/map_render.h"
 #include "game/global_state.h"
 

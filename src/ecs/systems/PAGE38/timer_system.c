@@ -12,8 +12,8 @@
 
 #include <sys\types.h>
 
-#include "../../entity.h"
-#include "../../components/timer_comp.h"
+#include "ecs/entity.h"
+#include "ecs/components/timer_comp.h"
 
 #include "game/global_state.h"
 

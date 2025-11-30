@@ -9,10 +9,10 @@
 
 #include <stdlib.h>
 
-#include "../map.h"
-#include "../map_terrain.h"
+#include "game/map.h"
+#include "game/map_terrain.h"
 
-#include "../global_state.h"
+#include "game/global_state.h"
 
 /***************************************************
  * private defines

@@ -15,7 +15,7 @@
 #include <stdint.h>
 
 #include "game/global_state.h"
-#include "text.h"
+#include "core/text.h"
 #include "zxnext.h"
 
 /***************************************************
