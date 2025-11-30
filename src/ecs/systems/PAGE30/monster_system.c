@@ -7,14 +7,14 @@
 
 #include "monster_system.h"
 
-#include "../../components/creature_comp.h"
-#include "../../components/creature_comp_priv.h"
+#include "ecs/components/creature_comp.h"
+#include "ecs/components/creature_comp_priv.h"
 
 
-#include "../../../game/global_state.h"
+#include "game/global_state.h"
 
-#include "../../../core/util.h"
-#include "../../../core/zxnext.h"
+#include "core/util.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private variables

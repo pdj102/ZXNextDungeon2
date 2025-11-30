@@ -12,10 +12,10 @@
 #include "../entity.h"
 #include "location_comp_priv.h"
 
-#include "../../game/global_state.h"
+#include "game/global_state.h"
 #include "../../game/map_terrain.h"
 
-#include "../../core/util.h"
+#include "core/util.h"
 
 /***************************************************
  * public functions

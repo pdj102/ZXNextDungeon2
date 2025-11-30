@@ -13,10 +13,10 @@
 
 #include "systems_dispatch.h"
 
-#include "../ecs/components/creature_comp.h"
-#include "../ecs/components/item_comp.h"
+#include "ecs/components/creature_comp.h"
+#include "ecs/components/item_comp.h"
 
-#include "../game/global_state.h"
+#include "game/global_state.h"
 #include "../core/text.h"
 
 /***************************************************

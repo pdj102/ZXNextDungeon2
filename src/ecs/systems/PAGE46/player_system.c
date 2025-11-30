@@ -19,11 +19,11 @@
 
 #include "../../../core/systems_dispatch.h"
 
-#include "../../../game/global_state.h"
+#include "game/global_state.h"
 #include "../../../game/map.h"
 
-#include "../../../core/util.h"
-#include "../../../core/zxnext.h"
+#include "core/util.h"
+#include "core/zxnext.h"
 
 
 /***************************************************

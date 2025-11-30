@@ -10,12 +10,12 @@
 
 #include "equipment_system.h"
 
-#include "../../components/item_comp.h"
-#include "../../components/item_comp_priv.h"
+#include "ecs/components/item_comp.h"
+#include "ecs/components/item_comp_priv.h"
 
-#include "../../../game/global_state.h"
+#include "game/global_state.h"
 
-#include "../../../core/zxnext.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private variables

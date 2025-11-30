@@ -11,11 +11,11 @@
 
 #include <stdint.h>
 
-#include "creature_comp.h"
+#include "ecs/components/creature_comp.h"
 #include "../entity_priv.h"
 
-#include "../../core/util.h"
-#include "../../core/zxnext.h"
+#include "core/util.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private defines

@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include "renderable_comp.h" /* pull in public renderable_comp_type_t and renderable_KIND_COUNT */
 
-#include "../../core/zxnext.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private defines

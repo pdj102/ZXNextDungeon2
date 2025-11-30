@@ -16,9 +16,9 @@
 
 #include "entity_priv.h"
 #include "components/location_comp.h"
-#include "components/item_comp.h"
+#include "ecs/components/item_comp.h"
 
-#include "../game/global_state.h"
+#include "game/global_state.h"
 
 #include "../core/systems_dispatch.h"
 #include "../core/text.h"

@@ -11,9 +11,9 @@
 
 #include <stdint.h>
 
-#include "item_comp.h"
+#include "ecs/components/item_comp.h"
 
-#include "../../core/zxnext.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private defines

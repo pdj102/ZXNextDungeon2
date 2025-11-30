@@ -16,7 +16,7 @@
 #include "../entity.h"
 
 #include "../../core/text.h"
-#include "../../core/zxnext.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * public defines

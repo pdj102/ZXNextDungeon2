@@ -8,16 +8,16 @@
  * 
  */
 
-#include "item_comp.h"
+#include "ecs/components/item_comp.h"
 
 #include <arch/zxn.h>
 
-#include "../entity.h"
-#include "item_comp_priv.h"
+#include "ecs/entity.h"
+#include "ecs/components/item_comp_priv.h"
 
-#include "../../game/global_state.h"
-#include "../../core/util.h"
-#include "../../core/zxnext.h"
+#include "game/global_state.h"
+#include "core/util.h"
+#include "core/zxnext.h"
 
 
 /***************************************************

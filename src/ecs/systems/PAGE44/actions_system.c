@@ -14,10 +14,10 @@
 
 #include "../../components/location_comp.h"
 
-#include "../../../game/global_state.h"
+#include "game/global_state.h"
 
 #include "../../../core/systems_dispatch.h"
-#include "../../../core/util.h"
+#include "core/util.h"
 
 
 /***************************************************

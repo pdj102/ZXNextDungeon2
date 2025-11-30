@@ -20,7 +20,7 @@
 #include "PAGE34/dungeon_gen.h"
 #include "global_state.h"
 
-#include "../core/util.h"
+#include "core/util.h"
 
 /***************************************************
  * private types

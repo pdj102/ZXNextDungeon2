@@ -15,7 +15,7 @@
 #include "../../entity.h"
 #include "../../components/timer_comp.h"
 
-#include "../../../game/global_state.h"
+#include "game/global_state.h"
 
 
 /***************************************************

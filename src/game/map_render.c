@@ -14,7 +14,7 @@
 
 #include "global_state.h"
 
-#include "../core/zxnext.h"
+#include "core/zxnext.h"
 
 /***************************************************
  * private types

@@ -11,7 +11,7 @@
 #ifndef ITEM_BASE_H
 #define ITEM_BASE_H
 
-#include "../../components/item_comp_priv.h"
+#include "ecs/components/item_comp_priv.h"
 
 #include "../../../core/text.h"
 

@@ -15,8 +15,8 @@
 #include "../../entity.h"
 #include "../../components/contained_comp.h"
 
-#include "../../../core/util.h"
-#include "../../../game/global_state.h"
+#include "core/util.h"
+#include "game/global_state.h"
 
 
 
