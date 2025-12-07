@@ -53,6 +53,14 @@ const monster_base_t monster_bases[CREATURE_KIND_COUNT] = {
     /* MONSTER_CLASS_UNDEAD */
 };
 
+const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] = {
+    [CREATURE_NONE] = { .tile = {' ', 0}},
+    [CREATURE_RAT] = { .tile = { 'R', 0}},
+    [CREATURE_COMMONER] = { .tile = { 'H', 0}},
+    [CREATURE_PLAYER] = { .tile = { '@', 0}},
+    [CREATURE_WITHERWEED] = { .tile = { 'P', 0}}
+};
+
 /***************************************************
  * public functions
  ***************************************************/
@@ -94,9 +102,8 @@ const monster_base_t monster_bases[CREATURE_KIND_COUNT] = {
     g.creature_components[id].melee = monster_bases[kind].melee;
     g.creature_components[id].ranged = monster_bases[kind].ranged;    
 
-    /* Add renderable component - use creature tile */
-    monster_system_get_tile(id, &tile);
-    if(renderable_add(id, &tile) == 0) {
+    /* Add renderable component  */
+    if(renderable_add(id, monster_renderable_base[kind].tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

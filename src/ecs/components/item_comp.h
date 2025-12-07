@@ -61,26 +61,31 @@ typedef enum {
     ITEM_KIND_COUNT
 } item_kind_t;
 
-/* Item class head*/
-typedef struct {
-    int8_t ac_mod;
-} head_t;
+ typedef enum {
+    EQUIP_NONE = 0,
+    EQUIP_HEAD,
+    EQUIP_NECK,
+    EQUIP_BODY,
+    EQUIP_HANDS,
+    EQUIP_FINGER,
+    EQUIP_FEET,
+    EQUIP_LEGS,
+    EQUIP_MELEE,
+    EQUIP_RANGED
+} equip_slot_t;
 
-/* Item class necklace*/
 typedef struct {
-    int8_t ac_mod;
-} necklace_t;
+    equip_slot_t slot;
+} equipable_comp_t;
 
-/* Item class melee*/
 typedef struct {
     attack_type_t attack_type;
     dice_roll_t damage_roll;
     damage_type_t damage_type;
     int8_t hit_mod;     /* to hit modifier */
     int8_t damage_mod;  /* to damage modifier */
-} melee_t;
+} melee_comp_t;
 
-/* Item class ranged*/
 typedef struct {
     attack_type_t attack_type;
     dice_roll_t damage_roll;
@@ -88,25 +93,21 @@ typedef struct {
     uint8_t range;
     int8_t hit_mod;     /* to hit modifier */
     int8_t damage_mod;  /* to damage modifier */
-} ranged_t;
+} ranged_comp_t;
 
 
 
 /* Item component data per entity */
 typedef struct {
-    item_class_t class;  /* type of item (e.g. weapon, armor, consumable) */
     item_kind_t kind;    /* index into item_comp_bases[] */
     uint8_t quantity;    /* stack size */
-    union {
-        head_t head;
-        necklace_t necklace;
-        melee_t melee;
-        ranged_t ranged;
-    } item_data;
 } item_comp_t;
 
 
-typedef item_comp_t item_components_t[MAX_ENTITIES]; /* item component data */
+typedef item_comp_t item_components_t[MAX_ENTITIES]; 
+typedef equipable_comp_t equip_components_t[MAX_ENTITIES];
+typedef melee_comp_t melee_components_t[MAX_ENTITIES]; 
+typedef ranged_comp_t ranged_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes
@@ -114,7 +115,13 @@ typedef item_comp_t item_components_t[MAX_ENTITIES]; /* item component data */
 void item_init(void);
 
 uint8_t item_add(entity_id_t entity, item_kind_t type, uint8_t quantity);
+uint8_t equip_add(entity_id_t entity, equip_slot_t slot);
+uint8_t melee_add(entity_id_t entity, attack_type_t attack_type, dice_roll_t damage_roll, int8_t hit_mod, int8_t damage_mod);
+uint8_t ranged_add(entity_id_t entity, attack_type_t attack_type, uint8_t range, dice_roll_t damage_roll, int8_t hit_mod, int8_t damage_mod);
 
 void item_remove(entity_id_t entity);
+void equip_remove(entity_id_t entity);
+void melee_remove(entity_id_t entity);
+void ranged_remove(entity_id_t entity);
 
 #endif // ITEM_COMP_H

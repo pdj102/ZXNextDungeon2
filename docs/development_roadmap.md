@@ -308,7 +308,7 @@
 * [ ] Separate weapon's to hit and to damage bonus from creature's to hit and to damage bonus
 * [ ] Implement ability to equip and unequip melee weapons
 * [ ] Implement `actions_system_try_melee_attack()` - use equipped melee or default melee if not
-* [ ] Implement `actions_system_try_melee_attack()`- add 
+* [ ] Implement `actions_system_try_melee_attack()`- add
 
 [ ] *End result: Player can equip a melee weapon and melee attack stats are updated.*
 

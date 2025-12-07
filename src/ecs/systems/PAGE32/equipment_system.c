@@ -29,6 +29,16 @@ const equipment_base_t equipment_bases[ITEM_KIND_COUNT] = {
     [ITEM_KEY]              = { .class=ITEM_CLASS_KEY,      .name="Iron key",       {.tile_id='k', .tile_attr=0},   .weight=1, .value=0, .flags=0 },
 };
 
+const renderable_comp_t equipment_renderable_base[ITEM_KIND_COUNT] = {
+    [ITEM_NONE] = { .tile = {' ', 0}},
+    [ITEM_CLUB] = { .tile = { 's', 0}},
+    [ITEM_SHORT_SWORD] = { .tile = { 's', 0}},
+    [ITEM_LEATHER_ARMOUR] = { .tile = { 'a', 0}},
+    [ITEM_SHIELD] = { .tile = { 'a', 0}},
+    [ITEM_POTION_OF_HEALING] = { .tile = { 'p', 0}},
+    [ITEM_KEY] = { .tile = { 'k', 0}}
+};
+
 /***************************************************
  * public functions
  ***************************************************/
@@ -52,9 +62,8 @@ entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
         return ENTITY_ID_INVALID;
     }
 
-    /* Add renderable component - use item tile */
-    equipment_system_get_tile(id, &tile);
-    if(renderable_add(id, &tile) == 0) {
+    /* Add renderable component  */
+    if(renderable_add(id, equipment_renderable_base[kind].tile) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }

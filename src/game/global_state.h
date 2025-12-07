@@ -16,7 +16,7 @@
 #include "ecs/entity_priv.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/location_comp_priv.h"
-#include "ecs/components/renderable_comp_priv.h"
+#include "ecs/components/renderable_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/container_comp_priv.h"
 #include "ecs/components/contained_comp_priv.h"
@@ -39,7 +39,12 @@ typedef struct
 {
     /* ECS */
     entity_components_t entity_components; /* entity data */
+
     item_components_t item_components; /* item component data */
+    equip_components_t equip_components; /* equipable component data */
+    melee_components_t melee_components; /* melee attack component data */
+    ranged_components_t ranged_components; /* ranged attack component data */
+
     location_components_t location_components; /* location component data */
     renderable_components_t renderable_components; /* sprite component data */
 

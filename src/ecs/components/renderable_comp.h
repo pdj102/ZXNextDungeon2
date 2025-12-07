@@ -23,12 +23,18 @@
 /***************************************************
  * public types
  ***************************************************/
+/* renderable component data per entity */
+typedef struct {
+    zxnext_tile_t tile;   /* tile to use for this renderable */
+} renderable_comp_t;
+
+typedef renderable_comp_t renderable_components_t[MAX_ENTITIES]; /* renderable component data */
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 void renderable_init(void);
-bool_t renderable_add(entity_id_t entity, const zxnext_tile_t *tile_p);
+bool_t renderable_add(entity_id_t entity, const zxnext_tile_t tile);
 void renderable_remove(entity_id_t entity);
 
 #endif // renderable_COMP_H
