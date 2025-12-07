@@ -10,7 +10,6 @@
 #include <arch/zxn.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/creature_comp_priv.h"
 
 #include "game/global_state.h"
 
@@ -50,6 +49,7 @@ const turn_tick_t creature_speeds_conversion[SPEED_COUNT] = {
    [SPEED_60FT] = {0, 5}
 };
 
+
 /***************************************************
  * public functions
  ***************************************************/
@@ -76,7 +76,7 @@ void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks)
 {
     creature_speed_t speed; 
 
-    speed = g.creature_components[id].speed;
+    speed = g.creature_components[id].stats.speed;
 
     turns_ticks->turns = creature_speeds_conversion[speed].turns;
     turns_ticks->ticks = creature_speeds_conversion[speed].ticks;

@@ -13,6 +13,8 @@
 
 #include <stdint.h>
 
+#include "core/util.h"
+
 #include "ecs/entity.h"
 
 /***************************************************
@@ -58,6 +60,53 @@ typedef enum {
     ITEM_KEY,
     ITEM_KIND_COUNT
 } item_kind_t;
+
+/* Item class head*/
+typedef struct {
+    int8_t ac_mod;
+} head_t;
+
+/* Item class necklace*/
+typedef struct {
+    int8_t ac_mod;
+} necklace_t;
+
+/* Item class melee*/
+typedef struct {
+    attack_type_t attack_type;
+    dice_roll_t damage_roll;
+    damage_type_t damage_type;
+    int8_t hit_mod;     /* to hit modifier */
+    int8_t damage_mod;  /* to damage modifier */
+} melee_t;
+
+/* Item class ranged*/
+typedef struct {
+    attack_type_t attack_type;
+    dice_roll_t damage_roll;
+    damage_type_t damage_type;
+    uint8_t range;
+    int8_t hit_mod;     /* to hit modifier */
+    int8_t damage_mod;  /* to damage modifier */
+} ranged_t;
+
+
+
+/* Item component data per entity */
+typedef struct {
+    item_class_t class;  /* type of item (e.g. weapon, armor, consumable) */
+    item_kind_t kind;    /* index into item_comp_bases[] */
+    uint8_t quantity;    /* stack size */
+    union {
+        head_t head;
+        necklace_t necklace;
+        melee_t melee;
+        ranged_t ranged;
+    } item_data;
+} item_comp_t;
+
+
+typedef item_comp_t item_components_t[MAX_ENTITIES]; /* item component data */
 
 /***************************************************
  * public function prototypes

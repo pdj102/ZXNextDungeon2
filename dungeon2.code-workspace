@@ -56,7 +56,9 @@
 			"string.h": "c",
 			"systems_dispatch.h": "c",
 			"monster_base.h": "c",
-			"equipment_base.h": "c"
+			"equipment_base.h": "c",
+			"monster_system.h": "c",
+			"equipment_system.h": "c"
 		},
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",

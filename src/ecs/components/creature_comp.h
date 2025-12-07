@@ -25,6 +25,25 @@
 /***************************************************
  * public types
  ***************************************************/
+
+typedef enum {
+    CREATURE_CLASS_NONE = 0,
+    CREATURE_CLASS_ABERRATIONS,
+    CREATURE_CLASS_BEASTS,
+    CREATURE_CLASS_CELESTIALS,
+    CREATURE_CLASS_CONSTRUCTS,
+    CREATURE_CLASS_DRAGONS,
+    CREATURE_CLASS_ELEMENTALS,
+    CREATURE_CLASS_FEY,
+    CREATURE_CLASS_FIENDS,
+    CREATURE_CLASS_GIANTS,
+    CREATURE_CLASS_HUMANOIDS,
+    CREATURE_CLASS_MONSTROSITIES,
+    CREATURE_CLASS_OOZES,
+    CREATURE_CLASS_PLANTS,
+    CREATURE_CLASS_UNDEAD
+} creature_class_t;
+
 typedef enum creature_kind_e {
     CREATURE_NONE = 0,
    /* CREATURE_CLASS_ABERRATIONS */
@@ -63,6 +82,39 @@ typedef enum creature_speed_e {
     SPEED_60FT,
     SPEED_COUNT
 } creature_speed_t;
+
+/* Creature default attack stats */
+typedef struct creature_attack_s {
+    attack_type_t attack_type;
+    dice_roll_t damage_roll;
+    damage_type_t damage_type;
+    uint8_t range;
+    int8_t hit_mod;
+    int8_t damage_mod; 
+} creature_attack_t;
+
+/* Creature stats block */
+typedef struct {
+    int8_t ac;
+    int8_t cur_hp;
+    int8_t max_hp;
+    creature_speed_t speed;
+    int8_t str;
+    int8_t dex;
+    int8_t con;
+    int8_t inte;
+    int8_t wis;
+    int8_t cha;
+} creature_stats_t;
+
+typedef struct {
+    creature_kind_t kind;   /* index into creature_comp_bases[] */
+    creature_stats_t stats; /* current derived stats */
+    creature_attack_t melee;
+    creature_attack_t ranged;
+} creature_comp_t;
+
+typedef creature_comp_t creature_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes

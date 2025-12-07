@@ -24,6 +24,12 @@
  * private variables
  * ***************************************************/
 
+ const int8_t modifiers[] = { -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+/***************************************************
+ * private function prototypes
+ ***************************************************/
+ int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type);
 
 /***************************************************
  * public functions
@@ -144,7 +150,10 @@ bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
 
 }
 
-bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target)
+
+
+
+bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     int8_t attack_roll;
     int8_t damage_roll;
@@ -153,31 +162,30 @@ bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target)
     util_assert(entity_has_component(target, COMPONENT_LOCATION | COMPONENT_CREATURE));
     
     /* actor has creature, contained and location */
-    util_assert(entity_has_component(creature, COMPONENT_CREATURE | COMPONENT_LOCATION));
+    util_assert(entity_has_component(attacker, COMPONENT_CREATURE | COMPONENT_LOCATION));
     
     /* check target within melee attack range */
 
     /* try attack*/
 
-    /* attack roll calculation = 1d20 + to_hit_bonus (which is weapon mod + ability modifer + proficiency bonus) */
-    attack_roll = util_roll_dice(DICE_1D20);
-    attack_roll += g.creature_components[creature].melee.to_hit;
+    /* attack roll */
+    attack_roll = calc_attack_roll(attacker, ATTACK_MELEE);
     
     /* successful hit if attack roll is greater or equal to target's armour class */
-    if (attack_roll >= g.creature_components[target].ac)
+    if (attack_roll >= g.creature_components[target].stats.ac)
     {
-        /* damage roll calculation = weapon dice roll + to_damage_bonus (which is weapon mod + ability modifer + proficiency bonus )*/
-        damage_roll = util_roll_dice(g.creature_components[creature].melee.damage_roll);
-        damage_roll += g.creature_components[creature].melee.to_damage;
+        /* damage roll calculation = weapon dice roll +damage_mod_bonus (which is weapon mod + ability modifer + proficiency bonus )*/
+        damage_roll = util_roll_dice(g.creature_components[attacker].melee.damage_roll);
+        damage_roll += g.creature_components[attacker].melee.damage_mod;
 
-        system_event_emit(EVENT_ATTACKED, creature, target, 1);
+        system_event_emit(EVENT_ATTACKED, attacker, target, 1);
 
-        actions_system_try_take_damage(target, damage_roll, g.creature_components[creature].melee.damage_type);
+        actions_system_try_take_damage(target, damage_roll, g.creature_components[attacker].melee.damage_type);
         return 1;
     }
     else
     {
-        system_event_emit(EVENT_ATTACKED, creature, target, 0);
+        system_event_emit(EVENT_ATTACKED, attacker, target, 0);
         return 0;
     }
 }
@@ -185,25 +193,18 @@ bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target)
 int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
 {
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
-    if (g.creature_components[creature].cur_hp <= damage)
+    if (g.creature_components[creature].stats.cur_hp <= damage)
     {
-        g.creature_components[creature].cur_hp = 0;
+        g.creature_components[creature].stats.cur_hp = 0;
         actions_system_try_die(creature);
     }
     else
     {
-        g.creature_components[creature].cur_hp -= damage;
+        g.creature_components[creature].stats.cur_hp -= damage;
     }
     
     return damage;
 }
-
-
-
-
-
-
-
 
  bool_t actions_system_try_move(entity_id_t entity, int8_t dx, int8_t dy)
  {
@@ -237,4 +238,76 @@ bool_t actions_system_try_quaff(entity_id_t creature, entity_id_t item)
 bool_t actions_system_try_unequip(entity_id_t creature, entity_id_t item)
 {
 
+}
+
+
+/*
+ * @brief Calculate the attack roll for a given creature.
+ *
+ * attack_roll = d20 + attack modifier
+ * 
+ * For a monster the attack modifier is precalculated as melee.hit_mod or ranged.hit_mod
+ * 
+ * For the player attack modifier = ability_modifier + proficiency_bonus + weapon_bonus (if applicable)
+ */
+int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type)
+{
+    int8_t attack_mod       = 0;
+    int8_t ability_mod      = 0;
+    int8_t proficiency_mod  = 0;
+    int8_t weapon_bonus     = 0;
+    int8_t situational_mod  = 0;
+    int8_t d20;
+
+    /* Step 1 - Roll 1d20 */
+    d20 = util_roll_dice(DICE_1D20);
+
+    /* Is the attacker the player?*/
+    if (attacker == g.player.id)
+    {
+        /* Calculate player attack roll */
+        /* Step 2 - Choose the correct ability modifier (STR or DEX) */
+        switch (attack_type)
+        {
+            case ATTACK_MELEE:
+            ability_mod = modifiers[g.creature_components[attacker].stats.str];
+            break;
+
+            case ATTACK_RANGED:
+            ability_mod = modifiers[g.creature_components[attacker].stats.dex];
+            break;
+
+            default:
+            ability_mod = 0;
+        }
+
+        /* Step 3 - Choose the correct proficiency modifier */
+        /* TODO */
+
+        /* Step 4 - If using a weapon determine weapon bonus*/
+        if (g.player.hands != ENTITY_ID_INVALID)
+        {
+            /* TODO implement getting the weapon's attack bonus*/
+        }
+        
+        return d20 + ability_mod + proficiency_mod + weapon_bonus + situational_mod;
+    }
+    else
+    {
+        /* Calculate monster attack roll */
+        switch (attack_type)
+        {
+            case ATTACK_MELEE:
+            attack_mod = g.creature_components[attacker].melee.hit_mod;
+            break;
+
+            case ATTACK_RANGED:
+            attack_mod = g.creature_components[attacker].ranged.hit_mod;
+            break;
+
+            default:
+            attack_mod = 0;
+        }
+        return d20 + attack_mod;
+    }    
 }

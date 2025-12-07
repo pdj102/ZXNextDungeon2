@@ -13,7 +13,6 @@
 #include <arch/zxn.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/item_comp_priv.h"
 
 #include "game/global_state.h"
 #include "core/util.h"

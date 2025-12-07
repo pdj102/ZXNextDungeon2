@@ -14,10 +14,10 @@
 
 /* Special case - include private headers to define the global game state structure */
 #include "ecs/entity_priv.h"
-#include "ecs/components/item_comp_priv.h"
+#include "ecs/components/item_comp.h"
 #include "ecs/components/location_comp_priv.h"
 #include "ecs/components/renderable_comp_priv.h"
-#include "ecs/components/creature_comp_priv.h"
+#include "ecs/components/creature_comp.h"
 #include "ecs/components/container_comp_priv.h"
 #include "ecs/components/contained_comp_priv.h"
 #include "ecs/components/player_ctrl_comp_priv.h"
@@ -42,7 +42,9 @@ typedef struct
     item_components_t item_components; /* item component data */
     location_components_t location_components; /* location component data */
     renderable_components_t renderable_components; /* sprite component data */
-    creature_components_t creature_components; /* creature component data */
+
+    creature_components_t creature_components;
+
     container_components_t container_components; /* container component data */
     contained_components_t contained_components; /* contained component data */
     player_ctrl_comp_t player; /* player component data */

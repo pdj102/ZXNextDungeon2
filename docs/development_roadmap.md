@@ -168,6 +168,7 @@
 * [✅] Add `event_item_equipped`
 * [ ] Add `event_item_unequipped`
 * [ ] Automatically try unequipping an item from a slot when equipping
+* [ ] Manage dropping equiped items
 * [ ] Destroy equipment component on entity destroy
 * [ ] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
 
@@ -297,13 +298,17 @@
 
 ---
 
-### 🪜 **Milestone 203 — Melee weapons**
+### 🪜 **Milestone 203 — Melee combat**
 
-> *Goal: Player can weild melee weapons*
+> *Goal: Implement melee combat*
 
-* [ ] Implement melee weapon items - dagger & sword
+* [ ] Implement melee weapon equipment - dagger & sword
+* [ ] Implement melee attack component
+* [ ] Implement default melee attack component for creatures
+* [ ] Separate weapon's to hit and to damage bonus from creature's to hit and to damage bonus
 * [ ] Implement ability to equip and unequip melee weapons
-* [ ] Implement player stat recalculation for melee weapons
+* [ ] Implement `actions_system_try_melee_attack()` - use equipped melee or default melee if not
+* [ ] Implement `actions_system_try_melee_attack()`- add 
 
 [ ] *End result: Player can equip a melee weapon and melee attack stats are updated.*
 
