@@ -96,19 +96,67 @@ bool_t actions_system_try_equip(entity_id_t creature, entity_id_t item)
         return 0;
     }
 
-    switch (system_equipment_get_class(g.item_components[item].kind))
+    /* check item is equipable */
+    if (!entity_has_component(item, COMPONENT_EQUIP))
     {
-        case ITEM_CLASS_MELEE:
+        return 0;
+    }
+
+    switch (g.equip_components[item].slot)
+    {
+        case EQUIP_HEAD:
+        {
+            g.player.head = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIP_NECK:
+        {
+            g.player.neck = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }        
+        case EQUIP_BODY:
+        {
+            g.player.body = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }        
+        case EQUIP_HANDS:
         {
             g.player.hands = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }
-        case ITEM_CLASS_RING:
+        case EQUIP_FINGER:
         {
-            /* TODO left and rgith fingers */
+            /* TODO left and right fingers */
             g.player.left_finger = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+        }
+        case EQUIP_FEET:
+        {
+            g.player.feet = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIP_LEGS:
+        {
+            g.player.legs = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIP_MELEE:
+        {
+            g.player.melee_weapon = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIP_RANGED:
+        {
+            g.player.ranged_weapon = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
         }
         default:
         {

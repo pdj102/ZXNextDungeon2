@@ -49,6 +49,7 @@ typedef struct
     renderable_components_t renderable_components; /* sprite component data */
 
     creature_components_t creature_components;
+    creature_stats_components_t creature_stat_components;
 
     container_components_t container_components; /* container component data */
     contained_components_t contained_components; /* contained component data */
@@ -75,4 +76,3 @@ typedef struct
   __at (0x0000) static global_state_t g; /* global state */
  
 #endif /* GLOBAL_STATE_H */
-

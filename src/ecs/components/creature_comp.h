@@ -105,23 +105,22 @@ typedef struct {
     int8_t inte;
     int8_t wis;
     int8_t cha;
-} creature_stats_t;
+} creature_stats_comp_t;
 
 typedef struct {
     creature_kind_t kind;   /* index into creature_comp_bases[] */
-    creature_stats_t stats; /* current derived stats */
-    creature_attack_t melee;
-    creature_attack_t ranged;
 } creature_comp_t;
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; 
+typedef creature_stats_comp_t creature_stats_components_t[MAX_ENTITIES];
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 void creature_init(void);
 
-uint8_t creature_add(entity_id_t entity);
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind);
+uint8_t stats_add(entity_id_t entity);
 
 void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks);
 

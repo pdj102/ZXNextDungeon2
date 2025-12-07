@@ -61,12 +61,24 @@ void creature_init(void)
     }
 }
 
-uint8_t creature_add(entity_id_t entity)
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
+    g.creature_components[entity].kind = kind; /* set entity creature kind */
+
     entity_set_component(entity, COMPONENT_CREATURE); /* set entity creature component mask */
+
+    return 1; /* success */
+}
+
+uint8_t stats_add(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_STATS)); /* entity must not have creature component */
+
+    entity_set_component(entity, COMPONENT_STATS); /* set entity creature component mask */
 
     return 1; /* success */
 }
@@ -76,7 +88,7 @@ void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks)
 {
     creature_speed_t speed; 
 
-    speed = g.creature_components[id].stats.speed;
+    speed = g.creature_stat_components[id].speed;
 
     turns_ticks->turns = creature_speeds_conversion[speed].turns;
     turns_ticks->ticks = creature_speeds_conversion[speed].ticks;

@@ -31,6 +31,7 @@
 #define COMPONENT_EQUIP 1 << 9
 #define COMPONENT_MELEE 1 << 10
 #define COMPONENT_RANGED 1 << 11
+#define COMPONENT_STATS 1 << 12
 
 #define FLAG_NONE 0
 #define FLAG_IN_USE 1 << 0
