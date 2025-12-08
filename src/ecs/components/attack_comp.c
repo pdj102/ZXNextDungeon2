@@ -1,0 +1,79 @@
+/**
+ * @file attack_comp.c
+ * @author Paul Johnson
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
+#include "ecs/components/attack_comp.h"
+
+#include <arch/zxn.h>
+
+#include "ecs/entity.h"
+
+#include "game/global_state.h"
+#include "core/util.h"
+
+
+/***************************************************
+ * private variables
+ * ***************************************************/
+
+
+/***************************************************
+ * public functions
+ ***************************************************/
+void attack_init(void)
+{
+
+}
+
+uint8_t melee_add(entity_id_t entity, attack_comp_t *attack_p)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_MELEE)); 
+
+    g.melee_components[entity].damage_type = attack_p->damage_type;
+    g.melee_components[entity].damage_roll = attack_p->damage_roll;
+    g.melee_components[entity].damage_mod = attack_p->damage_mod;
+    g.melee_components[entity].hit_mod = attack_p->hit_mod;
+    g.melee_components[entity].range = 1;
+
+    entity_set_component(entity, COMPONENT_MELEE); 
+
+    return 1; /* success */
+}
+
+uint8_t ranged_add(entity_id_t entity, attack_comp_t *attack_p)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_RANGED)); 
+
+    g.melee_components[entity].damage_type = attack_p->damage_type;
+    g.melee_components[entity].damage_roll = attack_p->damage_roll;
+    g.melee_components[entity].damage_mod = attack_p->damage_mod;
+    g.melee_components[entity].hit_mod = attack_p->hit_mod;
+    g.melee_components[entity].range = attack_p->range;
+
+    entity_set_component(entity, COMPONENT_RANGED); 
+
+    return 1; /* success */    
+}
+
+void melee_remove(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    entity_clear_component(entity, COMPONENT_MELEE); 
+}
+
+void ranged_remove(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    entity_clear_component(entity, COMPONENT_RANGED); 
+}
+
+ /***************************************************
+ * private functions
+ ***************************************************/

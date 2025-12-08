@@ -471,20 +471,6 @@ void system_monster_print_name(text_window_t *win, creature_kind_t kind)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 
 }
-
-void system_monster_get_tile(entity_id_t id, zxnext_tile_t *tile)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM); /* Map creature base code into ZX Spectrum 8k MMU slot 6 */    
-
-    monster_system_get_tile(id, tile);
-
-    /* restore previous bank */
-    ZXN_WRITE_MMU6(current_bank);    
-}
-
 /* Equipment system*/
 
 void system_equipment_init(void)
@@ -525,19 +511,6 @@ void system_equipment_print_name(text_window_t *win, item_kind_t kind)
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 
-}
-
-void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);     /* Map item base code into ZX Spectrum 8k MMU slot 6 */  
-    
-    equipment_system_get_tile(id, tile);
-
-    /* restore previous bank */
-    ZXN_WRITE_MMU6(current_bank);   
 }
 
 item_class_t system_equipment_get_class(item_kind_t kind)

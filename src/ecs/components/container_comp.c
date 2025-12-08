@@ -7,7 +7,7 @@
 
 #include "container_comp.h"
 
-#include "ecs/components/container_comp_priv.h"
+#include "ecs/components/container_comp.h"
 
 #include "ecs/entity.h"
 

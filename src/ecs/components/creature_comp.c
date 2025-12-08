@@ -61,22 +61,34 @@ void creature_init(void)
     }
 }
 
-uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
     g.creature_components[entity].kind = kind; /* set entity creature kind */
+    g.creature_components[entity].challenge = challenge; /* set entity creature kind */
 
     entity_set_component(entity, COMPONENT_CREATURE); /* set entity creature component mask */
 
     return 1; /* success */
 }
 
-uint8_t stats_add(entity_id_t entity)
+uint8_t stats_add(entity_id_t entity, creature_stats_comp_t *stats_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_STATS)); /* entity must not have creature component */
+
+    g.creature_stat_components[entity].ac = stats_p->ac;
+    g.creature_stat_components[entity].cur_hp = stats_p->cur_hp;
+    g.creature_stat_components[entity].max_hp = stats_p->max_hp;
+    g.creature_stat_components[entity].speed = stats_p->speed;
+    g.creature_stat_components[entity].str = stats_p->str;
+    g.creature_stat_components[entity].dex = stats_p->dex;
+    g.creature_stat_components[entity].con = stats_p->con;    
+    g.creature_stat_components[entity].inte = stats_p->inte;
+    g.creature_stat_components[entity].wis = stats_p->wis;
+    g.creature_stat_components[entity].cha = stats_p->cha;
 
     entity_set_component(entity, COMPONENT_STATS); /* set entity creature component mask */
 

@@ -10,7 +10,6 @@
 
 #include "ecs/components/contained_comp.h"
 
-#include "ecs/components/contained_comp_priv.h"
 #include "ecs/entity.h"
 
 #include "game/global_state.h"

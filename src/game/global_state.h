@@ -14,12 +14,13 @@
 
 /* Special case - include private headers to define the global game state structure */
 #include "ecs/entity_priv.h"
+#include "ecs/components/attack_comp.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/location_comp_priv.h"
 #include "ecs/components/renderable_comp.h"
 #include "ecs/components/creature_comp.h"
-#include "ecs/components/container_comp_priv.h"
-#include "ecs/components/contained_comp_priv.h"
+#include "ecs/components/container_comp.h"
+#include "ecs/components/contained_comp.h"
 #include "ecs/components/player_ctrl_comp_priv.h"
 #include "ecs/components/timer_comp_priv.h"
 

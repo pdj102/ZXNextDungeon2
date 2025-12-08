@@ -83,16 +83,6 @@ typedef enum creature_speed_e {
     SPEED_COUNT
 } creature_speed_t;
 
-/* Creature default attack stats */
-typedef struct creature_attack_s {
-    attack_type_t attack_type;
-    dice_roll_t damage_roll;
-    damage_type_t damage_type;
-    uint8_t range;
-    int8_t hit_mod;
-    int8_t damage_mod; 
-} creature_attack_t;
-
 /* Creature stats block */
 typedef struct {
     int8_t ac;
@@ -109,6 +99,7 @@ typedef struct {
 
 typedef struct {
     creature_kind_t kind;   /* index into creature_comp_bases[] */
+    uint8_t challenge;      /* challenge rating */
 } creature_comp_t;
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; 
@@ -119,11 +110,12 @@ typedef creature_stats_comp_t creature_stats_components_t[MAX_ENTITIES];
  ***************************************************/
 void creature_init(void);
 
-uint8_t creature_add(entity_id_t entity, creature_kind_t kind);
-uint8_t stats_add(entity_id_t entity);
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge);
+uint8_t stats_add(entity_id_t entity, creature_stats_comp_t *stats_p);
 
 void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks);
 
 void creature_remove(entity_id_t entity);
+uint8_t stats_remove(entity_id_t entity);
 
 #endif // CREATURE_COMP_H

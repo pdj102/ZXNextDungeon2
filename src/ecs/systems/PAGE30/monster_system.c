@@ -42,21 +42,12 @@ const creature_stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 };
 
 
-/* TODO Add monster_melee_base here*/
-/* TODO Add monster_ranged_base here*/
-
-
- const monster_base_t monster_bases[CREATURE_KIND_COUNT] = {
-   
-    [CREATURE_NONE] = {.name = "None", .tile = {' ', 0}, .c_class = CREATURE_CLASS_NONE, .ac = 0, .hp = 0, .speed = SPEED_NONE, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0, .challenge = 0, 
-    .melee = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0}},
+/* Monster default melee attack*/
+ const attack_comp_t monster_melee_base[CREATURE_KIND_COUNT] = {
+    [CREATURE_NONE] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
-   /* MONSTER_CLASS_BEASTS */
-    [CREATURE_RAT] = {.name = "Rat", .tile = {'R', 0}, .c_class = CREATURE_CLASS_BEASTS, .ac = 10, .hp = 1, .speed = SPEED_30FT, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4, .challenge = 10, 
-    .melee = { .damage_roll = DICE_1D4, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
-    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0}},
-
+   /* MONSTER_CLASS_BEASTS */    
+    [CREATURE_RAT] = {.damage_roll = DICE_1D4, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -64,21 +55,82 @@ const creature_stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FEY */
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
-   /* MONSTER_CLASS_HUMANOIDS */
-    [CREATURE_COMMONER] = {.name = "Commoner", .tile = {'H', 0}, .c_class = CREATURE_CLASS_HUMANOIDS, .ac = 10, .hp = 4, .speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10, .challenge = 10, 
-    .melee = { .damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
-    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0}},
-    [CREATURE_PLAYER] = {.name = "You", .tile = {'@', 0}, .c_class = CREATURE_CLASS_HUMANOIDS, .ac = 10, .hp = 4, .speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10, .challenge = 10, 
-    .melee = { .damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
-    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0}},    
-
+   /* MONSTER_CLASS_HUMANOIDS */    
+    [CREATURE_COMMONER] = {.damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
-    /* MONSTER_CLASS_PLANTS */
-    [CREATURE_WITHERWEED] = {.name = "Witherweed", .tile = {'P', 0}, .c_class = CREATURE_CLASS_PLANTS, .ac = 5, .hp = 22, .speed = SPEED_5FT, .str = 3, .dex = 1, .con = 10, .inte = 1, .wis = 3, .cha = 1, .challenge = 100, 
-    .melee = { .damage_roll = DICE_1D4, .damage_type = DAMAGE_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
-    .ranged = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0}},    
+    /* MONSTER_CLASS_PLANTS */    
+    [CREATURE_WITHERWEED] = {.damage_roll = DICE_1D4, .damage_type = DAMAGE_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    /* MONSTER_CLASS_UNDEAD */    
+};
 
+/* Monster default ranged attack*/
+ const attack_comp_t monster_ranged_base[CREATURE_KIND_COUNT] = {
+    [CREATURE_NONE] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+   /* MONSTER_CLASS_ABERRATIONS */
+   /* MONSTER_CLASS_BEASTS */    
+    [CREATURE_RAT] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+   /* MONSTER_CLASS_CELESTIALS */
+   /* MONSTER_CLASS_CONSTRUCTS */
+   /* MONSTER_CLASS_DRAGONS */
+   /* MONSTER_CLASS_ELEMENTALS */
+   /* MONSTER_CLASS_FEY */
+   /* MONSTER_CLASS_FIENDS */
+   /* MONSTER_CLASS_GIANTS */
+   /* MONSTER_CLASS_HUMANOIDS */    
+    [CREATURE_COMMONER] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* MONSTER_CLASS_MONSTROSITIES */
+    /* MONSTER_CLASS_OOZES */
+    /* MONSTER_CLASS_PLANTS */    
+    [CREATURE_WITHERWEED] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* MONSTER_CLASS_UNDEAD */    
+};
+
+const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] = 
+{
+    [CREATURE_NONE] = 0,
+   /* MONSTER_CLASS_ABERRATIONS */
+   /* MONSTER_CLASS_BEASTS */      
+    [CREATURE_RAT] = 10,
+   /* MONSTER_CLASS_CELESTIALS */
+   /* MONSTER_CLASS_CONSTRUCTS */
+   /* MONSTER_CLASS_DRAGONS */
+   /* MONSTER_CLASS_ELEMENTALS */
+   /* MONSTER_CLASS_FEY */
+   /* MONSTER_CLASS_FIENDS */
+   /* MONSTER_CLASS_GIANTS */
+   /* MONSTER_CLASS_HUMANOIDS */    
+    [CREATURE_COMMONER] = 10,
+    [CREATURE_PLAYER] = 10,
+    /* MONSTER_CLASS_MONSTROSITIES */
+    /* MONSTER_CLASS_OOZES */
+    /* MONSTER_CLASS_PLANTS */    
+    [CREATURE_WITHERWEED] = 100
+    /* MONSTER_CLASS_UNDEAD */    
+};
+
+const char *monster_name_base[CREATURE_KIND_COUNT] = 
+{
+    [CREATURE_NONE] = "NONE",
+   /* MONSTER_CLASS_ABERRATIONS */
+   /* MONSTER_CLASS_BEASTS */      
+    [CREATURE_RAT] = "Rat",
+   /* MONSTER_CLASS_CELESTIALS */
+   /* MONSTER_CLASS_CONSTRUCTS */
+   /* MONSTER_CLASS_DRAGONS */
+   /* MONSTER_CLASS_ELEMENTALS */
+   /* MONSTER_CLASS_FEY */
+   /* MONSTER_CLASS_FIENDS */
+   /* MONSTER_CLASS_GIANTS */
+   /* MONSTER_CLASS_HUMANOIDS */    
+    [CREATURE_COMMONER] = "Commoner",
+    [CREATURE_PLAYER] = "You",
+    /* MONSTER_CLASS_MONSTROSITIES */
+    /* MONSTER_CLASS_OOZES */
+    /* MONSTER_CLASS_PLANTS */    
+    [CREATURE_WITHERWEED] = "Witherweed"
     /* MONSTER_CLASS_UNDEAD */
 };
 
@@ -127,19 +179,37 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     entity_set_flag(id, FLAG_BLOCKING);
 
     /* Add creature component */
-    if (creature_add(id, kind) == 0) {
+    if (creature_add(id, kind, monster_challenge_base[kind]) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
 
     /* Add stat block */
-    if (stats_add(id))
+    if (stats_add(id, &monster_stats_base[kind]))
     {
         entity_destroy(id);
         return ENTITY_ID_INVALID;       
     }
-    /* Set stat block */
-    g.creature_stat_components[id] = monster_stats_base[kind];
+
+    /* If monster has melee attack add */
+    if (monster_melee_base[kind].damage_type != DAMAGE_NONE)
+    {
+        if (melee_add(id, &monster_melee_base[kind]))
+        {
+            entity_destroy(id);
+            return ENTITY_ID_INVALID;       
+        }
+    }
+
+    /* If monster has melee attack add */
+    if (monster_ranged_base[kind].damage_type != DAMAGE_NONE)
+    {
+        if (ranged_add(id, &monster_ranged_base[kind]))
+        {
+            entity_destroy(id);
+            return ENTITY_ID_INVALID;       
+        }    
+    }
 
     /* Add renderable component  */
     if(renderable_add(id, monster_renderable_base[kind].tile) == 0) {
@@ -184,11 +254,5 @@ entity_id_t monster_system_create_player( void )
 
  void monster_system_print_name(text_window_t *win, creature_kind_t kind)
  {
-    text_print_string(win, monster_bases[kind].name);
+    text_print_string(win, monster_name_base[kind]);
  }
-
-void monster_system_get_tile(entity_id_t id, zxnext_tile_t *tile)
-{
-    tile->tile_attr = monster_bases[g.creature_components[id].kind].tile.tile_attr;
-    tile->tile_id = monster_bases[g.creature_components[id].kind].tile.tile_id;
-}

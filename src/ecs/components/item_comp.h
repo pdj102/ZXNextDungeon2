@@ -76,26 +76,8 @@ typedef enum {
 
 typedef struct {
     equip_slot_t slot;
+    entity_id_t equipped_by;
 } equipable_comp_t;
-
-typedef struct {
-    attack_type_t attack_type;
-    dice_roll_t damage_roll;
-    damage_type_t damage_type;
-    int8_t hit_mod;     /* to hit modifier */
-    int8_t damage_mod;  /* to damage modifier */
-} melee_comp_t;
-
-typedef struct {
-    attack_type_t attack_type;
-    dice_roll_t damage_roll;
-    damage_type_t damage_type;
-    uint8_t range;
-    int8_t hit_mod;     /* to hit modifier */
-    int8_t damage_mod;  /* to damage modifier */
-} ranged_comp_t;
-
-
 
 /* Item component data per entity */
 typedef struct {
@@ -106,8 +88,6 @@ typedef struct {
 
 typedef item_comp_t item_components_t[MAX_ENTITIES]; 
 typedef equipable_comp_t equip_components_t[MAX_ENTITIES];
-typedef melee_comp_t melee_components_t[MAX_ENTITIES]; 
-typedef ranged_comp_t ranged_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes
@@ -116,12 +96,8 @@ void item_init(void);
 
 uint8_t item_add(entity_id_t entity, item_kind_t type, uint8_t quantity);
 uint8_t equip_add(entity_id_t entity, equip_slot_t slot);
-uint8_t melee_add(entity_id_t entity, attack_type_t attack_type, dice_roll_t damage_roll, int8_t hit_mod, int8_t damage_mod);
-uint8_t ranged_add(entity_id_t entity, attack_type_t attack_type, uint8_t range, dice_roll_t damage_roll, int8_t hit_mod, int8_t damage_mod);
 
 void item_remove(entity_id_t entity);
 void equip_remove(entity_id_t entity);
-void melee_remove(entity_id_t entity);
-void ranged_remove(entity_id_t entity);
 
 #endif // ITEM_COMP_H

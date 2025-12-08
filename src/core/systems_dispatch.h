@@ -56,7 +56,6 @@ void system_container_clean_up(void);
 void system_equipment_init(void);
 entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity);
 void system_equipment_print_name(text_window_t *win, item_kind_t kind);
-void system_equipment_get_tile(entity_id_t id, zxnext_tile_t *tile);
 item_class_t system_equipment_get_class(item_kind_t kind);
 
 /* Event System */
@@ -68,7 +67,6 @@ void system_monster_init(void);
 entity_id_t system_monster_create(creature_kind_t kind);
 entity_id_t system_monster_create_player( void );
 void system_monster_print_name(text_window_t *win, creature_kind_t kind);
-void system_monster_get_tile(entity_id_t id, zxnext_tile_t *tile);
 
 /* Player System */
 void system_player_init(void);

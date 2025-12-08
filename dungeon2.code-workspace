@@ -31,7 +31,7 @@
 			"item_comp_priv.h": "c",
 			"sprite_comp_priv.h": "c",
 			"location_comp_priv.h": "c",
-			"container_comp_priv.h": "c",
+			"container_comp.h": "c",
 			"container_comp.h": "c",
 			"contained_comp_priv.h": "c",
 			"contained_comp.h": "c",

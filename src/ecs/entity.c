@@ -17,6 +17,7 @@
 #include "ecs/entity.h"
 #include "ecs/components/location_comp.h"
 #include "ecs/components/item_comp.h"
+#include "ecs/components/attack_comp.h"
 
 #include "game/global_state.h"
 
@@ -133,6 +134,8 @@ void entity_mark_for_destruction(entity_id_t entity)
     {
         system_container_mark_contents_for_destruction(entity);
     }
+
+    /* TODO manage equipped */
     
     entity_set_flag(entity, FLAG_PENDING_DESTORY);
 }
@@ -152,7 +155,8 @@ void entity_clean_up(void)
 /* 
  * NB   Entity destroy will abort if 
  *      1) entity is within a container  
- *      2) container contains entities 
+ *      2) container contains entities
+ *      3) equip system has an item equipped 
  */
 void entity_destroy(entity_id_t id)
 {
@@ -187,7 +191,16 @@ void entity_destroy(entity_id_t id)
     }
     if (entity_has_component(id, COMPONENT_TIMER)) {
         timer_remove(id);
-    }         
+    }
+    if (entity_has_component(id, COMPONENT_EQUIP)) {
+        equip_remove(id);
+    }
+    if (entity_has_component(id, COMPONENT_MELEE)) {
+        melee_remove(id);
+    }
+    if (entity_has_component(id, COMPONENT_RANGED)) {
+        ranged_remove(id);
+    }
 
     /* mark entity as free to use */
     g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
