@@ -10,10 +10,15 @@
 #include "ecs/components/location_comp.h"
 
 #include "ecs/entity.h"
-#include "ecs/components/location_comp_priv.h"
 
 #include "game/global_state.h"
 #include "game/map_terrain.h"
+
+/***************************************************
+ * private function prototypes
+ ***************************************************/
+void location_unlink(entity_id_t entity);
+void location_link(entity_id_t entity);
 
 /***************************************************
  * public functions

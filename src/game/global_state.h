@@ -16,7 +16,7 @@
 #include "ecs/entity_priv.h"
 #include "ecs/components/attack_comp.h"
 #include "ecs/components/item_comp.h"
-#include "ecs/components/location_comp_priv.h"
+#include "ecs/components/location_comp.h"
 #include "ecs/components/renderable_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/container_comp.h"
