@@ -14,7 +14,7 @@
 /***************************************************
  * public defines
  ***************************************************/
-#define MAX_ENTITIES 10 /* Maximum number of entities */
+#define MAX_ENTITIES 8 /* Maximum number of entities */
 #define ENTITY_ID_INVALID 0xFF /* Invalid entity ID */
 
 /* Component masks for the various component types */
@@ -28,10 +28,11 @@
 #define COMPONENT_PLAYER_CTRL 1 << 6
 #define COMPONENT_AI_CTRL 1 << 7
 #define COMPONENT_TIMER 1 << 8
-#define COMPONENT_EQUIP 1 << 9
+#define COMPONENT_EQUIPABLE 1 << 9
 #define COMPONENT_MELEE 1 << 10
 #define COMPONENT_RANGED 1 << 11
 #define COMPONENT_STATS 1 << 12
+#define COMPONENT_EQUIP 1 << 13
 
 #define FLAG_NONE 0
 #define FLAG_IN_USE 1 << 0

@@ -84,77 +84,76 @@ bool_t actions_system_try_eat(entity_id_t creature, entity_id_t item)
 
 bool_t actions_system_try_equip(entity_id_t creature, entity_id_t item)
 {
-    /* entity to be equipped has item and contained components */
-    util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED));
+    /* entity to be equipped has equipable component */
+    util_assert(entity_has_component(item, COMPONENT_EQUIPABLE));
 
-    /* actor has creature, container and player_ctrl components */
-    util_assert(entity_has_component(creature, COMPONENT_PLAYER_CTRL | COMPONENT_CONTAINER ));
+    /* actor has equipment component */
+    util_assert(entity_has_component(creature, COMPONENT_EQUIP));
 
-    /* check creature is holding the item */
-    if (g.contained_components[item].container != creature)
+    switch (g.equipable_components[item].slot)
     {
-        return 0;
-    }
-
-    /* check item is equipable */
-    if (!entity_has_component(item, COMPONENT_EQUIP))
-    {
-        return 0;
-    }
-
-    switch (g.equip_components[item].slot)
-    {
-        case EQUIP_HEAD:
+        case EQUIPABLE_HEAD:
         {
-            g.player.head = item;
+            g.equip_slots[EQUIP_HEAD] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }
-        case EQUIP_NECK:
+        case EQUIPABLE_NECK:
         {
-            g.player.neck = item;
+            g.equip_slots[EQUIP_NECK] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }        
-        case EQUIP_BODY:
+        case EQUIPABLE_BODY:
         {
-            g.player.body = item;
+            g.equip_slots[EQUIP_BODY] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }        
-        case EQUIP_HANDS:
+        case EQUIPABLE_HANDS:
         {
-            g.player.hands = item;
+            g.equip_slots[EQUIP_HANDS] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }
-        case EQUIP_FINGER:
+        case EQUIPABLE_FINGER:
         {
-            /* TODO left and right fingers */
-            g.player.left_finger = item;
+            if (g.equip_slots[EQUIP_FINGER_LEFT] == ENTITY_ID_INVALID)
+            {
+                g.equip_slots[EQUIP_FINGER_LEFT] = item;
+            } else
+            {
+                g.equip_slots[EQUIP_FINGER_RIGHT] = item;
+            }
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
         }
-        case EQUIP_FEET:
+        case EQUIPABLE_FEET:
         {
-            g.player.feet = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
-            break;
-        }
-        case EQUIP_LEGS:
-        {
-            g.player.legs = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
-            break;
-        }
-        case EQUIP_MELEE:
-        {
-            g.player.melee_weapon = item;
+            g.equip_slots[EQUIP_FEET] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }
-        case EQUIP_RANGED:
+        case EQUIPABLE_LEGS:
         {
-            g.player.ranged_weapon = item;
+            g.equip_slots[EQUIP_LEGS] = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIPABLE_MELEE:
+        {
+            g.equip_slots[EQUIP_MELEE] = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIPABLE_RANGED:
+        {
+            g.equip_slots[EQUIP_RANGED] = item;
+            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
+        }
+        case EQUIPABLE_AMMO:
+        {
+            g.equip_slots[EQUIP_AMMO] = item;
             system_event_emit(EVENT_EQUIPPED, creature, item, 1);
             break;
         }
@@ -333,7 +332,7 @@ int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type)
         /* TODO */
 
         /* Step 4 - If using a weapon determine weapon bonus*/
-        if (g.player.hands != ENTITY_ID_INVALID)
+        if (g.equip_slots[EQUIP_HANDS] != ENTITY_ID_INVALID)
         {
             /* TODO implement getting the weapon's attack bonus*/
         }

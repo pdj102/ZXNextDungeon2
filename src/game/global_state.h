@@ -21,6 +21,8 @@
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/container_comp.h"
 #include "ecs/components/contained_comp.h"
+#include "ecs/components/equip_comp.h"
+#include "ecs/components/equipable_comp.h"
 #include "ecs/components/player_ctrl_comp_priv.h"
 #include "ecs/components/timer_comp_priv.h"
 
@@ -42,7 +44,7 @@ typedef struct
     entity_components_t entity_components; /* entity data */
 
     item_components_t item_components; /* item component data */
-    equip_components_t equip_components; /* equipable component data */
+    equipable_components_t equipable_components; /* equipable component data */
     melee_components_t melee_components; /* melee attack component data */
     ranged_components_t ranged_components; /* ranged attack component data */
 
@@ -55,6 +57,8 @@ typedef struct
     container_components_t container_components; /* container component data */
     contained_components_t contained_components; /* contained component data */
     player_ctrl_comp_t player; /* player component data */
+    equip_slots_t equip_slots; /* only the player has equipment slots*/
+    
     timer_components_t timer_components; /* timer component data */
 
     /* World */

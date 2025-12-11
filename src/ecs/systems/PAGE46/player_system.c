@@ -282,17 +282,17 @@ uint8_t prompt_letter(uint8_t max_index)
 
 bool_t is_equipped(entity_id_t entity)
 {
-    if (g.player.head == entity ||
-        g.player.neck == entity || 
-        g.player.body == entity ||
-        g.player.hands == entity ||
-        g.player.left_finger == entity ||
-        g.player.right_finger == entity ||
-        g.player.legs == entity ||
-        g.player.feet == entity ||
-        g.player.melee_weapon == entity ||
-        g.player.ranged_weapon == entity ||
-        g.player.quiver == entity)
+    if (g.equip_slots[EQUIP_HEAD] == entity ||
+        g.equip_slots[EQUIP_NECK] == entity || 
+        g.equip_slots[EQUIP_BODY] == entity ||
+        g.equip_slots[EQUIP_HANDS] == entity ||
+        g.equip_slots[EQUIP_FINGER_LEFT] == entity ||
+        g.equip_slots[EQUIP_FINGER_RIGHT] == entity ||
+        g.equip_slots[EQUIP_LEGS] == entity ||
+        g.equip_slots[EQUIP_FEET] ||
+        g.equip_slots[EQUIP_MELEE] == entity ||
+        g.equip_slots[EQUIP_RANGED] == entity ||
+        g.equip_slots[EQUIP_AMMO] == entity)
         {
             return 1;
         }

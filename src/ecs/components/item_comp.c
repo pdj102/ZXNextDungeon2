@@ -56,26 +56,6 @@ void item_remove(entity_id_t entity)
     entity_clear_component(entity, COMPONENT_ITEM); /* clear entity item component mask */
 }
 
-uint8_t equip_add(entity_id_t entity, equip_slot_t slot)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_EQUIP)); 
-
-    g.equip_components[entity].slot = slot; /* the slot that can be equipped */
-
-    entity_set_component(entity, COMPONENT_EQUIP); 
-
-    return 1; /* success */
-}
-
-void equip_remove(entity_id_t entity)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert( g.equip_components[entity].equipped_by == ENTITY_ID_INVALID); /* Item must not be equipped */
-
-    entity_clear_component(entity, COMPONENT_EQUIP); 
-}
-
  /***************************************************
  * private functions
  ***************************************************/

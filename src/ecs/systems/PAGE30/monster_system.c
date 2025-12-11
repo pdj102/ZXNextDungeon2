@@ -170,16 +170,16 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
 
  entity_id_t monster_system_create(creature_kind_t kind)
 {
-    zxnext_tile_t tile; 
-
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
+        util_abort("a");
         return id;
 
     entity_set_flag(id, FLAG_BLOCKING);
 
     /* Add creature component */
     if (creature_add(id, kind, monster_challenge_base[kind]) == 0) {
+        util_abort("b");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
@@ -187,6 +187,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* Add stat block */
     if (stats_add(id, &monster_stats_base[kind]))
     {
+        util_abort("c");
         entity_destroy(id);
         return ENTITY_ID_INVALID;       
     }
@@ -196,6 +197,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     {
         if (melee_add(id, &monster_melee_base[kind]))
         {
+            util_abort("d");
             entity_destroy(id);
             return ENTITY_ID_INVALID;       
         }
@@ -206,6 +208,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     {
         if (ranged_add(id, &monster_ranged_base[kind]))
         {
+            util_abort("e");
             entity_destroy(id);
             return ENTITY_ID_INVALID;       
         }    
@@ -213,19 +216,22 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
 
     /* Add renderable component  */
     if(renderable_add(id, monster_renderable_base[kind].tile) == 0) {
+        util_abort("f");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
-    }
+    } 
 
     /* Add container component */
     if (container_add(id) == 0)
     {
+        util_abort("g");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
   
     /* Add timer component*/
     if (timer_add(id) == 0) {
+        util_abort("h");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
@@ -241,13 +247,17 @@ entity_id_t monster_system_create_player( void )
 {
   entity_id_t id = monster_system_create(CREATURE_PLAYER);
     if (id == ENTITY_ID_INVALID)
-        return id;  
+        return id;
+
+    player_ctrl_init();
+    // text_print_string(&g.msg_win, "test");
 
     /* Add player control component */
     if (player_ctrl_add(id) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
+    // text_print_string(&g.msg_win, "Test");
 
     return id;
 }

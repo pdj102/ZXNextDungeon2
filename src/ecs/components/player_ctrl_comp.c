@@ -28,18 +28,7 @@
  ***************************************************/
 void player_ctrl_init(void)
 {
-    g.player.id = ENTITY_ID_INVALID;
-    g.player.head = ENTITY_ID_INVALID;
-    g.player.neck = ENTITY_ID_INVALID;
-    g.player.body = ENTITY_ID_INVALID;
-    g.player.hands = ENTITY_ID_INVALID;
-    g.player.left_finger = ENTITY_ID_INVALID;
-    g.player.right_finger = ENTITY_ID_INVALID;
-    g.player.melee_weapon = ENTITY_ID_INVALID;
-    g.player.ranged_weapon = ENTITY_ID_INVALID;
-    g.player.quiver = ENTITY_ID_INVALID;
-    g.player.legs = ENTITY_ID_INVALID;
-    g.player.feet = ENTITY_ID_INVALID;
+    g.player.id == ENTITY_ID_INVALID;
 }
 
 /*

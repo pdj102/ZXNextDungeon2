@@ -59,7 +59,10 @@ int main(void) {
     entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
     location_add(e5, 12, 12);    
 
+    g.player.id = ENTITY_ID_INVALID;
+    text_printf(&g.msg_win, "P:%u\n", g.player.id);
     entity_id_t e6 = system_monster_create_player();
+    text_printf(&g.msg_win, "P:%u\n", g.player.id);
     location_add(e6, 10, 15);
 
     map_render();

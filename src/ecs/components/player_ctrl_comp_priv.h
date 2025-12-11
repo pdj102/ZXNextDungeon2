@@ -26,17 +26,6 @@
 /* Player_ctrl component data per entity */
 typedef struct {
     entity_id_t id;
-    entity_id_t head;
-    entity_id_t neck;
-    entity_id_t body;
-    entity_id_t hands;
-    entity_id_t left_finger;
-    entity_id_t right_finger;
-    entity_id_t melee_weapon;
-    entity_id_t ranged_weapon;
-    entity_id_t quiver;
-    entity_id_t legs;
-    entity_id_t feet;
 } player_ctrl_comp_t;
 
 /***************************************************
