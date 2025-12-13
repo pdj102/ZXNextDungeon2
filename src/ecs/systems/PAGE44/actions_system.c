@@ -14,6 +14,7 @@
 
 #include "ecs/components/location_comp.h"
 
+#include "game/game.h"
 #include "game/global_state.h"
 
 #include "core/systems_dispatch.h"
@@ -235,7 +236,7 @@ bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     if (attack_roll >= g.stats_components[target].ac)
     {
         /* damage roll calculation = weapon dice roll +damage_mod_bonus (which is weapon mod + ability modifer + proficiency bonus )*/
-        damage_roll = util_roll_dice(g.melee_components[attacker].damage_roll);
+        damage_roll = game_roll_dice(g.melee_components[attacker].damage_roll);
         damage_roll += g.melee_components[attacker].damage_mod;
 
         system_event_emit(EVENT_ATTACKED, attacker, target, 1);
@@ -350,7 +351,7 @@ int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type)
     int8_t d20;
 
     /* Step 1 - Roll 1d20 */
-    d20 = util_roll_dice(DICE_1D20);
+    d20 = game_roll_dice(DICE_1D20);
 
     /* Is the attacker the player?*/
     if (attacker == g.player.id)

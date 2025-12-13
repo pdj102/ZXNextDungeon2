@@ -123,7 +123,7 @@ void melee_attack(void)
     uint8_t x;
     uint8_t y;
 
-    dir = util_get_dir_or_cancel_b();
+    dir = game_get_dir_or_cancel_b();
 
     x = g.location_components[g.player.id].x + directions[dir].x;
     y = g.location_components[g.player.id].y + directions[dir].y;

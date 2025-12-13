@@ -12,9 +12,11 @@
 
 #include <stdint.h>
 
-#include "core/util.h"
-
 #include "ecs/entity.h"
+
+#include "game/game.h"
+
+#include "core/util.h"
 
 /***************************************************
  * public defines

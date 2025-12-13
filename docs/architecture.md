@@ -113,15 +113,22 @@ Blocking behavior (e.g. walls, creatures) is handled by flags in map cells and e
 
 ## 8. Action and Intent Model
 
-Entities never act directly; instead, they express intent:
+Entities never act directly; instead, they express intent.
 
-- creature_actions_try_pickup(entity_id_t creature, entity_id_t item)
-- creature_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
-- movement_system_try_move(entity_id_t entity, int8_t dx, int8_t dy)
+Systems provide *try* and *action* functions.
 
-The Action System validates and resolves intents (collision, blocking, etc.).
+*Try* functions check if an entity has the required components and validates if the action is permisable.
 
-This ensures deterministic and easily testable simulation.
+- `bool_t inventory_system_try_pickup(entity_id_t actor, entity_id_t item)`
+- `bool_t combat_system_try_melee_attack(entity_id_t actor, entity_id_t target)`
+- `bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)`
+
+They emit an Event with a value indicating success or failure and also return trtue (success) or false (failure).
+
+*Action* functions asserts that the entities have the correct components and executes the action without emitting an event.
+
+- `void movement_system_move(entity_id_t actor, int8_t dx, int8_t dy)`
+- `int8_t combat_system_take_damage(entity_id_t actor, int8_t damage, damage_type_t type)`
 
 ## 9. Event System
 
@@ -132,7 +139,7 @@ Events represent things that have happened, not requests.
 The engine processes them immediately (no event queue) to minimise memory usage.
 
 Example:
-event_emit(EVENT_DAMAGE, source, target);
+event_emit(EVENT_DAMAGE, source, target, val);
 
 ## 10. Turn System
 
@@ -163,7 +170,7 @@ AI_system_update determines if it is the monsters turn and takes a turn if it is
 | ------------------ | ---------------------------- | ------------------------------------ |
 | System function    | `system_<name>()`            | `system_ai_update()`                 |
 | Component function | `<component>_add()`          | `timer_add()`                        |
-| Intent function    | `<component>_try_<action>()` | `creature_try_move()`                |
+| Intent function    | `<component>_try_<action>()` | `location_try_move()`                |
 | Event function     | `event_<action>()`           | `event_emit()`                       |
 | Global data        | `g.<subsystem>`              | `g.entity`, `g.map`                  |
 | Flags              | `FLAG_<NAME>`                | `FLAG_ALIVE`, `FLAG_DESTROY_PENDING` |
@@ -206,23 +213,27 @@ Manges entity lifecycle only. No gameplay logic - pure data ownership
 
 ### Design rules
 
-| Type | File naming | May contain / reference | May call / access | Must not call / access | Notes & Rationale |
-| --- | --- | --- | --- | --- | --- |
-| Components | `*_comp.c` </br> `*_comp.h` | - Raw data </br> - Simple helpers that operate on the raw data | - Simple helpers | - Other components </br> - Systems </br> - Game logic | Components are dumb data containers. They can define small helpers to manipulate their own data only. |
-| Systems | `*_system.c` </br> `*_system.h` | - Arrays of components they operate on </br> - System logic </br> - Event handling | - Components they depend upon </br> - Other systems via well defined entry points |  - Directly destroy entities | Systems implement behavior by processing entities with required components. They never know about “entities” beyond their component data. Ideally they should interact with other systems via events and component data but can call other systems directly where it makes sesne for performance reasons |
-| Game logic | - `*.c` - `*.h` | - World game data that is not part of the ECS | - Components | - Systems | Game logic implements game world rules and behaviors that are not part of the ECS e.g. map. It should not interact with other systems directly. Instead it should interact with them via events and component data.|
+| Type      | File naming | May contain / reference | May call / access | Notes & Rationale |
+| ---       | ---         | ---                     | ---               | ---               |
+| Components | `*_comp.c` </br> `*_comp.h` | - Raw data </br> - Simple helpers that operate on the raw data | - n/a | Components are dumb data containers. They can define small helpers to manipulate their own data only. |
+| Systems | `*_system.c` </br> `*_system.h` | - Arrays of components they operate on </br> - System logic </br> - Event handling | - Components they depend upon </br> - Other systems via well defined entry points |  Systems implement behavior by processing entities with required components. They never know about “entities” beyond their component data. Ideally they should interact with other systems via events and component data but can call other systems directly where it makes sense for performance reasons |
+| Game | - `*.c` - `*.h` | - Game logic and data that is not part of the ECS | - Components | Game logic implements game world rules and behaviors that are not part of the ECS e.g. map, game specific mechanics. </br>It should not interact with other systems directly. Instead it should interact with them via events and component data.|
+| Core | - `*.c` - `*.h` | - Generic functions that are not game specific | - n/a | Core implements functionality that can be reused in different games e.g. mathematical functions, direction handling, graphics, input etc|
 
 ## 17. File organisation standards
 
 /ecs  - Contains all the code related to the Entity Component System (ECS) framework.
+
   /components - Contains all the component definitions and their associated functions.
+
   /entity - Contains all the entity-related functions and structures.
+
   /systems - Contains all the system implementations and structures.
-    /PAGEXX - Contains banked code
+
 /core - Contains enabling modules like UI, utils, spectrum next hardware etc.
-  /PAGEXX - Contains banked code
+
 /game - Contains game specific code like global game state, map, dungeon generator etc
-  /PAGEXX - Contains banked code
+
 
 ## 18. Memory bank standards
 

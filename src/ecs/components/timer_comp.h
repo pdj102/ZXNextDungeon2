@@ -12,6 +12,8 @@
 
 #include "ecs/entity.h"
 
+#include "game/game.h"
+
 #include "core/util.h"
 
 /***************************************************
