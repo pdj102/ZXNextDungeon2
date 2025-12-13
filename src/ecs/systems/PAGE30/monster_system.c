@@ -172,22 +172,26 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
 {
     entity_id_t id = entity_create();
     if (id == ENTITY_ID_INVALID)
-        util_abort("a");
+    {
+        util_abort("");         
         return id;
+    }
 
-    entity_set_flag(id, FLAG_BLOCKING);
+    entity_set_flag(id, FLAG_BLOCKING);   
 
     /* Add creature component */
-    if (creature_add(id, kind, monster_challenge_base[kind]) == 0) {
-        util_abort("b");
+    if (creature_add(id, kind, monster_challenge_base[kind]) == 0)
+    {
+        util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
+    
 
     /* Add stat block */
-    if (stats_add(id, &monster_stats_base[kind]))
+    if (stats_add(id, &monster_stats_base[kind]) == 0)
     {
-        util_abort("c");
+        util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;       
     }
@@ -195,9 +199,9 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* If monster has melee attack add */
     if (monster_melee_base[kind].damage_type != DAMAGE_NONE)
     {
-        if (melee_add(id, &monster_melee_base[kind]))
+        if (melee_add(id, &monster_melee_base[kind]) == 0)
         {
-            util_abort("d");
+            util_abort("");
             entity_destroy(id);
             return ENTITY_ID_INVALID;       
         }
@@ -206,17 +210,18 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* If monster has melee attack add */
     if (monster_ranged_base[kind].damage_type != DAMAGE_NONE)
     {
-        if (ranged_add(id, &monster_ranged_base[kind]))
+        if (ranged_add(id, &monster_ranged_base[kind]) == 0)
         {
-            util_abort("e");
+            util_abort("");
             entity_destroy(id);
             return ENTITY_ID_INVALID;       
         }    
     }
 
     /* Add renderable component  */
-    if(renderable_add(id, monster_renderable_base[kind].tile) == 0) {
-        util_abort("f");
+    if(renderable_add(id, monster_renderable_base[kind].tile) == 0)
+    {
+        util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     } 
@@ -224,20 +229,24 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* Add container component */
     if (container_add(id) == 0)
     {
-        util_abort("g");
+        util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
   
     /* Add timer component*/
-    if (timer_add(id) == 0) {
-        util_abort("h");
+    if (timer_add(id) == 0)
+    {
+        util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
     turn_tick_t tt;
     creature_speed_to_turns_ticks(id, &tt);
     text_printf(&g.msg_win, "turns:%u ticks:%u\n", tt.turns, tt.ticks);
+
+
+
     timer_set(id, tt.turns, tt.ticks);    
 
     return id;
@@ -250,14 +259,12 @@ entity_id_t monster_system_create_player( void )
         return id;
 
     player_ctrl_init();
-    // text_print_string(&g.msg_win, "test");
 
     /* Add player control component */
     if (player_ctrl_add(id) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
-    // text_print_string(&g.msg_win, "Test");
 
     return id;
 }

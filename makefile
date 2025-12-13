@@ -22,6 +22,10 @@
 
 # Set variables
 
+# Build - what build to make - release or debug
+# Default to debug
+BUILD ?= debug
+
 # Target - zcc compiler target platform 
 TARGET=+zxn
 
@@ -43,7 +47,13 @@ PROGRAM=dungeon2.nex
 # Set any C preprocessor defines here (e.g., -DDEBUG)
 # DDEBUG - Enable debug information
 # DDEBUG_ERROR - Enable debug error information
-DEFINES=-DDEBUG_INFO -DDEBUG_ERROR
+ifeq ($(BUILD),debug)
+DEFINES += -DDEBUG
+else ifeq ($(BUILD),release)
+DEFINES += -DNDEBUG
+else
+$(error Unknown BUILD type '$(BUILD)' (expected: debug or release))
+endif
 
 # Set any C include directories here (e.g. -I./src)
 INCLUDES += -I./src
@@ -156,6 +166,15 @@ $(notdir $(word 1,$(filter PAGE%,$(subst /, ,$(dir $(1)))))) \
 # Rule to build all
 # Default target is 'all'
 all: $(PROGRAM)
+
+# Rules to build debug or release
+.PHONY: debug release
+
+debug:
+	$(MAKE) BUILD=debug
+
+release:
+	$(MAKE) BUILD=release
 
 # Create build directories if they don't exist
 # Add other directories as needed	

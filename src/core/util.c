@@ -105,12 +105,17 @@ direction_t util_get_dir_or_cancel_b( void )
 
 void util_assert_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&g.assert_win, "ASSERT FAIL: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
+    text_printf(&g.msg_win, "ASSERT FAIL: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
     while(1);
+}
+
+void util_info_f(const char *message)
+{
+    text_printf(&g.msg_win, "INFO: %s\n", message);
 }
 
 void util_abort_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&g.assert_win, "ABORT: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
-    while(1);    
+    text_printf(&g.msg_win, "ABORT: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
+    while(1);
 }

@@ -63,6 +63,7 @@
 		"C_Cpp.default.includePath": [
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\libsrc\\_DEVELOPMENT\\target\\zxn",
 			"D:\\Documents\\_PROGRAMMING\\z88dk\\include\\**"
-		]
+		],
+		"makefile.makefilePath": "."
 	}
 }

@@ -39,6 +39,7 @@ int main(void) {
    init_ui_bank();
    map_gen();
 
+   util_info("Debug build");
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
    util_assert(sizeof(g) < 0x3FFF);
 
