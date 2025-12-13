@@ -37,6 +37,7 @@ void melee_attack(void);
 void pickup(void);
 void drop(void);
 void equip(void);
+void unequip(void);
 void inventory(void);
 void display_inventory(void);
 uint8_t prompt_letter(uint8_t max_index);
@@ -102,7 +103,10 @@ void player_system_update(void)
             break;
         case 105: /* view inventory */
             inventory();
-            break;                      
+            break;
+        case 117: /* unequip an item */
+            unequip();
+            break;
         default:
             break;
     }
@@ -227,6 +231,33 @@ void equip(void)
    
     item = system_container_get_at(g.player.id, index);
     system_actions_try_equip(g.player.id, item);
+}
+
+void unequip(void)
+{
+    entity_id_t item;
+    uint8_t index;
+    uint8_t count;
+
+    count = system_container_count(g.player.id);
+
+    if (count == 0)
+    {
+        text_printf(&g.msg_win, "Nothing in inventory\n");
+        return;
+    }
+
+    display_inventory();
+
+    index = prompt_letter(count - 1);
+
+    if (index == 99)
+    {
+        return;
+    }
+   
+    item = system_container_get_at(g.player.id, index);
+    system_actions_try_unequip(g.player.id, item);
 }
 
 void display_inventory(void)

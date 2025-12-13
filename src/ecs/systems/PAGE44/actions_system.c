@@ -48,7 +48,7 @@ bool_t actions_system_try_die(entity_id_t creature)
     return 1;
 }
 
-bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_drop(entity_id_t actor, entity_id_t item)
 {
     uint8_t x, y;
 
@@ -56,135 +56,151 @@ bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item)
     util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED));
 
     /* actor has creature, container and location components */
-    util_assert(entity_has_component(creature, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
+    util_assert(entity_has_component(actor, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
 
     /* check creature is holding the item */
-    if (g.contained_components[item].container != creature)
+    if (g.contained_components[item].container != actor)
     {
         return 0;
     }
 
     /* TODO check not equipped */
 
-    system_container_remove_item_from(creature, item);
+    system_container_remove_item_from(actor, item);
     
-    x = g.location_components[creature].x;
-    y = g.location_components[creature].y;
+    x = g.location_components[actor].x;
+    y = g.location_components[actor].y;
     location_add(item, x, y);
 
-    system_event_emit(EVENT_DROPPED, creature, item, 0);    
+    system_event_emit(EVENT_DROPPED, actor, item, 0);    
 
     return 1;
 }
 
-bool_t actions_system_try_eat(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_eat(entity_id_t actor, entity_id_t item)
 {
 
 }
 
-bool_t actions_system_try_equip(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_equip(entity_id_t actor, entity_id_t item)
 {
-    /* entity to be equipped has equipable component */
-    util_assert(entity_has_component(item, COMPONENT_EQUIPABLE));
+    equip_slot_t slot = EQUIP_NONE;
 
-    /* actor has equipment component */
-    util_assert(entity_has_component(creature, COMPONENT_EQUIP));
+    /* item to be equipped must have equipable component */
+    if (!entity_has_component(item, COMPONENT_EQUIPABLE))
+    {
+        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
+        return 0;
+    }
+    /* actor must have equip component */
+    if (!entity_has_component(actor, COMPONENT_EQUIP))
+    {
+        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
+        return 0;
+    }
+    /* item must not already be equipped */
+    if (g.equipable_components[item].equipped_by != ENTITY_ID_INVALID)
+    {
+        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
+        return 0;
+    }
+
+    /* Identify the equip slot to use */
 
     switch (g.equipable_components[item].slot)
     {
         case EQUIPABLE_HEAD:
         {
-            g.equip_slots[EQUIP_HEAD] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_HEAD;
             break;
         }
         case EQUIPABLE_NECK:
         {
-            g.equip_slots[EQUIP_NECK] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_NECK;
             break;
         }        
         case EQUIPABLE_BODY:
         {
-            g.equip_slots[EQUIP_BODY] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_BODY;
             break;
         }        
         case EQUIPABLE_HANDS:
         {
-            g.equip_slots[EQUIP_HANDS] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_HANDS;
             break;
         }
         case EQUIPABLE_FINGER:
         {
             if (g.equip_slots[EQUIP_FINGER_LEFT] == ENTITY_ID_INVALID)
             {
-                g.equip_slots[EQUIP_FINGER_LEFT] = item;
-            } else
+                slot = EQUIP_FINGER_LEFT;
+            } 
+            else
             {
-                g.equip_slots[EQUIP_FINGER_RIGHT] = item;
+                slot = EQUIP_FINGER_RIGHT;
             }
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            break;
         }
         case EQUIPABLE_FEET:
         {
-            g.equip_slots[EQUIP_FEET] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_FEET;
             break;
         }
         case EQUIPABLE_LEGS:
         {
-            g.equip_slots[EQUIP_LEGS] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_LEGS;
             break;
         }
         case EQUIPABLE_MELEE:
         {
-            g.equip_slots[EQUIP_MELEE] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_MELEE;
             break;
         }
         case EQUIPABLE_RANGED:
         {
-            g.equip_slots[EQUIP_RANGED] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_RANGED;
             break;
         }
         case EQUIPABLE_AMMO:
         {
-            g.equip_slots[EQUIP_AMMO] = item;
-            system_event_emit(EVENT_EQUIPPED, creature, item, 1);
+            slot = EQUIP_AMMO;
             break;
         }
         default:
         {
-            system_event_emit(EVENT_EQUIPPED, creature, item, 0);
+            system_event_emit(EVENT_EQUIPPED, actor, item, 0);
             return 0;
         }
     }
+
+    /* Equip item*/
+    g.equip_slots[slot] = item;
+    g.equipable_components[item].equipped_by = actor;
+
+    system_event_emit(EVENT_EQUIPPED, actor, item, 1);        
+    
     return 1;
 }
 
-bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_pickup(entity_id_t actor, entity_id_t item)
 {  
     /* entity to be picked up has item and location components */
     util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION));
 
     /* actor has creature, container and location components */
-    util_assert(entity_has_component(creature, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
+    util_assert(entity_has_component(actor, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
 
     /* check creature and item are at the same location*/
-    if (!location_equal(creature, item))
+    if (!location_equal(actor, item))
     {
         return 0;
     }
 
     location_remove(item);
     
-    if (system_container_place_item_in(creature, item))
+    if (system_container_place_item_in(actor, item))
     {
-        system_event_emit(EVENT_PICKED_UP, creature, item, 0);
+        system_event_emit(EVENT_PICKED_UP, actor, item, 0);
         return 1;
     }
     else
@@ -196,9 +212,6 @@ bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item)
 
 
 }
-
-
-
 
 bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
@@ -237,33 +250,33 @@ bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     }
 }
 
-int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
+int8_t actions_system_try_take_damage(entity_id_t actor, int8_t damage, damage_type_t type)
 {
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
-    if (g.stats_components[creature].cur_hp <= damage)
+    if (g.stats_components[actor].cur_hp <= damage)
     {
-        g.stats_components[creature].cur_hp = 0;
-        actions_system_try_die(creature);
+        g.stats_components[actor].cur_hp = 0;
+        actions_system_try_die(actor);
     }
     else
     {
-        g.stats_components[creature].cur_hp -= damage;
+        g.stats_components[actor].cur_hp -= damage;
     }
     
     return damage;
 }
 
- bool_t actions_system_try_move(entity_id_t entity, int8_t dx, int8_t dy)
+ bool_t actions_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
  {
     uint8_t tx;
     uint8_t ty;
 
-    tx = g.location_components[entity].x + dx;
-    ty = g.location_components[entity].y + dy;
+    tx = g.location_components[actor].x + dx;
+    ty = g.location_components[actor].y + dy;
 
-    if (map_can_enter(entity, tx, ty))
+    if (map_can_enter(actor, tx, ty))
     {
-        location_move(entity, tx, ty);
+        location_move(actor, tx, ty);
         return 1;
     }
     else
@@ -272,19 +285,49 @@ int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damag
     }
 }
 
-bool_t actions_system_try_open(entity_id_t creature, entity_id_t feature)
+bool_t actions_system_try_open(entity_id_t actor, entity_id_t feature)
 {
 
 }
 
-bool_t actions_system_try_quaff(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_quaff(entity_id_t actor, entity_id_t item)
  {
 
  }
 
-bool_t actions_system_try_unequip(entity_id_t creature, entity_id_t item)
+bool_t actions_system_try_unequip(entity_id_t actor, entity_id_t item)
 {
+    /* item to be unequipped must be equipable */
+    if (!entity_has_component(item, COMPONENT_EQUIPABLE))
+    {
+        system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
+        return 0;
+    }
 
+    /* item must be equipped by the actor */
+    if (g.equipable_components[item].equipped_by != actor)
+    {
+        system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
+        return 0;
+    }
+
+    /* Iterate through equipable slots and remove item from slot if found */
+    text_printf(&g.msg_win, "Item: %d", item);
+
+    for (equip_slot_t slot = 0; slot < EQUIP_COUNT; slot++)
+    {
+        text_printf(&g.msg_win, "Slot: %d", g.equip_slots[slot]);
+        if (g.equip_slots[slot] == item)
+        {
+            g.equip_slots[slot] = ENTITY_ID_INVALID;
+            g.equipable_components[item].equipped_by = ENTITY_ID_INVALID;
+
+            system_event_emit(EVENT_UNEQUIPPED, actor, item, 1);
+            return 1;
+        }
+    }
+    system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
+    return 0;
 }
 
 

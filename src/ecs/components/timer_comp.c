@@ -7,7 +7,7 @@
 
 #include "ecs/components/timer_comp.h"
 
-#include "ecs/components/timer_comp_priv.h"
+#include "ecs/components/timer_comp.h"
 #include "ecs/components/contained_comp.h"
 #include "ecs/entity.h"
 

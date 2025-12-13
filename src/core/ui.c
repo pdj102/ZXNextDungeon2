@@ -85,6 +85,20 @@
                 text_print_string(&g.msg_win, "\n");    
             }
             break;
+        case EVENT_UNEQUIPPED:
+            if (val == 1)
+            {
+                system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
+                text_printf(&g.msg_win, " unequipped ");
+                system_equipment_print_name(&g.msg_win, g.item_components[tgt].kind);
+                text_print_string(&g.msg_win, "\n");                
+            } else
+            {
+                text_printf(&g.msg_win, "Unable to unequip ");
+                system_equipment_print_name(&g.msg_win, g.item_components[tgt].kind);
+                text_print_string(&g.msg_win, "\n");    
+            }            
+            break;
         case EVENT_PICKED_UP:
             system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
             text_printf(&g.msg_win, " picked up ");
