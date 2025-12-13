@@ -185,7 +185,7 @@ void entity_destroy(entity_id_t id)
         location_remove(id);
     }
     if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
-        player_ctrl_remove(id);
+        player_remove(id);
     }    
     if (entity_has_component(id, COMPONENT_RENDERABLE)) {
         renderable_remove(id);

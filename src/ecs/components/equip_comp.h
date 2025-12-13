@@ -41,7 +41,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_ctrl_init(void);
+void player_init(void);
 bool_t equip_add(entity_id_t entity);
 void equip_remove(entity_id_t entity);
 

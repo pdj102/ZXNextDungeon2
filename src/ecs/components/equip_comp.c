@@ -45,7 +45,6 @@ void equip_init(void)
 bool_t equip_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
-    util_assert( g.player.id == ENTITY_ID_INVALID);
 
     entity_set_component(id, COMPONENT_EQUIP); 
 

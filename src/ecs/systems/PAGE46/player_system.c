@@ -289,7 +289,7 @@ bool_t is_equipped(entity_id_t entity)
         g.equip_slots[EQUIP_FINGER_LEFT] == entity ||
         g.equip_slots[EQUIP_FINGER_RIGHT] == entity ||
         g.equip_slots[EQUIP_LEGS] == entity ||
-        g.equip_slots[EQUIP_FEET] ||
+        g.equip_slots[EQUIP_FEET] == entity  ||
         g.equip_slots[EQUIP_MELEE] == entity ||
         g.equip_slots[EQUIP_RANGED] == entity ||
         g.equip_slots[EQUIP_AMMO] == entity)

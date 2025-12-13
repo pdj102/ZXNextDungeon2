@@ -26,26 +26,34 @@
  ***************************************************/
 typedef enum {
     ITEM_CLASS_NONE = 0,
-    // Wearable
-    ITEM_CLASS_HEAD,
-    ITEM_CLASS_NECKLACE,
-    ITEM_CLASS_ARMOUR,
-    ITEM_CLASS_GLOVE,
-    ITEM_CLASS_TROUSERS,
-    ITEM_CLASS_RING,
-    ITEM_CLASS_SHOES,
+
     // Melee weapons
     ITEM_CLASS_MELEE,
     // Ranged weapons
     ITEM_CLASS_RANGED,
-    // Ammo
-    ITEM_CLASS_ARROW,
+    // Armour
+    ITEM_CLASS_ARMOUR,
     // Shields
-    ITEM_CLASS_SHIELD,    
+    ITEM_CLASS_SHIELD,
+    // Ammo
+    ITEM_CLASS_AMMO,
     // Potions
-    ITEM_CLASS_POTION,
-    // Consumable
+    ITEM_CLASS_POTION,    
+    // Scrolls
+    ITEM_CLASS_SCROLL,
+    // Food and drink
     ITEM_CLASS_CONSUMABLE,
+    // Wearable
+    ITEM_CLASS_HELMET,
+    ITEM_CLASS_NECKLACE,
+    ITEM_CLASS_GLOVE,
+    ITEM_CLASS_TROUSERS,
+    ITEM_CLASS_RING,
+    ITEM_CLASS_SHOES,
+    // Wands
+    ITEM_CLASS_WAND,
+    // Light sources
+    ITEM_CLASS_LIGHT,
     // Keys
     ITEM_CLASS_KEY
 } item_class_t;

@@ -25,8 +25,8 @@ typedef struct {
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_ctrl_init(void);
-bool_t player_ctrl_add(entity_id_t entity);
-void player_ctrl_remove(entity_id_t entity);
+void player_init(void);
+bool_t player_add(entity_id_t entity);
+void player_remove(entity_id_t entity);
 
 #endif // player_comp_H

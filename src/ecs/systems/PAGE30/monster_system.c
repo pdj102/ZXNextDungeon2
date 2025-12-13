@@ -252,13 +252,19 @@ entity_id_t monster_system_create_player( void )
     if (id == ENTITY_ID_INVALID)
         return id;
 
-    player_ctrl_init();
+    player_init();
 
     /* Add player control component */
-    if (player_ctrl_add(id) == 0) {
+    if (player_add(id) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
+
+    /* Add equip component */
+    if (equip_add(id) == 0) {
+        entity_destroy(id);
+        return ENTITY_ID_INVALID;
+    }    
 
     return id;
 }

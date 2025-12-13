@@ -44,8 +44,4 @@ entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity);
 
 void equipment_system_print_name(text_window_t *win, item_kind_t kind);
 
-void equipment_system_get_tile(entity_id_t id, zxnext_tile_t *tile);
-
-item_class_t equipment_system_get_class(item_kind_t kind);
-
 #endif // ITEM_BASE_H

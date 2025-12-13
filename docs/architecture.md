@@ -157,7 +157,6 @@ State transitions are instantaneous — they do not consume turns.
 
 AI_system_update determines if it is the monsters turn and takes a turn if it is.
 
-
 ## 13. Naming Conventions
 
 | Category           | Convention                   | Example                              |

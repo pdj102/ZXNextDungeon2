@@ -115,7 +115,7 @@ void init_game_state(void)
     creature_init();
     item_init();
     location_init();
-    player_ctrl_init();
+    player_init();
     renderable_init();
     timer_init();
 
