@@ -21,7 +21,20 @@
 /***************************************************
  * public types
  ***************************************************/
+ /* timer component */
+typedef struct {
+    ticks_t base_ticks; /* reset period ticks */
+    ticks_t ticks;      /* remaining ticks */
+    bool_t  active;     /* true if counting down */
+    bool_t  fired;      /* true if count down reached zero */
+} timer_comp_t;
 
+/* Timer components - fast iterate */
+typedef struct {
+    timer_comp_t timers[MAX_ENTITIES]; /* array of timers */
+    uint8_t list[MAX_ENTITIES]; /* list of entities with timer component*/
+    uint8_t count;
+} timer_components_t;
 
 /***************************************************
  * public function prototypes

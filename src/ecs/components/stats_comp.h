@@ -22,23 +22,6 @@
 /***************************************************
  * public types
  ***************************************************/
-typedef enum creature_speed_e {
-    SPEED_NONE = 0,
-    SPEED_5FT, 
-    SPEED_10FT,
-    SPEED_15FT,
-    SPEED_20FT,
-    SPEED_25FT,
-    SPEED_30FT,
-    SPEED_35FT,
-    SPEED_40FT,
-    SPEED_45FT,
-    SPEED_50FT,
-    SPEED_55FT,
-    SPEED_60FT,
-    SPEED_COUNT
-} speed_t;
-
 /* Creature stats block */
 typedef struct {
     int8_t ac;
@@ -62,8 +45,6 @@ typedef stats_comp_t stats_components_t[MAX_ENTITIES];
 void creature_init(void);
 
 uint8_t stats_add(entity_id_t entity, stats_comp_t *stats_p);
-
-ticks_t speed_to_ticks(speed_t speed);
 
 void stats_remove(entity_id_t entity);
 

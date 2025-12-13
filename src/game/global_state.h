@@ -19,7 +19,7 @@
 #include "ecs/components/equip_comp.h"
 #include "ecs/components/equipable_comp.h"
 #include "ecs/components/player_comp.h"
-#include "ecs/components/timer_comp_priv.h"
+#include "ecs/components/timer_comp.h"
 
 #include "game/map_priv.h"
 
@@ -59,7 +59,7 @@ typedef struct
     text_window_t msg_win;
     text_window_t main_win;
     text_window_t assert_win;
-    
+
 } global_state_t;
 
 

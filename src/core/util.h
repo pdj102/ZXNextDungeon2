@@ -58,6 +58,23 @@ typedef struct dice_s {
 
 typedef uint8_t ticks_t;
 
+typedef enum creature_speed_e {
+    SPEED_NONE = 0,
+    SPEED_5FT, 
+    SPEED_10FT,
+    SPEED_15FT,
+    SPEED_20FT,
+    SPEED_25FT,
+    SPEED_30FT,
+    SPEED_35FT,
+    SPEED_40FT,
+    SPEED_45FT,
+    SPEED_50FT,
+    SPEED_55FT,
+    SPEED_60FT,
+    SPEED_COUNT
+} speed_t;
+
 /***************************************************
  * public variables
  ***************************************************/
@@ -72,6 +89,8 @@ extern const dice_t dice[];
 uint8_t util_roll_dice(dice_roll_t dice);
 
 direction_t util_get_dir_or_cancel_b( void );
+
+ticks_t speed_to_ticks(speed_t speed);
 
 void util_assert_f(const char *message, const char *file, unsigned line);
 
