@@ -1,5 +1,5 @@
 /**
- * @file player_ctrl_comp.c
+ * @file player_comp.c
  * @author Paul Johnson
  * @brief 
  
@@ -8,7 +8,7 @@
  * 
  */
 
-#include "player_ctrl_comp.h"
+#include "player_comp.h"
 
 #include <sys\types.h>      /* bool_t */
 

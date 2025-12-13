@@ -21,7 +21,7 @@
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/location_comp.h"
-#include "../../ecs/components/player_ctrl_comp.h"
+#include "../../ecs/components/player_comp.h"
 #include "../../ecs/components/renderable_comp.h"
 
 #include "core/systems_dispatch.h"

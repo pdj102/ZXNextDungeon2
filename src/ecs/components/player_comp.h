@@ -1,15 +1,11 @@
 /**
- * @file player_ctrl_comp.h
+ * @file player_comp.h
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
- * 
  */
 
-#ifndef PLAYER_CTRL_COMP_H
-#define PLAYER_CTRL_COMP_H
+#ifndef player_comp_H
+#define player_comp_H
 
 #include <stdint.h>
 
@@ -22,6 +18,9 @@
 /***************************************************
  * public types
  ***************************************************/
+typedef struct {
+    entity_id_t id;
+} player_comp_t;
 
 /***************************************************
  * public function prototypes
@@ -30,4 +29,4 @@ void player_ctrl_init(void);
 bool_t player_ctrl_add(entity_id_t entity);
 void player_ctrl_remove(entity_id_t entity);
 
-#endif // PLAYER_CTRL_COMP_H
+#endif // player_comp_H
