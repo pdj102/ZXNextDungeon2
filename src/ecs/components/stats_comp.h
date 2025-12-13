@@ -37,14 +37,14 @@ typedef enum creature_speed_e {
     SPEED_55FT,
     SPEED_60FT,
     SPEED_COUNT
-} creature_speed_t;
+} speed_t;
 
 /* Creature stats block */
 typedef struct {
     int8_t ac;
     int8_t cur_hp;
     int8_t max_hp;
-    creature_speed_t speed;
+    speed_t speed;
     int8_t str;
     int8_t dex;
     int8_t con;
@@ -63,7 +63,7 @@ void creature_init(void);
 
 uint8_t stats_add(entity_id_t entity, stats_comp_t *stats_p);
 
-void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks);
+ticks_t speed_to_ticks(speed_t speed);
 
 void stats_remove(entity_id_t entity);
 

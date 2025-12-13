@@ -236,19 +236,12 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     }
   
     /* Add timer component*/
-    if (timer_add(id) == 0)
+    if (timer_add(id, speed_to_ticks(monster_stats_base[kind].speed )) == 0)
     {
         util_abort("");
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }
-    turn_tick_t tt;
-    creature_speed_to_turns_ticks(id, &tt);
-    text_printf(&g.msg_win, "turns:%u ticks:%u\n", tt.turns, tt.ticks);
-
-
-
-    timer_set(id, tt.turns, tt.ticks);    
 
     return id;
 }

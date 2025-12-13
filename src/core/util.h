@@ -56,10 +56,7 @@ typedef struct dice_s {
     uint8_t mod;
 } dice_t;
 
-typedef struct turn_tick_s {
-    uint8_t turns;
-    uint8_t ticks;
-} turn_tick_t;
+typedef uint8_t ticks_t;
 
 /***************************************************
  * public variables

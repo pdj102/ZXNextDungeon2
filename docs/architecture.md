@@ -196,7 +196,7 @@ May call / access:
 - entity functions
 - component add/remove helpers
 
-Must not call / access 
+Must not call / access
 
 - system functions
 - game logic

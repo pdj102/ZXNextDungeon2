@@ -81,8 +81,6 @@ void creature_init(void);
 
 uint8_t creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge);
 
-void creature_speed_to_turns_ticks(entity_id_t id, turn_tick_t *turns_ticks);
-
 void creature_remove(entity_id_t entity);
 
 #endif // CREATURE_COMP_H

@@ -23,8 +23,8 @@
 
  /* timer component */
 typedef struct {
-    uint8_t base_ticks; /* reset period ticks */
-    uint8_t ticks;      /* remaining ticks */
+    ticks_t base_ticks; /* reset period ticks */
+    ticks_t ticks;      /* remaining ticks */
     bool_t  active;     /* true if counting down */
     bool_t  fired;      /* true if count down reached zero */
 } timer_comp_t;
