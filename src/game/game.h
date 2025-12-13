@@ -75,6 +75,7 @@ typedef enum creature_speed_e {
  ***************************************************/
 extern const vector_t directions[];
 extern const dice_t dice[];
+extern const int8_t modifiers[]; 
 
 /***************************************************
  * function prototypes

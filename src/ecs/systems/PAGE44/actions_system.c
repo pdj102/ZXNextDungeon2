@@ -25,9 +25,7 @@
  * private variables
  * ***************************************************/
 
- const int8_t modifiers[] = { -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-/***************************************************
+ /***************************************************
  * private function prototypes
  ***************************************************/
  int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type);
@@ -53,19 +51,25 @@ bool_t actions_system_try_drop(entity_id_t actor, entity_id_t item)
 {
     uint8_t x, y;
 
-    /* entity to be droped has item and contained components */
-    util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED));
-
-    /* actor has creature, container and location components */
-    util_assert(entity_has_component(actor, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
-
-    /* check creature is holding the item */
+    /* item to be droped has item and contained components */
+    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED))
+    {
+        return 0;
+    }
+    /* actor has container and location components */
+    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION))
+    {
+        return 0;
+    }    
+    /* creature is holding the item */
     if (g.contained_components[item].container != actor)
     {
         return 0;
     }
 
     /* TODO check not equipped */
+
+    /* TODO implement an inventory system */
 
     system_container_remove_item_from(actor, item);
     
@@ -185,33 +189,32 @@ bool_t actions_system_try_equip(entity_id_t actor, entity_id_t item)
 
 bool_t actions_system_try_pickup(entity_id_t actor, entity_id_t item)
 {  
-    /* entity to be picked up has item and location components */
-    util_assert(entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION));
-
-    /* actor has creature, container and location components */
-    util_assert(entity_has_component(actor, COMPONENT_CREATURE | COMPONENT_CONTAINER | COMPONENT_LOCATION));
-
-    /* check creature and item are at the same location*/
+    /* item to be picked up has item and location components */
+    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION))
+    {
+        return 0;
+    }
+    /* actor has container, location and item components */
+    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
+    {
+        return 0;
+    }    
+    /* actor and item are at the same location*/
     if (!location_equal(actor, item))
     {
         return 0;
     }
+    /* container is not full */
+    if (g.container_components[actor].count >= g.container_components[actor].capacity)
+    {
+        return 0;
+    }    
 
     location_remove(item);
-    
-    if (system_container_place_item_in(actor, item))
-    {
-        system_event_emit(EVENT_PICKED_UP, actor, item, 0);
-        return 1;
-    }
-    else
-    {
-        // TODO put the item back on the map
-        // location_add(item, x, y);
-        return 0;
-    }
+    system_container_place_item_in(actor, item);
+    system_event_emit(EVENT_PICKED_UP, actor, item, 0);
 
-
+    return 1;
 }
 
 bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
@@ -219,13 +222,20 @@ bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     int8_t attack_roll;
     int8_t damage_roll;
 
-    /* entity to be attacked has creature and location component */
-    util_assert(entity_has_component(target, COMPONENT_LOCATION | COMPONENT_CREATURE));
-    
-    /* actor has creature, contained and location */
-    util_assert(entity_has_component(attacker, COMPONENT_CREATURE | COMPONENT_LOCATION));
-    
-    /* check target within melee attack range */
+    /* attacker has melee_attack, stats and location component */
+    /* TODO not all attackers need stats */
+    if (!entity_has_component(attacker, COMPONENT_MELEE | COMPONENT_STATS | COMPONENT_LOCATION ))
+    {
+        return 0;
+    }
+
+    /* target has stats and location component */
+    if (!entity_has_component(target, COMPONENT_STATS | COMPONENT_LOCATION))
+    {
+        return 0;
+    }    
+
+    /* to do check target within melee attack range */
 
     /* try attack*/
 

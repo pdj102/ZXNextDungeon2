@@ -58,7 +58,7 @@
             {
                 text_printf(&g.msg_win, " missed ");    
             }
-            system_monster_print_name(&g.msg_win, tgt);
+            system_monster_print_name(&g.msg_win, g.creature_components[tgt].kind);
             text_print_string(&g.msg_win, "\n");
             break;
         case EVENT_DIED:

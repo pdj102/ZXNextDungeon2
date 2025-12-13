@@ -117,15 +117,29 @@ Entities never act directly; instead, they express intent.
 
 Systems provide *try* and *action* functions.
 
-*Try* functions check if an entity has the required components and validates if the action is permisable.
+### Try functions
+
+*Try* functions check if an entity has the required components and validate if the action is permisable.
+
+If permissable,
+
+- call *action* function(s) to execute the action
+- emit an event to notify other systems of the action
+- return true (success)
+
+Examples of try functions:
 
 - `bool_t inventory_system_try_pickup(entity_id_t actor, entity_id_t item)`
 - `bool_t combat_system_try_melee_attack(entity_id_t actor, entity_id_t target)`
 - `bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)`
 
-They emit an Event with a value indicating success or failure and also return trtue (success) or false (failure).
+### Action functions
 
-*Action* functions asserts that the entities have the correct components and executes the action without emitting an event.
+*Action* functions assert that the entities have the correct components and execute the action.
+
+Action functions always succeed (or abort)
+
+Examples of action functions:
 
 - `void movement_system_move(entity_id_t actor, int8_t dx, int8_t dy)`
 - `int8_t combat_system_take_damage(entity_id_t actor, int8_t damage, damage_type_t type)`

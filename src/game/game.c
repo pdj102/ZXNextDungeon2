@@ -73,6 +73,7 @@ const ticks_t speed_to_ticks_table[SPEED_COUNT] = {
    [SPEED_60FT] = 4
 };
 
+const int8_t modifiers[] = { -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
 
 /***************************************************
  * private function prototypes

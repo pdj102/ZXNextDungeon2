@@ -41,12 +41,6 @@ bool_t container_system_place_item_in(entity_id_t container, entity_id_t item)
     util_assert(!entity_has_component(item, COMPONENT_CONTAINED)); /* must not already be contained */
     util_assert(!entity_has_component(item, COMPONENT_LOCATION)); /* must not be placed on the map */
 
-    if (g.container_components[container].count == g.container_components[container].capacity)
-    {
-        /* container is full */
-        return 0;
-    }
-
     contained_add(item);
 
     g.contained_components[item].next = g.container_components[container].head; /* set next to current container head */
