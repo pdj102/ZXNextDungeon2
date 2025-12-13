@@ -8,6 +8,7 @@
 #include "monster_system.h"
 
 #include "ecs/components/creature_comp.h"
+#include "ecs/components/stats_comp.h"
 
 #include "game/global_state.h"
 
@@ -18,7 +19,7 @@
  * private variables
  * ***************************************************/
 
-const creature_stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
+const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 {
     [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .speed = SPEED_NONE, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0},
    /* MONSTER_CLASS_ABERRATIONS */

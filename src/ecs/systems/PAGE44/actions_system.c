@@ -219,7 +219,7 @@ bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     attack_roll = calc_attack_roll(attacker, ATTACK_MELEE);
     
     /* successful hit if attack roll is greater or equal to target's armour class */
-    if (attack_roll >= g.creature_stat_components[target].ac)
+    if (attack_roll >= g.stats_components[target].ac)
     {
         /* damage roll calculation = weapon dice roll +damage_mod_bonus (which is weapon mod + ability modifer + proficiency bonus )*/
         damage_roll = util_roll_dice(g.melee_components[attacker].damage_roll);
@@ -240,14 +240,14 @@ bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
 {
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
-    if (g.creature_stat_components[creature].cur_hp <= damage)
+    if (g.stats_components[creature].cur_hp <= damage)
     {
-        g.creature_stat_components[creature].cur_hp = 0;
+        g.stats_components[creature].cur_hp = 0;
         actions_system_try_die(creature);
     }
     else
     {
-        g.creature_stat_components[creature].cur_hp -= damage;
+        g.stats_components[creature].cur_hp -= damage;
     }
     
     return damage;
@@ -317,11 +317,11 @@ int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type)
         switch (attack_type)
         {
             case ATTACK_MELEE:
-            ability_mod = modifiers[g.creature_stat_components[attacker].str];
+            ability_mod = modifiers[g.stats_components[attacker].str];
             break;
 
             case ATTACK_RANGED:
-            ability_mod = modifiers[g.creature_stat_components[attacker].dex];
+            ability_mod = modifiers[g.stats_components[attacker].dex];
             break;
 
             default:
