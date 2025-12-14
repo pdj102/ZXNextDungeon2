@@ -81,6 +81,8 @@ extern const int8_t modifiers[];
  * function prototypes
  ***************************************************/
 
+void game_init(void);
+
 uint8_t game_roll_dice(dice_roll_t dice);
 
 direction_t game_get_dir_or_cancel_b( void );

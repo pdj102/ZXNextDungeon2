@@ -56,18 +56,6 @@ void init_zxnext_bank(void)
     ZXN_WRITE_MMU7(mmu_7_current_bank);       /* restore previous bank */  
 }
 
-void init_game_state_bank(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_INIT);          /* Page init code into 8k MMU slot 6 */    
-
-    init_game_state();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
-}
-
 void init_ui_bank(void)
 {
     uint8_t current_bank;

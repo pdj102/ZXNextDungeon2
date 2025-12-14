@@ -21,7 +21,7 @@
 
 #include "game/global_state.h"
 
-#include "core/systems_dispatch.h"
+#include "ecs/systems/systems_dispatch.h"
 #include "core/text.h"
 
 
@@ -42,12 +42,13 @@ void entity_init(void)
         g.entity_components.entities[i].mask = COMPONENT_NONE;  /* clear component mask */
     }
 
-    g.entity_components.count = 0;
+    g.entity_components.active_head = 0;
+    g.entity_components.destroy_head = 0;
 }
 
 entity_id_t entity_create(void)
 {
-    if (g.entity_components.count == MAX_ENTITIES)
+    if (g.entity_components.active_head == MAX_ENTITIES)
     {
         return ENTITY_ID_INVALID;
     }
@@ -57,9 +58,9 @@ entity_id_t entity_create(void)
         if(!entity_has_flag(i, FLAG_IN_USE))
         {
             g.entity_components.entities[i].flags = FLAG_NONE | FLAG_IN_USE;        /* clear flags and set entity in use flag */
-            g.entity_components.entities[i].mask = COMPONENT_NONE;                 /* clear component mask */
+            g.entity_components.entities[i].mask = COMPONENT_NONE;                  /* clear component mask */
 
-            g.entity_components.active_list[g.entity_components.count++] = i;       /* store in active list */
+            g.entity_components.active_list[g.entity_components.active_head++] = i;/* store in active list */
 
             return i;
         }
@@ -127,37 +128,33 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
     g.entity_components.entities[id].flags &= ~flag;
 }
 
-void entity_mark_for_destruction(entity_id_t entity) 
+/*
+ * @brief Mark an entity for destruction and append to for destuction list
+ */
+void entity_mark_for_destruction(entity_id_t id) 
 {
-    /* TODO should not be calling container from here. Container system should check FLAG_PENDING_DESCRUTION and apply pre-destruction logic e.g. release contained items */
-    if (entity_has_component(entity, COMPONENT_CONTAINER))
-    {
-        system_container_mark_contents_for_destruction(entity);
-    }
-
-    /* TODO manage equipped */
-    
-    entity_set_flag(entity, FLAG_PENDING_DESTORY);
+    /* append to destruction list */
+    g.entity_components.destroy_list[g.entity_components.destroy_head++] = id;
+    entity_set_flag(id, FLAG_PENDING_DESTROY);
 }
 
-/* TODO - make clean up efficient e.g. set a flag if cleanup needed*/
-void entity_clean_up(void)
+/*
+ * @brief Destroy all entities marked for destruction
+ */
+void entity_cleanup() 
 {
-    for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
+    for (uint8_t i = 0; i < g.entity_components.destroy_head; i++)
     {
-        if (entity_has_flag(i, FLAG_PENDING_DESTORY))
-        {
-            entity_destroy(i);
-        }
+        entity_destroy(g.entity_components.destroy_list[i]);
     }
+
+    /* Set destroy list to empty */
+    g.entity_components.destroy_head = 0;
 }
 
-/* 
- * NB   Entity destroy will abort if 
- *      1) entity - is contained 
- *      2) container - contains any entities
- *      3) equipped - is equipped 
- *      4) slots - any slots are in use
+/*
+ * @brief Finalise entity destruction
+ * @details Cleanup routines must have been called before calling this function
  */
 void entity_destroy(entity_id_t id)
 {
@@ -209,20 +206,19 @@ void entity_destroy(entity_id_t id)
         equipped_remove(id);
     }
 
-    /* mark entity as free to use */
+    /* mark entity as no longer active and free to use */
     g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
     g.entity_components.entities[id].mask = COMPONENT_NONE;         /* clear component mask */
 
     /* remove from active list */
-    for (uint8_t i = 0; i < g.entity_components.count; i++)         
+    for (uint8_t i = 0; i < g.entity_components.active_head; i++)
     {
         if (g.entity_components.active_list[i] == id)
         {
-            g.entity_components.active_list[i] = g.entity_components.active_list[--g.entity_components.count];
+            g.entity_components.active_list[i] = g.entity_components.active_list[--g.entity_components.active_head];
             break;
         }
     }    
-
 }
 
  /***************************************************

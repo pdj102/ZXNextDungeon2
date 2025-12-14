@@ -37,7 +37,11 @@
 /***************************************************
  * public functions
  ***************************************************/
-bool_t actions_system_try_close(entity_id_t creature, entity_id_t feature)
+void actions_system_init(void)
+{
+}
+
+ bool_t actions_system_try_close(entity_id_t creature, entity_id_t feature)
 {
     
 }

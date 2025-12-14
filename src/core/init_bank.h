@@ -24,8 +24,6 @@
 
  void init_zxnext_bank(void);
 
-void init_game_state_bank(void);
-
 void init_ui_bank(void);
 
 

@@ -34,9 +34,12 @@ typedef struct {
 
 /* Entity arena structure - fast iterate */
 typedef struct {
-    entity_t entities[MAX_ENTITIES]; /* array of entities */
-    uint8_t active_list[MAX_ENTITIES];
-    uint8_t count;
+    entity_t    entities[MAX_ENTITIES];     /* array of entities */
+
+    entity_id_t active_list[MAX_ENTITIES];  /* stack of active entities */
+    uint8_t     active_head;               /* number of active entities */
+    entity_id_t destroy_list[MAX_ENTITIES]; /* stack of entities marked for destruction */
+    uint8_t     destroy_head;              /* number of entities marked for destruction */
 } entity_components_t;
 
 /***************************************************

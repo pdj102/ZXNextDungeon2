@@ -83,6 +83,11 @@ const int8_t modifiers[] = { -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1
  * functions
  ***************************************************/
 
+void game_init(void)
+{
+    map_init();
+}
+
 uint8_t game_roll_dice(dice_roll_t dice)
 {
     uint8_t roll = 0;

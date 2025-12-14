@@ -14,21 +14,7 @@
 /* #include <config_zxn.h> */
 #include <stdint.h>
 
-#include "ecs/entity.h"
-
-#include "ecs/components/contained_comp.h"
-#include "../../ecs/components/container_comp.h"
-#include "ecs/components/creature_comp.h"
-#include "ecs/components/item_comp.h"
-#include "ecs/components/location_comp.h"
-#include "../../ecs/components/player_comp.h"
-#include "../../ecs/components/renderable_comp.h"
-
-#include "core/systems_dispatch.h"
-#include "game/map_terrain.h"
-#include "../../game/map_render.h"
 #include "game/global_state.h"
-
 #include "core/zxnext.h"
 
 
@@ -103,30 +89,6 @@ void init_zxnext(void)
 
     init_zxnext_palette();
 } 
-
-void init_game_state(void)
-{
-    /* Init entity */
-    entity_init();
-
-    /* Init components */
-    contained_init();
-    container_init();
-    creature_init();
-    item_init();
-    location_init();
-    player_init();
-    renderable_init();
-    timer_init();
-
-    /* Init systems */
-    system_event_init();
-    system_player_init();
-    system_timer_init();
-
-    /* Init game */
-    map_init();
-}
 
 void init_ui(void)
 {

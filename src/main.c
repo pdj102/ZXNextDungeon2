@@ -14,11 +14,13 @@
 #include "main.h"
 
 #include "ecs/entity.h"
+
+#include "ecs/components/components.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/location_comp.h"
 
-#include "core/systems_dispatch.h"
+#include "ecs/systems/systems_dispatch.h"
 
 #include "game/map.h"
 #include "game/map_render.h"
@@ -28,15 +30,19 @@
 #include "core/util.h"
 #include "core/text.h"
 #include "core/init_bank.h"
-#include "core/systems_dispatch.h"
 
-
+void clean_up_and_destroy(void);
  
 int main(void) {
 
    init_zxnext_bank();
-   init_game_state_bank();
    init_ui_bank();
+
+   entity_init();
+   components_init();
+   systems_init();
+   game_init();
+
    map_gen();
 
    util_info("Debug build");
@@ -73,19 +79,55 @@ int main(void) {
     {
         system_timer_update();
 
-        text_print_string(&g.msg_win, ".");
+        // text_print_string(&g.msg_win, ".");
 
         system_player_update();
 
         map_render();        
 
-        // container system cleanup
-        system_container_clean_up();
-        // entity cleanup
-        entity_clean_up();
+        clean_up_and_destroy();
     }
 
     util_abort("Hello World");
 
     return 0;
+}
+
+
+void clean_up_and_destroy(void)
+{
+    uint8_t i = 0;
+    entity_id_t id;
+
+    /* Run clean up for each entity marked for destruction */
+    /* Note: clean up may append more entities to the list for destruction */
+    /* So we need to iterate until the list is empty */
+    /* Do not destroy anything yet */
+
+    while (g.entity_components.destroy_head > i)
+    {
+        id = g.entity_components.destroy_list[i];
+        text_printf(&g.msg_win, "%d entities to cleanup\n", g.entity_components.destroy_head);
+        
+        util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
+        system_container_clean_up(id);
+        // system_equipment_clean_up(id);
+
+        i++;
+    }
+
+    /* Now all entities are marked for destruction and cleanup has been run*/
+    /* Finalise the destruction */
+
+    i = 0;
+    while ( g.entity_components.destroy_head >  i)
+    {
+        id = g.entity_components.destroy_list[i];
+        text_printf(&g.msg_win, "%d entities to destroy\n", g.entity_components.destroy_head);
+        util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
+        entity_destroy(id);
+
+        i++;
+    }
+    g.entity_components.destroy_head = 0;
 }

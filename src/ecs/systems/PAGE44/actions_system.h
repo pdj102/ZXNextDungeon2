@@ -29,7 +29,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-
+void event_system_init(void);
 bool_t actions_system_try_melee_attack(entity_id_t creature, entity_id_t target);
 bool_t actions_system_try_pickup(entity_id_t creature, entity_id_t item);
 bool_t actions_system_try_drop(entity_id_t creature, entity_id_t item);

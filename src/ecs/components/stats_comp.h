@@ -44,7 +44,7 @@ typedef stats_comp_t stats_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void creature_init(void);
+void stats_init(void);
 
 uint8_t stats_add(entity_id_t entity, stats_comp_t *stats_p);
 

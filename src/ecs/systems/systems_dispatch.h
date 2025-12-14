@@ -27,7 +27,10 @@
  * public function prototypes
  ***************************************************/
 
+void systems_init(void);
+
 /* Actions System */
+void system_actions_init(void);
 bool_t system_actions_try_melee_attack(entity_id_t creature, entity_id_t target);
 bool_t system_actions_try_pickup(entity_id_t creature, entity_id_t item);
 bool_t system_actions_try_drop(entity_id_t creature, entity_id_t item);
@@ -50,7 +53,7 @@ entity_id_t system_container_get_first(entity_id_t container);
 entity_id_t system_container_get_next(entity_id_t entity);
 entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
-void system_container_clean_up(void);
+void system_container_clean_up(entity_id_t id);
 
 /* Item system*/
 void system_item_init(void);
@@ -60,6 +63,10 @@ void system_item_print_name(text_window_t *win, item_kind_t kind);
 /* Event System */
 void system_event_init(void);
 void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+
+/* Equipment System */
+void system_equipment_init(void);
+void system_equipment_clean_up(entity_id_t id);
 
 /* Monster system*/
 void system_monster_init(void);

@@ -142,33 +142,27 @@ entity_id_t container_system_get_at(entity_id_t container, uint8_t position)
 }
 
 /*
- * @brief Clean up all entities marked for destruction.
+ * @brief Clean up an entity marked for destruction.
  * @details 
- * If entity is contained then it is removed from the contained list. 
- * If entity is a container then all its contained entities are marked for destruction.
- * @return void
+ * If entity is contained then it is removed from the container
+ * If entity is a container then all its contained entities are removed and marked for destruction.
+ * 
+ * @param id Identity of the entity to be cleaned up. 
  */
-void container_system_clean_up(void)
+void container_system_clean_up(entity_id_t id)
 {
-for (entity_id_t i = 0; i < MAX_ENTITIES; i++)
+    if (entity_has_component(id, COMPONENT_CONTAINED))
     {
-        if (entity_has_flag(i, FLAG_PENDING_DESTORY))
-        {
-            if (entity_has_component(i, COMPONENT_CONTAINED))
-            {
-                container_system_remove_item_from(g.contained_components[i].container, i);
-            }
-            if (entity_has_component(i, COMPONENT_CONTAINER))
-            {
-                container_system_mark_contents_for_destruction(i);
-            }
-            entity_mark_for_destruction(i);
-        }
-    }    
+        container_system_remove_item_from(g.contained_components[id].container, id);
+    }
+    if (entity_has_component(id, COMPONENT_CONTAINER))
+    {
+        container_system_mark_contents_for_destruction(id);
+    }
 }
 
 /*
- * @brief Remove every item from the container and flag pending destruction
+ * @brief Remove every item from a container and flag pending destruction
 */
 void container_system_mark_contents_for_destruction(entity_id_t container)
 {
