@@ -15,7 +15,7 @@
 #include "ecs/entity.h"
 #include "ecs/components/item_comp.h"
 #include "ecs/components/creature_comp.h"
-#include "../ecs/systems/PAGE42/event_system.h"
+#include "ecs/systems/PAGE42/event_system.h"
 
 #include "core/text.h"
 
@@ -52,10 +52,10 @@ entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
 void system_container_clean_up(void);
 
-/* Equipment system*/
-void system_equipment_init(void);
-entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity);
-void system_equipment_print_name(text_window_t *win, item_kind_t kind);
+/* Item system*/
+void system_item_init(void);
+entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
+void system_item_print_name(text_window_t *win, item_kind_t kind);
 
 /* Event System */
 void system_event_init(void);

@@ -1,8 +1,7 @@
 /**
  * @file container_system.c
  * @author Paul Johnson
- * @brief 
- 
+ * @brief A container can contain items. Contained items have a contained component
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -13,12 +12,11 @@
 #include <sys\types.h>
 
 #include "ecs/entity.h"
+#include "ecs/components/container_comp.h"
 #include "ecs/components/contained_comp.h"
 
 #include "core/util.h"
 #include "game/global_state.h"
-
-
 
 /***************************************************
  * private variables

@@ -1,21 +1,15 @@
 /**
- * @file equipment_system.c
+ * @file item_system.c
  * @author Paul Johnson
- * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
- * 
+ * @brief Items are physical objects in game world.
  */
 
-#include "equipment_system.h"
+#include "item_system.h"
 
 #include "ecs/components/item_comp.h"
 #include "ecs/components/equippable_comp.h"
 
 #include "game/global_state.h"
-
-#include "core/zxnext.h"
 
 /***************************************************
  * private variables
@@ -90,16 +84,15 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
  * public functions
  ***************************************************/
 
- void equipment_system_init(void)
+ void item_system_init(void)
  {
 
  }
 
-entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
+entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
 {
-    zxnext_tile_t tile; 
-
     entity_id_t id = entity_create(); 
+
     if (id == ENTITY_ID_INVALID)
         return id;
 
@@ -124,7 +117,7 @@ entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
     return id;
 }
 
-void equipment_system_print_name(text_window_t *win, item_kind_t kind)
+void item_system_print_name(text_window_t *win, item_kind_t kind)
 {
     text_print_string(win, name_base[kind]);
 }

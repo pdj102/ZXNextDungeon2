@@ -44,13 +44,13 @@ int main(void) {
    util_assert(sizeof(g) < 0x3FFF);
 
     // Create some items
-    entity_id_t e1 = system_equipment_create(ITEM_SHORT_SWORD, 1);
+    entity_id_t e1 = system_item_create(ITEM_SHORT_SWORD, 1);
     location_add(e1, 10, 10);
 
-    entity_id_t e2 = system_equipment_create(ITEM_POTION_OF_HEALING, 1);
+    entity_id_t e2 = system_item_create(ITEM_POTION_OF_HEALING, 1);
     location_add(e2, 12, 10);
 
-    entity_id_t e3 = system_equipment_create(ITEM_KEY, 1);
+    entity_id_t e3 = system_item_create(ITEM_KEY, 1);
     // location_add(e3, 14, 10);
 
     entity_id_t e4 = system_monster_create(CREATURE_RAT);  

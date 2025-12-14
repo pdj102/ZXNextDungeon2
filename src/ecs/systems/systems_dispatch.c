@@ -4,19 +4,19 @@
  * @brief Game SYSTEMS_DISPATCH
  */
 
-#include "core/systems_dispatch.h"
+#include "ecs/systems/systems_dispatch.h"
 
-#include <arch/zxn.h>
+#include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
-#include "zxnext.h"
+#include "core/zxnext.h"
 
-#include "../ecs/systems/PAGE30/monster_system.h"
-#include "../ecs/systems/PAGE32/equipment_system.h"
-#include "../ecs/systems/PAGE38/timer_system.h"
-#include "../ecs/systems/PAGE40/container_system.h"
-#include "../ecs/systems/PAGE42/event_system.h"
-#include "../ecs/systems/PAGE44/actions_system.h"
-#include "../ecs/systems/PAGE46/player_system.h"
+#include "ecs/systems/PAGE30/monster_system.h"
+#include "ecs/systems/PAGE32/item_system.h"
+#include "ecs/systems/PAGE38/timer_system.h"
+#include "ecs/systems/PAGE40/container_system.h"
+#include "ecs/systems/PAGE42/event_system.h"
+#include "ecs/systems/PAGE44/actions_system.h"
+#include "ecs/systems/PAGE46/player_system.h"
 
 /***************************************************
  * private defines
@@ -471,21 +471,21 @@ void system_monster_print_name(text_window_t *win, creature_kind_t kind)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 
 }
-/* Equipment system*/
+/* Item system*/
 
-void system_equipment_init(void)
+void system_item_init(void)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
 
-    equipment_system_init();
+    item_system_init();
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 }
 
-entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity)
+entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
 {
     entity_id_t entity;
     uint8_t current_bank;
@@ -493,21 +493,21 @@ entity_id_t system_equipment_create(item_kind_t kind, uint8_t quantity)
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
 
-    entity = equipment_system_create(kind, quantity);
+    entity = item_system_create(kind, quantity);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
 
     return entity;
 }
 
-void system_equipment_print_name(text_window_t *win, item_kind_t kind)
+void system_item_print_name(text_window_t *win, item_kind_t kind)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
 
-    equipment_system_print_name(win, kind);
+    item_system_print_name(win, kind);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 

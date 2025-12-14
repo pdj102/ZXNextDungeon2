@@ -17,7 +17,7 @@
 #include "ecs/components/timer_comp.h"
 #include "ecs/components/location_comp.h"
 
-#include "core/systems_dispatch.h"
+#include "ecs/systems/systems_dispatch.h"
 
 #include "game/global_state.h"
 #include "game/map.h"
@@ -273,7 +273,7 @@ void display_inventory(void)
     while (entity != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
-        system_equipment_print_name(&g.main_win, g.item_components[entity].kind);
+        system_item_print_name(&g.main_win, g.item_components[entity].kind);
 
         if (is_equipped(entity))
         {

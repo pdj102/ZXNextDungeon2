@@ -17,10 +17,11 @@
 #include "ecs/components/equipped_comp.h"
 #include "ecs/components/slots_comp.h"
 
+#include "ecs/systems/systems_dispatch.h"
+
 #include "game/game.h"
 #include "game/global_state.h"
 
-#include "core/systems_dispatch.h"
 #include "core/util.h"
 
 
