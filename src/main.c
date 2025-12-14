@@ -29,14 +29,13 @@
 
 #include "core/util.h"
 #include "core/text.h"
-#include "core/init_bank.h"
+#include "core/core_init_bank.h"
 
 void clean_up_and_destroy(void);
  
 int main(void) {
 
-   init_zxnext_bank();
-   init_ui_bank();
+   core_init_bank();
 
    entity_init();
    components_init();

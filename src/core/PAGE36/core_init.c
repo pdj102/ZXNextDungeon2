@@ -1,14 +1,10 @@
 /**
- * @file init.c
+ * @file core_init.c
  * @author Paul Johnson
  * @brief 
- 
- * 
- * @copyright Copyright (c) 2025
- * 
  */
 
-#include "init.h"
+#include "core_init.h"
 
 #include <arch/zxn.h>
 /* #include <config_zxn.h> */
@@ -54,8 +50,10 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+void init_zxnext(void);
 void init_zxnext_tilemap(void);
 void init_zxnext_palette(void);
+void init_ui(void);
 
 /***************************************************
  * private variables 
@@ -66,6 +64,12 @@ void init_zxnext_palette(void);
  * 
  */
 extern uint8_t tile_palette[]; 
+
+void core_init(void) 
+{
+    init_zxnext();
+    init_ui();
+}
 
 void init_zxnext(void) 
 {

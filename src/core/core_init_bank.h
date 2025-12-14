@@ -1,5 +1,5 @@
 /**
- * @file init_bank.h
+ * @file core_init_bank.h
  * @author Paul Johnson
  * @brief Game INIT_BANK
  * 
@@ -7,12 +7,12 @@
  * 
  */
 
-#ifndef INIT_BANK_H
-#define INIT_BANK_H
+#ifndef CORE_INIT_BANK_H
+#define CORE_INIT_BANK_H
 
 #include <stdint.h>
 
-#include "PAGE36/init.h"
+#include "core/PAGE36/core_init.h"
 
  /***************************************************
  * public types
@@ -22,9 +22,6 @@
  * public function prototypes
  ***************************************************/
 
- void init_zxnext_bank(void);
+ void core_init_bank(void);
 
-void init_ui_bank(void);
-
-
-#endif // INIT_BANK_H
+#endif // CORE_INIT_BANK_H
