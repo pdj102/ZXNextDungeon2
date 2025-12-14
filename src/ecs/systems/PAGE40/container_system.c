@@ -15,6 +15,9 @@
 #include "ecs/components/container_comp.h"
 #include "ecs/components/contained_comp.h"
 
+#include "ecs/systems/systems_dispatch.h"
+#include "ecs/systems/PAGE42/event_system.h"
+
 #include "core/util.h"
 #include "game/global_state.h"
 
@@ -32,7 +35,77 @@ void container_system_init(void)
 
 }
 
-bool_t container_system_place_item_in(entity_id_t container, entity_id_t item)
+
+bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
+{  
+    /* item to be picked up has item and location components */
+    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION))
+    {
+        return 0;
+    }
+    /* actor has container, location and item components */
+    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
+    {
+        return 0;
+    }    
+    /* actor and item are at the same location*/
+    if (!location_equal(actor, item))
+    {
+        return 0;
+    }
+    /* container is not full */
+    if (g.container_components[actor].count >= g.container_components[actor].capacity)
+    {
+        return 0;
+    }    
+
+    /* Remove item from floor */
+    location_remove(item);
+
+    /* Place item in container */
+    container_system_add(actor, item);
+
+    system_event_emit(EVENT_PICKED_UP, actor, item, 0);
+
+    return 1;
+}
+
+bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
+{
+    /* item to be droped has item and contained components */
+    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED))
+    {
+        return 0;
+    }
+    /* actor has container and location components */
+    if (!entity_has_component(actor, COMPONENT_CONTAINER | COMPONENT_LOCATION))
+    {
+        return 0;
+    }    
+    /* actor is holding the item */
+    if (g.contained_components[item].container != actor)
+    {
+        return 0;
+    }
+
+    /* Can't drop equipped items */
+    if (system_equipment_is_equipped(actor, item) == 1)
+    {
+        return 0;
+    }
+
+    /* Remove item from container */
+    container_system_remove(actor, item);
+    
+    /* Place item on the floor*/
+    location_add(item, g.location_components[actor].x, g.location_components[actor].y);
+
+    system_event_emit(EVENT_DROPPED, actor, item, 0);    
+
+    return 1;
+}
+
+void container_system_add(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
@@ -45,12 +118,10 @@ bool_t container_system_place_item_in(entity_id_t container, entity_id_t item)
     g.container_components[container].head = item; /* set container head to entity */
     g.contained_components[item].container = container;   /* contained item has a reference to container */
     g.container_components[container].count++;
-
-    return 1;
 }
 
 
-void container_system_remove_item_from(entity_id_t container, entity_id_t item)
+void container_system_remove(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
@@ -117,22 +188,22 @@ entity_id_t container_system_get_next(entity_id_t entity)
 /*
  * @brief Get the entity at a specific position in the container. Position is 1-based index.
  * @param container The ID of the container
- * @param position The 0-based index of the entity in the container
+ * @param index The 0-based index of the entity in the container
  * @return The ID of the entity at the specified position or ENTITY_ID_INVALID if the position is out of bounds
 */
-entity_id_t container_system_get_at(entity_id_t container, uint8_t position)
+entity_id_t container_system_get_at(entity_id_t container, uint8_t index)
 {
     uint8_t i = 0;
     entity_id_t entity;
 
-    if (container_system_count(container) <= position)
+    if (container_system_count(container) <= index)
     {
         return ENTITY_ID_INVALID;
     }    
 
     entity = container_system_get_first(container);
 
-    while (i < position)
+    while (i < index)
     {
         entity = container_system_get_next(entity);
         i++;
@@ -153,7 +224,7 @@ void container_system_clean_up(entity_id_t id)
 {
     if (entity_has_component(id, COMPONENT_CONTAINED))
     {
-        container_system_remove_item_from(g.contained_components[id].container, id);
+        container_system_remove(g.contained_components[id].container, id);
     }
     if (entity_has_component(id, COMPONENT_CONTAINER))
     {
@@ -173,7 +244,7 @@ void container_system_mark_contents_for_destruction(entity_id_t container)
     /* Keep removing items until head is empty */
     while (entity != ENTITY_ID_INVALID)
     {
-        container_system_remove_item_from(container, entity);
+        container_system_remove(container, entity);
         entity_mark_for_destruction(entity);
 
         entity = g.container_components[container].head;

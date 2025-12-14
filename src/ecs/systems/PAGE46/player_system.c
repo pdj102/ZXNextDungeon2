@@ -41,8 +41,6 @@ void unequip(void);
 void inventory(void);
 void display_inventory(void);
 uint8_t prompt_letter(uint8_t max_index);
-bool_t is_equipped(entity_id_t entity);
-
 
  /***************************************************
  * public functions
@@ -167,12 +165,12 @@ void melee_attack(void)
    
     item = system_container_get_at(g.player.id, index);
 
-    if (is_equipped(item))
+    if (system_equipment_is_equipped(g.player.id, item))
     {
-        text_printf(&g.msg_win, "You can not drop an equipped item\n");
+        text_printf(&g.msg_win, "Unable to drop equipped item\n");
         return;
     }
-    system_actions_try_drop(g.player.id, item);
+    system_container_try_drop(g.player.id, item);
 }
 
 void pickup(void)
@@ -187,7 +185,7 @@ void pickup(void)
     {
         if (entity_has_component(item, COMPONENT_ITEM))
         {
-            system_actions_try_pickup(g.player.id, item);
+            system_container_try_pickup(g.player.id, item);
             return;
         }
         item = g.location_components[item].next_in_location;
@@ -262,27 +260,27 @@ void unequip(void)
 
 void display_inventory(void)
 {
-    entity_id_t entity;
+    entity_id_t item;
     unsigned char c = 'a';
 
     text_cls(&g.main_win);
     text_print_string(&g.main_win, "Inventory\n");
 
-    entity = system_container_get_first(g.player.id);
+    item = system_container_get_first(g.player.id);
 
-    while (entity != ENTITY_ID_INVALID)
+    while (item != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
-        system_item_print_name(&g.main_win, g.item_components[entity].kind);
+        system_item_print_name(&g.main_win, g.item_components[item].kind);
 
-        if (is_equipped(entity))
+        if (system_equipment_is_equipped(g.player.id, item))
         {
-        text_print_string(&g.main_win, "(equipped)");    
+        text_print_string(&g.main_win, " (equipped)");    
         }
         text_print_string(&g.main_win, "\n");
 
         c++;
-        entity = system_container_get_next(entity);
+        item = system_container_get_next(item);
     }
 }
 
@@ -309,24 +307,4 @@ uint8_t prompt_letter(uint8_t max_index)
         return 99;            /* Cancel */
 
     return (uint8_t)(ch - 'a');
-}
-
-bool_t is_equipped(entity_id_t entity)
-{
-    if (g.slots[SLOT_HEAD] == entity ||
-        g.slots[SLOT_NECK] == entity || 
-        g.slots[SLOT_BODY] == entity ||
-        g.slots[SLOT_HANDS] == entity ||
-        g.slots[SLOT_FINGER_LEFT] == entity ||
-        g.slots[SLOT_FINGER_RIGHT] == entity ||
-        g.slots[SLOT_LEGS] == entity ||
-        g.slots[SLOT_FEET] == entity  ||
-        g.slots[SLOT_MELEE] == entity ||
-        g.slots[SLOT_RANGED] == entity ||
-        g.slots[SLOT_AMMO] == entity)
-        {
-            return 1;
-        }
-        
-    return 0;       
 }

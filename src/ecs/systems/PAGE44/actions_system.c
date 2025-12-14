@@ -55,76 +55,12 @@ bool_t actions_system_try_die(entity_id_t creature)
     return 1;
 }
 
-bool_t actions_system_try_drop(entity_id_t actor, entity_id_t item)
-{
-    uint8_t x, y;
-
-    /* item to be droped has item and contained components */
-    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED))
-    {
-        return 0;
-    }
-    /* actor has container and location components */
-    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION))
-    {
-        return 0;
-    }    
-    /* creature is holding the item */
-    if (g.contained_components[item].container != actor)
-    {
-        return 0;
-    }
-
-    /* TODO check not equipped */
-
-    /* TODO implement an inventory system */
-
-    system_container_remove_item_from(actor, item);
-    
-    x = g.location_components[actor].x;
-    y = g.location_components[actor].y;
-    location_add(item, x, y);
-
-    system_event_emit(EVENT_DROPPED, actor, item, 0);    
-
-    return 1;
-}
-
 bool_t actions_system_try_eat(entity_id_t actor, entity_id_t item)
 {
 
 }
 
 
-bool_t actions_system_try_pickup(entity_id_t actor, entity_id_t item)
-{  
-    /* item to be picked up has item and location components */
-    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION))
-    {
-        return 0;
-    }
-    /* actor has container, location and item components */
-    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
-    {
-        return 0;
-    }    
-    /* actor and item are at the same location*/
-    if (!location_equal(actor, item))
-    {
-        return 0;
-    }
-    /* container is not full */
-    if (g.container_components[actor].count >= g.container_components[actor].capacity)
-    {
-        return 0;
-    }    
-
-    location_remove(item);
-    system_container_place_item_in(actor, item);
-    system_event_emit(EVENT_PICKED_UP, actor, item, 0);
-
-    return 1;
-}
 
 bool_t actions_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {

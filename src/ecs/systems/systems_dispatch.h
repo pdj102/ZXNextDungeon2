@@ -46,8 +46,10 @@ bool_t system_actions_try_move(entity_id_t entity, int8_t dx, int8_t dy);
 
 /* Container System*/
 void system_container_init(void);
-bool_t system_container_place_item_in(entity_id_t container, entity_id_t item);
-void system_container_remove_item_from(entity_id_t container, entity_id_t item);
+bool_t system_container_try_pickup(entity_id_t container, entity_id_t item);
+bool_t system_container_try_drop(entity_id_t container, entity_id_t item);
+void system_container_add(entity_id_t container, entity_id_t item);
+void system_container_remove(entity_id_t container, entity_id_t item);
 uint8_t system_container_count(entity_id_t container);
 entity_id_t system_container_get_first(entity_id_t container);
 entity_id_t system_container_get_next(entity_id_t entity);
@@ -68,6 +70,7 @@ void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
 void system_equipment_init(void);
 bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
+bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
 void system_equipment_clean_up(entity_id_t id);
 
 /* Monster system*/
@@ -83,10 +86,5 @@ void system_player_update(void);
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);
-
-
-
-
-
 
 #endif // SYSTEMS_DISPATCH_H

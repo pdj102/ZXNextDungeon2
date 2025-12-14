@@ -1,7 +1,7 @@
 /**
  * @file equipment_system.c
  * @author Paul Johnson
- * @brief Equippable items can be equipped in slots on the player. Equipped items have an equipped component
+ * @brief Equippable items can be equipped in player slots. Equipped items have an equipped component
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -139,19 +139,9 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
         return 0;
     }
 
-    /* item must be equipped */
-    if (!entity_has_component(item, COMPONENT_EQUIPPED))
-    {
-        return 0;
-    }
+    equipment_system_is_equipped(actor, item);
 
-    /* item must be equipped by the actor */
-    if (g.equipped_components[item].equipped_by != actor)
-    {
-        return 0;
-    }
-
-    /* Iterate through slots to find current slot and remove */
+    /* Iterate through slots to find item slot and remove */
 
     for (slot_t slot = 0; slot < SLOT_COUNT; slot++)
     {
@@ -167,6 +157,20 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
         }
     }
     return 0;
+}
+
+/*
+ * @brief Check if an entity is equipped
+ */
+bool_t equipment_system_is_equipped(entity_id_t actor, entity_id_t item)
+{
+    /* item must be equipped */
+    if (!entity_has_component(item, COMPONENT_EQUIPPED))
+    {
+        return 0;
+    }
+
+    return g.equipped_components[item].equipped_by == actor;    
 }
 
  /*

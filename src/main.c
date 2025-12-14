@@ -59,7 +59,7 @@ int main(void) {
     // location_add(e3, 14, 10);
 
     entity_id_t e4 = system_monster_create(CREATURE_RAT);  
-    system_container_place_item_in(e4, e3);
+    system_container_add(e4, e3);
     location_add(e4, 10, 12);
 
     entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
