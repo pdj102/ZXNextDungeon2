@@ -230,7 +230,7 @@ void equip(void)
     }
    
     item = system_container_get_at(g.player.id, index);
-    system_actions_try_equip(g.player.id, item);
+    system_equipment_try_equip(g.player.id, item);    
 }
 
 void unequip(void)
@@ -257,7 +257,7 @@ void unequip(void)
     }
    
     item = system_container_get_at(g.player.id, index);
-    system_actions_try_unequip(g.player.id, item);
+    system_equipment_try_unequip(g.player.id, item);
 }
 
 void display_inventory(void)

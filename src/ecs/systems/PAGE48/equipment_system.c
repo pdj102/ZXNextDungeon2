@@ -16,6 +16,8 @@
 #include "ecs/components/equipped_comp.h"
 #include "ecs/components/slots_comp.h"
 
+#include "ecs/systems/systems_dispatch.h"
+
 #include "core/util.h"
 #include "game/global_state.h"
 
@@ -31,6 +33,140 @@
 void equipment_system_init(void)
 {
 
+}
+
+bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
+{
+    slot_t slot = SLOT_NONE;
+
+    /* actor must have slots component */
+    if (!entity_has_component(actor, COMPONENT_SLOTS))
+    {
+        return 0;
+    }
+    /* item must have equippable component */
+    if (!entity_has_component(item, COMPONENT_EQUIPPABLE))
+    {
+        return 0;
+    }
+    /* item must not already be equipped */
+    if (entity_has_component(item, COMPONENT_EQUIPPED))
+    {
+        return 0;
+    }
+
+    /* Identify the equip slot to use */
+    switch (g.equippable_components[item].slot)
+    {
+        case EQUIPPABLE_HEAD:
+        {
+            slot = SLOT_HEAD;
+            break;
+        }
+        case EQUIPPABLE_NECK:
+        {
+            slot = SLOT_NECK;
+            break;
+        }        
+        case EQUIPPABLE_BODY:
+        {
+            slot = SLOT_BODY;
+            break;
+        }        
+        case EQUIPPABLE_HANDS:
+        {
+            slot = SLOT_HANDS;
+            break;
+        }
+        case EQUIPPABLE_FINGER:
+        {
+            if (g.slots[SLOT_FINGER_LEFT] == ENTITY_ID_INVALID)
+            {
+                slot = SLOT_FINGER_LEFT;
+            } 
+            else
+            {
+                slot = SLOT_FINGER_RIGHT;
+            }
+            break;
+        }
+        case EQUIPPABLE_FEET:
+        {
+            slot = SLOT_FEET;
+            break;
+        }
+        case EQUIPPABLE_LEGS:
+        {
+            slot = SLOT_LEGS;
+            break;
+        }
+        case EQUIPPABLE_MELEE:
+        {
+            slot = SLOT_MELEE;
+            break;
+        }
+        case EQUIPPABLE_RANGED:
+        {
+            slot = SLOT_RANGED;
+            break;
+        }
+        case EQUIPPABLE_AMMO:
+        {
+            slot = SLOT_AMMO;
+            break;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+
+    /* Equip item*/
+    g.slots[slot] = item;
+    equipped_add(item, actor);
+
+    system_event_emit(EVENT_EQUIPPED, actor, item, 1);        
+    
+    return 1;
+}
+
+
+bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
+{
+    /* actor must have slots component */
+    if (!entity_has_component(actor, COMPONENT_SLOTS))
+    {
+        return 0;
+    }
+
+    /* item must be equipped */
+    if (!entity_has_component(item, COMPONENT_EQUIPPED))
+    {
+        return 0;
+    }
+
+    /* item must be equipped by the actor */
+    if (g.equipped_components[item].equipped_by != actor)
+    {
+        return 0;
+    }
+
+    /* Iterate through slots to find current slot and remove */
+
+    for (slot_t slot = 0; slot < SLOT_COUNT; slot++)
+    {
+        if (g.slots[slot] == item)
+        {
+            /* Found slot, unequip the item*/
+            g.slots[slot] = ENTITY_ID_INVALID;
+            g.equipped_components[item].equipped_by = ENTITY_ID_INVALID;
+            equipped_remove(item);
+
+            system_event_emit(EVENT_UNEQUIPPED, actor, item, 1);
+            return 1;
+        }
+    }
+    return 0;
 }
 
  /*

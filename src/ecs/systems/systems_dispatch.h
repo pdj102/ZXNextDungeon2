@@ -66,6 +66,8 @@ void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
 
 /* Equipment System */
 void system_equipment_init(void);
+bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item);
+bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
 void system_equipment_clean_up(entity_id_t id);
 
 /* Monster system*/

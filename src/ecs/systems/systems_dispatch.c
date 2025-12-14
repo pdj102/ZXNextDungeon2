@@ -131,36 +131,6 @@ bool_t system_actions_try_eat(entity_id_t creature, entity_id_t item)
     return status;
 }
 
-bool_t system_actions_try_equip(entity_id_t creature, entity_id_t item)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_equip(creature, item);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
-
-bool_t system_actions_try_unequip(entity_id_t creature, entity_id_t item)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_unequip(creature, item);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
-
 bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature)
 {
     uint8_t current_bank;
@@ -362,6 +332,36 @@ void system_container_clean_up(entity_id_t id)
  {
 
  }
+
+bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    status = equipment_system_try_equip(actor, item);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return status;
+}
+
+bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    status = equipment_system_try_unequip(actor, item);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return status;
+}
 
 /* Event System */
 void system_event_init(void)
