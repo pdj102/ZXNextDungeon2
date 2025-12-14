@@ -5,7 +5,7 @@
  * 
  */
 
-#include "ecs/components/equippable_comp.h"
+#include "ecs/components/PAGE50/equippable_comp.h"
 
 #include <arch/zxn.h>
 
@@ -31,7 +31,7 @@ void equippable_init(void)
     }
 }
 
-uint8_t equippable_add(entity_id_t entity, equippable_slot_t slot)
+void equippable_add(entity_id_t entity, equippable_slot_t slot)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_EQUIPPABLE)); /* entity must not have equippable component */
@@ -39,8 +39,6 @@ uint8_t equippable_add(entity_id_t entity, equippable_slot_t slot)
     g.equippable_components[entity].slot = slot; 
 
     entity_set_component(entity, COMPONENT_EQUIPPABLE); /* set entity equippable component mask */
-
-    return 1; /* success */
 }
 
 void equippable_remove(entity_id_t entity)

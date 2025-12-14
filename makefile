@@ -70,6 +70,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/core/PAGE36/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/components/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/components/PAGE50/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE30/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE32/*.c) \
@@ -79,6 +80,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE44/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE46/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE48/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE52/*.c) \
 	   $(wildcard $(SRCDIR)/game/*.c) \
 	   $(wildcard $(SRCDIR)/game/PAGE34/*.c)
 

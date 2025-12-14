@@ -12,7 +12,6 @@
 
 #include "ecs/entity.h"
 
-#include "ecs/components/location_comp.h"
 #include "ecs/components/equippable_comp.h"
 #include "ecs/components/equipped_comp.h"
 #include "ecs/components/slots_comp.h"
@@ -120,25 +119,6 @@ int8_t actions_system_try_take_damage(entity_id_t actor, int8_t damage, damage_t
     }
     
     return damage;
-}
-
- bool_t actions_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
- {
-    uint8_t tx;
-    uint8_t ty;
-
-    tx = g.location_components[actor].x + dx;
-    ty = g.location_components[actor].y + dy;
-
-    if (map_can_enter(actor, tx, ty))
-    {
-        location_move(actor, tx, ty);
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
 }
 
 bool_t actions_system_try_open(entity_id_t actor, entity_id_t feature)

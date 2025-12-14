@@ -5,7 +5,7 @@
  * 
  */
 
-#include "ecs/components/creature_comp.h"
+#include "ecs/components/PAGE50/creature_comp.h"
 
 #include <arch/zxn.h>
 

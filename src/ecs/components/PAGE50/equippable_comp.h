@@ -53,7 +53,7 @@ typedef equippable_comp_t equippable_components_t[MAX_ENTITIES];
  ***************************************************/
 void equippable_init(void);
 
-uint8_t equippable_add(entity_id_t entity, equippable_slot_t type);
+void equippable_add(entity_id_t entity, equippable_slot_t type);
 
 void equippable_remove(entity_id_t entity);
 

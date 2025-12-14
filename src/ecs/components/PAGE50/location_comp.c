@@ -7,7 +7,7 @@
  * 
  */
 
-#include "ecs/components/location_comp.h"
+#include "ecs/components/PAGE50/location_comp.h"
 
 #include "ecs/entity.h"
 
@@ -32,7 +32,7 @@ void location_init(void)
     }
 }
 
-bool_t location_add(entity_id_t entity, uint8_t x, uint8_t y)
+void location_add(entity_id_t entity, uint8_t x, uint8_t y)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(x < MAP_WIDTH);
@@ -46,8 +46,6 @@ bool_t location_add(entity_id_t entity, uint8_t x, uint8_t y)
     location_link(entity);
 
     entity_set_component(entity, COMPONENT_LOCATION); /* set entity location component mask */
-
-    return 1; /* success */
 }
 
 void location_move(entity_id_t entity, uint8_t x, uint8_t y)

@@ -63,6 +63,7 @@
 #define PAGE_ACTIONS_SYSTEM   44
 #define PAGE_PLAYER_SYSTEM   46
 #define PAGE_EQUIPMENT_SYSTEM   48
+#define PAGE_COMP   50
 
 
 

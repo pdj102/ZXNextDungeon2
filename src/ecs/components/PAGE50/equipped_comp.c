@@ -5,7 +5,7 @@
  * 
  */
 
-#include "ecs/components/equipped_comp.h"
+#include "ecs/components/PAGE50/equipped_comp.h"
 
 #include "ecs/entity.h"
 

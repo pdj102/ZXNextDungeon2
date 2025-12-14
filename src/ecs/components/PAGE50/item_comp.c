@@ -8,7 +8,7 @@
  * 
  */
 
-#include "ecs/components/item_comp.h"
+#include "ecs/components/PAGE50/item_comp.h"
 
 #include <arch/zxn.h>
 

@@ -5,7 +5,7 @@
  * 
  */
 
-#include "ecs/components/stats_comp.h"
+#include "ecs/components/PAGE50/stats_comp.h"
 
 #include <arch/zxn.h>
 

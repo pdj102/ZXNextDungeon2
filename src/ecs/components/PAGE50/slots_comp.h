@@ -42,7 +42,7 @@
  * public function prototypes
  ***************************************************/
 void slots_init(void);
-bool_t slots_add(entity_id_t entity);
+void slots_add(entity_id_t entity);
 void slots_remove(entity_id_t entity);
 
 #endif // SLOTS_COMP_H

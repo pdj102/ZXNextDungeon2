@@ -42,7 +42,7 @@ typedef struct {
  * public function prototypes
  ***************************************************/
 void timer_init(void);
-bool_t timer_add(entity_id_t entity, ticks_t ticks);
+void timer_add(entity_id_t entity, ticks_t ticks);
 void timer_remove(entity_id_t entity);
 void timer_set(entity_id_t entity, ticks_t ticks);
 bool_t timer_has_fired(entity_id_t entity);

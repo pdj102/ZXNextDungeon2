@@ -5,10 +5,9 @@
  * 
  */
 
-#include "ecs/components/timer_comp.h"
+#include "ecs/components/PAGE50/timer_comp.h"
 
-#include "ecs/components/timer_comp.h"
-#include "ecs/components/contained_comp.h"
+#include "ecs/components/PAGE50/contained_comp.h"
 #include "ecs/entity.h"
 
 #include "game/global_state.h"

@@ -7,7 +7,7 @@
 
 #include "container_comp.h"
 
-#include "ecs/components/container_comp.h"
+#include "ecs/components/PAGE50/container_comp.h"
 
 #include "ecs/entity.h"
 
@@ -30,7 +30,7 @@ void container_init(void)
     }
 }
 
-bool_t container_add(entity_id_t entity)
+void container_add(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CONTAINER)); /* entity must not have container component */
@@ -40,8 +40,6 @@ bool_t container_add(entity_id_t entity)
     g.container_components[entity].count = 0; 
 
     entity_set_component(entity, COMPONENT_CONTAINER); /* set entity container component mask */
-
-    return 1; /* success */
 }
 
 void container_remove(entity_id_t entity)

@@ -7,7 +7,7 @@
  * 
  */
 
-#include "ecs/components/attack_comp.h"
+#include "ecs/components/PAGE50/attack_comp.h"
 
 #include <arch/zxn.h>
 
@@ -30,7 +30,7 @@ void attack_init(void)
 
 }
 
-uint8_t melee_add(entity_id_t entity, attack_comp_t *attack_p)
+void melee_add(entity_id_t entity, attack_comp_t *attack_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_MELEE)); 
@@ -42,11 +42,9 @@ uint8_t melee_add(entity_id_t entity, attack_comp_t *attack_p)
     g.melee_components[entity].range = 1;
 
     entity_set_component(entity, COMPONENT_MELEE); 
-
-    return 1; /* success */
 }
 
-uint8_t ranged_add(entity_id_t entity, attack_comp_t *attack_p)
+void ranged_add(entity_id_t entity, attack_comp_t *attack_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_RANGED)); 
@@ -58,8 +56,6 @@ uint8_t ranged_add(entity_id_t entity, attack_comp_t *attack_p)
     g.melee_components[entity].range = attack_p->range;
 
     entity_set_component(entity, COMPONENT_RANGED); 
-
-    return 1; /* success */    
 }
 
 void melee_remove(entity_id_t entity)

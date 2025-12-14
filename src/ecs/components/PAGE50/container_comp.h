@@ -32,7 +32,7 @@ typedef container_comp_t container_components_t[MAX_ENTITIES]; /* container comp
  * public function prototypes
  ***************************************************/
 void container_init(void);
-bool_t container_add(entity_id_t entity);
+void container_add(entity_id_t entity);
 void container_remove(entity_id_t entity);
 
 #endif // CONTAINER_COMP_H
