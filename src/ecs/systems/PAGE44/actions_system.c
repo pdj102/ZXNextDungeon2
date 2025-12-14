@@ -13,6 +13,9 @@
 #include "ecs/entity.h"
 
 #include "ecs/components/location_comp.h"
+#include "ecs/components/equippable_comp.h"
+#include "ecs/components/equipped_comp.h"
+#include "ecs/components/slots_comp.h"
 
 #include "game/game.h"
 #include "game/global_state.h"
@@ -89,98 +92,94 @@ bool_t actions_system_try_eat(entity_id_t actor, entity_id_t item)
 
 bool_t actions_system_try_equip(entity_id_t actor, entity_id_t item)
 {
-    equip_slot_t slot = EQUIP_NONE;
+    slot_t slot = SLOT_NONE;
 
-    /* item to be equipped must have equipable component */
-    if (!entity_has_component(item, COMPONENT_EQUIPABLE))
+    /* item to be equipped must have equippable component */
+    if (!entity_has_component(item, COMPONENT_EQUIPPABLE))
     {
-        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
         return 0;
     }
-    /* actor must have equip component */
-    if (!entity_has_component(actor, COMPONENT_EQUIP))
+    /* actor must have slots component */
+    if (!entity_has_component(actor, COMPONENT_SLOTS))
     {
-        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
         return 0;
     }
     /* item must not already be equipped */
-    if (g.equipable_components[item].equipped_by != ENTITY_ID_INVALID)
+    if (g.equipped_components[item].equipped_by != ENTITY_ID_INVALID)
     {
-        system_event_emit(EVENT_EQUIPPED, actor, item, 0);
         return 0;
     }
 
     /* Identify the equip slot to use */
 
-    switch (g.equipable_components[item].slot)
+    switch (g.equippable_components[item].slot)
     {
-        case EQUIPABLE_HEAD:
+        case EQUIPPABLE_HEAD:
         {
-            slot = EQUIP_HEAD;
+            slot = SLOT_HEAD;
             break;
         }
-        case EQUIPABLE_NECK:
+        case EQUIPPABLE_NECK:
         {
-            slot = EQUIP_NECK;
+            slot = SLOT_NECK;
             break;
         }        
-        case EQUIPABLE_BODY:
+        case EQUIPPABLE_BODY:
         {
-            slot = EQUIP_BODY;
+            slot = SLOT_BODY;
             break;
         }        
-        case EQUIPABLE_HANDS:
+        case EQUIPPABLE_HANDS:
         {
-            slot = EQUIP_HANDS;
+            slot = SLOT_HANDS;
             break;
         }
-        case EQUIPABLE_FINGER:
+        case EQUIPPABLE_FINGER:
         {
-            if (g.equip_slots[EQUIP_FINGER_LEFT] == ENTITY_ID_INVALID)
+            if (g.slots[SLOT_FINGER_LEFT] == ENTITY_ID_INVALID)
             {
-                slot = EQUIP_FINGER_LEFT;
+                slot = SLOT_FINGER_LEFT;
             } 
             else
             {
-                slot = EQUIP_FINGER_RIGHT;
+                slot = SLOT_FINGER_RIGHT;
             }
             break;
         }
-        case EQUIPABLE_FEET:
+        case EQUIPPABLE_FEET:
         {
-            slot = EQUIP_FEET;
+            slot = SLOT_FEET;
             break;
         }
-        case EQUIPABLE_LEGS:
+        case EQUIPPABLE_LEGS:
         {
-            slot = EQUIP_LEGS;
+            slot = SLOT_LEGS;
             break;
         }
-        case EQUIPABLE_MELEE:
+        case EQUIPPABLE_MELEE:
         {
-            slot = EQUIP_MELEE;
+            slot = SLOT_MELEE;
             break;
         }
-        case EQUIPABLE_RANGED:
+        case EQUIPPABLE_RANGED:
         {
-            slot = EQUIP_RANGED;
+            slot = SLOT_RANGED;
             break;
         }
-        case EQUIPABLE_AMMO:
+        case EQUIPPABLE_AMMO:
         {
-            slot = EQUIP_AMMO;
+            slot = SLOT_AMMO;
             break;
         }
         default:
         {
-            system_event_emit(EVENT_EQUIPPED, actor, item, 0);
             return 0;
         }
     }
 
     /* Equip item*/
-    g.equip_slots[slot] = item;
-    g.equipable_components[item].equipped_by = actor;
+    g.slots[slot] = item;
+    g.equipped_components[item].equipped_by = actor;
 
     system_event_emit(EVENT_EQUIPPED, actor, item, 1);        
     
@@ -308,36 +307,39 @@ bool_t actions_system_try_quaff(entity_id_t actor, entity_id_t item)
 
 bool_t actions_system_try_unequip(entity_id_t actor, entity_id_t item)
 {
-    /* item to be unequipped must be equipable */
-    if (!entity_has_component(item, COMPONENT_EQUIPABLE))
+    /* actor must have slots component */
+    if (!entity_has_component(actor, COMPONENT_SLOTS))
     {
-        system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
+        return 0;
+    }
+
+    /* item to be unequipped must have equipped component */
+    if (!entity_has_component(item, COMPONENT_EQUIPPED))
+    {
         return 0;
     }
 
     /* item must be equipped by the actor */
-    if (g.equipable_components[item].equipped_by != actor)
+    if (g.equipped_components[item].equipped_by != actor)
     {
-        system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
         return 0;
     }
 
-    /* Iterate through equipable slots and remove item from slot if found */
-    text_printf(&g.msg_win, "Item: %d", item);
+    /* Iterate through slots and remove item from slot if found */
 
-    for (equip_slot_t slot = 0; slot < EQUIP_COUNT; slot++)
+    for (slot_t slot = 0; slot < SLOT_COUNT; slot++)
     {
-        text_printf(&g.msg_win, "Slot: %d", g.equip_slots[slot]);
-        if (g.equip_slots[slot] == item)
+        if (g.slots[slot] == item)
         {
-            g.equip_slots[slot] = ENTITY_ID_INVALID;
-            g.equipable_components[item].equipped_by = ENTITY_ID_INVALID;
+            /* Found slot, unequip the item*/
+            g.slots[slot] = ENTITY_ID_INVALID;
+            g.equipped_components[item].equipped_by = ENTITY_ID_INVALID;
+            equipped_remove(item);
 
             system_event_emit(EVENT_UNEQUIPPED, actor, item, 1);
             return 1;
         }
     }
-    system_event_emit(EVENT_UNEQUIPPED, actor, item, 0);
     return 0;
 }
 
@@ -386,7 +388,7 @@ int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type)
         /* TODO */
 
         /* Step 4 - If using a weapon determine weapon bonus*/
-        if (g.equip_slots[EQUIP_HANDS] != ENTITY_ID_INVALID)
+        if (g.slots[SLOT_HANDS] != ENTITY_ID_INVALID)
         {
             /* TODO implement getting the weapon's attack bonus*/
         }

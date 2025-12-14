@@ -11,6 +11,7 @@
 #include "equipment_system.h"
 
 #include "ecs/components/item_comp.h"
+#include "ecs/components/equippable_comp.h"
 
 #include "game/global_state.h"
 
@@ -19,26 +20,26 @@
 /***************************************************
  * private variables
  * ***************************************************/
-const equipable_slot_t equipable_base[ITEM_KIND_COUNT] = {
-    [ITEM_NONE] = EQUIPABLE_NONE,
+const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
+    [ITEM_NONE] = EQUIPPABLE_NONE,
     /* Melee weapons */
-    [ITEM_CLUB] = EQUIPABLE_HANDS,
-    [ITEM_SHORT_SWORD] = EQUIPABLE_HANDS,
+    [ITEM_CLUB] = EQUIPPABLE_HANDS,
+    [ITEM_SHORT_SWORD] = EQUIPPABLE_HANDS,
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = EQUIPABLE_BODY,
+    [ITEM_LEATHER_ARMOUR] = EQUIPPABLE_BODY,
     /* Shields */
-    [ITEM_SHIELD] = EQUIPABLE_SHIELD,
+    [ITEM_SHIELD] = EQUIPPABLE_SHIELD,
     /* Ammo */
     /* Potions */    
-    [ITEM_POTION_OF_HEALING] = EQUIPABLE_NONE,
+    [ITEM_POTION_OF_HEALING] = EQUIPPABLE_NONE,
     /* Scrolls */
     /* Food and drink */
     /* Wearable */
     /* Wands */
     /* Light sources */
     /* Keys */    
-    [ITEM_KEY] = EQUIPABLE_NONE
+    [ITEM_KEY] = EQUIPPABLE_NONE
 };
 
 const char *name_base[ITEM_KIND_COUNT] = 
@@ -109,7 +110,7 @@ entity_id_t equipment_system_create(item_kind_t kind, uint8_t quantity)
     }
 
     /* Add equippable component */
-    if (equipable_add(id, equipable_base[kind]) == 0) {
+    if (equippable_add(id, equippable_base[kind]) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }    

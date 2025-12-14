@@ -16,8 +16,9 @@
 #include "ecs/components/stats_comp.h"
 #include "ecs/components/container_comp.h"
 #include "ecs/components/contained_comp.h"
-#include "ecs/components/equip_comp.h"
-#include "ecs/components/equipable_comp.h"
+#include "ecs/components/slots_comp.h"
+#include "ecs/components/equippable_comp.h"
+#include "ecs/components/equipped_comp.h"
 #include "ecs/components/player_comp.h"
 #include "ecs/components/timer_comp.h"
 
@@ -38,7 +39,7 @@ typedef struct
     /* ECS */
     entity_components_t entity_components; 
     item_components_t item_components; 
-    equipable_components_t equipable_components; 
+    equippable_components_t equippable_components; 
     melee_components_t melee_components; 
     ranged_components_t ranged_components; 
     location_components_t location_components; 
@@ -48,7 +49,8 @@ typedef struct
     container_components_t container_components; 
     contained_components_t contained_components; 
     player_comp_t player;
-    equip_slots_t equip_slots; 
+    equipped_components_t equipped_components;
+    slots_t slots;
     timer_components_t timer_components; 
 
     /* World */

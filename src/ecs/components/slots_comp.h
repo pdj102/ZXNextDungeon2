@@ -1,12 +1,12 @@
 /**
- * @file equip_comp.h
+ * @file slots_comp.h
  * @author Paul Johnson
  * @brief 
  * 
  */
 
-#ifndef EQUIP_COMP_H
-#define EQUIP_COMP_H
+#ifndef SLOTS_COMP_H
+#define SLOTS_COMP_H
 
 #include <stdint.h>
 
@@ -20,29 +20,29 @@
  * public types
  ***************************************************/
   typedef enum {
-    EQUIP_NONE = 0,
-    EQUIP_HEAD,
-    EQUIP_NECK,
-    EQUIP_BODY,
-    EQUIP_HANDS,
-    EQUIP_FINGER_LEFT,
-    EQUIP_FINGER_RIGHT,
-    EQUIP_FEET,
-    EQUIP_LEGS,
-    EQUIP_MELEE,
-    EQUIP_AMMO,
-    EQUIP_RANGED,
-    EQUIP_SHIELD,
-    EQUIP_COUNT
-} equip_slot_t;
+    SLOT_NONE = 0,
+    SLOT_HEAD,
+    SLOT_NECK,
+    SLOT_BODY,
+    SLOT_HANDS,
+    SLOT_FINGER_LEFT,
+    SLOT_FINGER_RIGHT,
+    SLOT_FEET,
+    SLOT_LEGS,
+    SLOT_MELEE,
+    SLOT_AMMO,
+    SLOT_RANGED,
+    SLOT_SHIELD,
+    SLOT_COUNT
+} slot_t;
  
- typedef entity_id_t equip_slots_t[EQUIP_COUNT];
+ typedef entity_id_t slots_t[SLOT_COUNT];
  
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_init(void);
-bool_t equip_add(entity_id_t entity);
-void equip_remove(entity_id_t entity);
+void slots_init(void);
+bool_t slots_add(entity_id_t entity);
+void slots_remove(entity_id_t entity);
 
-#endif // EQUIP_COMP_H
+#endif // SLOTS_COMP_H

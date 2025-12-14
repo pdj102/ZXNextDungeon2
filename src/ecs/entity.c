@@ -156,8 +156,8 @@ void entity_clean_up(void)
  * NB   Entity destroy will abort if 
  *      1) entity - is contained 
  *      2) container - contains any entities
- *      3) equipable - is equipped 
- *      4) equip - any slots are equiped 
+ *      3) equipped - is equipped 
+ *      4) slots - any slots are in use
  */
 void entity_destroy(entity_id_t id)
 {
@@ -193,8 +193,8 @@ void entity_destroy(entity_id_t id)
     if (entity_has_component(id, COMPONENT_TIMER)) {
         timer_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_EQUIPABLE)) {
-        equipable_remove(id);
+    if (entity_has_component(id, COMPONENT_EQUIPPABLE)) {
+        equippable_remove(id);
     }
     if (entity_has_component(id, COMPONENT_MELEE)) {
         melee_remove(id);
@@ -202,9 +202,12 @@ void entity_destroy(entity_id_t id)
     if (entity_has_component(id, COMPONENT_RANGED)) {
         ranged_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_EQUIP)) {
-        equip_remove(id);
-    }    
+    if (entity_has_component(id, COMPONENT_SLOTS)) {
+        slots_remove(id);
+    }
+    if (entity_has_component(id, COMPONENT_EQUIPPED)) {
+        equipped_remove(id);
+    }
 
     /* mark entity as free to use */
     g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */

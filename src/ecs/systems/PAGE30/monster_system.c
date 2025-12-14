@@ -9,6 +9,7 @@
 
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/stats_comp.h"
+#include "ecs/components/slots_comp.h"
 
 #include "game/global_state.h"
 
@@ -260,8 +261,8 @@ entity_id_t monster_system_create_player( void )
         return ENTITY_ID_INVALID;
     }
 
-    /* Add equip component */
-    if (equip_add(id) == 0) {
+    /* Add slots component */
+    if (slots_add(id) == 0) {
         entity_destroy(id);
         return ENTITY_ID_INVALID;
     }    

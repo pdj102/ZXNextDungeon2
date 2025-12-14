@@ -313,17 +313,17 @@ uint8_t prompt_letter(uint8_t max_index)
 
 bool_t is_equipped(entity_id_t entity)
 {
-    if (g.equip_slots[EQUIP_HEAD] == entity ||
-        g.equip_slots[EQUIP_NECK] == entity || 
-        g.equip_slots[EQUIP_BODY] == entity ||
-        g.equip_slots[EQUIP_HANDS] == entity ||
-        g.equip_slots[EQUIP_FINGER_LEFT] == entity ||
-        g.equip_slots[EQUIP_FINGER_RIGHT] == entity ||
-        g.equip_slots[EQUIP_LEGS] == entity ||
-        g.equip_slots[EQUIP_FEET] == entity  ||
-        g.equip_slots[EQUIP_MELEE] == entity ||
-        g.equip_slots[EQUIP_RANGED] == entity ||
-        g.equip_slots[EQUIP_AMMO] == entity)
+    if (g.slots[SLOT_HEAD] == entity ||
+        g.slots[SLOT_NECK] == entity || 
+        g.slots[SLOT_BODY] == entity ||
+        g.slots[SLOT_HANDS] == entity ||
+        g.slots[SLOT_FINGER_LEFT] == entity ||
+        g.slots[SLOT_FINGER_RIGHT] == entity ||
+        g.slots[SLOT_LEGS] == entity ||
+        g.slots[SLOT_FEET] == entity  ||
+        g.slots[SLOT_MELEE] == entity ||
+        g.slots[SLOT_RANGED] == entity ||
+        g.slots[SLOT_AMMO] == entity)
         {
             return 1;
         }
