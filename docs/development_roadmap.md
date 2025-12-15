@@ -64,9 +64,10 @@
 
 > *Goal: establish turn-based logic and per-entity speed.*
 
-* [✅] Add `Timer` component (turns + ticks)  - implement helper functions e.g. add(), remove(), set(), reset(), and tick()
-* [✅] Implement `Timer` system, timers decrease and set fired flag when they expire
-* [✅] Remove component on entity destroy
+* [✅] Add `Timer` component (ticks)  - implement helper functions e.g. add(), remove(), set(), reset(), and tick()
+* [✅] Implement `Timer_system`, timers decrease and set fired flag when they expire
+* [✅] Manage `timer`component on entity destroy
+* [ ] If needed, implement timer types e.g. one_shot and recurring
 
 [✅] *End result: Entities have one shot timer that controls their turn.*
 
@@ -88,13 +89,16 @@
 
 > *Goal: entities can attack and die.*
 
+* [✅] Add `attack` struct and `melee` and `ranged` components
+* [ ] Implement `attack_system`
 * [✅] Add player `melee attack` command
-* [✅] Implement `creature_try_melee_attack` - basic creature melee attack
-* [✅] Implement `creature_try_take_damage` - apply damage amount
+* [ ] Implement `attack_system_try_melee_attack` - basic creature melee attack
+* [ ] Implement `attack_system_try_take_damage` - apply damage amount
 * [✅] Add `EVENT_ATTACKED`
 * [✅] Add `event_entity_damaged`
 * [✅] Add `EVENT_DIED`
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
+* [✅] Manage `melee` and `ranged` components cleanup on entity destroy
 
 [✅] *End result: You can attack and kill monsters.*
 
@@ -104,12 +108,11 @@
 
 > *Goal: implement container mechanic for use by chests, inventory etc.*
 
-* [✅] Add `Container` component
-* [✅] Add `Contained` component
-* [✅] Implement Container System
+* [✅] Add `container` component
+* [✅] Add `contained` component
+* [✅] Implement `container_system`
 * [✅] Implement maximum number of items in container
-* [✅] Cleanup and flag contained components to be destroyed when container entity is destroyed
-* [✅] Remove container and contained components on entity destroy
+* [✅] Manage `container` and `contained` component cleanup on entity destroy
 
 [✅] *End result: An entity can contain other items.*
 
@@ -133,7 +136,7 @@
 
 * [✅] Add player `pickup` command
 * [ ] Add selection mechanic if there are multiple items on the tile
-* [✅] Implement `creature_try_pickup()`
+* [✅] Implement `container_try_pickup()`
 * [✅] Add `event_picked_up`
 * [✅] Add message log system for pick up events e.g. (“You pickup the potion.”)
 
@@ -145,7 +148,7 @@
 
 * [✅] Add player `drop` command
 * [✅] Add mechanic to select item to drop from inventory
-* [✅] Implement `creature_try_drop()`
+* [✅] Implement `container_try_drop()`
 * [✅] Add `event_dropped_up`
 * [✅] Add message log system for pick up events e.g. (“You drop the potion.”)
 
@@ -155,24 +158,20 @@
 
 > *Goal: PLayer can equip and unequip items*
 
-* [✅] Add `Equipment` component - this is a player only component
-* [✅] Implement slot for melee weapon and ranged weapon
-* [✅] Implement one slot for quiver (ammo)
-* [✅] Implement slots for head (helmet), body (body armour), legs, feet (shoes/boots)
-* [✅] Implement two slots for fingers (rings), neck (necklace)
+* [✅] Add `equippable`, `equipped` and `slot` components
+* [✅] Implment `equipment_system`
 * [✅] Update view inventory window to show equipped items
-* [✅] Add player `equip` command - select from inventory
-* [ ] Add player `unequip` command - select slot
-* [✅] Implement `player_try_equip()` - try to remove entity from inventory and place in slot
-* [ ] Implement `player_try_unequip()` - try to remove entity from slot and place in inventory
+* [✅] Add player `equip` command
+* [✅] Add player `unequip` command
+* [✅] Implement `equipment_system_try_equip()`
+* [✅] Implement `equipment_system_try_unequip()`
 * [✅] Add `event_item_equipped`
-* [ ] Add `event_item_unequipped`
-* [ ] Automatically try unequipping an item from a slot when equipping
-* [ ] Manage dropping equiped items
-* [ ] Destroy equipment component on entity destroy
-* [ ] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
+* [✅] Add `event_item_unequipped`
+* [✅] Manage dropping equiped items
+* [✅] Manage `equippable`, `equipped` and `slot` component cleanup on entity destroy
+* [✅] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
 
-[ ] *End result: Player can equip and uneqip items.*
+[✅] *End result: Player can equip and uneqip items.*
 
 ---
 
@@ -180,9 +179,9 @@
 
 > *Goal: Creature can have damage resistence and immunity*
 
-* [ ] Add `Resistance` component - implement helper functions e.g. add(), remove(), set() and clear()
-* [ ] Update damage calculation to take resistance and immunity into account
-* [ ] Remove resistance component on entity destroy
+* [ ] Add `resistance` and `immuinity` components
+* [ ] Update `attack_system` to take resistance and immunity into account
+* [ ] Manage `resistance` component cleanup on entity destroy
 
 [ ] *End result: Damage calculation takes creature's resistance and immunity into account.*
 
@@ -204,7 +203,7 @@
 > *Goal: entities can range attack.*
 
 * [ ] Add player `fire` command (ranged attack)
-* [ ] Implement basic `creature_try_ranged_attack()`
+* [ ] Implement basic `attack_system_ranged_attack()`
 
 [ ] *End result: You can range attack and kill monsters.*
 
@@ -235,14 +234,21 @@
 
 ---
 
-### 🪜 **Milestone 114 — Entity naming**
+### 🪜 **Milestone 113 — Active effects**
 
-> *Goal: Entities have names*
+> *Goal: An item can apply an active effect*
 
-* [ ] Implement `name` component - implement helper functions e.g. add() and remove()
-* [ ] Implement add() copies from base
+* [ ] Implement `effect_t` e.g. effect_restore_hp, effect_damage_hp, effect_apply_status, effect_cure_status, effect_stat_mod
+* [ ] Implement `status_flags_t` flags e.g. poison
+* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
+* [ ] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), item (source)
+* [ ] Implement `active effects` component - count active_effect[MAX_EFFECTS]. Place in banked memory
+* [ ] Extend `apply_effect` to handle permanent active effects and apply them to the actor
+* [ ] Extend `effect_system` to handle duration active effects. Remove effects when duration expires
+* [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
+[ ] *End result: stats and status are affected by active effect.*
 
-[ ] *End result: entities have a name component.*
+---
 
 ### 🪜 **Milestone 115 — Implement steppable entities*
 
@@ -251,7 +257,7 @@
 * [ ] Add `Steppable` component with step_effect and single_use
 * [ ] Add `EVENT_STOOD_ON` event
 * [ ] Update movement system to check for entities at entered location and emit an `EVENT_STOOD_ON` for each
-* [ ] Inplement steppable_system
+* [ ] Implement steppable_system
 * [ ] Implement `steppable_system_on_stood_on()`to handle events e.g. check for stappable component and take action
 * [ ] Implement trap feature
 * [ ] Add message log system for stood on events e.g. (“You stood on the trap.”)
@@ -267,31 +273,35 @@
 
 ## 🪜 **Milestone 2XX — Items**
 
-### 🪜 **Milestone 201 — Food**
+### 🪜 **Milestone 201 — Consumables and effects**
 
 > *Goal: eat food to restore health.*
 
-* [ ] Implement food items - apple & bread
+* [ ] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe, drink, etc.
+* [ ] Implement `effect_t` e.g. effect_restore_hp, effect_damage_hp, effect_apply_status, effect_cure_status, effect_stat_mod
+* [ ] Implement `status_flags_t` flags e.g. poison
+* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
+* [ ] Implement `effect` component that describes what could happen - type, value, status, stats, duration (0 = instant, 0xFF = permanent)
 * [ ] Add player `eat` command - select from inventory
-* [ ] Implement `creature_try_eat()`
-* [ ] Implement `creature_consume_food()`
-* [ ] Implement `try_restore_health()` - add hp up to max_hp
-* [ ] Add `event_food_consumed`
-* [ ] Add message log system for food consumed events e.g. (“You eat the apple.”)
+* [ ] Implment `consumption_system`
+* [ ] Implement `consumption_system_try_eat()`. Handle eating food including decrement or destroy, emitting `effect` events and `consumed` event
+* [ ] Implement `item_decrement_or_destory`
+* [ ] Implment `effect_system`
+* [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
+* [ ] Implement  `apply_effect` - handle instant effects (duration = 0) e.g. heal, damage, poison etc.
+* [ ] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
 
 [ ] *End result: Player can restore health by eating food and food is destroyed.*
 
 ---
 
-### 🪜 **Milestone 202 — Potions**
+### 🪜 **Milestone 202 — Potions and effects**
 
 > *Goal: PLayer can quaff potions*
 
-* [ ] Implement potion items - restore health & poison
+* [ ] Implement basic potions e.g. potion of healing
 * [ ] Add player `quaff` command - select from inventory
-* [ ] Implement `creature_try_quaf()`
-* [ ] Implement `creeature_quaff_potion()`
-* [ ] Add `event_consumed_potion`
+* [ ] Imnplement `consumption_system_try_quaff`.  Handle quaffing potions including decrement or destroy, emitting `effect` events and `quaff` event
 * [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
 
 [ ] *End result: Potion is destroyed and any effect applied.*
@@ -303,14 +313,13 @@
 > *Goal: Implement melee combat*
 
 * [ ] Implement melee weapon equipment - dagger & sword
-* [ ] Implement melee attack component
+* [ ] Implement `melee` component
 * [ ] Implement default melee attack component for creatures
-* [ ] Separate weapon's to hit and to damage bonus from creature's to hit and to damage bonus
-* [ ] Implement ability to equip and unequip melee weapons
-* [ ] Implement `actions_system_try_melee_attack()` - use equipped melee or default melee if not
-* [ ] Implement `actions_system_try_melee_attack()`- add
+* [ ] Implment creature's melee to hit and to damage bonus
+* [ ] Implement equipped melee weapon's to hit and to damage bonus
+* [ ] Implement `attack_system_try_melee_attack()` - use equipped melee or default melee if not
 
-[ ] *End result: Player can equip a melee weapon and melee attack stats are updated.*
+[ ] *End result: Player can equip and attack with melee weapon
 
 ---
 
@@ -319,7 +328,7 @@
 > *Goal: Player can equip armour*
 
 * [ ] Implement armour items - leather helmet, leather body armour, leather boots
-* [ ] Implement ability to equip and unequip armour (tbc implement base AC)
+* [ ] Implement ability to equip and unequip armour
 * [ ] Implement player stat recalculation for armour
 
 [ ] *End result: Player can equip armour and stats are updated.*
