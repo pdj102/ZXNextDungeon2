@@ -64,9 +64,7 @@ int main(void) {
     comp_location_add(e5, 12, 12);    
 
     g.player.id = ENTITY_ID_INVALID;
-    text_printf(&g.msg_win, "P:%u\n", g.player.id);
     entity_id_t e6 = system_monster_create_player();
-    text_printf(&g.msg_win, "P:%u\n", g.player.id);
     comp_location_add(e6, 10, 15);
 
     map_render();
@@ -79,7 +77,7 @@ int main(void) {
 
         map_render();        
 
-        /* clean_up_and_destroy(); */
+        clean_up_and_destroy();
     }
 
     util_abort("Hello World");

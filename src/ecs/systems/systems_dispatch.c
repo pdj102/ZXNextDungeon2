@@ -502,7 +502,7 @@ bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy)
     bool_t status;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
     status = movement_system_try_move(actor, dx, dy);
 
@@ -517,7 +517,7 @@ bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
     bool_t status;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
     status = movement_system_location_equal(entity1, entity2);
 
