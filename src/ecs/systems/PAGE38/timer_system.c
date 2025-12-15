@@ -44,6 +44,21 @@ void timer_system_update(void)
     }
  }
 
+ bool_t timer_system_has_fired(entity_id_t entity)
+{
+    return g.timer_components.timers[entity].fired;
+}
+
+void timer_system_reset(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
+
+    g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
+    g.timer_components.timers[entity].active = 1; 
+    g.timer_components.timers[entity].fired = 0;
+}
+
  /***************************************************
  * private functions
  ***************************************************/

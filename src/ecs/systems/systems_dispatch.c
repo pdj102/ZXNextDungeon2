@@ -439,6 +439,34 @@ void system_timer_update(void)
 
 }
 
+bool_t system_timer_has_fired(entity_id_t entity)
+{
+    uint8_t current_bank;
+    bool_t fired;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);  
+
+    fired = timer_system_has_fired(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       
+
+    return fired;
+}
+
+void system_timer_reset(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);          
+
+    timer_system_reset(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       
+
+}
+
 /* Monster system*/
 void system_monster_init(void)
 {

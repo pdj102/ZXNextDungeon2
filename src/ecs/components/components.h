@@ -100,7 +100,5 @@ void comp_timer_init(void);
 void comp_timer_add(entity_id_t entity, ticks_t ticks);
 void comp_timer_remove(entity_id_t entity);
 void comp_timer_set(entity_id_t entity, ticks_t ticks);
-bool_t comp_timer_has_fired(entity_id_t entity);
-void comp_timer_reset(entity_id_t entity);
 
 #endif // COMPONENTS_H

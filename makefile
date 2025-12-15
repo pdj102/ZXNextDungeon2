@@ -217,5 +217,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.asm
 
 # Rule to build the program
 $(PROGRAM): $(OFILES)
+	@echo "Building: $(BINDIR)/$(PROGRAM)"
 	$(CC) $(LDFLAGS) -o $(BINDIR)/$(PROGRAM) $(OFILES) $(LDLIBS)
 	@echo "Build complete: $(BINDIR)/$(PROGRAM)"

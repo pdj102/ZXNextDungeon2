@@ -58,13 +58,13 @@ void player_system_update(void)
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check if player's turn*/
-    if (comp_timer_has_fired(entity) == 0)
+    if (system_timer_has_fired(entity) == 0)
     {
         return;
     }
 
     /* Reset timer */
-    comp_timer_reset(entity);
+    system_timer_reset(entity);
 
     key = key_press();
 

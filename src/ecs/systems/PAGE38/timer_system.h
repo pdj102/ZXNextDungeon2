@@ -25,5 +25,7 @@
  ***************************************************/
 void timer_system_init(void);
 void timer_system_update(void);
+bool_t timer_system_has_fired(entity_id_t entity);
+void timer_system_reset(entity_id_t entity);
 
 #endif // TIMER_SYSTEM_H

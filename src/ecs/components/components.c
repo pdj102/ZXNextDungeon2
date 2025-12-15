@@ -582,33 +582,6 @@ void comp_timer_set(entity_id_t entity, ticks_t ticks)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }
 
-bool_t comp_timer_has_fired(entity_id_t entity)
-{
-    uint8_t current_bank;
-    bool_t fired;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
-
-    fired = timer_has_fired(entity);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */        
-
-    return fired;
-}
-
-void comp_timer_reset(entity_id_t entity)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
-
-    timer_reset(entity);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
-}
-
  /***************************************************
  * private functions
  ***************************************************/

@@ -90,5 +90,7 @@ void system_player_update(void);
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);
+bool_t system_timer_has_fired(entity_id_t entity);
+void system_timer_reset(entity_id_t entity);
 
 #endif // SYSTEMS_DISPATCH_H
