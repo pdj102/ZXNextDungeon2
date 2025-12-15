@@ -7,9 +7,7 @@
 
 #include "monster_system.h"
 
-#include "ecs/components/creature_comp.h"
-#include "ecs/components/stats_comp.h"
-#include "ecs/components/slots_comp.h"
+#include "ecs/components/components.h"
 
 #include "game/global_state.h"
 
@@ -176,96 +174,54 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     if (id == ENTITY_ID_INVALID)
     {
         util_abort("");         
-        return id;
+        return ENTITY_ID_INVALID;
     }
 
     entity_set_flag(id, FLAG_BLOCKING);   
 
     /* Add creature component */
-    if (creature_add(id, kind, monster_challenge_base[kind]) == 0)
-    {
-        util_abort("");
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
-    
+    comp_creature_add(id, kind, monster_challenge_base[kind]);
 
     /* Add stat block */
-    if (stats_add(id, &monster_stats_base[kind]) == 0)
-    {
-        util_abort("");
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;       
-    }
+    comp_stats_add(id, &monster_stats_base[kind]);
 
     /* If monster has melee attack add */
     if (monster_melee_base[kind].damage_type != DAMAGE_NONE)
     {
-        if (melee_add(id, &monster_melee_base[kind]) == 0)
-        {
-            util_abort("");
-            entity_destroy(id);
-            return ENTITY_ID_INVALID;       
-        }
+        comp_melee_add(id, &monster_melee_base[kind]);
     }
 
     /* If monster has melee attack add */
     if (monster_ranged_base[kind].damage_type != DAMAGE_NONE)
     {
-        if (ranged_add(id, &monster_ranged_base[kind]) == 0)
-        {
-            util_abort("");
-            entity_destroy(id);
-            return ENTITY_ID_INVALID;       
-        }    
+        comp_ranged_add(id, &monster_ranged_base[kind]);
     }
 
     /* Add renderable component  */
-    if(renderable_add(id, monster_renderable_base[kind].tile) == 0)
-    {
-        util_abort("");
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    } 
+    comp_renderable_add(id, monster_renderable_base[kind].tile);
 
     /* Add container component */
-    if (container_add(id) == 0)
-    {
-        util_abort("");
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
+    comp_container_add(id);
   
     /* Add timer component*/
-    if (timer_add(id, speed_to_ticks(monster_stats_base[kind].speed )) == 0)
-    {
-        util_abort("");
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
+    comp_timer_add(id, speed_to_ticks(monster_stats_base[kind].speed ));
 
     return id;
 }
 
 entity_id_t monster_system_create_player( void )
 {
-  entity_id_t id = monster_system_create(CREATURE_PLAYER);
+    entity_id_t id = monster_system_create(CREATURE_PLAYER);
     if (id == ENTITY_ID_INVALID)
-        return id;
+        return ENTITY_ID_INVALID;
 
     player_init();
 
     /* Add player control component */
-    if (player_add(id) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
+    comp_player_add(id);
 
     /* Add slots component */
-    if (slots_add(id) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }    
+    comp_slots_add(id);
 
     return id;
 }

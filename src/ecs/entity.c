@@ -15,9 +15,8 @@
 #include <sys/types.h> /* bool_t */
 
 #include "ecs/entity.h"
-#include "ecs/components/location_comp.h"
-#include "ecs/components/item_comp.h"
-#include "ecs/components/attack_comp.h"
+
+#include "ecs/components/components.h"
 
 #include "game/global_state.h"
 
@@ -167,43 +166,43 @@ void entity_destroy(entity_id_t id)
 
     /* Clear all components associated with this entity */
     if (entity_has_component(id, COMPONENT_CONTAINED)) {
-        contained_remove(id);
+        comp_contained_remove(id);
     }
     if (entity_has_component(id, COMPONENT_CONTAINER)) {
-        container_remove(id);
+        comp_container_remove(id);
     } 
     if (entity_has_component(id, COMPONENT_CREATURE)) {
-        creature_remove(id);
+        comp_creature_remove(id);
     }
     if (entity_has_component(id, COMPONENT_ITEM)) {
-        item_remove(id);
+        comp_item_remove(id);
     }
     if (entity_has_component(id, COMPONENT_LOCATION)) {
-        location_remove(id);
+        comp_location_remove(id);
     }
     if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
-        player_remove(id);
+        comp_player_remove(id);
     }    
     if (entity_has_component(id, COMPONENT_RENDERABLE)) {
-        renderable_remove(id);
+        comp_renderable_remove(id);
     }
     if (entity_has_component(id, COMPONENT_TIMER)) {
-        timer_remove(id);
+        comp_timer_remove(id);
     }
     if (entity_has_component(id, COMPONENT_EQUIPPABLE)) {
-        equippable_remove(id);
+        comp_equippable_remove(id);
     }
     if (entity_has_component(id, COMPONENT_MELEE)) {
-        melee_remove(id);
+        comp_melee_remove(id);
     }
     if (entity_has_component(id, COMPONENT_RANGED)) {
-        ranged_remove(id);
+        comp_ranged_remove(id);
     }
     if (entity_has_component(id, COMPONENT_SLOTS)) {
-        slots_remove(id);
+        comp_slots_remove(id);
     }
     if (entity_has_component(id, COMPONENT_EQUIPPED)) {
-        equipped_remove(id);
+        comp_equipped_remove(id);
     }
 
     /* mark entity as no longer active and free to use */

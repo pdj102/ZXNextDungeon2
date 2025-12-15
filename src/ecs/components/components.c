@@ -38,19 +38,19 @@
  ***************************************************/
 void components_init(void)
 {
-    attack_init();
-    contained_init();
-    container_init();
-    creature_init();
-    equippable_init();
-    equipped_init();
-    item_init();
-    location_init();
-    player_init();
-    renderable_init();
-    slots_init();
-    stats_init();
-    timer_init();
+    comp_attack_init();
+    comp_contained_init();
+    comp_container_init();
+    comp_creature_init();
+    comp_equippable_init();
+    comp_equipped_init();
+    comp_item_init();
+    comp_location_init();
+    comp_player_init();
+    comp_renderable_init();
+    comp_slots_init();
+    comp_stats_init();
+    comp_timer_init();
 }
 
 /* attack */
@@ -361,6 +361,18 @@ void comp_location_add(entity_id_t entity, uint8_t x, uint8_t y)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }
 
+void comp_location_move(entity_id_t entity, uint8_t x, uint8_t y)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    location_move(entity, x, y);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
 void comp_location_remove(entity_id_t entity)
 {
     uint8_t current_bank;
@@ -485,17 +497,117 @@ void comp_slots_remove(entity_id_t entity)
 }
 
 /* stats */
-void comp_stats_init(void);
-void comp_stats_add(entity_id_t entity, stats_comp_t *stats_p);
-void comp_stats_remove(entity_id_t entity);
+void comp_stats_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    stats_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */ 
+}
+
+void comp_stats_add(entity_id_t entity, stats_comp_t *stats_p)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    stats_add(entity, stats_p);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
+void comp_stats_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    stats_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
 
 /* timer */
-void comp_timer_init(void);
-void comp_timer_add(entity_id_t entity, ticks_t ticks);
-void comp_timer_remove(entity_id_t entity);
-void comp_timer_set(entity_id_t entity, ticks_t ticks);
-bool_t comp_timer_has_fired(entity_id_t entity);
-void comp_timer_reset(entity_id_t entity);
+void comp_timer_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    timer_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */ 
+}
+
+void comp_timer_add(entity_id_t entity, ticks_t ticks)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    timer_add(entity, ticks);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */        
+}
+
+void comp_timer_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    timer_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+void comp_timer_set(entity_id_t entity, ticks_t ticks)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    timer_set(entity, ticks);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
+bool_t comp_timer_has_fired(entity_id_t entity)
+{
+    uint8_t current_bank;
+    bool_t fired;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    fired = timer_has_fired(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */        
+
+    return fired;
+}
+
+void comp_timer_reset(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
+
+    timer_reset(entity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+}
 
  /***************************************************
  * private functions

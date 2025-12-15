@@ -13,7 +13,7 @@
 #include <sys\types.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/timer_comp.h"
+#include "ecs/components/PAGE50/timer_comp.h"
 
 #include "game/global_state.h"
 

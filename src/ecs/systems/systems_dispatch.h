@@ -13,8 +13,8 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/item_comp.h"
-#include "ecs/components/creature_comp.h"
+#include "ecs/components/PAGE50/item_comp.h"
+#include "ecs/components/PAGE50/creature_comp.h"
 #include "ecs/systems/PAGE42/event_system.h"
 
 #include "core/text.h"
@@ -78,6 +78,10 @@ void system_monster_init(void);
 entity_id_t system_monster_create(creature_kind_t kind);
 entity_id_t system_monster_create_player( void );
 void system_monster_print_name(text_window_t *win, creature_kind_t kind);
+
+/* Movement system */
+bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
+bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
 
 /* Player System */
 void system_player_init(void);

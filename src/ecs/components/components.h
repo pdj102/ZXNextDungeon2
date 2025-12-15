@@ -12,7 +12,12 @@
 #include "ecs/components/PAGE50/attack_comp.h"
 #include "ecs/components/PAGE50/creature_comp.h"
 #include "ecs/components/PAGE50/equippable_comp.h"
+#include "ecs/components/PAGE50/item_comp.h"
+#include "ecs/components/PAGE50/stats_comp.h"
+
 #include "ecs/entity.h"
+
+#include "core/zxnext.h"
 
 /***************************************************
  * public defines
@@ -28,6 +33,7 @@
 void components_init(void);
 
 /* attack */
+void comp_attack_init(void);
 void comp_melee_add(entity_id_t entity, attack_comp_t *melee_p);
 void comp_ranged_add(entity_id_t entity, attack_comp_t *attack_p);
 void comp_melee_remove(entity_id_t entity);
@@ -66,6 +72,7 @@ void comp_item_remove(entity_id_t entity);
 /* location */
 void comp_location_init(void);
 void comp_location_add(entity_id_t entity, uint8_t x, uint8_t y);
+void comp_location_move(entity_id_t entity, uint8_t x, uint8_t y);
 void comp_location_remove(entity_id_t entity);
 
 /* player */

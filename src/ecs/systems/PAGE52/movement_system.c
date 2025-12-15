@@ -7,6 +7,7 @@
  * 
  */
 
+#include "ecs/components/components.h"
 #include "ecs/components/PAGE50/location_comp.h"
 
 #include "ecs/entity.h"
@@ -17,6 +18,7 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+void move(entity_id_t entity, uint8_t x, uint8_t y);
 void location_unlink(entity_id_t entity);
 void location_link(entity_id_t entity);
 
@@ -34,7 +36,7 @@ void location_link(entity_id_t entity);
 
     if (map_can_enter(actor, tx, ty))
     {
-        location_move(actor, tx, ty);
+        comp_location_move(actor, tx, ty);
         return 1;
     }
     else
@@ -43,20 +45,7 @@ void location_link(entity_id_t entity);
     }
 }
 
-void location_move(entity_id_t entity, uint8_t x, uint8_t y)
-{
-    util_assert(entity < MAX_ENTITIES);
-    util_assert(x < MAP_WIDTH);
-    util_assert(y < MAP_WIDTH);
-    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
-
-    location_unlink(entity);
-    g.location_components[entity].x = x;
-    g.location_components[entity].y = y;
-    location_link(entity);
-}
-
-bool_t location_equal(entity_id_t entity1, entity_id_t entity2)
+bool_t movement_system_location_equal(entity_id_t entity1, entity_id_t entity2)
 {
     util_assert(entity1 < MAX_ENTITIES);
     util_assert(entity2 < MAX_ENTITIES);
@@ -74,46 +63,3 @@ bool_t location_equal(entity_id_t entity1, entity_id_t entity2)
  /***************************************************
  * private functions
  ***************************************************/
-
-/*
- * @brief Link entity to a map cell
- * @param[in] entity to link
- */
-void location_link(entity_id_t entity)
-{
-    uint8_t x = g.location_components[entity].x;
-    uint8_t y = g.location_components[entity].y;
-
-    g.location_components[entity].next_in_location = g.map.cell_head[x][y]; /* link to previous head entity at this map cell */
-    g.map.cell_head[x][y] = entity; /* set this entity as the head of the list at this map cell */
-}
-
-/*
- * @brief Unlink entity from map cell
- * @param[in] entity to unlink
-*/
-void location_unlink(entity_id_t entity)
-{
-    entity_id_t x = g.location_components[entity].x;
-    entity_id_t y = g.location_components[entity].y;
-
-    /* find entity in cell list */
-    entity_id_t current = g.map.cell_head[x][y]; /* start at the head of the list */
-    entity_id_t prev = ENTITY_ID_INVALID; /* previous entity in the list */
-
-    while (current != ENTITY_ID_INVALID) { /* traverse the linked list */
-        if (current == entity) { /* found the entity to remove */
-            if (prev == ENTITY_ID_INVALID) { 
-                g.map.cell_head[x][y] = g.location_components[current].next_in_location; /* remove from head */
-            } else {
-                g.location_components[prev].next_in_location = g.location_components[current].next_in_location; /* bypass current */
-            }
-            return;
-        }
-        prev = current; 
-        current = g.location_components[current].next_in_location; /* move to next */
-    }
-    util_abort("Entity not found on map");    
-}
-
-

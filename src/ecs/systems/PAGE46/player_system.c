@@ -14,8 +14,7 @@
 #include <sys\types.h>      /* bool_t */
 
 #include "ecs/entity.h"
-#include "ecs/components/timer_comp.h"
-#include "ecs/components/location_comp.h"
+#include "ecs/components/components.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -59,13 +58,13 @@ void player_system_update(void)
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check if player's turn*/
-    if (timer_has_fired(entity) == 0)
+    if (comp_timer_has_fired(entity) == 0)
     {
         return;
     }
 
     /* Reset timer */
-    timer_reset(entity);
+    comp_timer_reset(entity);
 
     key = key_press();
 
@@ -73,16 +72,16 @@ void player_system_update(void)
 
     switch(key) {
         case 8: /* left */
-            system_actions_try_move(entity, -1, 0);
+            system_movement_try_move(entity, -1, 0);
             break;
         case 9: /* right */
-            system_actions_try_move(entity, 1, 0);
+            system_movement_try_move(entity, 1, 0);
             break;
         case 11: /* up */
-            system_actions_try_move(entity, 0, -1);
+            system_movement_try_move(entity, 0, -1);
             break;
         case 10: /* down */
-            system_actions_try_move(entity, 0, 1);
+            system_movement_try_move(entity, 0, 1);
             break;
         case 56: /* camera right */
             g.map.camera.x++;

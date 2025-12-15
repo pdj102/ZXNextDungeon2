@@ -35,7 +35,7 @@ void item_init(void)
     }
 }
 
-uint8_t item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
+void item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_ITEM)); /* entity must not have item component */
@@ -46,8 +46,6 @@ uint8_t item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
     g.item_components[entity].quantity = quantity; /* set quantity */
 
     entity_set_component(entity, COMPONENT_ITEM); /* set entity item component mask */
-
-    return 1; /* success */
 }
 
 void item_remove(entity_id_t entity)

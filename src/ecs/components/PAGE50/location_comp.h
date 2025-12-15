@@ -30,6 +30,7 @@ typedef location_comp_t location_components_t[MAX_ENTITIES]; /* location compone
  ***************************************************/
 void location_init(void);
 void location_add(entity_id_t entity, uint8_t x, uint8_t y);
+void location_move(entity_id_t entity, uint8_t x, uint8_t y);
 void location_remove(entity_id_t entity);
 
 #endif // LOCATION_COMP_H

@@ -35,15 +35,13 @@ void renderable_init(void)
     }
 }
 
-bool_t renderable_add(entity_id_t id, const zxnext_tile_t tile )
+void renderable_add(entity_id_t id, const zxnext_tile_t tile )
 {
     util_assert(id < MAX_ENTITIES);
 
     g.renderable_components[id].tile = tile;
 
     entity_set_component(id, COMPONENT_RENDERABLE); /* set entity renderable component mask */
-
-    return 1; /* success */
 }
 
 void renderable_remove(entity_id_t entity)

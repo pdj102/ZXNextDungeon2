@@ -16,9 +16,6 @@
 #include "ecs/entity.h"
 
 #include "ecs/components/components.h"
-#include "ecs/components/item_comp.h"
-#include "ecs/components/creature_comp.h"
-#include "ecs/components/location_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -36,9 +33,11 @@ void clean_up_and_destroy(void);
 int main(void) {
 
    core_init_bank();
-
+   
    entity_init();
+   
    components_init();
+   
    systems_init();
    game_init();
 
@@ -48,43 +47,39 @@ int main(void) {
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
    util_assert(sizeof(g) < 0x3FFF);
 
-    // Create some items
+
     entity_id_t e1 = system_item_create(ITEM_SHORT_SWORD, 1);
-    location_add(e1, 10, 10);
+    comp_location_add(e1, 10, 10);
 
     entity_id_t e2 = system_item_create(ITEM_POTION_OF_HEALING, 1);
-    location_add(e2, 12, 10);
+    comp_location_add(e2, 12, 10);
 
     entity_id_t e3 = system_item_create(ITEM_KEY, 1);
-    // location_add(e3, 14, 10);
 
     entity_id_t e4 = system_monster_create(CREATURE_RAT);  
     system_container_add(e4, e3);
-    location_add(e4, 10, 12);
+    comp_location_add(e4, 10, 12);
 
     entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
-    location_add(e5, 12, 12);    
+    comp_location_add(e5, 12, 12);    
 
     g.player.id = ENTITY_ID_INVALID;
     text_printf(&g.msg_win, "P:%u\n", g.player.id);
     entity_id_t e6 = system_monster_create_player();
     text_printf(&g.msg_win, "P:%u\n", g.player.id);
-    location_add(e6, 10, 15);
+    comp_location_add(e6, 10, 15);
 
     map_render();
 
-    // Main loop code here
     while(1)
     {
         system_timer_update();
-
-        // text_print_string(&g.msg_win, ".");
 
         system_player_update();
 
         map_render();        
 
-        clean_up_and_destroy();
+        /* clean_up_and_destroy(); */
     }
 
     util_abort("Hello World");

@@ -27,7 +27,7 @@ void timer_init(void)
     g.timer_components.count = 0;
 }
 
-bool_t timer_add(entity_id_t entity, ticks_t ticks)
+void timer_add(entity_id_t entity, ticks_t ticks)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_TIMER)); /* entity must not have timer component */
@@ -37,8 +37,6 @@ bool_t timer_add(entity_id_t entity, ticks_t ticks)
     entity_set_component(entity, COMPONENT_TIMER); /* set entity timer component mask */
 
     timer_set(entity, ticks);
-
-    return 1; /* success */
 }
 
 void timer_remove(entity_id_t entity)

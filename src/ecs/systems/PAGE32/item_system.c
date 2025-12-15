@@ -6,8 +6,7 @@
 
 #include "item_system.h"
 
-#include "ecs/components/item_comp.h"
-#include "ecs/components/equippable_comp.h"
+#include "ecs/components/components.h"
 
 #include "game/global_state.h"
 
@@ -94,25 +93,16 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     entity_id_t id = entity_create(); 
 
     if (id == ENTITY_ID_INVALID)
-        return id;
+        return ENTITY_ID_INVALID;
 
     /* Add item component */
-    if (item_add(id, kind, quantity) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
-
+    comp_item_add(id, kind, quantity);
+    
     /* Add equippable component */
-    if (equippable_add(id, equippable_base[kind]) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }    
+    comp_equippable_add(id, equippable_base[kind]);
 
     /* Add renderable component  */
-    if(renderable_add(id, renderable_base[kind].tile) == 0) {
-        entity_destroy(id);
-        return ENTITY_ID_INVALID;
-    }
+    comp_renderable_add(id, renderable_base[kind].tile);
 
     return id;
 }

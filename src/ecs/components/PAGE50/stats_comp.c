@@ -30,7 +30,7 @@ void stats_init(void)
     }
 }
 
-uint8_t stats_add(entity_id_t entity, stats_comp_t *stats_p)
+void stats_add(entity_id_t entity, stats_comp_t *stats_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_STATS)); /* entity must not have creature component */
@@ -47,8 +47,6 @@ uint8_t stats_add(entity_id_t entity, stats_comp_t *stats_p)
     g.stats_components[entity].cha = stats_p->cha;
 
     entity_set_component(entity, COMPONENT_STATS); 
-
-    return 1; /* success */
 }
 
 void stats_remove(entity_id_t entity)

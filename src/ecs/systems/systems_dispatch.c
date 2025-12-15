@@ -18,6 +18,7 @@
 #include "ecs/systems/PAGE44/actions_system.h"
 #include "ecs/systems/PAGE46/player_system.h"
 #include "ecs/systems/PAGE48/equipment_system.h"
+#include "ecs/systems/PAGE52/movement_system.h"
 
 /***************************************************
  * private defines
@@ -156,21 +157,6 @@ bool_t system_actions_try_die(entity_id_t creature)
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
     status = actions_system_try_die(creature);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
-
-bool_t system_actions_try_move(entity_id_t entity, int8_t dx, int8_t dy)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_move(entity, dx, dy);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
@@ -508,6 +494,38 @@ void system_monster_print_name(text_window_t *win, creature_kind_t kind)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 
 }
+
+/* Movement system */
+bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    status = movement_system_try_move(actor, dx, dy);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return status;    
+}
+
+bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    status = movement_system_location_equal(entity1, entity2);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return status;    
+}
+
 /* Item system*/
 
 void system_item_init(void)

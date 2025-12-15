@@ -42,13 +42,11 @@ void slots_init(void)
 /*
  * There can only be one player slot component 
 */
-bool_t slots_add(entity_id_t id)
+void slots_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
 
     entity_set_component(id, COMPONENT_SLOTS); 
-
-    return 1; /* success */
 }
 
 void slots_remove(entity_id_t entity)

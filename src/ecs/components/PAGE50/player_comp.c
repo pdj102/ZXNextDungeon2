@@ -34,7 +34,7 @@ void player_init(void)
 /*
  * There can only be one player ctrl component 
 */
-bool_t player_add(entity_id_t id)
+void player_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
     util_assert( g.player.id == ENTITY_ID_INVALID);
@@ -42,8 +42,6 @@ bool_t player_add(entity_id_t id)
     g.player.id = id;
 
     entity_set_component(id, COMPONENT_PLAYER_CTRL); /* set entity player_ctrl component mask */
-
-    return 1; /* success */
 }
 
 void player_remove(entity_id_t entity)

@@ -12,9 +12,8 @@
 #include <sys\types.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/equippable_comp.h"
-#include "ecs/components/equipped_comp.h"
-#include "ecs/components/slots_comp.h"
+
+#include "ecs/components/components.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -123,7 +122,7 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 
     /* Equip item*/
     g.slots[slot] = item;
-    equipped_add(item, actor);
+    comp_equipped_add(item, actor);
 
     system_event_emit(EVENT_EQUIPPED, actor, item, 1);        
     
@@ -150,7 +149,7 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
             /* Found slot, unequip the item*/
             g.slots[slot] = ENTITY_ID_INVALID;
             g.equipped_components[item].equipped_by = ENTITY_ID_INVALID;
-            equipped_remove(item);
+            comp_equipped_remove(item);
 
             system_event_emit(EVENT_UNEQUIPPED, actor, item, 1);
             return 1;
