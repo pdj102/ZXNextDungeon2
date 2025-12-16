@@ -43,7 +43,6 @@ typedef struct {
  ***************************************************/
 void timer_init(void);
 void timer_add(entity_id_t entity, ticks_t ticks);
-void timer_set(entity_id_t entity, ticks_t ticks);
 void timer_remove(entity_id_t entity);
 
 #endif // TIMER_COMP_H

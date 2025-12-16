@@ -198,15 +198,6 @@
 
 [ ] *End result: Player can target a tile and examine a tile/entity if in line of sight.*
 
-### 🪜 **Milestone 111 — Basic Ranged Combat & Events**
-
-> *Goal: entities can range attack.*
-
-* [ ] Add player `fire` command (ranged attack)
-* [ ] Implement basic `attack_system_ranged_attack()`
-
-[ ] *End result: You can range attack and kill monsters.*
-
 ---
 
 ### 🪜 **Milestone 112 — A Camera**
@@ -258,7 +249,7 @@
 * [ ] Add `EVENT_STOOD_ON` event
 * [ ] Update movement system to check for entities at entered location and emit an `EVENT_STOOD_ON` for each
 * [ ] Implement steppable_system
-* [ ] Implement `steppable_system_on_stood_on()`to handle events e.g. check for stappable component and take action
+* [ ] Implement `steppable_system_on_stood_on()`to handle events e.g. check for steppable component and take action
 * [ ] Implement trap feature
 * [ ] Add message log system for stood on events e.g. (“You stood on the trap.”)
 * [ ] Remove steppable components on entity destroy
@@ -270,6 +261,53 @@
 > *Goal: Entities can react to bumped into*
 
 [ ] *End result: Unlocked doors open if you walk into them*
+
+### 🪜 **Milestone 117 — Melee combat**
+
+> *Goal: Entities can melee combat*
+
+* [ ] Implement melee weapon equipment - dagger & sword
+* [ ] Implement `melee` component
+* [ ] Implement default melee attack component for creatures
+* [ ] Implement `combat system`
+* [ ] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
+* [ ] Implement `calc_attack_roll` - calculate attack roll for melee attack
+* [ ] Support player attack roll - attack modifier = ability modifier + proficiency_bonus + weapon to hit bonus (if applicable) + other effects
+* [ ] Support monster attack roll - attack modifier is precalculated in `melee`
+* [ ] Implement `calc_damage_roll` - calculate damage roll for melee attack
+* [ ] Support player damage roll - base damage dice (weapon or `melee`) + ability modifier + weapon to damage bonus (if applicable) + other effects
+* [ ] Support monsters - attack modifier is precalculated in `melee`
+* [ ] Implement `EVENT_ATTACKED` - support both hit and miss
+
+[ ] *End result: Player can equip and attack with melee weapon
+
+---
+
+### 🪜 **Milestone 118 — Damage**
+
+> *Goal: Entities can take damage*
+
+* [ ] Implement `damage system`
+* [ ] Implement `damage_system_try_take_damage` - apply damage to target entity
+* [ ] Implement `EVENT_DAMAGED`
+* [ ] Implement `damage_system_try_die` - kill an entity if it takes enough damage
+* [ ] Implement `EVENT_DIED`
+
+[ ] *End result: Entites can take damange and will die if they take enough damage*
+
+---
+
+### 🪜 **Milestone 119 — Ranged combat**
+
+> *Goal: entities can range attack.*
+
+* [ ] Implement ranged weapon equipment - dart
+* [ ] Add player `fire` command (ranged attack)
+* [ ] Implement `ranged` component
+* [ ] Implement default ranged attack component for creatures
+* [ ] Implement basic `attack_system_ranged_attack()`
+
+[ ] *End result: You can range attack and kill monsters.*
 
 ## 🪜 **Milestone 2XX — Items**
 
@@ -308,20 +346,7 @@
 
 ---
 
-### 🪜 **Milestone 203 — Melee combat**
 
-> *Goal: Implement melee combat*
-
-* [ ] Implement melee weapon equipment - dagger & sword
-* [ ] Implement `melee` component
-* [ ] Implement default melee attack component for creatures
-* [ ] Implment creature's melee to hit and to damage bonus
-* [ ] Implement equipped melee weapon's to hit and to damage bonus
-* [ ] Implement `attack_system_try_melee_attack()` - use equipped melee or default melee if not
-
-[ ] *End result: Player can equip and attack with melee weapon
-
----
 
 ### 🪜 **Milestone 204 — Armour**
 

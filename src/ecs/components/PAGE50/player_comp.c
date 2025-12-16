@@ -41,18 +41,18 @@ void player_add(entity_id_t id)
 
     g.player.id = id;
 
-    entity_set_component(id, COMPONENT_PLAYER_CTRL); /* set entity player_ctrl component mask */
+    entity_set_component(id, COMPONENT_PLAYER); /* set entity player_ctrl component mask */
 }
 
 void player_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    if (!entity_has_component(entity, COMPONENT_PLAYER_CTRL))
+    if (!entity_has_component(entity, COMPONENT_PLAYER))
     {
         return;
     }
 
     g.player.id == ENTITY_ID_INVALID;
 
-    entity_clear_component(entity, COMPONENT_PLAYER_CTRL); /* clear entity player_ctrl component mask */
+    entity_clear_component(entity, COMPONENT_PLAYER); /* clear entity player_ctrl component mask */
 }

@@ -1,14 +1,14 @@
 /**
- * @file movement_system.h
+ * @file combat_system.h
  * @author Paul Johnson
- * @brief movement system for ECS
+ * @brief combat system for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef MOVEMENT_SYSTEM_H
-#define MOVEMENT_SYSTEM_H
+#ifndef COMBAT_SYSTEM_H
+#define COMBAT_SYSTEM_H
 
 #include <stdint.h>
 
@@ -21,7 +21,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy);
-bool_t movement_system_location_equal(entity_id_t entity1, entity_id_t entity2);
+void combat_system_init(void);
+bool_t combat_system_try_melee_attack(entity_id_t creature, entity_id_t target);
 
-#endif // MOVEMENT_SYSTEM_H
+#endif // COMBAT_SYSTEM_H

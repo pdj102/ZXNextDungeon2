@@ -54,7 +54,7 @@ void player_system_update(void)
     int key;
 
     util_assert(entity != ENTITY_ID_INVALID);
-    util_assert(entity_has_component(entity, COMPONENT_PLAYER_CTRL));
+    util_assert(entity_has_component(entity, COMPONENT_PLAYER));
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check if player's turn*/

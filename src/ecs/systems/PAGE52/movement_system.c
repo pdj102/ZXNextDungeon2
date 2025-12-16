@@ -1,11 +1,13 @@
 /**
- * @file location_comp.c
+ * @file movement_system.c
  * @author Paul Johnson
- * @brief location component for ECS
+ * @brief movement system for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
  */
+
+#include "ecs/systems/PAGE52/movement_system.h"
 
 #include "ecs/components/components.h"
 #include "ecs/components/PAGE50/location_comp.h"

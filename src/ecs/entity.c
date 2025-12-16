@@ -180,7 +180,7 @@ void entity_destroy(entity_id_t id)
     if (entity_has_component(id, COMPONENT_LOCATION)) {
         comp_location_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_PLAYER_CTRL)) { 
+    if (entity_has_component(id, COMPONENT_PLAYER)) { 
         comp_player_remove(id);
     }    
     if (entity_has_component(id, COMPONENT_RENDERABLE)) {

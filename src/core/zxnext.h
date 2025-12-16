@@ -50,21 +50,23 @@
   *     use odd page numbers for default ORG 0xe000 e.g. page 31, 33
   */
 
-#define PAGE_GLOBAL_STATE   28 /* 8k bank number for global state */
-#define PAGE_GLOBAL_STATE_2 29 /* 8k bank number for global state second part */
-#define PAGE_MONSTER_SYSTEM 30
-#define PAGE_ITEM_SYSTEM    32
-#define PAGE_DUNGEON_GEN    34
-#define PAGE_INIT           36
-#define PAGE_PALETTE        37
-#define PAGE_TIMER_SYSTEM   38
-#define PAGE_CONTAINER_SYSTEM   40
-#define PAGE_EVENT_SYSTEM   42
+#define PAGE_GLOBAL_STATE     28 
+#define PAGE_GLOBAL_STATE_2   29 
+#define PAGE_MONSTER_SYSTEM   30
+#define PAGE_ITEM_SYSTEM      32
+#define PAGE_DUNGEON_GEN      34
+#define PAGE_INIT             36
+#define PAGE_PALETTE          37
+#define PAGE_TIMER_SYSTEM     38
+#define PAGE_CONTAINER_SYSTEM 40
+#define PAGE_EVENT_SYSTEM     42
 #define PAGE_ACTIONS_SYSTEM   44
-#define PAGE_PLAYER_SYSTEM   46
-#define PAGE_EQUIPMENT_SYSTEM   48
-#define PAGE_COMP   50
-#define PAGE_MOVEMENT_SYSTEM   52
+#define PAGE_PLAYER_SYSTEM    46
+#define PAGE_EQUIPMENT_SYSTEM 48
+#define PAGE_COMP             50
+#define PAGE_MOVEMENT_SYSTEM  52
+#define PAGE_COMBAT_SYSTEM    54
+#define PAGE_DAMAGE_SYSTEM    56
 
 
 /***************************************************

@@ -46,6 +46,7 @@
     system_item_init();
     system_timer_init();
     system_container_init();
+    system_combat();
     system_event_init();
     system_actions_init();
     system_player_init();
@@ -57,21 +58,6 @@
  {
 
  }
-
-bool_t system_actions_try_melee_attack(entity_id_t creature, entity_id_t target)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_melee_attack(creature, target);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
 
 bool_t system_actions_try_quaff(entity_id_t creature, entity_id_t item)
 {
@@ -309,6 +295,27 @@ void system_container_clean_up(entity_id_t id)
     container_system_clean_up(id);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+/* Combat system */
+void system_combat_init(void)
+{
+
+}
+
+bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMBAT_SYSTEM);
+
+    status = combat_system_try_melee_attack(creature, target);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return status;
 }
 
 /* Equipment System */

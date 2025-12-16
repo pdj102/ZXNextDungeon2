@@ -99,6 +99,5 @@ void comp_stats_remove(entity_id_t entity);
 void comp_timer_init(void);
 void comp_timer_add(entity_id_t entity, ticks_t ticks);
 void comp_timer_remove(entity_id_t entity);
-void comp_timer_set(entity_id_t entity, ticks_t ticks);
 
 #endif // COMPONENTS_H
