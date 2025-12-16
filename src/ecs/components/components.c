@@ -66,7 +66,7 @@ void comp_attack_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_melee_add(entity_id_t entity, attack_comp_t *melee_p)
+void comp_melee_add(entity_id_t entity, attack_comp_t melee_p)
 {
     uint8_t current_bank;
 
@@ -78,7 +78,7 @@ void comp_melee_add(entity_id_t entity, attack_comp_t *melee_p)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_ranged_add(entity_id_t entity, attack_comp_t *attack_p)
+void comp_ranged_add(entity_id_t entity, attack_comp_t attack_p)
 {
     uint8_t current_bank;
 
@@ -201,14 +201,14 @@ void comp_creature_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge)
+void comp_creature_add(entity_id_t entity, creature_kind_t kind)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
 
-    creature_add(entity, kind, challenge);
+    creature_add(entity, kind);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }

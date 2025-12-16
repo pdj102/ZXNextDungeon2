@@ -104,6 +104,8 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     /* Add renderable component  */
     comp_renderable_add(id, renderable_base[kind].tile);
 
+    /* TODO add melee component for melee weapons */
+
     return id;
 }
 

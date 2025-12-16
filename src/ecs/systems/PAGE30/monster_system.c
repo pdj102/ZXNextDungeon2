@@ -180,7 +180,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     entity_set_flag(id, FLAG_BLOCKING);   
 
     /* Add creature component */
-    comp_creature_add(id, kind, monster_challenge_base[kind]);
+    comp_creature_add(id, kind);
 
     /* Add stat block */
     comp_stats_add(id, &monster_stats_base[kind]);
@@ -188,13 +188,13 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* If monster has melee attack add */
     if (monster_melee_base[kind].damage_type != DAMAGE_NONE)
     {
-        comp_melee_add(id, &monster_melee_base[kind]);
+        comp_melee_add(id, monster_melee_base[kind]);
     }
 
     /* If monster has melee attack add */
     if (monster_ranged_base[kind].damage_type != DAMAGE_NONE)
     {
-        comp_ranged_add(id, &monster_ranged_base[kind]);
+        comp_ranged_add(id, monster_ranged_base[kind]);
     }
 
     /* Add renderable component  */

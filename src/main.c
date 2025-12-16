@@ -99,7 +99,7 @@ void clean_up_and_destroy(void)
     while (g.entity_components.destroy_head > i)
     {
         id = g.entity_components.destroy_list[i];
-        text_printf(&g.msg_win, "%d entities to cleanup\n", g.entity_components.destroy_head);
+        // text_printf(&g.msg_win, "%d entities to cleanup\n", g.entity_components.destroy_head);
         
         util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
         system_container_clean_up(id);
@@ -115,7 +115,7 @@ void clean_up_and_destroy(void)
     while ( g.entity_components.destroy_head >  i)
     {
         id = g.entity_components.destroy_list[i];
-        text_printf(&g.msg_win, "%d entities to destroy\n", g.entity_components.destroy_head);
+        // text_printf(&g.msg_win, "%d entities to destroy\n", g.entity_components.destroy_head);
         util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
         entity_destroy(id);
 

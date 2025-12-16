@@ -40,9 +40,7 @@ bool_t system_actions_try_equip(entity_id_t creature, entity_id_t item);
 bool_t system_actions_try_unequip(entity_id_t creature, entity_id_t item);
 bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature);
 bool_t system_actions_try_close(entity_id_t creature, entity_id_t feature);
-int8_t system_actions_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type);
-bool_t system_actions_try_die(entity_id_t creature);
-bool_t system_actions_try_move(entity_id_t entity, int8_t dx, int8_t dy);
+
 
 /* Container System*/
 void system_container_init(void);
@@ -56,6 +54,15 @@ entity_id_t system_container_get_next(entity_id_t entity);
 entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
 void system_container_clean_up(entity_id_t id);
+
+/* Combat system */
+void system_combat_init(void);
+bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
+
+/* Damage system */
+void system_damage_init(void);
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type);
+bool_t system_damage_try_die(entity_id_t creature);
 
 /* Item system*/
 void system_item_init(void);

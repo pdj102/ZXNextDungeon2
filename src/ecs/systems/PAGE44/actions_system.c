@@ -45,37 +45,11 @@ void actions_system_init(void)
     
 }
 
-bool_t actions_system_try_die(entity_id_t creature)
-{
-    system_event_emit(EVENT_DIED, creature, ENTITY_ID_INVALID, 0);
 
-    entity_mark_for_destruction(creature);
-
-    return 1;
-}
 
 bool_t actions_system_try_eat(entity_id_t actor, entity_id_t item)
 {
 
-}
-
-
-
-
-int8_t actions_system_try_take_damage(entity_id_t actor, int8_t damage, damage_type_t type)
-{
-    /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
-    if (g.stats_components[actor].cur_hp <= damage)
-    {
-        g.stats_components[actor].cur_hp = 0;
-        actions_system_try_die(actor);
-    }
-    else
-    {
-        g.stats_components[actor].cur_hp -= damage;
-    }
-    
-    return damage;
 }
 
 bool_t actions_system_try_open(entity_id_t actor, entity_id_t feature)

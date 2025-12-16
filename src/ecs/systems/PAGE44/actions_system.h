@@ -36,7 +36,6 @@ bool_t actions_system_try_eat(entity_id_t creature, entity_id_t item);
 
 bool_t actions_system_try_open(entity_id_t creature, entity_id_t feature);
 bool_t actions_system_try_close(entity_id_t creature, entity_id_t feature);
-int8_t actions_system_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type);
-bool_t actions_system_try_die(entity_id_t creature);
+
 
 #endif // ACTIONS_SYSTEM_H

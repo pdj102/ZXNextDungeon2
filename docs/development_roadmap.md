@@ -346,8 +346,6 @@
 
 ---
 
-
-
 ### 🪜 **Milestone 204 — Armour**
 
 > *Goal: Player can equip armour*

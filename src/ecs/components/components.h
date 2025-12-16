@@ -34,8 +34,8 @@ void components_init(void);
 
 /* attack */
 void comp_attack_init(void);
-void comp_melee_add(entity_id_t entity, attack_comp_t *melee_p);
-void comp_ranged_add(entity_id_t entity, attack_comp_t *attack_p);
+void comp_melee_add(entity_id_t entity, attack_comp_t melee_p);
+void comp_ranged_add(entity_id_t entity, attack_comp_t attack_p);
 void comp_melee_remove(entity_id_t entity);
 void comp_ranged_remove(entity_id_t entity);
 
@@ -51,7 +51,7 @@ void comp_container_remove(entity_id_t entity);
 
 /* creature */
 void comp_creature_init(void);
-void comp_creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge);
+void comp_creature_add(entity_id_t entity, creature_kind_t kind);
 void comp_creature_remove(entity_id_t entity);
 
 /* equippable */

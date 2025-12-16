@@ -53,9 +53,20 @@ void player_system_update(void)
     uint8_t entity = g.player.id;
     int key;
 
+    if (entity == ENTITY_ID_INVALID)
+    {
+        return;
+    }
+
     util_assert(entity != ENTITY_ID_INVALID);
-    util_assert(entity_has_component(entity, COMPONENT_PLAYER));
+    util_assert(entity_has_component(entity, COMPONENT_PLAYER | COMPONENT_CREATURE | COMPONENT_TIMER));
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
+
+    /* Check player is not dead */
+    if (g.creature_components[entity].status != CREATURE_STATUS_ALIVE)
+    {
+        return;
+    }
 
     /* Check if player's turn*/
     if (system_timer_has_fired(entity) == 0)
@@ -131,7 +142,7 @@ void melee_attack(void)
     {
         if (entity_has_component(target, COMPONENT_CREATURE))
         {
-            system_actions_try_melee_attack(g.player.id, target);
+            system_combat_try_melee_attack(g.player.id, target);
             return;
         }
         target = g.location_components[target].next_in_location;

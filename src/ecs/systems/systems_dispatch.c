@@ -19,6 +19,8 @@
 #include "ecs/systems/PAGE46/player_system.h"
 #include "ecs/systems/PAGE48/equipment_system.h"
 #include "ecs/systems/PAGE52/movement_system.h"
+#include "ecs/systems/PAGE54/combat_system.h"
+#include "ecs/systems/PAGE56/damage_system.h"
 
 /***************************************************
  * private defines
@@ -46,7 +48,8 @@
     system_item_init();
     system_timer_init();
     system_container_init();
-    system_combat();
+    system_combat_init();
+    system_damage_init();
     system_event_init();
     system_actions_init();
     system_player_init();
@@ -113,36 +116,6 @@ bool_t system_actions_try_close(entity_id_t creature, entity_id_t feature)
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
     status = actions_system_try_close(creature, feature);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
-
-int8_t system_actions_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_take_damage(creature, damage, type);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return status;
-}
-
-bool_t system_actions_try_die(entity_id_t creature)
-{
-    uint8_t current_bank;
-    bool_t status;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    status = actions_system_try_die(creature);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
@@ -312,6 +285,42 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
     ZXN_WRITE_MMU6(PAGE_COMBAT_SYSTEM);
 
     status = combat_system_try_melee_attack(creature, target);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return status;
+}
+
+/* Damage System*/
+ void system_damage_init(void)
+ {
+
+ }
+
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
+
+    status = damage_system_try_take_damage(creature, damage, type);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return status;
+}
+
+bool_t system_damage_try_die(entity_id_t creature)
+{
+    uint8_t current_bank;
+    bool_t status;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
+
+    status = damage_system_try_die(creature);
 
     ZXN_WRITE_MMU6(current_bank);
 

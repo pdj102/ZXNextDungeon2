@@ -66,10 +66,15 @@ typedef enum creature_kind_e {
     CREATURE_KIND_COUNT
 } creature_kind_t;
 
+typedef enum creature_status_e {
+    CREATURE_STATUS_NONE,
+    CREATURE_STATUS_ALIVE,
+    CREATURE_STATUS_DEAD
+} creature_status_t;
 
 typedef struct {
     creature_kind_t kind;   /* index into creature_comp_bases[] */
-    uint8_t challenge;      /* challenge rating */
+    creature_status_t status;      
 } creature_comp_t;
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; 
@@ -79,7 +84,7 @@ typedef creature_comp_t creature_components_t[MAX_ENTITIES];
  ***************************************************/
 void creature_init(void);
 
-uint8_t creature_add(entity_id_t entity, creature_kind_t kind, uint8_t challenge);
+uint8_t creature_add(entity_id_t entity, creature_kind_t kind);
 
 void creature_remove(entity_id_t entity);
 

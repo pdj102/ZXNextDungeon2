@@ -30,30 +30,30 @@ void attack_init(void)
 
 }
 
-void melee_add(entity_id_t entity, attack_comp_t *attack_p)
+void melee_add(entity_id_t entity, attack_comp_t attack_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_MELEE)); 
 
-    g.melee_components[entity].damage_type = attack_p->damage_type;
-    g.melee_components[entity].damage_roll = attack_p->damage_roll;
-    g.melee_components[entity].damage_mod = attack_p->damage_mod;
-    g.melee_components[entity].hit_mod = attack_p->hit_mod;
+    g.melee_components[entity].damage_type = attack_p.damage_type;
+    g.melee_components[entity].damage_roll = attack_p.damage_roll;
+    g.melee_components[entity].damage_mod = attack_p.damage_mod;
+    g.melee_components[entity].hit_mod = attack_p.hit_mod;
     g.melee_components[entity].range = 1;
 
     entity_set_component(entity, COMPONENT_MELEE); 
 }
 
-void ranged_add(entity_id_t entity, attack_comp_t *attack_p)
+void ranged_add(entity_id_t entity, attack_comp_t attack_p)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_RANGED)); 
 
-    g.melee_components[entity].damage_type = attack_p->damage_type;
-    g.melee_components[entity].damage_roll = attack_p->damage_roll;
-    g.melee_components[entity].damage_mod = attack_p->damage_mod;
-    g.melee_components[entity].hit_mod = attack_p->hit_mod;
-    g.melee_components[entity].range = attack_p->range;
+    g.melee_components[entity].damage_type = attack_p.damage_type;
+    g.melee_components[entity].damage_roll = attack_p.damage_roll;
+    g.melee_components[entity].damage_mod = attack_p.damage_mod;
+    g.melee_components[entity].hit_mod = attack_p.hit_mod;
+    g.melee_components[entity].range = attack_p.range;
 
     entity_set_component(entity, COMPONENT_RANGED); 
 }

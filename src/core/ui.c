@@ -39,7 +39,7 @@
 
  void ui_on_event(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
  {
-    text_printf(&g.msg_win, "Event:%u src:%u tgt:%u val:%u\n", type, src, tgt, val);
+    // text_printf(&g.msg_win, "Event:%u src:%u tgt:%u val:%u\n", type, src, tgt, val);
 
     switch( type )
     {
