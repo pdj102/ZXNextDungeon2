@@ -39,7 +39,7 @@ void melee_add(entity_id_t entity, attack_comp_t attack_p)
     g.melee_components[entity].damage_roll = attack_p.damage_roll;
     g.melee_components[entity].damage_mod = attack_p.damage_mod;
     g.melee_components[entity].hit_mod = attack_p.hit_mod;
-    g.melee_components[entity].range = 1;
+    g.melee_components[entity].range = attack_p.range;
 
     entity_set_component(entity, COMPONENT_MELEE); 
 }

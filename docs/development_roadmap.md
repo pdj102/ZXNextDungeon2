@@ -266,20 +266,18 @@
 
 > *Goal: Entities can melee combat*
 
-* [ ] Implement melee weapon equipment - dagger & sword
-* [ ] Implement `melee` component
-* [ ] Implement default melee attack component for creatures
-* [ ] Implement `combat system`
-* [ ] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
-* [ ] Implement `calc_attack_roll` - calculate attack roll for melee attack
-* [ ] Support player attack roll - attack modifier = ability modifier + proficiency_bonus + weapon to hit bonus (if applicable) + other effects
-* [ ] Support monster attack roll - attack modifier is precalculated in `melee`
-* [ ] Implement `calc_damage_roll` - calculate damage roll for melee attack
-* [ ] Support player damage roll - base damage dice (weapon or `melee`) + ability modifier + weapon to damage bonus (if applicable) + other effects
-* [ ] Support monsters - attack modifier is precalculated in `melee`
-* [ ] Implement `EVENT_ATTACKED` - support both hit and miss
+* [✅] Implement melee weapon equipment - dagger & sword
+* [✅] Implement `melee` component
+* [✅] Implement default melee attack component for creatures
+* [✅] Implement `combat system`
+* [✅] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
+* [✅] Implement `roll_melee_attack` - calculate attack roll for melee attack
+* [✅] Support attack rolls by player, with or without melee weapon, and basic attack rolls (monster, trap etc)
+* [✅] Implement `roll_melee_damage` - calculate damage roll for melee attack
+* [✅] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc) 
+* [✅] Implement `EVENT_ATTACKED` - support both hit and miss
 
-[ ] *End result: Player can equip and attack with melee weapon
+[✅] *End result: Player can equip and attack with melee weapon
 
 ---
 

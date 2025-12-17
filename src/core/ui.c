@@ -13,7 +13,9 @@
 
 #include "ecs/systems/systems_dispatch.h"
 
+#include "game/game.h"
 #include "game/global_state.h"
+
 #include "core/text.h"
 
 /***************************************************
@@ -48,10 +50,15 @@
         case EVENT_ATTACKED:
             system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
 
-            if (val == 1)
+            if (val == ATTACK_CRITICAL)
+            {
+                text_printf(&g.msg_win, " critically attacked ");
+            } 
+            else if (val == ATTACK_HIT)
             {
                 text_printf(&g.msg_win, " attacked ");
-            } else
+            }
+            else if (val == ATTACK_MISS)
             {
                 text_printf(&g.msg_win, " missed ");    
             }

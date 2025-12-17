@@ -70,6 +70,12 @@ typedef enum creature_speed_e {
     SPEED_COUNT
 } speed_t;
 
+typedef enum {
+    ATTACK_MISS,
+    ATTACK_HIT,
+    ATTACK_CRITICAL
+} attack_result_t;
+
 /***************************************************
  * public variables
  ***************************************************/

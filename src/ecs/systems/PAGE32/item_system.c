@@ -58,6 +58,29 @@ const char *name_base[ITEM_KIND_COUNT] =
     [ITEM_KEY] = "key"
 };
 
+const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
+{
+    [ITEM_NONE] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* Melee weapons */
+    [ITEM_CLUB] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D6, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    /* Ranged weapons*/
+    /* Armour */    
+    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* Shields */
+    [ITEM_SHIELD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* Ammo */
+    /* Potions */    
+    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    /* Scrolls */
+    /* Food and drink */
+    /* Wearable */
+    /* Wands */
+    /* Light sources */
+    /* Keys */
+    [ITEM_KEY] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+};
+
 const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_NONE] = { .tile = {' ', 0}},
     /* Melee weapons */
@@ -104,7 +127,11 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     /* Add renderable component  */
     comp_renderable_add(id, renderable_base[kind].tile);
 
-    /* TODO add melee component for melee weapons */
+    /* If item has a melee attack and melee component e.g. swords*/
+    if (melee_base[kind].attack_type == ATTACK_MELEE)
+    {
+        comp_melee_add(id, melee_base[kind]);
+    }
 
     return id;
 }

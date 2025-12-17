@@ -44,10 +44,10 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 
 /* Monster default melee attack*/
  const attack_comp_t monster_melee_base[CREATURE_KIND_COUNT] = {
-    [CREATURE_NONE] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_NONE] = {.attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.damage_roll = DICE_1D4, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
+    [CREATURE_RAT] = {.attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -56,21 +56,21 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
-    [CREATURE_PLAYER] = { .damage_roll = DICE_1D8, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_COMMONER] = {.attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    [CREATURE_PLAYER] = {.attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.damage_roll = DICE_1D4, .damage_type = DAMAGE_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
     /* MONSTER_CLASS_UNDEAD */    
 };
 
 /* Monster default ranged attack*/
  const attack_comp_t monster_ranged_base[CREATURE_KIND_COUNT] = {
-    [CREATURE_NONE] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_NONE] = {.attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_RAT] = {.attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -79,12 +79,12 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    [CREATURE_PLAYER] = { .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_COMMONER] = {.attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_UNDEAD */    
 };
 
@@ -186,13 +186,13 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     comp_stats_add(id, &monster_stats_base[kind]);
 
     /* If monster has melee attack add */
-    if (monster_melee_base[kind].damage_type != DAMAGE_NONE)
+    if (monster_melee_base[kind].attack_type == ATTACK_MELEE)
     {
         comp_melee_add(id, monster_melee_base[kind]);
     }
 
-    /* If monster has melee attack add */
-    if (monster_ranged_base[kind].damage_type != DAMAGE_NONE)
+    /* If monster has ranged attack add */
+    if (monster_ranged_base[kind].damage_type == ATTACK_RANGED)
     {
         comp_ranged_add(id, monster_ranged_base[kind]);
     }

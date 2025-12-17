@@ -16,6 +16,7 @@
 
 #include "ecs/systems/systems_dispatch.h"
 
+#include "game/game.h"
 #include "game/global_state.h"
 #include "game/map_terrain.h"
 
@@ -26,13 +27,6 @@ typedef struct {
     int8_t d20;      /* raw d20 roll (1–20) */
     int8_t total;    /* d20 + all modifiers */
 } attack_roll_t;
-
-typedef enum {
-    ATTACK_MISS,
-    ATTACK_HIT,
-    ATTACK_CRITICAL
-} attack_result_t;
-
 
 /***************************************************
  * private function prototypes
