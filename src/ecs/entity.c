@@ -69,7 +69,7 @@ entity_id_t entity_create(void)
 
 bool_t entity_has_component(entity_id_t id, uint16_t comp_mask)
 {
-    if (id >= MAX_ENTITIES)
+    if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
     {
         return 0; /* invalid ID */
     }
@@ -79,7 +79,7 @@ bool_t entity_has_component(entity_id_t id, uint16_t comp_mask)
 
 void entity_set_component(entity_id_t id, uint16_t comp_mask)
 {
-    if (id >= MAX_ENTITIES)
+    if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
     {
         return; /* invalid ID */
     }
