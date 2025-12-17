@@ -73,7 +73,7 @@ const ticks_t speed_to_ticks_table[SPEED_COUNT] = {
    [SPEED_60FT] = 4
 };
 
-const int8_t modifiers[] = { -4, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
+const int8_t modifiers[] = { -5, -4, -4, -3, -3, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10}; 
 
 /***************************************************
  * private function prototypes
@@ -92,12 +92,14 @@ uint8_t game_roll_dice(dice_roll_t dice)
 {
     uint8_t roll = 0;
 
-    text_printf(&g.msg_win, "Roll:%uD%u+%u\n", dice_roll[dice].n, dice_roll[dice].d, dice_roll[dice].mod);
+    text_printf(&g.msg_win, "Roll:%uD%u+%u", dice_roll[dice].n, dice_roll[dice].d, dice_roll[dice].mod);
     for (uint8_t i = 0; i < dice_roll[dice].n; i++)
     {
         roll += 1 + rand() % dice_roll[dice].d;
     }
     roll += dice_roll[dice].mod;
+
+    text_printf(&g.msg_win, "=%d\n", roll);
 
     return roll;
 }

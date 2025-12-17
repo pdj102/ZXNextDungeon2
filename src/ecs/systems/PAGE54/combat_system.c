@@ -42,7 +42,7 @@ static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_criti
 
 static bool_t wielding_melee_weapon(entity_id_t actor);
 static entity_id_t get_melee_source(entity_id_t attacker);
-static int8_t roll_damage_dice(dice_roll_t dice, bool_t crit);
+static uint8_t roll_damage_dice(dice_roll_t dice, bool_t crit);
 
 
 /***************************************************
@@ -56,7 +56,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     attack_roll_t attack_roll;
     damage_type_t damage_type;
-    int8_t damage_roll;
+    uint8_t damage_roll;
 
     /* attacker must have melee_attack and location component */
     if (!entity_has_component(attacker, COMPONENT_MELEE | COMPONENT_LOCATION ))
@@ -233,7 +233,7 @@ static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target)
 static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
 {
     int8_t damage;
-
+    
     if (entity_has_component(attacker, COMPONENT_PLAYER))
     {
         damage = calc_player_melee_damage_roll(attacker, is_critical);
@@ -248,7 +248,7 @@ static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
         return 0;
     }
 
-    return damage < 0 ? 0 : damage;
+    return damage < 0 ? 0 : damage ;
 }
 
 
@@ -272,11 +272,19 @@ static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_criti
     if (wielding_melee_weapon(attacker))
     {
         /* TODO: If using a finesse weapon use DEX mod if greater than STR mod */
-        ability_mod = modifiers[g.stats_components[attacker].str];        
+        // ability_mod = modifiers[g.stats_components[attacker].str];        
     }
 
     /* TODO: calculate other effects (buffs, rage etc)*/
     /* other_mods = effects_damage_bonus(attacker); */
+
+
+    /*
+    text_printf(&g.msg_win, "Dice roll:%d", dice_roll);
+    text_printf(&g.msg_win, "Bonus:%d", dice_roll);
+    text_printf(&g.msg_win, "Ability mod:%d", ability_mod);
+    text_printf(&g.msg_win, "Other mods:%d", other_mods);
+    */
 
     return dice_roll + bonus + ability_mod + other_mods;
 }
@@ -335,9 +343,9 @@ static entity_id_t get_melee_source(entity_id_t attacker)
 /*
  * @brief rolls a damage die and optionally doubles it for critical
  */
-static int8_t roll_damage_dice(dice_roll_t dice, bool_t crit)
+static uint8_t roll_damage_dice(dice_roll_t dice, bool_t crit)
 {
-    int8_t r = game_roll_dice(dice);
+    uint8_t r = game_roll_dice(dice);
     if (crit)
         r += game_roll_dice(dice);
     return r;

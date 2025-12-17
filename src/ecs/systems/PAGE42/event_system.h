@@ -25,7 +25,6 @@
 typedef enum {
     EVENT_NONE,
     EVENT_ATTACKED,
-    EVENT_ATTACKED_MISSED,
     EVENT_BUMPED,
     EVENT_STOOD_ON,
     EVENT_DIED,
@@ -33,6 +32,7 @@ typedef enum {
     EVENT_DROPPED,
     EVENT_EQUIPPED,
     EVENT_UNEQUIPPED,
+    EVENT_DAMAGED,
     EVENT_COUNT
 } event_type_t;
 

@@ -183,7 +183,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     comp_creature_add(id, kind);
 
     /* Add stat block */
-    comp_stats_add(id, &monster_stats_base[kind]);
+    comp_stats_add(id, monster_stats_base[kind]);
 
     /* If monster has melee attack add */
     if (monster_melee_base[kind].attack_type == ATTACK_MELEE)

@@ -92,7 +92,7 @@ void comp_slots_remove(entity_id_t entity);
 
 /* stats */
 void comp_stats_init(void);
-void comp_stats_add(entity_id_t entity, stats_comp_t *stats_p);
+void comp_stats_add(entity_id_t entity, stats_comp_t stats_p);
 void comp_stats_remove(entity_id_t entity);
 
 /* timer */

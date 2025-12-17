@@ -509,7 +509,7 @@ void comp_stats_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */ 
 }
 
-void comp_stats_add(entity_id_t entity, stats_comp_t *stats_p)
+void comp_stats_add(entity_id_t entity, stats_comp_t stats_p)
 {
     uint8_t current_bank;
 

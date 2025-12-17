@@ -86,7 +86,7 @@
             {
                 text_printf(&g.msg_win, "Unable to equip ");
                 system_item_print_name(&g.msg_win, g.item_components[tgt].kind);
-                text_print_string(&g.msg_win, "\n");    
+                text_print_string(&g.msg_win, "\n");
             }
             break;
         case EVENT_UNEQUIPPED:
@@ -108,7 +108,11 @@
             text_printf(&g.msg_win, " picked up ");
             system_item_print_name(&g.msg_win, g.item_components[tgt].kind);
             text_print_string(&g.msg_win, "\n");
-            break;            
+            break;
+        case EVENT_DAMAGED:
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
+            text_printf(&g.msg_win, " takes %d damage\n", val);
+            break;
         default:
             break;
     }
