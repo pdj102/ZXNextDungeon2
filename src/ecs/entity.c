@@ -67,7 +67,7 @@ entity_id_t entity_create(void)
     return ENTITY_ID_INVALID;
 }
 
-bool_t entity_has_components(entity_id_t id, uint16_t comp_mask)
+bool_t entity_has_components(entity_id_t id, uint32_t comp_mask)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
     {
@@ -75,10 +75,9 @@ bool_t entity_has_components(entity_id_t id, uint16_t comp_mask)
     }
 
     return (g.entity_components.entities[id].mask & comp_mask) == comp_mask;
-    // return (g.entity_components.entities[id].mask & comp_mask) != 0;
 }
 
-void entity_set_component(entity_id_t id, uint16_t comp_mask)
+void entity_set_component(entity_id_t id, uint32_t comp_mask)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
     {
@@ -88,7 +87,7 @@ void entity_set_component(entity_id_t id, uint16_t comp_mask)
     g.entity_components.entities[id].mask |= comp_mask;
 }
 
-void entity_clear_component(entity_id_t id, uint16_t comp_mask)
+void entity_clear_component(entity_id_t id, uint32_t comp_mask)
 {
     if (id >= MAX_ENTITIES)
     {
@@ -141,7 +140,7 @@ void entity_mark_for_destruction(entity_id_t id)
 /*
  * @brief Destroy all entities marked for destruction
  */
-void entity_cleanup() 
+void entity_cleanup(void) 
 {
     for (uint8_t i = 0; i < g.entity_components.destroy_head; i++)
     {

@@ -28,7 +28,7 @@
 
  /* Entity structure */
 typedef struct { 
-    uint16_t mask; /* component mask */
+    uint32_t mask; /* component mask */
     uint8_t flags; /* entity flags */
 } entity_t;
 
