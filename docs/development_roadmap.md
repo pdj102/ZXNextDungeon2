@@ -206,7 +206,7 @@
 
 [ ] *End result: Entities like monsters, doors, and traps can be destructable*
 
-[ ] *End result: Unlocked doors open if you walk into them*
+---
 
 ### 🪜 **Milestone 116 — Melee combat system**
 
@@ -264,10 +264,10 @@
 
 * [✅] Implement `Stats` component
 * [✅] Implement `Stats_system`
-* [✅] Implement functions to obtain stats from component
-* [✅] Update functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
+* [ ] Implement functions to obtain stats from component
+* [ ] Update functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 
-[✅] *End result: Stats takes active effects into account.*
+[🚧] *End result: Stats takes active effects into account.*
 
 ---
 
@@ -358,6 +358,8 @@
 * [ ] Remove steppable components on entity destroy
 
 [ ] *End result: Traps react to being stood on*
+
+---
 
 ### 🪜 **Milestone 126 — Implement bumpable entities**
 

@@ -74,7 +74,8 @@ bool_t entity_has_component(entity_id_t id, uint16_t comp_mask)
         return 0; /* invalid ID */
     }
 
-    return (g.entity_components.entities[id].mask & comp_mask) != 0;
+    return (g.entity_components.entities[id].mask & comp_mask) == comp_mask;
+    // return (g.entity_components.entities[id].mask & comp_mask) != 0;
 }
 
 void entity_set_component(entity_id_t id, uint16_t comp_mask)

@@ -113,6 +113,18 @@
             system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
             text_printf(&g.msg_win, " takes %d damage\n", val);
             break;
+        case EVENT_DAMAGED_IMMUNE:
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
+            text_printf(&g.msg_win, " is immune!\n");
+            break;
+        case EVENT_DAMAGED_RESIST:
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
+            text_printf(&g.msg_win, "resists and takes %d damage\n");
+            break;
+        case EVENT_DAMAGED_VULNERABLE:
+            system_monster_print_name(&g.msg_win, g.creature_components[src].kind);
+            text_printf(&g.msg_win, "is vulnerable and takes %d damage\n");
+            break;            
         default:
             break;
     }
