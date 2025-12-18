@@ -35,6 +35,7 @@
 #define COMPONENT_SLOTS 1 << 13
 #define COMPONENT_EQUIPPED 1 << 14
 #define COMPONENT_DESTRUCTABLE 1 << 15
+#define COMPONENT_EFFECT 1 << 16
 
 #define FLAG_NONE 0
 #define FLAG_IN_USE 1 << 0

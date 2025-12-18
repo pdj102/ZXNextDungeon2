@@ -261,9 +261,9 @@
 > *Goal: Entities can have stats e.g. STR, DEX etc.*
 
 * [✅] Implement `Stats` component
-* [ ] Implement `Stats_system`
-* [ ] Implement functions to obtain stats from component
-* [ ] Update functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
+* [🚧] Implement `Stats_system`
+* [🚧] Implement functions to obtain stats from component
+* [ ] Functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 
 [🚧] *End result: Stats takes active effects into account.*
 
@@ -315,11 +315,11 @@
 
 > *Goal: entities can have instant effects.*
 
-* [ ] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
-* [ ] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
+* [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
+* [✅] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
 * [ ] Implment `effect_system`
 * [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
-* [ ] Implement  `apply_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
+* [ ] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
 * [ ] Add message log system for food `effect` events e.g. "You feel better"
 
 [ ] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
@@ -335,9 +335,8 @@
 * [ ] Implement `status_flags_t` flags e.g. poisoned
 * [ ] Extend `effect type` enum with effect_apply_status, effect_cure_status, effect_stat_mod
 * [ ] Place active effects in system banked memory as only ever access via system
-* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
-* [ ] Extend `apply_effect` to handle permanent active effects and apply them to the actor
-* [ ] Extend `effect_system` to handle duration active effects. Remove effects when duration expires
+* [ ] Extend `apply_effects_by_source` to handle applying active effects to the actor
+* [ ] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
 * [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
 
 [ ] *End result: stats and status are affected by active effect.*

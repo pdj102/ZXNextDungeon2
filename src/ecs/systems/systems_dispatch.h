@@ -71,6 +71,10 @@ void system_item_init(void);
 entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
 void system_item_print_name(text_window_t *win, item_kind_t kind);
 
+/* Effect system */
+void system_effect_init(void);
+void system_effect_apply_effects_by_source(entity_id_t target, entity_id_t source, effect_trigger_t trigger);
+
 /* Event System */
 void system_event_init(void);
 void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
@@ -89,6 +93,7 @@ entity_id_t system_monster_create_player( void );
 void system_monster_print_name(text_window_t *win, creature_kind_t kind);
 
 /* Movement system */
+void system_movement_init(void);
 bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
 bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
 
@@ -97,6 +102,7 @@ void system_player_init(void);
 void system_player_update(void);
 
 /* Stats system */
+void system_stats_init(void);
 uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat);
 int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat);
 speed_t system_stats_get_speed(entity_id_t actor);

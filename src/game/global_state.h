@@ -22,6 +22,7 @@
 #include "ecs/components/PAGE50/player_comp.h"
 #include "ecs/components/PAGE50/timer_comp.h"
 #include "ecs/components/PAGE50/destructable_comp.h"
+#include "ecs/components/PAGE50/effect_comp.h"
 
 #include "game/map_priv.h"
 
@@ -54,6 +55,7 @@ typedef struct
     slots_t slots;
     timer_components_t timer_components; 
     destructable_components_t destructable_components;
+    effect_components_t effect_components;
 
     /* World */
     map_t map; /* the map */

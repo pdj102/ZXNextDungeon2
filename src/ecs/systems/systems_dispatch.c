@@ -22,6 +22,7 @@
 #include "ecs/systems/PAGE54/combat_system.h"
 #include "ecs/systems/PAGE56/damage_system.h"
 #include "ecs/systems/PAGE58/stats_system.h"
+#include "ecs/systems/PAGE60/effect_system.h"
 
 /***************************************************
  * private defines
@@ -55,6 +56,11 @@
     system_actions_init();
     system_player_init();
     system_equipment_init();
+    system_movement_init();
+    system_combat_init();
+    system_damage_init();
+    system_stats_init();
+    system_effect_init();
  }
 
  /* Actions system*/
@@ -328,6 +334,24 @@ bool_t system_damage_try_die(entity_id_t creature)
     return status;
 }
 
+/* Effect System */
+void system_effect_init(void)
+{
+
+}
+
+void system_effect_apply_effects_by_source(entity_id_t target, entity_id_t source, effect_trigger_t trigger)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM);
+
+    effect_system_apply_effects_by_source(target, source, trigger);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
 /* Equipment System */
  void system_equipment_init(void)
  {
@@ -431,6 +455,11 @@ void system_player_update(void)
 }
 
 /* Stats system */
+void system_stats_init(void)
+{
+
+}
+
 uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat)
 {
     uint8_t current_bank;
@@ -588,6 +617,11 @@ void system_monster_print_name(text_window_t *win, creature_kind_t kind)
 }
 
 /* Movement system */
+void system_movement_init(void)
+{
+
+}
+
 bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy)
 {
     uint8_t current_bank;
