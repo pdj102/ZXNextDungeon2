@@ -32,7 +32,7 @@ void equipped_init(void)
 uint8_t equipped_add(entity_id_t entity, entity_id_t equipped_by)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_EQUIPPED)); /* entity must not have equipped component */
+    util_assert(!entity_has_components(entity, COMPONENT_EQUIPPED)); /* entity must not have equipped component */
 
     g.equipped_components[entity].equipped_by = equipped_by; 
 

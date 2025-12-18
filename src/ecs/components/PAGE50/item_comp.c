@@ -38,7 +38,7 @@ void item_init(void)
 void item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_ITEM)); /* entity must not have item component */
+    util_assert(!entity_has_components(entity, COMPONENT_ITEM)); /* entity must not have item component */
     util_assert(kind < ITEM_KIND_COUNT);
     util_assert(quantity > 0);
 

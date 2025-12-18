@@ -30,7 +30,7 @@ void destructable_init(void)
 void destructable_add(entity_id_t entity, destructable_comp_t destructable_p)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_DESTRUCTABLE)); 
+    util_assert(!entity_has_components(entity, COMPONENT_DESTRUCTABLE)); 
 
     g.destructable_components[entity].ac = destructable_p.ac;
     g.destructable_components[entity].cur_hp = destructable_p.cur_hp;

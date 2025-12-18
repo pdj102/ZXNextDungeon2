@@ -47,7 +47,7 @@ void player_add(entity_id_t id)
 void player_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    if (!entity_has_component(entity, COMPONENT_PLAYER))
+    if (!entity_has_components(entity, COMPONENT_PLAYER))
     {
         return;
     }

@@ -34,7 +34,7 @@ void equippable_init(void)
 void equippable_add(entity_id_t entity, equippable_slot_t slot)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_EQUIPPABLE)); /* entity must not have equippable component */
+    util_assert(!entity_has_components(entity, COMPONENT_EQUIPPABLE)); /* entity must not have equippable component */
 
     g.equippable_components[entity].slot = slot; 
 

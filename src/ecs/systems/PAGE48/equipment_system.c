@@ -39,17 +39,17 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
     slot_t slot = SLOT_NONE;
 
     /* actor must have slots component */
-    if (!entity_has_component(actor, COMPONENT_SLOTS))
+    if (!entity_has_components(actor, COMPONENT_SLOTS))
     {
         return 0;
     }
     /* item must have equippable component */
-    if (!entity_has_component(item, COMPONENT_EQUIPPABLE))
+    if (!entity_has_components(item, COMPONENT_EQUIPPABLE))
     {
         return 0;
     }
     /* item must not already be equipped */
-    if (entity_has_component(item, COMPONENT_EQUIPPED))
+    if (entity_has_components(item, COMPONENT_EQUIPPED))
     {
         return 0;
     }
@@ -133,7 +133,7 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
 {
     /* actor must have slots component */
-    if (!entity_has_component(actor, COMPONENT_SLOTS))
+    if (!entity_has_components(actor, COMPONENT_SLOTS))
     {
         return 0;
     }
@@ -164,7 +164,7 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
 bool_t equipment_system_is_equipped(entity_id_t actor, entity_id_t item)
 {
     /* item must be equipped */
-    if (!entity_has_component(item, COMPONENT_EQUIPPED))
+    if (!entity_has_components(item, COMPONENT_EQUIPPED))
     {
         return 0;
     }
@@ -182,11 +182,11 @@ bool_t equipment_system_is_equipped(entity_id_t actor, entity_id_t item)
  */
 void equipment_system_clean_up(entity_id_t id)
 {
-    if (entity_has_component(id, COMPONENT_EQUIPPED))
+    if (entity_has_components(id, COMPONENT_EQUIPPED))
     {
         /* unequip */ 
     }
-    if (entity_has_component(id, COMPONENT_SLOTS))
+    if (entity_has_components(id, COMPONENT_SLOTS))
     {
         /* unequip all items and mark for destruction */
     }    

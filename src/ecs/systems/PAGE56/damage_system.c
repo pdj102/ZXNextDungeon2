@@ -30,7 +30,7 @@
  ***************************************************/
 bool_t damage_system_try_die(entity_id_t entity)
 {
-    if (!entity_has_component(entity, COMPONENT_DESTRUCTABLE))
+    if (!entity_has_components(entity, COMPONENT_DESTRUCTABLE))
     {
         return 0;
     }
@@ -48,7 +48,7 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
 {
     event_type_t event = EVENT_DAMAGED;
 
-    if (!entity_has_component(actor, COMPONENT_DESTRUCTABLE ))
+    if (!entity_has_components(actor, COMPONENT_DESTRUCTABLE ))
     {
         return 0;
     }

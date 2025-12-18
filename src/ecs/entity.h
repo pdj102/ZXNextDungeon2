@@ -55,7 +55,7 @@ void entity_init(void);
 
 entity_id_t entity_create(void);
 
-bool_t entity_has_component(entity_id_t id, uint16_t comp_mask);
+bool_t entity_has_components(entity_id_t id, uint16_t comp_mask);
 void entity_set_component(entity_id_t id, uint16_t comp_mask);
 void entity_clear_component(entity_id_t id, uint16_t comp_mask);
 

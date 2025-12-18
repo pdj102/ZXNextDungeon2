@@ -32,7 +32,7 @@ void creature_init(void)
 uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
+    util_assert(!entity_has_components(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
     g.creature_components[entity].kind = kind; 
     g.creature_components[entity].status = CREATURE_STATUS_ALIVE; 
@@ -45,7 +45,7 @@ uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 void creature_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    if (!entity_has_component(entity, COMPONENT_CREATURE))
+    if (!entity_has_components(entity, COMPONENT_CREATURE))
     {
         return;
     }

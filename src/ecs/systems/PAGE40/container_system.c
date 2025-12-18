@@ -42,12 +42,12 @@ void container_system_init(void)
 bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
 {  
     /* item to be picked up has item and location components */
-    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_LOCATION))
+    if (!entity_has_components(item, COMPONENT_ITEM | COMPONENT_LOCATION))
     {
         return 0;
     }
     /* actor has container, location and item components */
-    if (!entity_has_component(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
+    if (!entity_has_components(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
     {
         return 0;
     }    
@@ -76,12 +76,12 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
 bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
 {
     /* item to be droped has item and contained components */
-    if (!entity_has_component(item, COMPONENT_ITEM | COMPONENT_CONTAINED))
+    if (!entity_has_components(item, COMPONENT_ITEM | COMPONENT_CONTAINED))
     {
         return 0;
     }
     /* actor has container and location components */
-    if (!entity_has_component(actor, COMPONENT_CONTAINER | COMPONENT_LOCATION))
+    if (!entity_has_components(actor, COMPONENT_CONTAINER | COMPONENT_LOCATION))
     {
         return 0;
     }    
@@ -112,8 +112,8 @@ void container_system_add(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
-    util_assert(!entity_has_component(item, COMPONENT_CONTAINED)); /* must not already be contained */
-    util_assert(!entity_has_component(item, COMPONENT_LOCATION)); /* must not be placed on the map */
+    util_assert(!entity_has_components(item, COMPONENT_CONTAINED)); /* must not already be contained */
+    util_assert(!entity_has_components(item, COMPONENT_LOCATION)); /* must not be placed on the map */
 
     comp_contained_add(item);
 
@@ -128,8 +128,8 @@ void container_system_remove(entity_id_t container, entity_id_t item)
 {
     util_assert(item < MAX_ENTITIES);
     util_assert(container < MAX_ENTITIES);
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
-    util_assert(entity_has_component(item, COMPONENT_CONTAINED));
+    util_assert(entity_has_components(container, COMPONENT_CONTAINER));
+    util_assert(entity_has_components(item, COMPONENT_CONTAINED));
  
     entity_id_t current = g.container_components[container].head; /* start at the head of the list */
     entity_id_t prev = ENTITY_ID_INVALID; /* previous entity in the list */
@@ -159,7 +159,7 @@ void container_system_remove(entity_id_t container, entity_id_t item)
  */
 uint8_t container_system_count(entity_id_t container)
 {
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+    util_assert(entity_has_components(container, COMPONENT_CONTAINER));
 
     return g.container_components[container].count;
 }
@@ -171,7 +171,7 @@ uint8_t container_system_count(entity_id_t container)
  */
 entity_id_t container_system_get_first(entity_id_t container)
 {
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
+    util_assert(entity_has_components(container, COMPONENT_CONTAINER));
 
     return g.container_components[container].head;
 }
@@ -183,7 +183,7 @@ entity_id_t container_system_get_first(entity_id_t container)
  */
 entity_id_t container_system_get_next(entity_id_t entity)
 {
-    util_assert(entity_has_component(entity, COMPONENT_CONTAINED));
+    util_assert(entity_has_components(entity, COMPONENT_CONTAINED));
 
     return g.contained_components[entity].next;
 }
@@ -225,11 +225,11 @@ entity_id_t container_system_get_at(entity_id_t container, uint8_t index)
  */
 void container_system_clean_up(entity_id_t id)
 {
-    if (entity_has_component(id, COMPONENT_CONTAINED))
+    if (entity_has_components(id, COMPONENT_CONTAINED))
     {
         container_system_remove(g.contained_components[id].container, id);
     }
-    if (entity_has_component(id, COMPONENT_CONTAINER))
+    if (entity_has_components(id, COMPONENT_CONTAINER))
     {
         container_system_mark_contents_for_destruction(id);
     }

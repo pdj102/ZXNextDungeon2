@@ -67,7 +67,7 @@ entity_id_t entity_create(void)
     return ENTITY_ID_INVALID;
 }
 
-bool_t entity_has_component(entity_id_t id, uint16_t comp_mask)
+bool_t entity_has_components(entity_id_t id, uint16_t comp_mask)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
     {
@@ -166,43 +166,43 @@ void entity_destroy(entity_id_t id)
     text_printf(&g.msg_win, "Destroying entity %d\n",id);
 
     /* Clear all components associated with this entity */
-    if (entity_has_component(id, COMPONENT_CONTAINED)) {
+    if (entity_has_components(id, COMPONENT_CONTAINED)) {
         comp_contained_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_CONTAINER)) {
+    if (entity_has_components(id, COMPONENT_CONTAINER)) {
         comp_container_remove(id);
     } 
-    if (entity_has_component(id, COMPONENT_CREATURE)) {
+    if (entity_has_components(id, COMPONENT_CREATURE)) {
         comp_creature_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_ITEM)) {
+    if (entity_has_components(id, COMPONENT_ITEM)) {
         comp_item_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_LOCATION)) {
+    if (entity_has_components(id, COMPONENT_LOCATION)) {
         comp_location_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_PLAYER)) { 
+    if (entity_has_components(id, COMPONENT_PLAYER)) { 
         comp_player_remove(id);
     }    
-    if (entity_has_component(id, COMPONENT_RENDERABLE)) {
+    if (entity_has_components(id, COMPONENT_RENDERABLE)) {
         comp_renderable_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_TIMER)) {
+    if (entity_has_components(id, COMPONENT_TIMER)) {
         comp_timer_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_EQUIPPABLE)) {
+    if (entity_has_components(id, COMPONENT_EQUIPPABLE)) {
         comp_equippable_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_MELEE)) {
+    if (entity_has_components(id, COMPONENT_MELEE)) {
         comp_melee_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_RANGED)) {
+    if (entity_has_components(id, COMPONENT_RANGED)) {
         comp_ranged_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_SLOTS)) {
+    if (entity_has_components(id, COMPONENT_SLOTS)) {
         comp_slots_remove(id);
     }
-    if (entity_has_component(id, COMPONENT_EQUIPPED)) {
+    if (entity_has_components(id, COMPONENT_EQUIPPED)) {
         comp_equipped_remove(id);
     }
 
