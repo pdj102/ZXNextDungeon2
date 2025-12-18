@@ -59,7 +59,9 @@ void player_system_update(void)
     }
 
     util_assert(entity != ENTITY_ID_INVALID);
-    util_assert(entity_has_components(entity, COMPONENT_PLAYER | COMPONENT_CREATURE | COMPONENT_TIMER));
+    util_assert(entity_has_component(entity, COMPONENT_PLAYER));
+    util_assert(entity_has_component(entity, COMPONENT_CREATURE));
+    util_assert(entity_has_component(entity, COMPONENT_TIMER));
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check player is not dead */
@@ -140,7 +142,7 @@ static void melee_attack(void)
 
     while (target != ENTITY_ID_INVALID)
     {
-        if (entity_has_components(target, COMPONENT_DESTRUCTABLE))
+        if (entity_has_component(target, COMPONENT_DESTRUCTABLE))
         {
             system_combat_try_melee_attack(g.player.id, target);
             return;
@@ -193,7 +195,7 @@ static void pickup(void)
 
     while (item != ENTITY_ID_INVALID)
     {
-        if (entity_has_components(item, COMPONENT_ITEM))
+        if (entity_has_component(item, COMPONENT_ITEM))
         {
             system_container_try_pickup(g.player.id, item);
             return;

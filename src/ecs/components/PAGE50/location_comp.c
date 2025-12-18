@@ -37,8 +37,8 @@ void location_add(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert(entity < MAX_ENTITIES);
     util_assert(x < MAP_WIDTH);
     util_assert(y < MAP_HEIGHT);
-    util_assert(!entity_has_components(entity, COMPONENT_LOCATION));  /* entity must not already have a location component */
-    util_assert(!entity_has_components(entity, COMPONENT_CONTAINED)); /* entity must not be contained */
+    util_assert(!entity_has_component(entity, COMPONENT_LOCATION));  /* entity must not already have a location component */
+    util_assert(!entity_has_component(entity, COMPONENT_CONTAINED)); /* entity must not be contained */
 
     g.location_components[entity].x = x;
     g.location_components[entity].y = y;
@@ -53,7 +53,7 @@ void location_move(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert(entity < MAX_ENTITIES);
     util_assert(x < MAP_WIDTH);
     util_assert(y < MAP_WIDTH);
-    util_assert(entity_has_components(entity, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
 
     location_unlink(entity);
     g.location_components[entity].x = x;
@@ -65,8 +65,8 @@ bool_t location_equal(entity_id_t entity1, entity_id_t entity2)
 {
     util_assert(entity1 < MAX_ENTITIES);
     util_assert(entity2 < MAX_ENTITIES);
-    util_assert(entity_has_components(entity1, COMPONENT_LOCATION));
-    util_assert(entity_has_components(entity2, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
 
     if ((g.location_components[entity1].x == g.location_components[entity2].x) &&
         (g.location_components[entity1].y == g.location_components[entity2].y))
@@ -84,7 +84,7 @@ void location_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
 
-    if (!entity_has_components(entity, COMPONENT_LOCATION))
+    if (!entity_has_component(entity, COMPONENT_LOCATION))
     {
         return;
     }    

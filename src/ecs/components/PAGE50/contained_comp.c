@@ -38,8 +38,8 @@ void contained_init(void)
 void contained_add(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_components(entity, COMPONENT_CONTAINED)); /* entity must not have contained component */
-    util_assert(!entity_has_components(entity, COMPONENT_LOCATION)); /* entity must not have location component */
+    util_assert(!entity_has_component(entity, COMPONENT_CONTAINED)); /* entity must not have contained component */
+    util_assert(!entity_has_component(entity, COMPONENT_LOCATION)); /* entity must not have location component */
 
     entity_set_component(entity, COMPONENT_CONTAINED); /* set entity contained component mask */    
 }

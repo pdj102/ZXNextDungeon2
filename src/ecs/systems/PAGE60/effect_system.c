@@ -33,7 +33,7 @@ static void apply_instant_effect(entity_id_t target, entity_id_t source );
 void effect_system_apply_effects_by_source(entity_id_t target, entity_id_t source, effect_trigger_t trigger)
 {
 
-    if (!entity_has_components(source, COMPONENT_EFFECT))
+    if (!entity_has_component(source, COMPONENT_EFFECT))
     {
         return;
     }

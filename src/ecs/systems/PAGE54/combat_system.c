@@ -59,16 +59,24 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     uint8_t damage_roll;
 
     /* attacker must have melee_attack and location component */
-    if (!entity_has_components(attacker, COMPONENT_MELEE | COMPONENT_LOCATION ))
+    if (!entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
     {
         return 0;
     }
-
-    /* target must have stats and location component */
-    if (!entity_has_components(target, COMPONENT_DESTRUCTABLE | COMPONENT_LOCATION))
+    if (!entity_has_component(attacker, COMPONENT_LOCATION ))
     {
         return 0;
     }    
+
+    /* target must have stats and location component */
+    if (!entity_has_component(target, COMPONENT_DESTRUCTABLE))
+    {
+        return 0;
+    }
+    if (!entity_has_component(target, COMPONENT_LOCATION))
+    {
+        return 0;
+    }        
 
     /* TODO: check target within melee attack range */
 
@@ -126,11 +134,11 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
     int8_t bonus = 0;
 
     /* Step 1 – Determine attack bonus source */
-    if (entity_has_components(attacker, COMPONENT_PLAYER))
+    if (entity_has_component(attacker, COMPONENT_PLAYER))
     {
         bonus = calc_player_melee_attack_bonus(attacker);
     }
-    else if (entity_has_components(attacker, COMPONENT_MELEE))
+    else if (entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
     {
         bonus = calc_basic_melee_attack_bonus(attacker);
     }
@@ -166,7 +174,9 @@ static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
     int8_t other_mods = 0;
     entity_id_t melee_source = ENTITY_ID_INVALID;
 
-    util_assert(entity_has_components(attacker, COMPONENT_PLAYER | COMPONENT_MELEE | COMPONENT_STATS));
+    util_assert(entity_has_component(attacker, COMPONENT_PLAYER));
+    util_assert(entity_has_component(attacker, COMPONENT_MELEE_ATTACK));
+    util_assert(entity_has_component(attacker, COMPONENT_STATS));
 
     /* Determine melee source entity, attacker if unarmed / natural attack or weapon entity if a melee weapon is being wielded */
     melee_source = get_melee_source(attacker);
@@ -198,7 +208,7 @@ static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker)
     int8_t attack_bonus = 0;
     int8_t other_mods = 0;
 
-    util_assert(entity_has_components(attacker, COMPONENT_MELEE));
+    util_assert(entity_has_component(attacker, COMPONENT_MELEE_ATTACK));
 
     attack_bonus = g.melee_components[attacker].hit_mod;
     /* TODO: Other effects (buffs, conditions)
@@ -235,11 +245,11 @@ static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
 {
     int8_t damage;
     
-    if (entity_has_components(attacker, COMPONENT_PLAYER))
+    if (entity_has_component(attacker, COMPONENT_PLAYER))
     {
         damage = calc_player_melee_damage_roll(attacker, is_critical);
     }
-    else if (entity_has_components(attacker, COMPONENT_MELEE))
+    else if (entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
     {
         damage = calc_basic_melee_damage_roll(attacker, is_critical);
     }
@@ -316,10 +326,10 @@ static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_criti
  {
     entity_id_t weapon; 
 
-    if (entity_has_components(actor, COMPONENT_SLOTS))
+    if (entity_has_component(actor, COMPONENT_SLOTS))
     {
         weapon = g.slots[SLOT_HANDS];
-        return (weapon != ENTITY_ID_INVALID && entity_has_components(weapon, COMPONENT_MELEE));
+        return (weapon != ENTITY_ID_INVALID && entity_has_component(weapon, COMPONENT_MELEE_ATTACK));
     }
     return 0;
  }

@@ -19,17 +19,22 @@
 /***************************************************
  * private defines
  ***************************************************/
-
+#define COMPONENT_BYTES ((COMPONENT_MAX + 7) >> 3)
 
 
 /***************************************************
  * private types
  ***************************************************/
 
+typedef struct {
+    uint8_t mask[COMPONENT_BYTES];
+} component_mask_t;
+
+
  /* Entity structure */
 typedef struct { 
-    uint32_t mask; /* component mask */
-    uint8_t flags; /* entity flags */
+    component_mask_t components; /* component mask */
+    uint8_t flags;              /* entity flags */
 } entity_t;
 
 /* Entity arena structure - fast iterate */

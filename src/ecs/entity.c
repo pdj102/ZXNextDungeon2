@@ -23,11 +23,20 @@
 #include "ecs/systems/systems_dispatch.h"
 #include "core/text.h"
 
-
+/***************************************************
+ * private defines
+ ***************************************************/
+#define COMP_BYTE(c)   ((c) >> 3)     /* /8 */
+#define COMP_BIT(c)    (1u << ((c) & 7))
 
 /***************************************************
  * private variables
  ****************************************************/
+
+/***************************************************
+ * private function prototypes
+ ****************************************************/
+ static void clear_component_mask(entity_id_t id);
 
 /***************************************************
  * public functions
@@ -38,7 +47,7 @@ void entity_init(void)
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
         g.entity_components.entities[i].flags = FLAG_NONE; /* clear flags */
-        g.entity_components.entities[i].mask = COMPONENT_NONE;  /* clear component mask */
+        clear_component_mask(i);
     }
 
     g.entity_components.active_head = 0;
@@ -52,50 +61,50 @@ entity_id_t entity_create(void)
         return ENTITY_ID_INVALID;
     }
 
-    for(uint8_t i = 0; i < MAX_ENTITIES; i++)
+    for(uint8_t id = 0; id < MAX_ENTITIES; id++)
     {
-        if(!entity_has_flag(i, FLAG_IN_USE))
+        if(!entity_has_flag(id, FLAG_IN_USE))
         {
-            g.entity_components.entities[i].flags = FLAG_NONE | FLAG_IN_USE;        /* clear flags and set entity in use flag */
-            g.entity_components.entities[i].mask = COMPONENT_NONE;                  /* clear component mask */
+            g.entity_components.entities[id].flags = FLAG_NONE | FLAG_IN_USE;        /* clear flags and set entity in use flag */
+            clear_component_mask(id);
 
-            g.entity_components.active_list[g.entity_components.active_head++] = i;/* store in active list */
+            g.entity_components.active_list[g.entity_components.active_head++] = id; /* store in active list */
 
-            return i;
+            return id;
         }
     }
     return ENTITY_ID_INVALID;
 }
 
-bool_t entity_has_components(entity_id_t id, uint32_t comp_mask)
+bool_t entity_has_component(entity_id_t id, component_id_t comp)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
-    {
-        return 0; /* invalid ID */
-    }
+        return 0;
 
-    return (g.entity_components.entities[id].mask & comp_mask) == comp_mask;
+    return (g.entity_components.entities[id]
+                .components.mask[COMP_BYTE(comp)] & COMP_BIT(comp)) != 0;
 }
 
-void entity_set_component(entity_id_t id, uint32_t comp_mask)
+
+void entity_set_component(entity_id_t id, component_id_t comp)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
-    {
-        return; /* invalid ID */
-    }
+        return;
 
-    g.entity_components.entities[id].mask |= comp_mask;
+    g.entity_components.entities[id]
+        .components.mask[COMP_BYTE(comp)] |= COMP_BIT(comp);
 }
 
-void entity_clear_component(entity_id_t id, uint32_t comp_mask)
+
+void entity_clear_component(entity_id_t id, component_id_t comp)
 {
-    if (id >= MAX_ENTITIES)
-    {
-        return; /* invalid ID */
-    }
+    if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
+        return;
 
-    g.entity_components.entities[id].mask &= ~comp_mask;
+    g.entity_components.entities[id]
+        .components.mask[COMP_BYTE(comp)] &= (uint8_t)~COMP_BIT(comp);
 }
+
 
 bool_t entity_has_flag(entity_id_t id, uint8_t flag)
 {
@@ -165,49 +174,51 @@ void entity_destroy(entity_id_t id)
     text_printf(&g.msg_win, "Destroying entity %d\n",id);
 
     /* Clear all components associated with this entity */
-    if (entity_has_components(id, COMPONENT_CONTAINED)) {
+    if (entity_has_component(id, COMPONENT_CONTAINED)) {
         comp_contained_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_CONTAINER)) {
+    if (entity_has_component(id, COMPONENT_CONTAINER)) {
         comp_container_remove(id);
     } 
-    if (entity_has_components(id, COMPONENT_CREATURE)) {
+    if (entity_has_component(id, COMPONENT_CREATURE)) {
         comp_creature_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_ITEM)) {
+    if (entity_has_component(id, COMPONENT_ITEM)) {
         comp_item_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_LOCATION)) {
+    if (entity_has_component(id, COMPONENT_LOCATION)) {
         comp_location_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_PLAYER)) { 
+    if (entity_has_component(id, COMPONENT_PLAYER)) { 
         comp_player_remove(id);
     }    
-    if (entity_has_components(id, COMPONENT_RENDERABLE)) {
+    if (entity_has_component(id, COMPONENT_RENDERABLE)) {
         comp_renderable_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_TIMER)) {
+    if (entity_has_component(id, COMPONENT_TIMER)) {
         comp_timer_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_EQUIPPABLE)) {
+    if (entity_has_component(id, COMPONENT_EQUIPPABLE)) {
         comp_equippable_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_MELEE)) {
+    if (entity_has_component(id, COMPONENT_MELEE_ATTACK)) {
         comp_melee_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_RANGED)) {
+    if (entity_has_component(id, COMPONENT_RANGED_ATTACK)) {
         comp_ranged_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_SLOTS)) {
+    if (entity_has_component(id, COMPONENT_SLOTS)) {
         comp_slots_remove(id);
     }
-    if (entity_has_components(id, COMPONENT_EQUIPPED)) {
+    if (entity_has_component(id, COMPONENT_EQUIPPED)) {
         comp_equipped_remove(id);
     }
 
+    /* TODO remove other components*/
+
     /* mark entity as no longer active and free to use */
     g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
-    g.entity_components.entities[id].mask = COMPONENT_NONE;         /* clear component mask */
+    clear_component_mask(id);
 
     /* remove from active list */
     for (uint8_t i = 0; i < g.entity_components.active_head; i++)
@@ -223,3 +234,11 @@ void entity_destroy(entity_id_t id)
  /***************************************************
  * private functions
  ***************************************************/
+
+static void clear_component_mask(entity_id_t id)
+{
+    for (uint8_t i = 0; i < COMPONENT_BYTES; i++)
+    {
+        g.entity_components.entities[id].components.mask[i] = 0;
+    }
+}

@@ -47,7 +47,7 @@ void renderable_add(entity_id_t id, const zxnext_tile_t tile )
 void renderable_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    if (!entity_has_components(entity, COMPONENT_RENDERABLE))
+    if (!entity_has_component(entity, COMPONENT_RENDERABLE))
     {
         return;
     }

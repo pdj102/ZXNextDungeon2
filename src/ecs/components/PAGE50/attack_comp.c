@@ -33,7 +33,7 @@ void attack_init(void)
 void melee_add(entity_id_t entity, const attack_comp_t attack)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_components(entity, COMPONENT_MELEE)); 
+    util_assert(!entity_has_component(entity, COMPONENT_MELEE_ATTACK)); 
 
     g.melee_components[entity].damage_type = attack.damage_type;
     g.melee_components[entity].damage_roll = attack.damage_roll;
@@ -41,13 +41,13 @@ void melee_add(entity_id_t entity, const attack_comp_t attack)
     g.melee_components[entity].hit_mod = attack.hit_mod;
     g.melee_components[entity].range = attack.range;
 
-    entity_set_component(entity, COMPONENT_MELEE); 
+    entity_set_component(entity, COMPONENT_MELEE_ATTACK); 
 }
 
 void ranged_add(entity_id_t entity, const attack_comp_t attack)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_components(entity, COMPONENT_RANGED)); 
+    util_assert(!entity_has_component(entity, COMPONENT_RANGED_ATTACK)); 
 
     g.melee_components[entity].damage_type = attack.damage_type;
     g.melee_components[entity].damage_roll = attack.damage_roll;
@@ -55,19 +55,19 @@ void ranged_add(entity_id_t entity, const attack_comp_t attack)
     g.melee_components[entity].hit_mod = attack.hit_mod;
     g.melee_components[entity].range = attack.range;
 
-    entity_set_component(entity, COMPONENT_RANGED); 
+    entity_set_component(entity, COMPONENT_RANGED_ATTACK); 
 }
 
 void melee_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    entity_clear_component(entity, COMPONENT_MELEE); 
+    entity_clear_component(entity, COMPONENT_MELEE_ATTACK); 
 }
 
 void ranged_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    entity_clear_component(entity, COMPONENT_RANGED); 
+    entity_clear_component(entity, COMPONENT_RANGED_ATTACK); 
 }
 
  /***************************************************

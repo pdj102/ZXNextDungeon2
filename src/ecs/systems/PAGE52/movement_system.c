@@ -48,8 +48,8 @@ bool_t movement_system_location_equal(entity_id_t entity1, entity_id_t entity2)
 {
     util_assert(entity1 < MAX_ENTITIES);
     util_assert(entity2 < MAX_ENTITIES);
-    util_assert(entity_has_components(entity1, COMPONENT_LOCATION));
-    util_assert(entity_has_components(entity2, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
 
     if ((g.location_components[entity1].x == g.location_components[entity2].x) &&
         (g.location_components[entity1].y == g.location_components[entity2].y))

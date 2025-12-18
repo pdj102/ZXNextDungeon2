@@ -52,7 +52,7 @@ void timer_system_update(void)
 void timer_system_reset(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_components(entity, COMPONENT_TIMER)); /* entity must have timer component */
+    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
 
     g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
     g.timer_components.timers[entity].active = 1; 
@@ -66,7 +66,7 @@ void timer_system_reset(entity_id_t entity)
 static bool_t timer_system_tick(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(entity_has_components(entity, COMPONENT_TIMER)); /* entity must have timer component */
+    util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
     
     if ( g.timer_components.timers[entity].active == 0)
     {

@@ -37,7 +37,7 @@ uint8_t stats_system_get_stat(entity_id_t actor, stat_type_t stat)
 {
     int8_t value = 0;
 
-    util_assert(entity_has_components(actor, COMPONENT_STATS));
+    util_assert(entity_has_component(actor, COMPONENT_STATS));
 
     /* TODO Calculate the sum of active effects */
     /* val = sum */
