@@ -21,6 +21,7 @@
 #include "ecs/systems/PAGE52/movement_system.h"
 #include "ecs/systems/PAGE54/combat_system.h"
 #include "ecs/systems/PAGE56/damage_system.h"
+#include "ecs/systems/PAGE58/stats_system.h"
 
 /***************************************************
  * private defines
@@ -427,6 +428,53 @@ void system_player_update(void)
     player_system_update();
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
+/* Stats system */
+uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat)
+{
+    uint8_t current_bank;
+    uint8_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_stat(actor, stat);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat)
+{
+    uint8_t current_bank;
+    int8_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_stat_mod(actor, stat);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+
+}
+
+speed_t system_stats_get_speed(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_speed(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
 }
 
 /* Timer system*/

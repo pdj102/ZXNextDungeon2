@@ -53,6 +53,15 @@ int8_t stats_system_get_stat_mod(entity_id_t actor, stat_type_t stat)
     return modifiers[stats_system_get_stat(actor, stat)];
 }
 
+speed_t stats_system_get_speed(entity_id_t actor)
+{
+    /* TODO Calculate the sum of active effects */
+    /* TODO need to change to ticks?*/
+    /* val = sum */
+
+    return g.stats_components[actor].speed;
+}
+
 
  /***************************************************
  * private functions
