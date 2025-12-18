@@ -173,7 +173,8 @@ static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
 
     attack_bonus = g.melee_components[melee_source].hit_mod;
 
-    ability_mod = modifiers[g.stats_components[attacker].str];
+    // ability_mod = modifiers[g.stats_components[attacker].str];
+    ability_mod = system_stats_get_stat_mod(attacker, STAT_STR);
 
     if (wielding_melee_weapon(attacker))
     {
@@ -267,7 +268,8 @@ static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_criti
 
     bonus = g.melee_components[melee_source].damage_mod;
 
-    ability_mod = modifiers[g.stats_components[attacker].str];                
+    // ability_mod = modifiers[g.stats_components[attacker].str];  
+    ability_mod = system_stats_get_stat_mod(attacker, STAT_STR);              
 
     if (wielding_melee_weapon(attacker))
     {

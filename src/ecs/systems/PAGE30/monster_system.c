@@ -20,10 +20,10 @@
 
 const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 {
-    [CREATURE_NONE] = {.speed = SPEED_NONE, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0},
+    [CREATURE_NONE] = {.speed = SPEED_NONE, .stats = {0, 0, 0, 0, 0, 0}},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.speed = SPEED_30FT, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4},
+    [CREATURE_RAT] = {.speed = SPEED_30FT, .stats = {2, 11, 9, 2, 10, 4}},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -32,12 +32,12 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
-    [CREATURE_PLAYER] = {.speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
+    [CREATURE_COMMONER] = {.speed = SPEED_30FT, .stats = {10, 10, 10, 10, 10, 10 }},
+    [CREATURE_PLAYER] = {.speed = SPEED_30FT, .stats = {10, 10, 10, 10, 10, 10 }},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.speed = SPEED_5FT, .str = 3, .dex = 1, .con = 10, .inte = 1, .wis = 3, .cha = 1 }
+    [CREATURE_WITHERWEED] = {.speed = SPEED_5FT, .stats = {3, 1, 10, 1, 3, 1 }}
     /* MONSTER_CLASS_UNDEAD */    
 };
 

@@ -27,14 +27,8 @@
 /* Creature stats block */
 typedef struct {
     speed_t speed;
-    int8_t str;
-    int8_t dex;
-    int8_t con;
-    int8_t inte;
-    int8_t wis;
-    int8_t cha;
+    uint8_t stats[STAT_COUNT];
 } stats_comp_t;
-
 
 typedef stats_comp_t stats_components_t[MAX_ENTITIES]; 
 

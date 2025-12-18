@@ -83,6 +83,7 @@ typedef enum {
     ATTACK_MAGIC
 } attack_type_t;
 
+/* Damage type flags */
 #define DAMAGE_NONE 0
 #define DAMAGE_ACID 1 << 1
 #define DAMAGE_BLUDGEONING 1 << 2
@@ -94,6 +95,17 @@ typedef enum {
 #define DAMAGE_SLASHING 1 <<8
 
 typedef uint8_t damage_type_t;
+
+typedef enum {
+    STAT_NONE = 0,
+    STAT_STR,
+    STAT_DEX,
+    STAT_CON,
+    STAT_INT,
+    STAT_WIS,
+    STAT_CHA,
+    STAT_COUNT
+} stat_type_t;
 
 /***************************************************
  * public variables

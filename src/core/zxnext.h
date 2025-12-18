@@ -67,6 +67,7 @@
 #define PAGE_MOVEMENT_SYSTEM  52
 #define PAGE_COMBAT_SYSTEM    54
 #define PAGE_DAMAGE_SYSTEM    56
+#define PAGE_STATS_SYSTEM     58
 
 
 /***************************************************

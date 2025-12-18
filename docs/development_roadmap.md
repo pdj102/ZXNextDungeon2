@@ -247,14 +247,12 @@
 
 > *Goal: Objects can have damage immunities, resistances, and vulnerabilities*
 
-* [✅] Create an object with an immunity to a specific damage type
-* [ ] Create an object with an resistance to a specific damage type
-* [ ] Create an object with an vulnerability to a specific damage type
+* [✅] Create an object with an immunity / resistance / vulnerability to a specific damage type
 * [✅] Update `damage_system` to take imunities into account
 * [✅] Update `damage_system` to take resistances into account
 * [✅] Update `damage_system` to take vulnerabilities into account
 
-[ ] *End result: Damage calculation takes objects imunities, resistances and vulnerabilities into account.*
+[✅] *End result: Damage calculation takes objects imunities, resistances and vulnerabilities into account.*
 
 ---
 
@@ -263,7 +261,7 @@
 > *Goal: Entities can have stats e.g. STR, DEX etc.*
 
 * [✅] Implement `Stats` component
-* [✅] Implement `Stats_system`
+* [ ] Implement `Stats_system`
 * [ ] Implement functions to obtain stats from component
 * [ ] Update functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 

@@ -96,6 +96,11 @@ bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
 void system_player_init(void);
 void system_player_update(void);
 
+/* Stats system */
+uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat);
+int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat);
+speed_t system_stats_get_speed(entity_id_t actor);
+
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);

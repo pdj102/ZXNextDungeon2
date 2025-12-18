@@ -36,12 +36,12 @@ void stats_add(entity_id_t entity, const stats_comp_t stats)
     util_assert(!entity_has_components(entity, COMPONENT_STATS)); /* entity must not have creature component */
 
     g.stats_components[entity].speed = stats.speed;
-    g.stats_components[entity].str = stats.str;
-    g.stats_components[entity].dex = stats.dex;
-    g.stats_components[entity].con = stats.con;    
-    g.stats_components[entity].inte = stats.inte;
-    g.stats_components[entity].wis = stats.wis;
-    g.stats_components[entity].cha = stats.cha;
+    g.stats_components[entity].stats[STAT_STR] = stats.stats[STAT_STR];
+    g.stats_components[entity].stats[STAT_DEX] = stats.stats[STAT_DEX];
+    g.stats_components[entity].stats[STAT_CON] = stats.stats[STAT_CON];
+    g.stats_components[entity].stats[STAT_INT] = stats.stats[STAT_INT];
+    g.stats_components[entity].stats[STAT_WIS] = stats.stats[STAT_WIS];
+    g.stats_components[entity].stats[STAT_CHA] = stats.stats[STAT_CHA];
 
     entity_set_component(entity, COMPONENT_STATS); 
 }
