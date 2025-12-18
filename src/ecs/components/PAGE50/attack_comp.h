@@ -43,8 +43,8 @@ typedef attack_comp_t ranged_components_t[MAX_ENTITIES];
  ***************************************************/
 void attack_init(void);
 
-void melee_add(entity_id_t entity, attack_comp_t melee_p);
-void ranged_add(entity_id_t entity, attack_comp_t attack_p);
+void melee_add(entity_id_t entity, const attack_comp_t melee_p);
+void ranged_add(entity_id_t entity, const attack_comp_t attack_p);
 
 void melee_remove(entity_id_t entity);
 void ranged_remove(entity_id_t entity);

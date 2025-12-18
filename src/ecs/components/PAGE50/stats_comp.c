@@ -30,7 +30,7 @@ void stats_init(void)
     }
 }
 
-void stats_add(entity_id_t entity, stats_comp_t stats)
+void stats_add(entity_id_t entity, const stats_comp_t stats)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_components(entity, COMPONENT_STATS)); /* entity must not have creature component */

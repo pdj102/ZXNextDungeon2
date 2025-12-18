@@ -27,7 +27,7 @@ void destructable_init(void)
 
 }
 
-void destructable_add(entity_id_t entity, destructable_comp_t destructable)
+void destructable_add(entity_id_t entity, const destructable_comp_t destructable)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_components(entity, COMPONENT_DESTRUCTABLE)); 

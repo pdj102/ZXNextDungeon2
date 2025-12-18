@@ -35,8 +35,8 @@ void components_init(void);
 
 /* attack */
 void comp_attack_init(void);
-void comp_melee_add(entity_id_t entity, attack_comp_t melee_p);
-void comp_ranged_add(entity_id_t entity, attack_comp_t attack_p);
+void comp_melee_add(entity_id_t entity, const attack_comp_t melee_p);
+void comp_ranged_add(entity_id_t entity, const attack_comp_t attack_p);
 void comp_melee_remove(entity_id_t entity);
 void comp_ranged_remove(entity_id_t entity);
 
@@ -98,7 +98,7 @@ void comp_slots_remove(entity_id_t entity);
 
 /* stats */
 void comp_stats_init(void);
-void comp_stats_add(entity_id_t entity, stats_comp_t stats_p);
+void comp_stats_add(entity_id_t entity, const stats_comp_t stats_p);
 void comp_stats_remove(entity_id_t entity);
 
 /* timer */

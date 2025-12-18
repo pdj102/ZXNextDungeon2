@@ -42,7 +42,7 @@ typedef destructable_comp_t destructable_components_t[MAX_ENTITIES];
  ***************************************************/
 void destructable_init(void);
 
-void destructable_add(entity_id_t entity, destructable_comp_t destructable);
+void destructable_add(entity_id_t entity, const destructable_comp_t destructable);
 
 void destructable_remove(entity_id_t entity);
 
