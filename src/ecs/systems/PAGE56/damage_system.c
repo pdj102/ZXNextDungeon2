@@ -23,7 +23,9 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-
+static bool_t damage_type_immune(entity_id_t actor, damage_type_t type);
+static bool_t damage_type_resistant(entity_id_t actor, damage_type_t type);
+static bool_t damage_type_vulnerable(entity_id_t actor, damage_type_t type);
 
 /***************************************************
  * public functions
@@ -98,3 +100,18 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
  /***************************************************
  * private functions
  ***************************************************/
+
+static bool_t damage_type_immune(entity_id_t actor, damage_type_t type)
+{
+   return 0;
+}
+
+static bool_t damage_type_resistant(entity_id_t actor, damage_type_t type)
+{
+   return 0;
+}
+
+static bool_t damage_type_vulnerable(entity_id_t actor, damage_type_t type)
+{
+   return 0;
+}

@@ -47,7 +47,7 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
         return 0;
     }
     /* actor has container, location and item components */
-    if (!entity_has_components(item, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
+    if (!entity_has_components(actor, COMPONENT_CONTAINER | COMPONENT_LOCATION ))
     {
         return 0;
     }    
