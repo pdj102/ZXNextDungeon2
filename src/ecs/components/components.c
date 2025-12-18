@@ -42,6 +42,7 @@ void components_init(void)
     comp_contained_init();
     comp_container_init();
     comp_creature_init();
+    comp_destructable_init();
     comp_equippable_init();
     comp_equipped_init();
     comp_item_init();
@@ -66,7 +67,7 @@ void comp_attack_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_melee_add(entity_id_t entity, attack_comp_t melee_p)
+void comp_melee_add(entity_id_t entity, const attack_comp_t melee_p)
 {
     uint8_t current_bank;
 
@@ -78,7 +79,7 @@ void comp_melee_add(entity_id_t entity, attack_comp_t melee_p)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_ranged_add(entity_id_t entity, attack_comp_t attack_p)
+void comp_ranged_add(entity_id_t entity, const attack_comp_t attack_p)
 {
     uint8_t current_bank;
 
@@ -223,6 +224,44 @@ void comp_creature_remove(entity_id_t entity)
     creature_remove(entity);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
+/* destructable */
+void comp_destructable_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    equippable_init();
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void comp_destructable_add(entity_id_t entity, const destructable_comp_t destructable)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    destructable_add(entity, destructable);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+}
+
+void comp_destructable_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_COMP);          
+
+    destructable_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);           
 }
 
 /* equippable */

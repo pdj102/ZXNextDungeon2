@@ -10,57 +10,71 @@
 
 ## 🪜 **Milestone 1XX - Core game mechanics**
 
-### 🪜 **Milestone 101 — Core Engine Online**
+### 🪜 **Milestone 101 — ECS Entity**
 
-> *Goal: get entities, components, and the game loop running in memory.*
+> *Goal: Create and destroy entities, add/remove components.*
 
 * [✅] Implement `entity_id_t` and `entity_t` structs
-* [✅] Implement `entity_create()` / `entity_destroy()`
-* [✅] Add free-list or active-list allocator
-* [✅] Add `Location` and `Renderable` components - implement helper functions e.g. add() and remove()
-* [✅] Remove components on entity destroy
+* [✅] Implement `entity_create()` / `entity_destroy()` functions
+* [✅] Implement set, clear and has component functions
+* [✅] Implement set, clear and has flag functions
+* [✅] Implement active entities list to track active entities
+* [✅] Implement marked for destruction list to track entities to clean up destroy
+* [✅] Implement entity cleanup function to clean up entities marked for destruction entities
 * [✅] Create ECS system iteration (loop through active entities)
-* [✅] Implement `render_system()` to draw a test entity
-* [✅] Build a fixed arena at a known base address (e.g. 0x0000)
-* [✅] Display a single `'@'` on screen
 
-[✅] *End result: a single player entity renders successfully.*
+[✅] *End result: can create and manage entities.*
 
 ---
 
 ### 🪜 **Milestone 102 — A Map**
 
-> *Goal: basic map & movement mechanics.*
+> *Goal: basic map.*
 
-* [✅] Implement map_terrain
-* [✅] Implement entities list at map x, y
-* [✅] Implement map which is a composite of map_terrain and entity lists
+* [✅] Implement map. Map is a composite of map of map_terrain, entity lists and camera
+* [✅] Implment map_terrain 
 * [✅] `map_is_walkable(x, y)` with checks for terrain
 
-[✅] *End result: '@' moves around a dungeon grid.*
+[✅] *End result: Can see the game map.*
 
 ---
 
-### 🪜 **Milestone 103 — Entity Spawning**
+### 🪜 **Milestone 103 — Renderable Entities**
+
+> *Goal: entities can be rendered on the map.*
+
+* [✅] Implement `renderable` component
+* [✅] Render entities on the map with renderable component
+
+[✅] *End result: Entities are rendered on the game map.*
+
+---
+
+### 🪜 **Milestone 104 — Entity Spawning**
 
 > *Goal: multiple creatures and items exist on the map.*
 
 * [✅] Add `Creature` and `Item` components  - implement helper functions e.g. add() and remove()
-* [✅] Implement entity factory to spawn creatures
-* [✅] Implement entity factory to spawn items
-* [✅] Implement creature base
-* [✅] Implement item base
-* [✅] Render monsters (`'g'`, `'r'`, etc.) and items (`'!'`, `')'`)
+* [✅] Implement `monster_system` to spawn monsters
+* [✅] Implement `item_system` to spawn items
 * [✅] Remove creature and item components on entity destroy
-* [✅] Prevent walking through blocking monsters and items
-* [✅] Refactor entity factory code to spawn monsters not creatures - monsters are more than a creature component
-* [✅] Refactor entity factory code to spawn equipment not items - equipment is more than an item component
 
-[✅] *End result: '@' can walk around rooms with visible creatures and items.*
+[✅] *End result: Can spawn mosnters and entities of different kinds*
 
 ---
 
-### 🪜 **Milestone 104 — Turn System & Timers**
+### 🪜 **Milestone 105 — Player system**
+
+> *Goal: Player can control the player entity .*
+
+* [✅] Implement `Player` component - there can only be one player component in the game
+* [✅] Implement `Player_system` and `player_update` - player can move around the map, attack enemies, pick up items, etc.
+
+[✅] *End result: PLayer can control the player entity and interact with the game world.*
+
+---
+
+### 🪜 **Milestone 106 — Turn System & Timers**
 
 > *Goal: establish turn-based logic and per-entity speed.*
 
@@ -73,38 +87,33 @@
 
 ---
 
-### 🪜 **Milestone 104b — Implement moving @**
+### 🪜 **Milestone 107 — Movement system**
 
-> *Goal: basic map & movement mechanics.*
+> *Goal: Entity movement mechanics.*
 
+* [✅] Implement location component - store x and y coordinates and next entity in location list
+* [✅] Implement placing an entity at a location on the map
+* [✅] Implement removing an entity from the map
+* [✅] Implement moving an entity on the map
+* [✅] Implement `movement_system` - entities can move from one location to another
 * [✅] Add player `movement` commands (arrow keys or numpad)
-* [✅] Move player entity across map tiles
-* [✅] Prevent walking through walls
 
 [✅] *End result: '@' moves around a dungeon grid.*
 
 ---
 
-### 🪜 **Milestone 105 — Basic Melee Combat & Events**
+### 🪜 **Milestone 108 — Event system**
 
-> *Goal: entities can attack and die.*
+> *Goal: Systems can emit and respond to events.*
 
-* [✅] Add `attack` struct and `melee` and `ranged` components
-* [ ] Implement `attack_system`
-* [✅] Add player `melee attack` command
-* [ ] Implement `attack_system_try_melee_attack` - basic creature melee attack
-* [ ] Implement `attack_system_try_take_damage` - apply damage amount
-* [✅] Add `EVENT_ATTACKED`
-* [✅] Add `event_entity_damaged`
-* [✅] Add `EVENT_DIED`
-* [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
-* [✅] Manage `melee` and `ranged` components cleanup on entity destroy
+* [✅] Implement `event_system`
+* [✅] Implement `event_system_emit` function to emit events
 
-[✅] *End result: You can attack and kill monsters.*
+[✅] *End result: Systems can emit events that other systems respond to.*
 
 ---
 
-### 🪜 **Milestone 106 — Containers**
+### 🪜 **Milestone 109 — Containers**
 
 > *Goal: implement container mechanic for use by chests, inventory etc.*
 
@@ -118,7 +127,7 @@
 
 ---
 
-### 🪜 **Milestone 107a — Player Inventory**
+### 🪜 **Milestone 110 — Inventory**
 
 > *Goal: inventory management.*
 
@@ -130,7 +139,7 @@
 
 ---
 
-### 🪜 **Milestone 107b — Pickup**
+### 🪜 **Milestone 111 — Pickup**
 
 > *Goal: implement pickup action*
 
@@ -142,7 +151,7 @@
 
 [ ] *End result: Player can pick up items.*
 
-### 🪜 **Milestone 107c — Drop**
+### 🪜 **Milestone 112 — Drop**
 
 > *Goal: implement drop action*
 
@@ -154,7 +163,7 @@
 
 [✅] *End result: Player can drop items.*
 
-### 🪜 **Milestone 108 — Player Equipment**
+### 🪜 **Milestone 113 — Equipment**
 
 > *Goal: PLayer can equip and unequip items*
 
@@ -175,19 +184,94 @@
 
 ---
 
-### 🪜 **Milestone 109 — Creature resistance and immunity**
+### 🪜 **Milestone 114 — A Camera**
 
-> *Goal: Creature can have damage resistence and immunity*
+> *Goal: camera follows player as they move around the map.*
 
-* [ ] Add `resistance` and `immuinity` components
-* [ ] Update `attack_system` to take resistance and immunity into account
-* [ ] Manage `resistance` component cleanup on entity destroy
+* [✅] Implement larger map
+* [🚧] Implement camera position and ability to pan camera
+* [ ] Implement camera following player
 
-[ ] *End result: Damage calculation takes creature's resistance and immunity into account.*
+[ ] *End result: camera follows player.*
 
 ---
 
-### 🪜 **Milestone 110 — Basic targetting and line of sight**
+### 🪜 **Milestone 115 — Implement destructable component**
+
+> *Goal: Entities can be tageted, take damage and be destroyed*
+
+* [✅] Implement destructable component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
+* [✅] Implement destructable object - vase
+* [✅] Attach to destructable entities
+
+[ ] *End result: Entities like monsters, doors, and traps can be destructable*
+
+[ ] *End result: Unlocked doors open if you walk into them*
+
+### 🪜 **Milestone 116 — Melee combat system**
+
+> *Goal: Entities can melee combat*
+
+* [✅] Implement `melee` component
+* [✅] Implement melee weapon equipment - short sword
+* [✅] Implement basic melee attack component e.g. creatures/traps
+* [✅] Implement `combat system`
+* [✅] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
+* [✅] Implement `roll_melee_attack` - calculate attack roll for melee attack
+* [✅] Support attack rolls by player, with or without melee weapon, and basic attack rolls (monster, trap etc)
+* [✅] Implement `roll_melee_damage` - calculate damage roll for melee attack
+* [✅] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc)
+* [✅] Implement `EVENT_ATTACKED` - support both hit and miss
+* [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
+* [✅] Manage `melee` components cleanup on entity destroy
+
+[✅] *End result: Player can equip and attack with melee weapon
+
+---
+
+### 🪜 **Milestone 117 — Damage system**
+
+> *Goal: Entities can take damage*
+
+* [✅] Implement `damage system`
+* [✅] Implement `damage_system_try_take_damage` - apply damage to target entity
+* [✅] Implement `EVENT_DAMAGED`
+* [✅] Implement `damage_system_try_die` - kill an entity if it takes enough damage
+* [✅] Implement `EVENT_DIED`
+
+[✅] *End result: Entites can take damange and will die if they take enough damage*
+
+---
+
+### 🪜 **Milestone 118 — Damage system - immunities, resistance and vulnerabilities**
+
+> *Goal: Objects can have damage immunities, resistances, and vulnerabilities*
+
+* [ ] Create an object with an immunity to a specific damage type
+* [ ] Create an object with an resistance to a specific damage type
+* [ ] Create an object with an vulnerability to a specific damage type
+* [ ] Update `damage_system` to take imunities into account
+* [ ] Update `damage_system` to take resistances into account
+* [ ] Update `damage_system` to take vulnerabilities into account
+
+[ ] *End result: Damage calculation takes objects imunities, resistances and vulnerabilities into account.*
+
+---
+
+### 🪜 **Milestone 119 — Stats system**
+
+> *Goal: Entities can have stats e.g. STR, DEX etc.*
+
+* [✅] Implement `Stats` component
+* [✅] Implement `Stats_system`
+* [✅] Implement functions to obtain stats from component
+* [✅] Update functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
+
+[✅] *End result: Stats takes active effects into account.*
+
+---
+
+### 🪜 **Milestone 120 — Basic targetting and line of sight**
 
 > *Goal: entities can target.*
 
@@ -200,19 +284,23 @@
 
 ---
 
-### 🪜 **Milestone 112 — A Camera**
+### 🪜 **Milestone 121 — Ranged combat**
 
-> *Goal: camera follows player as they move around the map.*
+> *Goal: entities can range attack.*
 
-* [✅] Implement larger map
-* [ ] Implement camera position and ability to pan camera
-* [ ] Implement camera following player
+* [ ] Implement `ranged` component
+* [ ] Implement ranged weapon equipment - dart
+* [ ] Implement basic ranged attack component e.g. creatures / traps
+* [ ] Add player `fire` command (ranged attack)
+* [ ] Implement `combat_system_try_ranged_attack()` - use equipped ranged or default ranged if not
+* [ ] Implement `roll_ranged_attack` - calculate attack roll for ranged attack
+* [ ] Support attack rolls by player, with or without ranged weapon, and basic attack rolls (monster, trap etc)
+* [ ] Implement `roll_ranged_damage` - calculate damage roll for melee attack
+* [ ] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc)
 
-[ ] *End result: camera follows player.*
+[ ] *End result: You can range attack and kill monsters.*
 
----
-
-### 🪜 **Milestone 113 — Experience and levelling up**
+### 🪜 **Milestone 122 — Experience and levelling up**
 
 > *Goal: Player gains experience and level up.*
 
@@ -225,23 +313,38 @@
 
 ---
 
-### 🪜 **Milestone 113 — Active effects**
+### 🪜 **Milestone 123 — Instant effects**
 
-> *Goal: An item can apply an active effect*
+> *Goal: entities can have instant effects.*
 
-* [ ] Implement `effect_t` e.g. effect_restore_hp, effect_damage_hp, effect_apply_status, effect_cure_status, effect_stat_mod
-* [ ] Implement `status_flags_t` flags e.g. poison
-* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
-* [ ] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), item (source)
-* [ ] Implement `active effects` component - count active_effect[MAX_EFFECTS]. Place in banked memory
-* [ ] Extend `apply_effect` to handle permanent active effects and apply them to the actor
-* [ ] Extend `effect_system` to handle duration active effects. Remove effects when duration expires
-* [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
-[ ] *End result: stats and status are affected by active effect.*
+* [ ] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
+* [ ] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
+* [ ] Implment `effect_system`
+* [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
+* [ ] Implement  `apply_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
+* [ ] Add message log system for food `effect` events e.g. "You feel better"
+
+[ ] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
 
 ---
 
-### 🪜 **Milestone 115 — Implement steppable entities*
+### 🪜 **Milestone 124 — Active effects**
+
+> *Goal: Entities can have active effects that last for a period of time or are permanant.*
+
+* [ ] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), stat, status, item (source)
+* [ ] Implement `active effects` component - with count & active_effect[MAX_EFFECTS]
+* [ ] Implement `status_flags_t` flags e.g. poisoned
+* [ ] Extend `effect type` enum with effect_apply_status, effect_cure_status, effect_stat_mod
+* [ ] Place active effects in system banked memory as only ever access via system
+* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
+* [ ] Extend `apply_effect` to handle permanent active effects and apply them to the actor
+* [ ] Extend `effect_system` to handle duration active effects. Remove effects when duration expires
+* [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
+
+[ ] *End result: stats and status are affected by active effect.*
+
+### 🪜 **Milestone 125 — Implement steppable entities**
 
 > *Goal: Entities can react to being stood on*
 
@@ -256,88 +359,40 @@
 
 [ ] *End result: Traps react to being stood on*
 
-### 🪜 **Milestone 116 — Implement bumpable entities*
+### 🪜 **Milestone 126 — Implement bumpable entities**
 
 > *Goal: Entities can react to bumped into*
 
 [ ] *End result: Unlocked doors open if you walk into them*
 
-### 🪜 **Milestone 117 — Melee combat**
-
-> *Goal: Entities can melee combat*
-
-* [✅] Implement melee weapon equipment - dagger & sword
-* [✅] Implement `melee` component
-* [✅] Implement default melee attack component for creatures
-* [✅] Implement `combat system`
-* [✅] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
-* [✅] Implement `roll_melee_attack` - calculate attack roll for melee attack
-* [✅] Support attack rolls by player, with or without melee weapon, and basic attack rolls (monster, trap etc)
-* [✅] Implement `roll_melee_damage` - calculate damage roll for melee attack
-* [✅] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc) 
-* [✅] Implement `EVENT_ATTACKED` - support both hit and miss
-
-[✅] *End result: Player can equip and attack with melee weapon
-
 ---
-
-### 🪜 **Milestone 118 — Damage**
-
-> *Goal: Entities can take damage*
-
-* [ ] Implement `damage system`
-* [ ] Implement `damage_system_try_take_damage` - apply damage to target entity
-* [ ] Implement `EVENT_DAMAGED`
-* [ ] Implement `damage_system_try_die` - kill an entity if it takes enough damage
-* [ ] Implement `EVENT_DIED`
-
-[ ] *End result: Entites can take damange and will die if they take enough damage*
-
----
-
-### 🪜 **Milestone 119 — Ranged combat**
-
-> *Goal: entities can range attack.*
-
-* [ ] Implement ranged weapon equipment - dart
-* [ ] Add player `fire` command (ranged attack)
-* [ ] Implement `ranged` component
-* [ ] Implement default ranged attack component for creatures
-* [ ] Implement basic `attack_system_ranged_attack()`
-
-[ ] *End result: You can range attack and kill monsters.*
 
 ## 🪜 **Milestone 2XX — Items**
 
-### 🪜 **Milestone 201 — Consumables and effects**
+### 🪜 **Milestone 201 — Consumables**
 
 > *Goal: eat food to restore health.*
 
 * [ ] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe, drink, etc.
-* [ ] Implement `effect_t` e.g. effect_restore_hp, effect_damage_hp, effect_apply_status, effect_cure_status, effect_stat_mod
-* [ ] Implement `status_flags_t` flags e.g. poison
-* [ ] Implement `stats_t` enum e.g. AC, strength, dexterity etc
-* [ ] Implement `effect` component that describes what could happen - type, value, status, stats, duration (0 = instant, 0xFF = permanent)
+* [ ] Implement a consumable e.g. bread
 * [ ] Add player `eat` command - select from inventory
 * [ ] Implment `consumption_system`
 * [ ] Implement `consumption_system_try_eat()`. Handle eating food including decrement or destroy, emitting `effect` events and `consumed` event
+* [ ] Trigger applying effects to actor
 * [ ] Implement `item_decrement_or_destory`
-* [ ] Implment `effect_system`
-* [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
-* [ ] Implement  `apply_effect` - handle instant effects (duration = 0) e.g. heal, damage, poison etc.
 * [ ] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
 
 [ ] *End result: Player can restore health by eating food and food is destroyed.*
 
 ---
 
-### 🪜 **Milestone 202 — Potions and effects**
+### 🪜 **Milestone 202 — Potions**
 
 > *Goal: PLayer can quaff potions*
 
-* [ ] Implement basic potions e.g. potion of healing
+* [ ] Implement a potion e.g. potion of healing
 * [ ] Add player `quaff` command - select from inventory
-* [ ] Imnplement `consumption_system_try_quaff`.  Handle quaffing potions including decrement or destroy, emitting `effect` events and `quaff` event
+* [ ] Implement `consumption_system_try_quaff`.  Handle quaffing potions including decrement or destroy, emitting `effect` events and `quaff` event
 * [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
 
 [ ] *End result: Potion is destroyed and any effect applied.*
@@ -348,9 +403,8 @@
 
 > *Goal: Player can equip armour*
 
-* [ ] Implement armour items - leather helmet, leather body armour, leather boots
-* [ ] Implement ability to equip and unequip armour
-* [ ] Implement player stat recalculation for armour
+* [ ] Implement body armour items - leather body armour
+* [ ] Implement other armour items - leather helmet, leather boots
 
 [ ] *End result: Player can equip armour and stats are updated.*
 
@@ -362,7 +416,7 @@
 
 > *Goal: monsters can act intelligently.*
 
-* [ ] Add `AI_CTRL` component - implement helper functions e.g. add() and remove()
+* [ ] Add `AI` component - implement helper functions e.g. add() and remove()
 * [ ] Define `ai_state_t`
 * [ ] Implement `ai_on_event()` to process events and transition between states
 * [ ] Add `ai_system_update()` - entity takes it turn

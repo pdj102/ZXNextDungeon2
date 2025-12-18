@@ -17,6 +17,8 @@
 #include "ecs/components/PAGE50/creature_comp.h"
 #include "ecs/systems/PAGE42/event_system.h"
 
+#include "game/game.h"
+
 #include "core/text.h"
 
  /***************************************************

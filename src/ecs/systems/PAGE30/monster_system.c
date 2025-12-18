@@ -20,10 +20,10 @@
 
 const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 {
-    [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .speed = SPEED_NONE, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0},
+    [CREATURE_NONE] = {.speed = SPEED_NONE, .str = 0, .dex = 0, .con = 0, .inte = 0, .wis = 0, .cha = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.ac = 10, .cur_hp = 1, .max_hp = 1, .speed = SPEED_30FT, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4},
+    [CREATURE_RAT] = {.speed = SPEED_30FT, .str = 2, .dex = 11, .con = 9, .inte = 2, .wis = 10, .cha = 4},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -32,12 +32,35 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
-    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
+    [CREATURE_COMMONER] = {.speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
+    [CREATURE_PLAYER] = {.speed = SPEED_30FT, .str = 10, .dex = 10, .con = 10, .inte = 10, .wis = 10, .cha = 10 },
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.ac = 5, .cur_hp = 22, .max_hp = 22, .speed = SPEED_5FT, .str = 3, .dex = 1, .con = 10, .inte = 1, .wis = 3, .cha = 1 }
+    [CREATURE_WITHERWEED] = {.speed = SPEED_5FT, .str = 3, .dex = 1, .con = 10, .inte = 1, .wis = 3, .cha = 1 }
+    /* MONSTER_CLASS_UNDEAD */    
+};
+
+const destructable_comp_t monster_destructable_base[CREATURE_KIND_COUNT] =
+{
+    [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .damage_immunities = DAMAGE_NONE, .damage_resistances = DAMAGE_NONE, .damage_vulnerabilities = DAMAGE_NONE},
+   /* MONSTER_CLASS_ABERRATIONS */ 
+   /* MONSTER_CLASS_BEASTS */    
+    [CREATURE_RAT] = {.ac = 10, .cur_hp = 1, .max_hp = 1, .damage_immunities = DAMAGE_NONE, .damage_resistances = DAMAGE_NONE, .damage_vulnerabilities = DAMAGE_NONE},
+   /* MONSTER_CLASS_CELESTIALS */
+   /* MONSTER_CLASS_CONSTRUCTS */
+   /* MONSTER_CLASS_DRAGONS */
+   /* MONSTER_CLASS_ELEMENTALS */
+   /* MONSTER_CLASS_FEY */
+   /* MONSTER_CLASS_FIENDS */
+   /* MONSTER_CLASS_GIANTS */
+   /* MONSTER_CLASS_HUMANOIDS */    
+    [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .damage_immunities = DAMAGE_NONE, .damage_resistances = DAMAGE_NONE, .damage_vulnerabilities = DAMAGE_NONE},
+    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .damage_immunities = DAMAGE_NONE, .damage_resistances = DAMAGE_NONE, .damage_vulnerabilities = DAMAGE_NONE},
+    /* MONSTER_CLASS_MONSTROSITIES */
+    /* MONSTER_CLASS_OOZES */
+    /* MONSTER_CLASS_PLANTS */    
+    [CREATURE_WITHERWEED] = {.ac = 5, .cur_hp = 22, .max_hp = 22, .damage_immunities = DAMAGE_NONE, .damage_resistances = DAMAGE_NONE, .damage_vulnerabilities = DAMAGE_NONE}
     /* MONSTER_CLASS_UNDEAD */    
 };
 
@@ -195,6 +218,12 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     if (monster_ranged_base[kind].damage_type == ATTACK_RANGED)
     {
         comp_ranged_add(id, monster_ranged_base[kind]);
+    }
+
+    /* If moster is destructable add (indicated by AC > 0) */
+    if (monster_destructable_base[kind].ac > 0 )
+    {
+        comp_destructable_add(id, monster_destructable_base[kind]);
     }
 
     /* Add renderable component  */

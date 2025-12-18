@@ -76,6 +76,25 @@ typedef enum {
     ATTACK_CRITICAL
 } attack_result_t;
 
+typedef enum {
+    ATTACK_NONE,
+    ATTACK_MELEE,
+    ATTACK_RANGED,
+    ATTACK_MAGIC
+} attack_type_t;
+
+#define DAMAGE_NONE 0
+#define DAMAGE_ACID 1 << 1
+#define DAMAGE_BLUDGEONING 1 << 2
+#define DAMAGE_COLD 1 << 3 
+#define DAMAGE_FIRE 1 << 4
+#define DAMAGE_LIGHTNING 1 << 5 
+#define DAMAGE_PIERCING 1 << 6 
+#define DAMAGE_POISON 1 << 7
+#define DAMAGE_SLASHING 1 <<8
+
+typedef uint8_t damage_type_t;
+
 /***************************************************
  * public variables
  ***************************************************/

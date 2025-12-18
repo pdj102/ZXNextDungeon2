@@ -34,6 +34,7 @@
 #define COMPONENT_STATS 1 << 12
 #define COMPONENT_SLOTS 1 << 13
 #define COMPONENT_EQUIPPED 1 << 14
+#define COMPONENT_DESTRUCTABLE 1 << 15
 
 #define FLAG_NONE 0
 #define FLAG_IN_USE 1 << 0
@@ -45,24 +46,7 @@
  ***************************************************/
 typedef uint8_t entity_id_t; /* Type for entity IDs */
 
-typedef enum {
-    ATTACK_NONE,
-    ATTACK_MELEE,
-    ATTACK_RANGED,
-    ATTACK_MAGIC
-} attack_type_t;
 
-typedef enum {
-    DAMAGE_NONE, 
-    DAMAGE_ACID,
-    DAMAGE_BLUDGEONING,
-    DAMAGE_COLD, 
-    DAMAGE_FIRE, 
-    DAMAGE_LIGHTNING, 
-    DAMAGE_PIERCING, 
-    DAMAGE_POISON, 
-    DAMAGE_SLASHING
-} damage_type_t;
 
 /***************************************************
  * public function prototypes

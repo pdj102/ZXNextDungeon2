@@ -65,7 +65,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     }
 
     /* target must have stats and location component */
-    if (!entity_has_component(target, COMPONENT_STATS | COMPONENT_LOCATION))
+    if (!entity_has_component(target, COMPONENT_DESTRUCTABLE | COMPONENT_LOCATION))
     {
         return 0;
     }    
@@ -212,7 +212,7 @@ static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker)
  */
 static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target)
 {
-    int8_t ac = g.stats_components[target].ac;
+    int8_t ac = g.destructable_components[target].ac;
 
     if (roll.d20 == 1)
         return ATTACK_MISS;
@@ -305,14 +305,6 @@ static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_criti
     /* other_mods = effects_damage_bonus(attacker); */
 
     return dice_roll + other_mods;
-}
-
-/* 
- * @brief returns true if the attack roll is successful 
- */
-static bool_t attack_successful(int8_t attack_roll, entity_id_t target)
-{
-    return (attack_roll >= g.stats_components[target].ac);
 }
 
  /*

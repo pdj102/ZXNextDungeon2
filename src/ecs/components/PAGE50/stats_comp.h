@@ -26,9 +26,6 @@
  ***************************************************/
 /* Creature stats block */
 typedef struct {
-    int8_t ac;
-    int8_t cur_hp;
-    int8_t max_hp;
     speed_t speed;
     int8_t str;
     int8_t dex;
@@ -46,7 +43,7 @@ typedef stats_comp_t stats_components_t[MAX_ENTITIES];
  ***************************************************/
 void stats_init(void);
 
-void stats_add(entity_id_t entity, stats_comp_t stats_p);
+void stats_add(entity_id_t entity, stats_comp_t stats);
 
 void stats_remove(entity_id_t entity);
 

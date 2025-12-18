@@ -14,6 +14,7 @@
 #include "ecs/components/PAGE50/equippable_comp.h"
 #include "ecs/components/PAGE50/item_comp.h"
 #include "ecs/components/PAGE50/stats_comp.h"
+#include "ecs/components/PAGE50/destructable_comp.h"
 
 #include "ecs/entity.h"
 
@@ -53,6 +54,11 @@ void comp_container_remove(entity_id_t entity);
 void comp_creature_init(void);
 void comp_creature_add(entity_id_t entity, creature_kind_t kind);
 void comp_creature_remove(entity_id_t entity);
+
+/* destructable */
+void comp_destructable_init(void);
+void comp_destructable_add(entity_id_t entity, const destructable_comp_t destructable);
+void comp_destructable_remove(entity_id_t entity);
 
 /* equippable */
 void comp_equippable_init(void);
