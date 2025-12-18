@@ -20,9 +20,6 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-void move(entity_id_t entity, uint8_t x, uint8_t y);
-void location_unlink(entity_id_t entity);
-void location_link(entity_id_t entity);
 
 /***************************************************
  * public functions

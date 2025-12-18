@@ -25,7 +25,7 @@
 /***************************************************
  * private function prototypes
  * ***************************************************/
-bool_t timer_system_tick(entity_id_t entity);
+static bool_t timer_system_tick(entity_id_t entity);
 
 
 /***************************************************
@@ -63,7 +63,7 @@ void timer_system_reset(entity_id_t entity)
  * private functions
  ***************************************************/
 
-bool_t timer_system_tick(entity_id_t entity)
+static bool_t timer_system_tick(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(entity_has_components(entity, COMPONENT_TIMER)); /* entity must have timer component */

@@ -33,7 +33,7 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-void map_init_cell_heads(void);
+static void map_init_cell_heads(void);
 
 /***************************************************
  * public functions
@@ -94,7 +94,7 @@ void map_gen(void)
 /***************************************************
  * private functions
  ***************************************************/
-void map_init_cell_heads(void)
+static void map_init_cell_heads(void)
 {
     for (uint8_t x = 0; x < MAP_WIDTH; x++) {
         for (uint8_t y = 0; y < MAP_HEIGHT; y++) {

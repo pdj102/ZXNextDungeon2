@@ -32,14 +32,14 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-void melee_attack(void);
-void pickup(void);
-void drop(void);
-void equip(void);
-void unequip(void);
-void inventory(void);
-void display_inventory(void);
-uint8_t prompt_letter(uint8_t max_index);
+static void melee_attack(void);
+static void pickup(void);
+static void drop(void);
+static void equip(void);
+static void unequip(void);
+static void inventory(void);
+static void display_inventory(void);
+static uint8_t prompt_letter(uint8_t max_index);
 
  /***************************************************
  * public functions
@@ -124,7 +124,7 @@ void player_system_update(void)
  * private functions
  ***************************************************/
 
-void melee_attack(void)
+static void melee_attack(void)
 {
     entity_id_t target;
     direction_t dir;
@@ -150,7 +150,7 @@ void melee_attack(void)
     text_printf(&g.msg_win, "Nothing to attack here\n");
 }    
 
- void drop(void)
+static void drop(void)
 {
     entity_id_t item;
     uint8_t index;
@@ -183,7 +183,7 @@ void melee_attack(void)
     system_container_try_drop(g.player.id, item);
 }
 
-void pickup(void)
+static void pickup(void)
 {
     entity_id_t item;
     uint8_t x = g.location_components[g.player.id].x;
@@ -203,7 +203,7 @@ void pickup(void)
     text_printf(&g.msg_win, "Nothing to pick up here\n");
 }
 
-void inventory(void)
+static void inventory(void)
 {
     int key;
 
@@ -241,7 +241,7 @@ void equip(void)
     system_equipment_try_equip(g.player.id, item);    
 }
 
-void unequip(void)
+static void unequip(void)
 {
     entity_id_t item;
     uint8_t index;
@@ -268,7 +268,7 @@ void unequip(void)
     system_equipment_try_unequip(g.player.id, item);
 }
 
-void display_inventory(void)
+static void display_inventory(void)
 {
     entity_id_t item;
     unsigned char c = 'a';
@@ -299,7 +299,7 @@ void display_inventory(void)
  * @param max_index The maximum index of the letter range .e.g. 0 -> only 'a', 1 -> 'a'..'b', 5 -> 'a'..'f'
  * @return The selected letter as an integer, 'a' -> 0, 'b' -> 1 etc, or 99 for cancel.
  */
-uint8_t prompt_letter(uint8_t max_index)
+static uint8_t prompt_letter(uint8_t max_index)
 {
     uint8_t max_char = 'a' + max_index;
 
