@@ -27,14 +27,18 @@ void destructable_init(void)
 
 }
 
-void destructable_add(entity_id_t entity, destructable_comp_t destructable_p)
+void destructable_add(entity_id_t entity, destructable_comp_t destructable)
 {
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_components(entity, COMPONENT_DESTRUCTABLE)); 
 
-    g.destructable_components[entity].ac = destructable_p.ac;
-    g.destructable_components[entity].cur_hp = destructable_p.cur_hp;
-    g.destructable_components[entity].max_hp = destructable_p.max_hp;
+    g.destructable_components[entity].ac = destructable.ac;
+    g.destructable_components[entity].cur_hp = destructable.cur_hp;
+    g.destructable_components[entity].max_hp = destructable.max_hp;
+    g.destructable_components[entity].immune_types = destructable.immune_types;
+    g.destructable_components[entity].resistance_types = destructable.resistance_types;
+    g.destructable_components[entity].vuln_types = destructable.vuln_types;
+
 
     entity_set_component(entity, COMPONENT_DESTRUCTABLE); 
 }

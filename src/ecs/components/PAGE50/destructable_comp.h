@@ -29,9 +29,9 @@ typedef struct {
     int8_t ac;
     int8_t cur_hp;
     int8_t max_hp;
-    uint8_t damage_immunities;
-    uint8_t damage_resistances;
-    uint8_t damage_vulnerabilities;
+    uint8_t immune_types;
+    uint8_t resistance_types;
+    uint8_t vuln_types;
 } destructable_comp_t;
 
 

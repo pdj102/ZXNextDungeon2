@@ -32,7 +32,7 @@
 > *Goal: basic map.*
 
 * [✅] Implement map. Map is a composite of map of map_terrain, entity lists and camera
-* [✅] Implment map_terrain 
+* [✅] Implment map_terrain
 * [✅] `map_is_walkable(x, y)` with checks for terrain
 
 [✅] *End result: Can see the game map.*
@@ -247,12 +247,12 @@
 
 > *Goal: Objects can have damage immunities, resistances, and vulnerabilities*
 
-* [ ] Create an object with an immunity to a specific damage type
+* [✅] Create an object with an immunity to a specific damage type
 * [ ] Create an object with an resistance to a specific damage type
 * [ ] Create an object with an vulnerability to a specific damage type
-* [ ] Update `damage_system` to take imunities into account
-* [ ] Update `damage_system` to take resistances into account
-* [ ] Update `damage_system` to take vulnerabilities into account
+* [✅] Update `damage_system` to take imunities into account
+* [✅] Update `damage_system` to take resistances into account
+* [✅] Update `damage_system` to take vulnerabilities into account
 
 [ ] *End result: Damage calculation takes objects imunities, resistances and vulnerabilities into account.*
 

@@ -55,12 +55,6 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
         return 0;
     }
 
-    if (damage_type_immune(actor, type))
-    {
-        event = EVENT_DAMAGED_IMMUNE;
-        damage = 0;
-    }
-
     /* TODO: Implement checking damage is above threshold*/
     /* if (damage < d->damage_threshold)
         event = EVENT_DAMAGE_THRESHOLD;
@@ -79,6 +73,12 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
         event = EVENT_DAMAGED_VULNERABLE;
     }
 
+    if (damage_type_immune(actor, type))
+    {
+        event = EVENT_DAMAGED_IMMUNE;
+        damage = 0;
+    }    
+
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
     if (g.destructable_components[actor].cur_hp <= damage)
     {        
@@ -91,7 +91,7 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
         g.destructable_components[actor].cur_hp -= damage;
         system_event_emit(event, actor, ENTITY_ID_INVALID, damage);
 
-        // text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructable_components[actor].max_hp, g.destructable_components[actor].cur_hp);
+        text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructable_components[actor].max_hp, g.destructable_components[actor].cur_hp);
     }
     
     return 1;
@@ -103,15 +103,16 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
 
 static bool_t damage_type_immune(entity_id_t actor, damage_type_t type)
 {
-   return 0;
+    return (g.destructable_components[actor].immune_types & type) != 0;
 }
 
 static bool_t damage_type_resistant(entity_id_t actor, damage_type_t type)
 {
-   return 0;
+   return (g.destructable_components[actor].resistance_types & type) != 0;
 }
 
 static bool_t damage_type_vulnerable(entity_id_t actor, damage_type_t type)
 {
-   return 0;
+   // return 0;
+   return (g.destructable_components[actor].vuln_types & type) != 0;
 }
