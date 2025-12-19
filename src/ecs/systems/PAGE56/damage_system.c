@@ -32,12 +32,18 @@ static bool_t damage_type_vulnerable(entity_id_t actor, damage_type_t type);
  ***************************************************/
 bool_t damage_system_try_die(entity_id_t entity)
 {
+    event_t event;
+
     if (!entity_has_component(entity, COMPONENT_DESTRUCTABLE))
     {
         return 0;
     }
-
-    system_event_emit(EVENT_DIED, entity, ENTITY_ID_INVALID, 0);
+    
+    event.type = EVENT_DIED;
+    event.source = entity;
+    event.target = ENTITY_ID_INVALID;
+    event.value = 0;
+    system_event_emit(event);
 
     /* TODO: This should not be done here. Destroyed creatures, items etc should respond to event*/
     g.creature_components[entity].status = CREATURE_STATUS_DEAD;
@@ -48,7 +54,9 @@ bool_t damage_system_try_die(entity_id_t entity)
 
 int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_type_t type)
 {
-    event_type_t event = EVENT_DAMAGED;
+    event_t event;
+
+    event.type = EVENT_DAMAGED;
 
     if (!entity_has_component(actor, COMPONENT_DESTRUCTABLE ))
     {
@@ -64,32 +72,36 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ty
     if (damage_type_resistant(actor, type))
     {
         damage /= 2;
-        event = EVENT_DAMAGED_RESIST;
+        event.type = EVENT_DAMAGED_RESIST;
     }
 
     if (damage_type_vulnerable(actor, type))
     {
         damage *= 2;
-        event = EVENT_DAMAGED_VULNERABLE;
+        event.type = EVENT_DAMAGED_VULNERABLE;
     }
 
     if (damage_type_immune(actor, type))
     {
-        event = EVENT_DAMAGED_IMMUNE;
+        event.type = EVENT_DAMAGED_IMMUNE;
         damage = 0;
     }    
+
+    event.source = actor;
+    event.target = ENTITY_ID_INVALID;
+    event.value = damage;
 
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
     if (g.destructable_components[actor].cur_hp <= damage)
     {        
         g.destructable_components[actor].cur_hp = 0;
-        system_event_emit(event, actor, ENTITY_ID_INVALID, damage);
+        system_event_emit(event);
         damage_system_try_die(actor);
     }
     else
     {
         g.destructable_components[actor].cur_hp -= damage;
-        system_event_emit(event, actor, ENTITY_ID_INVALID, damage);
+        system_event_emit(event);
 
         text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructable_components[actor].max_hp, g.destructable_components[actor].cur_hp);
     }

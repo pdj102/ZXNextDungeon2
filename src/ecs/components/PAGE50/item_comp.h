@@ -60,11 +60,24 @@ typedef enum {
 
  typedef enum {
     ITEM_NONE = 0,
+    // Melee weapons
     ITEM_CLUB,
     ITEM_SHORT_SWORD,
-    ITEM_SHIELD,
+    // Ranged weapons
+    // Armour
     ITEM_LEATHER_ARMOUR,
+    // Shields
+    ITEM_SHIELD,
+    // Ammo
+    // Potions
     ITEM_POTION_OF_HEALING,
+    // Scrolls
+    // Food and drink
+    ITEM_BREAD,
+    // Wearable
+    // Wands
+    // Light sources
+    // Keys    
     ITEM_KEY,
     ITEM_KIND_COUNT
 } item_kind_t;

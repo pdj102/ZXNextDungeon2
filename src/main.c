@@ -67,6 +67,9 @@ int main(void) {
     entity_id_t e6 = system_monster_create_player();
     comp_location_add(e6, 10, 15);
 
+    entity_id_t e7 = system_item_create(ITEM_BREAD, 1);
+    comp_location_add(e7, 6, 15);
+
     map_render();
 
     while(1)

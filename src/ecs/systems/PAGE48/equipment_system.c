@@ -36,6 +36,8 @@ void equipment_system_init(void)
 
 bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 {
+    event_t event;
+
     slot_t slot = SLOT_NONE;
 
     /* actor must have slots component */
@@ -124,7 +126,12 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
     g.slots[slot] = item;
     comp_equipped_add(item, actor);
 
-    system_event_emit(EVENT_EQUIPPED, actor, item, 1);        
+    event.type = EVENT_EQUIPPED;
+    event.source = actor;
+    event.target = item;
+    event.value = 1;
+
+    system_event_emit(event);
     
     return 1;
 }
@@ -132,6 +139,8 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 
 bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
 {
+    event_t event;
+    
     /* actor must have slots component */
     if (!entity_has_component(actor, COMPONENT_SLOTS))
     {
@@ -151,7 +160,12 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
             g.equipped_components[item].equipped_by = ENTITY_ID_INVALID;
             comp_equipped_remove(item);
 
-            system_event_emit(EVENT_UNEQUIPPED, actor, item, 1);
+            event.type = EVENT_UNEQUIPPED;
+            event.source = actor;
+            event.target = item;
+            event.value = 1;
+
+            system_event_emit(event);
             return 1;
         }
     }

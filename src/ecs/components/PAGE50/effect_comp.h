@@ -31,6 +31,16 @@ typedef enum {
     EFFECT_DAMAGE_HP,
 } effect_type_t;
 
+typedef enum {
+    TRIGGER_NONE = 0,
+    TRIGGER_CONSUMED,       /* eat food, quaff potion*/
+    TRIGGER_EQUIPPED,       /* wield / wear */
+    TRIGGER_UNEQUIPPED,        
+    TRIGGER_HIT,            /* struck by */
+    TRIGGER_STEP,           /* stepped on */
+    TRIGGER_TURN,           /* turn occurs*/
+} effect_trigger_t;
+
 /* A single effect  */
 typedef struct {
     effect_type_t type;         /* type of effect */
@@ -38,7 +48,7 @@ typedef struct {
     uint8_t duration;           /* duration of effect. 0 = instant effect*/
     uint8_t stat;               /* stat to affect */
     uint8_t status;             /* status to affect */
-    effect_trigger_t trigger;   /* what triggers the effect TODO support multiple triggers with bitmask */
+    effect_trigger_t trigger;   /* condition that determines when an effect is applied */
 } effect_comp_t;
 
 typedef effect_comp_t effect_components_t[MAX_ENTITIES]; 

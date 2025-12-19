@@ -33,12 +33,15 @@
  * private function prototypes
  ***************************************************/
 static void melee_attack(void);
-static void pickup(void);
 static void drop(void);
+static void eat(void);
 static void equip(void);
-static void unequip(void);
 static void inventory(void);
+static void pickup(void);
+static void unequip(void);
+
 static void display_inventory(void);
+static entity_id_t prompt_inventory_item(const char *prompt_msg);
 static uint8_t prompt_letter(uint8_t max_index);
 
  /***************************************************
@@ -96,25 +99,28 @@ void player_system_update(void)
         case 10: /* down */
             system_movement_try_move(entity, 0, 1);
             break;
-        case 56: /* camera right */
+        case 56: /* '8' camera right */
             g.map.camera.x++;
-            break;            
-        case 97: /* melee attack */
+            break;
+        case 69: /* 'E' eat */
+            eat();
+            break;                        
+        case 97: /* 'a' melee attack */
             melee_attack();
             break;            
-        case 100: /* drop an item */
+        case 100: /* 'd' drop an item */
             drop();
             break;
-        case 101: /* equip an item */
+        case 101: /* 'e' equip an item */
             equip();            
             break;
-        case 103: /* get object from floor */
+        case 103: /* 'g' get object from floor */
             pickup();
             break;
-        case 105: /* view inventory */
+        case 105: /* 'i' view inventory */
             inventory();
             break;
-        case 117: /* unequip an item */
+        case 117: /* 'u' unequip an item */
             unequip();
             break;
         default:
@@ -150,39 +156,30 @@ static void melee_attack(void)
         target = g.location_components[target].next_in_location;
     }
     text_printf(&g.msg_win, "Nothing to attack here\n");
-}    
+}
 
 static void drop(void)
 {
-    entity_id_t item;
-    uint8_t index;
-    uint8_t count;
-
-    count = system_container_count(g.player.id);
-
-    if (count == 0)
-    {
-        text_printf(&g.msg_win, "Nothing to drop\n");
+    entity_id_t item = prompt_inventory_item("Select item to drop");
+    if (item == ENTITY_ID_INVALID)
         return;
-    }
 
-    display_inventory();
-
-    index = prompt_letter(count - 1);
-
-    if (index == 99)
+    if (!system_container_try_drop(g.player.id, item))
     {
-        return;
+        text_printf(&g.msg_win, "You cannot drop that\n");
     }
-   
-    item = system_container_get_at(g.player.id, index);
+}
 
-    if (system_equipment_is_equipped(g.player.id, item))
-    {
-        text_printf(&g.msg_win, "Unable to drop equipped item\n");
+static void eat(void)
+{
+    entity_id_t item = prompt_inventory_item("Select item to eat");
+    if (item == ENTITY_ID_INVALID)
         return;
+
+    if (!system_consumable_try_consume(g.player.id, item))
+    {
+        text_printf(&g.msg_win, "You cannot eat that\n");
     }
-    system_container_try_drop(g.player.id, item);
 }
 
 static void pickup(void)
@@ -209,8 +206,9 @@ static void inventory(void)
 {
     int key;
 
+    text_cls(&g.main_win);
+    text_printf(&g.main_win, "Inventory\n");
     display_inventory();
-
     text_print_string(&g.main_win, "Press any key to continue...\n");
 
     key = key_press();
@@ -270,13 +268,35 @@ static void unequip(void)
     system_equipment_try_unequip(g.player.id, item);
 }
 
+static entity_id_t prompt_inventory_item(const char *prompt_msg)
+{
+    uint8_t count;
+    uint8_t index;
+
+    count = system_container_count(g.player.id);
+    if (count == 0)
+    {
+        text_printf(&g.msg_win, "%s\n", "Inventory is empty\n");
+        return ENTITY_ID_INVALID;
+    }
+
+    text_cls(&g.main_win);
+    text_printf(&g.main_win, "%s\n", prompt_msg);
+
+    display_inventory();
+
+    index = prompt_letter(count - 1);
+    if (index == 99)
+        return ENTITY_ID_INVALID;
+
+    return system_container_get_at(g.player.id, index);
+}
+
+
 static void display_inventory(void)
 {
     entity_id_t item;
     unsigned char c = 'a';
-
-    text_cls(&g.main_win);
-    text_print_string(&g.main_win, "Inventory\n");
 
     item = system_container_get_first(g.player.id);
 
@@ -305,7 +325,7 @@ static uint8_t prompt_letter(uint8_t max_index)
 {
     uint8_t max_char = 'a' + max_index;
 
-    text_printf(&g.msg_win, "[a-%c] (or any other key to cancel)\n", max_char);
+    text_printf(&g.main_win, "Select a letter [a-%c] (or any other key to cancel)\n", max_char);
 
     /* Get a single character */
     int ch = key_press();

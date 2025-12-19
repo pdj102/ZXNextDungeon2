@@ -25,6 +25,8 @@
 typedef enum {
     EVENT_NONE,
     EVENT_ATTACKED,
+    EVENT_ATTACKED_AND_CRITICAL,
+    EVENT_ATTACKED_AND_MISSED,
     EVENT_BUMPED,
     EVENT_STOOD_ON,
     EVENT_DIED,
@@ -36,8 +38,16 @@ typedef enum {
     EVENT_DAMAGED_IMMUNE,
     EVENT_DAMAGED_RESIST,
     EVENT_DAMAGED_VULNERABLE,
+    EVENT_CONSUMED,
     EVENT_COUNT
 } event_type_t;
+
+typedef struct {
+    event_type_t    type;   /* The type of event to emit */
+    entity_id_t     source; /* The entity that caused / initiated the event */
+    entity_id_t     target; /* The entity that was affected */
+    uint8_t         value;  /* Optional value associated with the event */
+} event_t;
 
 /***************************************************
  * public function prototypes
@@ -45,15 +55,8 @@ typedef enum {
 void event_system_init(void);
 
 /*
- * @brief Emits an event to the system.
- * @param type The type of event to emit.
- * @param src The source entity ID e.g. the entity that caused / initiated the event
- * @param tgt The target entity ID e.g. the entity that was affected / acted upon by the event
- * @param val Optional value associated with the event e.g. damage dealt
- * 
- * @example  event_emit(EVENT_ATTACKED, PLAYER, RAT, 50); Player attacked the rat  
-
+ * @brief Emit an event to all systems that are interested in it.
  */
-void event_system_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+void event_system_emit(const event_t event);
 
 #endif // EVENT_SYSTEM_H

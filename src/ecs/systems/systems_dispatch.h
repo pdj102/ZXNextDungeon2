@@ -43,6 +43,9 @@ bool_t system_actions_try_unequip(entity_id_t creature, entity_id_t item);
 bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature);
 bool_t system_actions_try_close(entity_id_t creature, entity_id_t feature);
 
+/* Consumable System*/
+void system_consumable_init(void);
+bool_t system_consumable_try_consume(entity_id_t actor, entity_id_t entity);
 
 /* Container System*/
 void system_container_init(void);
@@ -73,11 +76,11 @@ void system_item_print_name(text_window_t *win, item_kind_t kind);
 
 /* Effect system */
 void system_effect_init(void);
-void system_effect_apply_effects_by_source(entity_id_t target, entity_id_t source, effect_trigger_t trigger);
+void system_effect_handle_event(const event_t event);
 
 /* Event System */
 void system_event_init(void);
-void system_event_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+void system_event_emit(const event_t event);
 
 /* Equipment System */
 void system_equipment_init(void);

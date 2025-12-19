@@ -41,6 +41,8 @@ void container_system_init(void)
 
 bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
 {  
+    event_t event;
+
     /* item to be picked up has item and location components */
     if (!entity_has_component(item, COMPONENT_ITEM))
     {
@@ -76,38 +78,42 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
     /* Place item in container */
     container_system_add(actor, item);
 
-    system_event_emit(EVENT_PICKED_UP, actor, item, 0);
+    event.type = EVENT_PICKED_UP;
+    event.source = actor;
+    event.target = item;
+    event.value = 0;
+
+    system_event_emit(event);
 
     return 1;
 }
 
 bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
 {
-    /* item to be droped has item and contained components */
-    if (!entity_has_component(item, COMPONENT_ITEM))
-    {
-        return 0;
-    }
+    event_t event;
+
+    /* check item to be droped is contained  */
     if (!entity_has_component(item, COMPONENT_CONTAINED))
     {
         return 0;
     }    
-    /* actor has container and location components */
+    /* check actor has container */
     if (!entity_has_component(actor, COMPONENT_CONTAINER))
     {
         return 0;
     }
+    /* check actor has location */
     if (!entity_has_component(actor, COMPONENT_LOCATION))
     {
         return 0;
     }    
-    /* actor is holding the item */
+    /* check actor is holding the item */
     if (g.contained_components[item].container != actor)
     {
         return 0;
     }
 
-    /* Can't drop equipped items */
+    /* check - can't drop equipped items */
     if (system_equipment_is_equipped(actor, item) == 1)
     {
         return 0;
@@ -119,7 +125,12 @@ bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
     /* Place item on the floor*/
     comp_location_add(item, g.location_components[actor].x, g.location_components[actor].y);
 
-    system_event_emit(EVENT_DROPPED, actor, item, 0);    
+    event.type = EVENT_DROPPED;
+    event.source = actor;
+    event.target = item;
+    event.value = 0;
+
+    system_event_emit(event);
 
     return 1;
 }

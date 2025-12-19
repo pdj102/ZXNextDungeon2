@@ -107,16 +107,6 @@ typedef enum {
     STAT_COUNT
 } stat_type_t;
 
-typedef enum {
-    TRIGGER_NONE = 0,
-    TRIGGER_CONSUME,        /* eat food, quaff potion*/
-    TRIGGER_EQUIP,          /* wield / wear */
-    TRIGGER_UNEQUIP,        
-    TRIGGER_HIT,            /* struck by */
-    TRIGGER_STEP,           /* stepped on */
-    TRIGGER_TURN,           /* turn occurs*/
-} effect_trigger_t;
-
 /***************************************************
  * public variables
  ***************************************************/

@@ -67,26 +67,26 @@ void comp_attack_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_melee_add(entity_id_t entity, const attack_comp_t melee_p)
+void comp_melee_add(entity_id_t entity, const attack_comp_t melee)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
 
-    melee_add(entity, melee_p);
+    melee_add(entity, melee);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void comp_ranged_add(entity_id_t entity, const attack_comp_t attack_p)
+void comp_ranged_add(entity_id_t entity, const attack_comp_t attack)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_COMP);          /* Page actions system into 8k MMU slot 6 */    
 
-    ranged_add(entity, attack_p);
+    ranged_add(entity, attack);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }
@@ -113,6 +113,43 @@ void comp_ranged_remove(entity_id_t entity)
     ranged_remove(entity);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
+
+/* consuamble */
+void comp_consumable_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    consumable_init();
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void comp_consumable_add(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    consumable_add(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void comp_consumable_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    consumable_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
 }
 
 /* contained */
@@ -262,6 +299,36 @@ void comp_destructable_remove(entity_id_t entity)
     destructable_remove(entity);
 
     ZXN_WRITE_MMU6(current_bank);           
+}
+
+/* effect */
+void comp_effect_init(void)
+{
+
+}
+
+void comp_effect_add(entity_id_t entity, effect_comp_t effect)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6(); 
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    effect_add(entity, effect);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void comp_effect_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6(); 
+    ZXN_WRITE_MMU6(PAGE_COMP);
+
+    effect_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
 }
 
 /* equippable */

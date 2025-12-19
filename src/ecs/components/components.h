@@ -15,6 +15,8 @@
 #include "ecs/components/PAGE50/item_comp.h"
 #include "ecs/components/PAGE50/stats_comp.h"
 #include "ecs/components/PAGE50/destructable_comp.h"
+#include "ecs/components/PAGE50/consumable_comp.h"
+#include "ecs/components/PAGE50/effect_comp.h"
 
 #include "ecs/entity.h"
 
@@ -35,10 +37,15 @@ void components_init(void);
 
 /* attack */
 void comp_attack_init(void);
-void comp_melee_add(entity_id_t entity, const attack_comp_t melee_p);
-void comp_ranged_add(entity_id_t entity, const attack_comp_t attack_p);
+void comp_melee_add(entity_id_t entity, const attack_comp_t melee);
+void comp_ranged_add(entity_id_t entity, const attack_comp_t attack);
 void comp_melee_remove(entity_id_t entity);
 void comp_ranged_remove(entity_id_t entity);
+
+/* consuamble */
+void comp_consumable_init(void);
+void comp_consumable_add(entity_id_t entity);
+void comp_consumable_remove(entity_id_t entity);
 
 /* contained */
 void comp_contained_init(void);
@@ -69,6 +76,11 @@ void comp_equippable_remove(entity_id_t entity);
 void comp_equipped_init(void);
 void comp_equipped_add(entity_id_t entity, entity_id_t equipped_by);
 void comp_equipped_remove(entity_id_t entity);
+
+/* effect */
+void comp_effect_init(void);
+void comp_effect_add(entity_id_t entity, effect_comp_t effect);
+void comp_effect_remove(entity_id_t entity);
 
 /* item */
 void comp_item_init(void);

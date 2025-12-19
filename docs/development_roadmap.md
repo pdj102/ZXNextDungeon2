@@ -366,6 +366,17 @@
 
 ---
 
+### 🪜 **Milestone 199 — Cleanup**
+
+> *Goal: Cleanup code*
+
+* [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
+* [ ] Eliminate player component as not inline with ECS principles
+
+[ ] *End result: Unlocked doors open if you walk into them*
+
+---
+
 ## 🪜 **Milestone 2XX — Items**
 
 ### 🪜 **Milestone 201 — Consumables**

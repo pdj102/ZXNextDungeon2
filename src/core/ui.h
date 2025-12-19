@@ -22,6 +22,6 @@
  * public function prototypes
  ***************************************************/
 
-void ui_on_event(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val);
+void ui_on_event(const event_t event);
 
 #endif // UI_H

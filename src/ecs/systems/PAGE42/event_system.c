@@ -12,6 +12,8 @@
 
 #include "ecs/entity.h"
 
+#include "ecs/systems/systems_dispatch.h"
+
 #include "core/ui.h"
 
 /***************************************************
@@ -27,30 +29,32 @@ void event_system_init(void)
 {
 }
 
-void event_system_emit(event_type_t type, uint8_t src, uint8_t tgt, uint8_t val)
- {
-    ui_on_event(type, src, tgt, val);
-/*
-    switch (e->type)
+void event_system_emit(const event_t event)
+{
+    ui_on_event(event);
+
+    switch (event.type)
     {
+
         case EVENT_ATTACKED:
-            ui_on_damage(e);
-            sound_on_damage(e);
-            log_on_damage(e);
             break;
-
+        case EVENT_BUMPED:
+            break;
+        case EVENT_CONSUMED:
+            system_effect_handle_event(event);
+            break;
+        case EVENT_DAMAGED:
+        case EVENT_DAMAGED_IMMUNE:
+        case EVENT_DAMAGED_RESIST:
+        case EVENT_DAMAGED_VULNERABLE:
         case EVENT_DIED:
-            ui_on_death(e);
-            sound_on_death(e);
-            break;
-
+        case EVENT_DROPPED:
+        case EVENT_EQUIPPED:
         case EVENT_PICKED_UP:
-            ui_on_item_pickup(e);
-            log_on_item_pickup(e);
+        case EVENT_STOOD_ON:
+        case EVENT_UNEQUIPPED:
             break;
-
         default:
-            break;
+            util_abort("Unknown event type");
     }
-*/
 }

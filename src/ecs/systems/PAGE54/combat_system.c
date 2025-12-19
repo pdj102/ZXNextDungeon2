@@ -57,6 +57,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     attack_roll_t attack_roll;
     damage_type_t damage_type;
     uint8_t damage_roll;
+    event_t event;
 
     /* attacker must have melee_attack and location component */
     if (!entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
@@ -93,26 +94,33 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
         damage_type = g.melee_components[attacker].damage_type;
     }
 
+    event.source = attacker;
+    event.target = target;
+    event.value = 1;
+
     /* Resolve attack result */
     switch (resolve_attack(attack_roll, target))
     {
         case ATTACK_CRITICAL:
             /* crit damage */
-            system_event_emit(EVENT_ATTACKED, attacker, target, ATTACK_CRITICAL);
+            event.type = EVENT_ATTACKED_AND_CRITICAL;
+            system_event_emit(event);
             damage_roll = roll_melee_damage(attacker, 1);
             system_damage_try_take_damage(target, damage_roll, damage_type);
             return 1;
 
         case ATTACK_HIT:
             /* normal damage */
-            system_event_emit(EVENT_ATTACKED, attacker, target, ATTACK_HIT);
+            event.type = EVENT_ATTACKED;
+            system_event_emit(event);
             damage_roll = roll_melee_damage(attacker, 0);
             system_damage_try_take_damage(target, damage_roll, damage_type);
             return 1;
 
         case ATTACK_MISS:
-            /* nothing */
-            system_event_emit(EVENT_ATTACKED, attacker, target, 0);
+            /* missed */
+            event.type = EVENT_ATTACKED_AND_MISSED;
+            system_event_emit(event);
             return 0;
         default:
             util_abort("Unknown attack roll result");
