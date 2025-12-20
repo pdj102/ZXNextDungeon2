@@ -27,9 +27,9 @@
  ***************************************************/
 
 typedef struct {
-    attack_type_t attack_type;
-    dice_roll_t damage_roll;
-    damage_kind_t damage_kind;
+    attack_kind_t attack_type;
+    dice_kind_t damage_roll;
+    damage_flag_t damage_kind;
     uint8_t range;
     int8_t hit_mod;     /* to hit modifier */
     int8_t damage_mod;  /* to damage modifier */

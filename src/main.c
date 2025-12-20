@@ -28,7 +28,8 @@
 #include "core/text.h"
 #include "core/core_init_bank.h"
 
-void clean_up_and_destroy(void);
+static void clean_up_and_destroy(void);
+static void turn(void);
  
 int main(void) {
 
@@ -72,6 +73,9 @@ int main(void) {
     entity_id_t e7 = system_item_create(ITEM_BREAD, 1);
     comp_location_add(e7, 6, 15);
 
+    entity_id_t e8 = system_item_create(ITEM_RING_OF_STRENGTH, 1);
+    comp_location_add(e8, 7, 15);
+
     util_info("map render");
 
     map_render();
@@ -80,7 +84,7 @@ int main(void) {
     {
         system_timer_update();
 
-        system_player_update();
+        turn();
 
         map_render();        
 
@@ -92,8 +96,33 @@ int main(void) {
     return 0;
 }
 
+/*
+ * @brief Entities take there turn
+ */
+static void turn(void)
+{
+    for (uint8_t id = 0; id < MAX_ENTITIES; id++)
+    {
+        if (entity_has_component(id, COMPONENT_TIMER) && system_timer_has_fired(id))
+        {
+            system_timer_reset(id);
 
-void clean_up_and_destroy(void)
+            if (entity_has_component(id, COMPONENT_PLAYER))
+            {
+                system_player_update();
+            }
+
+            if (entity_has_component(id, COMPONENT_ACTIVE_EFFECT))
+            {
+                system_effect_process_entity_turn(id);
+            }
+        }
+
+    }
+}
+
+
+static void clean_up_and_destroy(void)
 {
     uint8_t i = 0;
     entity_id_t id;
@@ -110,7 +139,9 @@ void clean_up_and_destroy(void)
         
         util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
         system_container_clean_up(id);
-        // system_equipment_clean_up(id);
+        system_effect_cleanup_entity(id);
+
+        // TODO system_equipment_clean_up(id);
 
         i++;
     }

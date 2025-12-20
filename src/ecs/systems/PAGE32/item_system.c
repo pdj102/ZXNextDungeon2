@@ -34,7 +34,8 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = EQUIPPABLE_NONE,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = EQUIPPABLE_FINGER,
     /* Wands */
     /* Light sources */
     /* Keys */    
@@ -58,7 +59,8 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = NAME_BREAD,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = NAME_RING_OF_STRENGTH,
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -67,26 +69,27 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
 
 const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
 {
-    [ITEM_NONE] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
-    [ITEM_CLUB] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
-    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_KIND_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
     /* Shields */
-    [ITEM_SHIELD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ammo */
     /* Potions */    
-    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    /* Wearable */
+    [ITEM_BREAD] = { .attack_type = ATTACK_KIND_NONE },
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .attack_type = ATTACK_KIND_NONE},
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
 };
 
 const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
@@ -104,7 +107,8 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .tile = { '%', 0}},
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .tile = { 'r', 0}},
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -128,7 +132,8 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = 1,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = 0,
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -137,26 +142,27 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
 
 const effect_comp_t effect_base[ITEM_KIND_COUNT] = 
 {
-    [ITEM_NONE] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_NONE] = { .kind = EFFECT_NONE},
     /* Melee weapons */
-    [ITEM_CLUB] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
-    [ITEM_SHORT_SWORD] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_CLUB] = { .kind = EFFECT_NONE},
+    [ITEM_SHORT_SWORD] = { .kind = EFFECT_NONE},
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_LEATHER_ARMOUR] = { .kind = EFFECT_NONE},
     /* Shields */
-    [ITEM_SHIELD] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_SHIELD] = { .kind = EFFECT_NONE},
     /* Ammo */
     /* Potions */    
-    [ITEM_POTION_OF_HEALING] = { .type = EFFECT_NONE, .value = 0, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .type = EFFECT_RESTORE_HP, .value = 5, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_CONSUMED},
-    /* Wearable */
+    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .attribute = EFFECT_ATTRIBUTE_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .magnitude = 1, .duration = 5, .attribute = EFFECT_ATTRIBUTE_STR, .triggers = TRIGGER_ON_EQUIPPED},
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = { .type = EFFECT_RESTORE_HP, .value = 5, .duration = 0, .stat = STAT_NONE, .status = 0, .trigger = TRIGGER_NONE},
+    [ITEM_KEY] = { .kind = EFFECT_NONE},
 };
 
 /***************************************************
@@ -185,13 +191,13 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     comp_renderable_add(id, renderable_base[kind].tile);
 
     /* If item has a melee attack and melee component e.g. swords*/
-    if (melee_base[kind].attack_type == ATTACK_MELEE)
+    if (melee_base[kind].attack_type == ATTACK_KIND_MELEE)
     {
         comp_melee_add(id, melee_base[kind]);
     }
 
     /* If item has an effect attack and effect component e.g. bread restores health*/
-    if (effect_base[kind].type != EFFECT_NONE)
+    if (effect_base[kind].kind != EFFECT_NONE)
     {
         comp_effect_add(id, effect_base[kind]);
     }

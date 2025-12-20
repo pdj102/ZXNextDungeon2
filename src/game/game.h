@@ -43,13 +43,13 @@ typedef enum dice_e {
     DICE_1D10,
     DICE_1D20,
     DICE_COUNT
-} dice_roll_t;
+} dice_kind_t;
 
 typedef struct dice_s {
     uint8_t n;
     uint8_t d;
     uint8_t mod;
-} dice_t;
+} dice_roll_t;
 
 typedef uint8_t ticks_t;
 
@@ -77,25 +77,33 @@ typedef enum {
 } attack_result_t;
 
 typedef enum {
-    ATTACK_NONE,
-    ATTACK_MELEE,
-    ATTACK_RANGED,
-    ATTACK_MAGIC
-} attack_type_t;
+    ATTACK_KIND_NONE,
+    ATTACK_KIND_MELEE,
+    ATTACK_KIND_RANGED,
+    ATTACK_KIND_MAGIC
+} attack_kind_t;
 
 /* Damage type flags */
 typedef enum {
-    DAMAGE_KIND_NONE = 0,
-    DAMAGE_KIND_ACID,
-    DAMAGE_KIND_BLUDGEONING,
-    DAMAGE_KIND_COLD,
-    DAMAGE_KIND_FIRE,
-    DAMAGE_KIND_LIGHTNING,
-    DAMAGE_KIND_PIERCING,
-    DAMAGE_KIND_POISON,
-    DAMAGE_KIND_SLASHING,
-    DAMAGE_KIND_COUNT
-} damage_kind_t;
+    DAMAGE_NONE            = 0,
+    DAMAGE_ACID            = 1 << 0,
+    DAMAGE_BLUDGEONING     = 1 << 1,
+    DAMAGE_COLD            = 1 << 2,
+    DAMAGE_FIRE            = 1 << 3,
+    DAMAGE_LIGHTNING       = 1 << 4,
+    DAMAGE_PIERCING        = 1 << 5,
+    DAMAGE_POISON          = 1 << 6,
+    DAMAGE_SLASHING        = 1 << 7
+} damage_flag_t;
+
+typedef uint16_t damage_mask_t;
+
+/* Healing type flags */
+typedef enum {
+    HEALING_KIND_NONE = 0,
+    HEALING_KIND_HP,
+    HEALING_KIND_MP,
+} healing_kind_t;
 
 typedef uint16_t damage_mask_t;
 
@@ -114,7 +122,7 @@ typedef enum {
  * public variables
  ***************************************************/
 extern const vector_t directions[];
-extern const dice_t dice[];
+extern const dice_roll_t dice[];
 extern const int8_t modifiers[]; 
 
 /***************************************************
@@ -123,7 +131,7 @@ extern const int8_t modifiers[];
 
 void game_init(void);
 
-uint8_t game_roll_dice(dice_roll_t dice);
+uint8_t game_roll_dice(dice_kind_t dice);
 
 direction_t game_get_dir_or_cancel_b( void );
 

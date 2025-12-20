@@ -16,6 +16,8 @@
 #include "ecs/components/PAGE50/item_comp.h"
 #include "ecs/components/PAGE50/creature_comp.h"
 #include "ecs/components/PAGE50/name_comp.h"
+#include "ecs/components/PAGE50/effect_comp.h"
+
 #include "ecs/systems/PAGE42/event_system.h"
 
 #include "game/game.h"
@@ -67,7 +69,7 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
 
 /* Damage system */
 void system_damage_init(void);
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_kind_t kind);
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag);
 bool_t system_damage_try_die(entity_id_t creature);
 
 /* Item system*/
@@ -77,6 +79,9 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
 /* Effect system */
 void system_effect_init(void);
 void system_effect_handle_event(const event_t event);
+void system_effect_process_entity_turn(entity_id_t entity);
+void system_effect_cleanup_entity(entity_id_t source);
+int8_t system_effect_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute);
 
 /* Event System */
 void system_event_init(void);
@@ -88,6 +93,9 @@ bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
 void system_equipment_clean_up(entity_id_t id);
+
+/* Healing System*/
+int8_t system_healing_try_take_healing(entity_id_t creature, int8_t amount, healing_kind_t kind);
 
 /* Monster system*/
 void system_monster_init(void);

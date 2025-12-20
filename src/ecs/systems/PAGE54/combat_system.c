@@ -42,7 +42,7 @@ static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_criti
 
 static bool_t wielding_melee_weapon(entity_id_t actor);
 static entity_id_t get_melee_source(entity_id_t attacker);
-static uint8_t roll_damage_dice(dice_roll_t dice, bool_t crit);
+static uint8_t roll_damage_dice(dice_kind_t dice, bool_t crit);
 
 
 /***************************************************
@@ -55,7 +55,7 @@ void combat_system_init(void)
 bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     attack_roll_t attack_roll;
-    damage_kind_t damage_type;
+    damage_flag_t damage_type;
     uint8_t damage_roll;
     event_t event;
 
@@ -355,7 +355,7 @@ static entity_id_t get_melee_source(entity_id_t attacker)
 /*
  * @brief rolls a damage die and optionally doubles it for critical
  */
-static uint8_t roll_damage_dice(dice_roll_t dice, bool_t crit)
+static uint8_t roll_damage_dice(dice_kind_t dice, bool_t crit)
 {
     uint8_t r = game_roll_dice(dice);
     if (crit)

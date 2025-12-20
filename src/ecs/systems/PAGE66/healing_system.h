@@ -23,7 +23,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-int8_t healing_system_try_take_healing(entity_id_t creature, int8_t healing, healing_type_t type);
-bool_t healing_system_try_die(entity_id_t creature);
+int8_t healing_system_try(entity_id_t actor, int8_t amount, healing_kind_t kind);
 
 #endif // HEALING_SYSTEM_H
