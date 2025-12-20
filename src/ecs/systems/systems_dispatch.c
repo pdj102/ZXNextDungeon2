@@ -24,6 +24,7 @@
 #include "ecs/systems/PAGE58/stats_system.h"
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE62/consumable_system.h"
+#include "ecs/systems/PAGE64/name_system.h"
 
 /***************************************************
  * private defines
@@ -480,6 +481,19 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
 
     return entity;
+}
+
+/* Name system*/
+void system_name_print(text_window_t *win, name_id_t name)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_NAME_SYSTEM);
+
+    name_system_print(win, name);
+
+    ZXN_WRITE_MMU6(current_bank);     
 }
 
 /* Player System */

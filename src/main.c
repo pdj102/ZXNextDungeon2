@@ -38,8 +38,6 @@ int main(void) {
 
    components_init();
 
-    // util_abort("Abort");
-
    systems_init();
 
    game_init();

@@ -392,29 +392,17 @@ void comp_name_remove(entity_id_t entity)
     ZXN_WRITE_MMU6(current_bank); 
 }
 
-void system_name_print(text_window_t *win, name_id_t name)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_COMP_1);
-
-    system_name_print(win, name);
-
-    ZXN_WRITE_MMU6(current_bank);     
-}
-
 /* player */
 void comp_player_add(entity_id_t entity)
 {
     uint8_t current_bank;
 
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU7(PAGE_COMP_2);          /* Page actions system into 8k MMU slot 6 */    
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU7(PAGE_COMP_2);
 
     player_add(entity);
 
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+    ZXN_WRITE_MMU6(current_bank);
 }
 
 void comp_player_remove(entity_id_t entity)
