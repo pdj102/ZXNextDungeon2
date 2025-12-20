@@ -31,7 +31,7 @@
  /***************************************************
  * private function prototypes
  ***************************************************/
- int8_t calc_attack_roll(entity_id_t attacker, attack_type_t attack_type);
+ int8_t calc_attack_roll(entity_id_t attacker, attack_kind_t attack_type);
 
 /***************************************************
  * public functions

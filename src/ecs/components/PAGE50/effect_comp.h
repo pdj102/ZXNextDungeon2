@@ -29,26 +29,28 @@ typedef enum {
     EFFECT_NONE = 0,
     EFFECT_RESTORE_HP,
     EFFECT_DAMAGE_HP,
-} effect_type_t;
+} effect_kind_t;
 
 typedef enum {
-    TRIGGER_NONE = 0,
-    TRIGGER_CONSUMED,       /* eat food, quaff potion*/
-    TRIGGER_EQUIPPED,       /* wield / wear */
-    TRIGGER_UNEQUIPPED,        
-    TRIGGER_HIT,            /* struck by */
-    TRIGGER_STEP,           /* stepped on */
-    TRIGGER_TURN,           /* turn occurs*/
-} effect_trigger_t;
+    TRIGGER_NONE            = 0,
+    TRIGGER_ON_CONSUMED     = 1 << 0,       /* eat food, quaff potion*/
+    TRIGGER_ON_EQUIPPED     = 2 << 0,       /* wield / wear */
+    TRIGGER_ON_UNEQUIPPED   = 3 << 0,        
+    TRIGGER_ON_HIT          = 4 << 0,            /* struck by */
+    TRIGGER_ON_STEP         = 5 << 0,           /* stepped on */
+    TRIGGER_ON_TURN         = 6 << 0,           /* turn occurs*/
+} trigger_kind_t;
+
+typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 
 /* A single effect  */
 typedef struct {
-    effect_type_t type;         /* type of effect */
+    effect_kind_t kind;         /* kind of effect */
     int8_t value;               /* value of effect */
     uint8_t duration;           /* duration of effect. 0 = instant effect*/
     uint8_t stat;               /* stat to affect */
     uint8_t status;             /* status to affect */
-    effect_trigger_t trigger;   /* condition that determines when an effect is applied */
+    trigger_mask_t triggers;    /* triggers that trigger this effect */
 } effect_comp_t;
 
 typedef effect_comp_t effect_components_t[MAX_ENTITIES]; 

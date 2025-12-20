@@ -41,7 +41,7 @@ void effect_system_handle_event(const event_t event)
         case EVENT_CONSUMED:
             ctx.source = event.target;  /* This is correct - The event Player (source) quaffs Potion (target) becomes Apply Potion's effect (source) to Player (target) */
             ctx.target = event.source;
-            ctx.trigger = TRIGGER_CONSUMED;
+            ctx.trigger = TRIGGER_ON_CONSUMED;
             effect_system_apply_effects_by_source(ctx);
             break;
         default:
@@ -60,7 +60,7 @@ static void effect_system_apply_effects_by_source( const effect_apply_t ctx)
         return;
     }
 
-    if (g.effect_components[ctx.source].duration == 0 && (g.effect_components[ctx.source].trigger & ctx.trigger))
+    if (g.effect_components[ctx.source].duration == 0 && (g.effect_components[ctx.source].triggers & ctx.trigger))
     {
         apply_instant_effect(ctx);
     }
@@ -69,12 +69,13 @@ static void effect_system_apply_effects_by_source( const effect_apply_t ctx)
 
 static void apply_instant_effect(const effect_apply_t ctx)
 {
-    switch (g.effect_components[ctx.source].type)
+    switch (g.effect_components[ctx.source].kind)
     {
         case EFFECT_DAMAGE_HP:
             system_damage_try_take_damage(ctx.target, g.effect_components[ctx.source].value, DAMAGE_KIND_NONE);
             break;
         case EFFECT_RESTORE_HP:
+            system_healing_try_take_healing(ctx.target, g.effect_components[ctx.source].value, HEALING_KIND_HP);
             text_printf(&g.msg_win, "You feel better!\n");
             break;
         default:

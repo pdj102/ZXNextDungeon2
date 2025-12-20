@@ -89,6 +89,9 @@ bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
 void system_equipment_clean_up(entity_id_t id);
 
+/* Healing System*/
+int8_t system_healing_try_take_healing(entity_id_t creature, int8_t amount, healing_kind_t kind);
+
 /* Monster system*/
 void system_monster_init(void);
 entity_id_t system_monster_create(creature_kind_t kind);

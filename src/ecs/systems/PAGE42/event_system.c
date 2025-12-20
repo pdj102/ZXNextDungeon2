@@ -53,6 +53,8 @@ void event_system_emit(const event_t event)
         case EVENT_PICKED_UP:
         case EVENT_STOOD_ON:
         case EVENT_UNEQUIPPED:
+        case EVENT_HEALED_HP:
+        case EVENT_HEALED_MP:
             break;
         default:
             util_abort("Unknown event type");

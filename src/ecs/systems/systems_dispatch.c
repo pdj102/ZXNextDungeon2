@@ -25,6 +25,7 @@
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE62/consumable_system.h"
 #include "ecs/systems/PAGE64/name_system.h"
+#include "ecs/systems/PAGE66/healing_system.h"
 
 /***************************************************
  * private defines
@@ -481,6 +482,22 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
 
     return entity;
+}
+
+/* Healing System*/
+int8_t system_healing_try_take_healing(entity_id_t actor, int8_t amount, healing_kind_t kind)
+{
+    uint8_t current_bank;
+    bool_t result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_HEALING_SYSTEM);
+
+    result = healing_system_try(actor, amount, kind);
+
+    ZXN_WRITE_MMU6(current_bank);         
+
+    return result; 
 }
 
 /* Name system*/

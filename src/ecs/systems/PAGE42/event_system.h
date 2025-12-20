@@ -39,6 +39,8 @@ typedef enum {
     EVENT_DAMAGED_RESIST,
     EVENT_DAMAGED_VULNERABLE,
     EVENT_CONSUMED,
+    EVENT_HEALED_HP,
+    EVENT_HEALED_MP,
     EVENT_COUNT
 } event_type_t;
 

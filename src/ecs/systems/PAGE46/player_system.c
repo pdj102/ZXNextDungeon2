@@ -216,56 +216,26 @@ static void inventory(void)
 
 void equip(void)
 {
-    entity_id_t item;
-    uint8_t index;
-    uint8_t count;
-
-    count = system_container_count(g.player.id);
-
-    if (count == 0)
-    {
-        text_printf(&g.msg_win, "Nothing in inventory\n");
+    entity_id_t item = prompt_inventory_item("Select item to equip");
+    if (item == ENTITY_ID_INVALID)
         return;
-    }
 
-    display_inventory();
-
-    index = prompt_letter(count - 1);
-
-    if (index == 99)
+    if (!system_equipment_try_equip(g.player.id, item))
     {
-        return;
-    }
-   
-    item = system_container_get_at(g.player.id, index);
-    system_equipment_try_equip(g.player.id, item);    
+        text_printf(&g.msg_win, "You cannot equip that\n");
+    } 
 }
 
 static void unequip(void)
 {
-    entity_id_t item;
-    uint8_t index;
-    uint8_t count;
-
-    count = system_container_count(g.player.id);
-
-    if (count == 0)
-    {
-        text_printf(&g.msg_win, "Nothing in inventory\n");
+    entity_id_t item = prompt_inventory_item("Select item to unequip");
+    if (item == ENTITY_ID_INVALID)
         return;
-    }
 
-    display_inventory();
-
-    index = prompt_letter(count - 1);
-
-    if (index == 99)
+    if (!system_equipment_try_unequip(g.player.id, item))
     {
-        return;
+        text_printf(&g.msg_win, "You cannot unequip that\n");
     }
-   
-    item = system_container_get_at(g.player.id, index);
-    system_equipment_try_unequip(g.player.id, item);
 }
 
 static entity_id_t prompt_inventory_item(const char *prompt_msg)

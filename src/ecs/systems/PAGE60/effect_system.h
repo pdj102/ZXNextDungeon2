@@ -26,7 +26,7 @@ typedef struct
 {
     entity_id_t     source;   /* Entity providing the effect (item, weapon, trap, aura, etc.) */
     entity_id_t     target;   /* Entity receiving the effect */
-    effect_trigger_t trigger; /* Why the effect is being applied (consumed, hit, equipped, etc.) */
+    trigger_kind_t trigger; /* Why the effect is being applied (consumed, hit, equipped, etc.) */
 } effect_apply_t;
 
 /***************************************************
