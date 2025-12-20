@@ -82,8 +82,6 @@ typedef creature_comp_t creature_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void creature_init(void);
-
 uint8_t creature_add(entity_id_t entity, creature_kind_t kind);
 
 void creature_remove(entity_id_t entity);

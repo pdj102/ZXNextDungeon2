@@ -37,6 +37,7 @@ typedef enum {
     COMPONENT_EFFECT,
     COMPONENT_AI,
     COMPONENT_CONSUMABLE,
+    COMPONENT_NAME,
     COMPONENT_MAX
 } component_id_t;
 

@@ -14,7 +14,7 @@
 
 #include "ecs/components/PAGE50/equippable_comp.h"
 #include "ecs/components/PAGE50/equipped_comp.h"
-#include "ecs/components/PAGE50/slots_comp.h"
+#include "ecs/components/PAGE51/slots_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 

@@ -21,14 +21,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void equipped_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        g.equipped_components[i].equipped_by = ENTITY_ID_INVALID;  
-    }
-}
-
 uint8_t equipped_add(entity_id_t entity, entity_id_t equipped_by)
 {
     util_assert(entity < MAX_ENTITIES);

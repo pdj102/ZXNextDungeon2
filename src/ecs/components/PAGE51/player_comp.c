@@ -26,20 +26,12 @@
 /***************************************************
  * public functions
  ***************************************************/
-void player_init(void)
-{
-    g.player.id == ENTITY_ID_INVALID;
-}
-
 /*
  * There can only be one player ctrl component 
 */
 void player_add(entity_id_t id)
 {
     util_assert(id < MAX_ENTITIES);
-    util_assert( g.player.id == ENTITY_ID_INVALID);
-
-    g.player.id = id;
 
     entity_set_component(id, COMPONENT_PLAYER); /* set entity player_ctrl component mask */
 }

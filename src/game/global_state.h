@@ -9,20 +9,24 @@
 
 #include "ecs/entity_priv.h"
 #include "ecs/components/PAGE50/attack_comp.h"
+#include "ecs/components/PAGE50/destructable_comp.h"
 #include "ecs/components/PAGE50/item_comp.h"
 #include "ecs/components/PAGE50/location_comp.h"
-#include "ecs/components/PAGE50/renderable_comp.h"
+#include "ecs/components/PAGE50/effect_comp.h"
+#include "ecs/components/PAGE50/name_comp.h"
+
 #include "ecs/components/PAGE50/creature_comp.h"
-#include "ecs/components/PAGE50/stats_comp.h"
+
 #include "ecs/components/PAGE50/container_comp.h"
 #include "ecs/components/PAGE50/contained_comp.h"
-#include "ecs/components/PAGE50/slots_comp.h"
 #include "ecs/components/PAGE50/equippable_comp.h"
 #include "ecs/components/PAGE50/equipped_comp.h"
-#include "ecs/components/PAGE50/player_comp.h"
-#include "ecs/components/PAGE50/timer_comp.h"
-#include "ecs/components/PAGE50/destructable_comp.h"
-#include "ecs/components/PAGE50/effect_comp.h"
+
+#include "ecs/components/PAGE51/player_comp.h"
+#include "ecs/components/PAGE51/renderable_comp.h"
+#include "ecs/components/PAGE51/stats_comp.h"
+#include "ecs/components/PAGE51/slots_comp.h"
+#include "ecs/components/PAGE51/timer_comp.h"
 
 #include "game/map_priv.h"
 
@@ -56,6 +60,7 @@ typedef struct
     timer_components_t timer_components; 
     destructable_components_t destructable_components;
     effect_components_t effect_components;
+    name_components_t name_components;
 
     /* World */
     map_t map; /* the map */
@@ -67,6 +72,7 @@ typedef struct
     text_window_t assert_win;
 
 } global_state_t;
+
 
 
 /***************************************************

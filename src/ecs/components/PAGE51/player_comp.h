@@ -25,7 +25,6 @@ typedef struct {
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_init(void);
 void player_add(entity_id_t entity);
 void player_remove(entity_id_t entity);
 

@@ -33,13 +33,17 @@ void clean_up_and_destroy(void);
 int main(void) {
 
    core_init_bank();
-   
+
    entity_init();
-   
+
    components_init();
-   
+
+    // util_abort("Abort");
+
    systems_init();
+
    game_init();
+
 
    map_gen();
 
@@ -69,6 +73,8 @@ int main(void) {
 
     entity_id_t e7 = system_item_create(ITEM_BREAD, 1);
     comp_location_add(e7, 6, 15);
+
+    util_info("map render");
 
     map_render();
 

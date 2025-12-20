@@ -1,24 +1,21 @@
 /**
- * @file consumable_comp.h
+ * @file name_system.h
  * @author Paul Johnson
- * @brief ECS consumable component
+ * @brief name system for ECS
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef CONSUMABLE_COMP_H
-#define CONSUMABLE_COMP_H
+#ifndef NAME_SYSTEM_H
+#define NAME_SYSTEM_H
 
 #include <stdint.h>
 
-#include "core/util.h"
-
 #include "ecs/entity.h"
+#include "ecs/components/PAGE50/name_comp.h"
 
-/***************************************************
- * public defines
- ***************************************************/
+#include "game/game.h"
 
 /***************************************************
  * public types
@@ -27,8 +24,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void consumable_add(entity_id_t entity);
+void name_system_print(text_window_t *win, name_id_t name);
 
-void consumable_remove(entity_id_t entity);
-
-#endif // CONSUMABLE_COMP_H
+#endif // NAME_SYSTEM_H

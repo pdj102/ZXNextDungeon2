@@ -13,6 +13,8 @@
 
 #include "ecs/systems/systems_dispatch.h"
 
+#include "ecs/components/components.h"
+
 #include "game/game.h"
 #include "game/global_state.h"
 
@@ -89,7 +91,7 @@ static void ui_nl(void);
  * functions
  ***************************************************/
 
- void ui_on_event(event_t event)
+ void ui_on_event(const event_t event)
  {
     bool_t subject_is_player = ui_is_player(event.source);
 
@@ -135,7 +137,7 @@ static void ui_print_subject(entity_id_t e)
     if (ui_is_player(e))
         text_print_string(&g.msg_win, "You");
     else
-        system_monster_print_name(&g.msg_win, g.creature_components[e].kind);
+        system_name_print(&g.msg_win, g.name_components[e]);
 }
 
 static void ui_print_object(entity_id_t e)
@@ -143,7 +145,10 @@ static void ui_print_object(entity_id_t e)
     if (ui_is_player(e))
         text_print_string(&g.msg_win, "you");
     else
-        system_monster_print_name(&g.msg_win, g.creature_components[e].kind);
+    {
+        text_printf(&g.msg_win, "Entity: %d\n", e);
+        system_name_print(&g.msg_win, g.name_components[e]);
+    }
 }
 
 static void ui_print_verb(event_type_t type, bool_t subject_is_player)

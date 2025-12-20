@@ -35,8 +35,6 @@ typedef stats_comp_t stats_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void stats_init(void);
-
 void stats_add(entity_id_t entity, const stats_comp_t stats);
 
 void stats_remove(entity_id_t entity);

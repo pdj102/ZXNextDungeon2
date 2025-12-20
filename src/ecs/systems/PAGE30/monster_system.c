@@ -8,6 +8,7 @@
 #include "monster_system.h"
 
 #include "ecs/components/components.h"
+#include "ecs/components/PAGE50/name_comp.h"
 
 #include "game/global_state.h"
 
@@ -134,12 +135,12 @@ const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */    
 };
 
-const char *monster_name_base[CREATURE_KIND_COUNT] = 
+const name_id_t creature_name_base[CREATURE_KIND_COUNT] = 
 {
-    [CREATURE_NONE] = "NONE",
+    [CREATURE_NONE] = NAME_NONE,
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */      
-    [CREATURE_RAT] = "Rat",
+    [CREATURE_RAT] = NAME_RAT,
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -148,12 +149,12 @@ const char *monster_name_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = "Commoner",
-    [CREATURE_PLAYER] = "You",
+    [CREATURE_COMMONER] = NAME_COMMONER,
+    [CREATURE_PLAYER] = NAME_PLAYER,
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = "Witherweed"
+    [CREATURE_WITHERWEED] = NAME_WITHERWEED
     /* MONSTER_CLASS_UNDEAD */
 };
 
@@ -235,6 +236,9 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* Add timer component*/
     comp_timer_add(id, speed_to_ticks(monster_stats_base[kind].speed ));
 
+    /* All monsters have a name component*/
+    comp_name_add(id, creature_name_base[kind]);
+
     return id;
 }
 
@@ -244,9 +248,8 @@ entity_id_t monster_system_create_player( void )
     if (id == ENTITY_ID_INVALID)
         return ENTITY_ID_INVALID;
 
-    player_init();
-
     /* Add player control component */
+    g.player.id = id;
     comp_player_add(id);
 
     /* Add slots component */
@@ -255,7 +258,4 @@ entity_id_t monster_system_create_player( void )
     return id;
 }
 
- void monster_system_print_name(text_window_t *win, creature_kind_t kind)
- {
-    text_print_string(win, monster_name_base[kind]);
- }
+

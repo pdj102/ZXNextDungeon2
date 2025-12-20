@@ -93,8 +93,6 @@ typedef item_comp_t item_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void item_init(void);
-
 void item_add(entity_id_t entity, item_kind_t type, uint8_t quantity);
 
 void item_remove(entity_id_t entity);

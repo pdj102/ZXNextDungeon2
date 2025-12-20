@@ -33,7 +33,6 @@ typedef renderable_comp_t renderable_components_t[MAX_ENTITIES]; /* renderable c
 /***************************************************
  * public function prototypes
  ***************************************************/
-void renderable_init(void);
 void renderable_add(entity_id_t entity, const zxnext_tile_t tile);
 void renderable_remove(entity_id_t entity);
 

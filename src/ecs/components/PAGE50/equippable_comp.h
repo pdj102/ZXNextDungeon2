@@ -51,8 +51,6 @@ typedef equippable_comp_t equippable_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void equippable_init(void);
-
 void equippable_add(entity_id_t entity, equippable_slot_t type);
 
 void equippable_remove(entity_id_t entity);

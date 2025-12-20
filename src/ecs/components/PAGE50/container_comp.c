@@ -23,13 +23,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void container_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++) {
-        g.container_components[i].head = ENTITY_ID_INVALID; /* mark all containers as empty */
-    }
-}
-
 void container_add(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);

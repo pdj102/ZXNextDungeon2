@@ -63,13 +63,15 @@
 #define PAGE_ACTIONS_SYSTEM   44
 #define PAGE_PLAYER_SYSTEM    46
 #define PAGE_EQUIPMENT_SYSTEM 48
-#define PAGE_COMP             50
+#define PAGE_COMP_1           50
+#define PAGE_COMP_2           51
 #define PAGE_MOVEMENT_SYSTEM  52
 #define PAGE_COMBAT_SYSTEM    54
 #define PAGE_DAMAGE_SYSTEM    56
 #define PAGE_STATS_SYSTEM     58
 #define PAGE_EFFECT_SYSTEM    60
 #define PAGE_CONSUMABLE_SYSTEM    62
+#define PAGE_NAME_SYSTEM      64
 
 
 /***************************************************

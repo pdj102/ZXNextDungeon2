@@ -5,7 +5,7 @@
  * 
  */
 
-#include "ecs/components/PAGE50/stats_comp.h"
+#include "ecs/components/PAGE51/stats_comp.h"
 
 #include <arch/zxn.h>
 
@@ -22,14 +22,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void stats_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        // g.stats_components[i].kind = CREATURE_NONE; /* mark all creatures as none */
-    }
-}
-
 void stats_add(entity_id_t entity, const stats_comp_t stats)
 {
     util_assert(entity < MAX_ENTITIES);

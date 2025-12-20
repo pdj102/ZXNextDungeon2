@@ -33,8 +33,7 @@ typedef contained_comp_t contained_components_t[MAX_ENTITIES]; /* contained comp
 /***************************************************
  * public function prototypes
  ***************************************************/
-void contained_init(void);
-void contained_add(entity_id_t entity);
+void contained_add(entity_id_t entity, entity_id_t container, entity_id_t next);
 void contained_remove(entity_id_t entity);
 
 #endif // CONTAINED_COMP_H

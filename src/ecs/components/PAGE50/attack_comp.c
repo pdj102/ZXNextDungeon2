@@ -25,11 +25,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void attack_init(void)
-{
-
-}
-
 void melee_add(entity_id_t entity, const attack_comp_t attack)
 {
     util_assert(entity < MAX_ENTITIES);

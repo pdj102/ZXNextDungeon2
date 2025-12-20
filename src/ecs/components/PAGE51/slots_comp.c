@@ -23,8 +23,13 @@
 /***************************************************
  * public functions
  ***************************************************/
-void slots_init(void)
+/*
+ * There can only be one player slot component 
+*/
+void slots_add(entity_id_t id)
 {
+    util_assert(id < MAX_ENTITIES);
+
     g.slots[SLOT_HEAD] = ENTITY_ID_INVALID;
     g.slots[SLOT_NECK] = ENTITY_ID_INVALID;
     g.slots[SLOT_BODY] = ENTITY_ID_INVALID;
@@ -37,14 +42,6 @@ void slots_init(void)
     g.slots[SLOT_MELEE] = ENTITY_ID_INVALID;
     g.slots[SLOT_RANGED] = ENTITY_ID_INVALID;
     g.slots[SLOT_AMMO] = ENTITY_ID_INVALID;
-}
-
-/*
- * There can only be one player slot component 
-*/
-void slots_add(entity_id_t id)
-{
-    util_assert(id < MAX_ENTITIES);
 
     entity_set_component(id, COMPONENT_SLOTS); 
 }

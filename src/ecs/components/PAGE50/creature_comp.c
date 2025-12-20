@@ -21,14 +21,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void creature_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        // g.creature_components[i].kind = CREATURE_NONE; /* mark all creatures as none */
-    }
-}
-
 uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
 {
     util_assert(entity < MAX_ENTITIES);

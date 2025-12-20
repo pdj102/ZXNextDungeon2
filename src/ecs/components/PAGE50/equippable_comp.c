@@ -23,14 +23,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void equippable_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        g.equippable_components[i].slot = EQUIPPABLE_NONE;
-    }
-}
-
 void equippable_add(entity_id_t entity, equippable_slot_t slot)
 {
     util_assert(entity < MAX_ENTITIES);

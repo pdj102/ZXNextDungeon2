@@ -1,19 +1,14 @@
 /**
- * @file consumable_comp.c
+ * @file name_comp.c
  * @author Paul Johnson
- * @brief ECS consumable component
- * 
- * @copyright Copyright (c) 2025
+ * @brief 
  * 
  */
 
-#include "ecs/components/PAGE50/consumable_comp.h"
-
+#include "ecs/components/PAGE50/name_comp.h"
 #include "ecs/entity.h"
 
 #include "game/global_state.h"
-#include "core/util.h"
-
 
 /***************************************************
  * private variables
@@ -23,19 +18,23 @@
 /***************************************************
  * public functions
  ***************************************************/
-void consumable_add(entity_id_t entity)
+void name_add(entity_id_t entity, name_id_t name)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_CONSUMABLE)); 
+    util_assert(!entity_has_component(entity, COMPONENT_NAME));
 
-    entity_set_component(entity, COMPONENT_CONSUMABLE); 
+    g.name_components[entity] = name; 
+
+    entity_set_component(entity, COMPONENT_NAME);
 }
 
-void consumable_remove(entity_id_t entity)
+void name_remove(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
-    entity_clear_component(entity, COMPONENT_CONSUMABLE); 
+    entity_clear_component(entity, COMPONENT_NAME);
 }
+
+
 
  /***************************************************
  * private functions

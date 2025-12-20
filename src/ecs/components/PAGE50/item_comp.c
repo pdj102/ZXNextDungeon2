@@ -26,15 +26,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void item_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        g.item_components[i].kind = ITEM_NONE; /* mark all items as none */
-        g.item_components[i].quantity = 0;    /* clear quantity */
-    }
-}
-
 void item_add(entity_id_t entity, item_kind_t kind, uint8_t quantity)
 {
     util_assert(entity < MAX_ENTITIES);

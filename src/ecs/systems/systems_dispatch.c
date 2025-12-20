@@ -453,6 +453,35 @@ void system_event_emit(const event_t event)
 
 }
 
+/* Item system*/
+
+void system_item_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    item_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+}
+
+entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = item_system_create(kind, quantity);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
 /* Player System */
 void system_player_init(void)
 {
@@ -627,19 +656,6 @@ entity_id_t system_monster_create_player( void )
     return entity;
 }
 
-void system_monster_print_name(text_window_t *win, creature_kind_t kind)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    monster_system_print_name(win, kind);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
-
-}
-
 /* Movement system */
 void system_movement_init(void)
 {
@@ -676,44 +692,6 @@ bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
     return result;    
 }
 
-/* Item system*/
+/* Name system */
+void system_name_print(text_window_t *win, name_id_t name);
 
-void system_item_init(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    item_system_init();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
-}
-
-entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
-{
-    entity_id_t entity;
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    entity = item_system_create(kind, quantity);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
-
-    return entity;
-}
-
-void system_item_print_name(text_window_t *win, item_kind_t kind)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    item_system_print_name(win, kind);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
-
-}

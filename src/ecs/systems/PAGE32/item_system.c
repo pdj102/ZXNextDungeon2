@@ -8,6 +8,7 @@
 
 #include "ecs/components/components.h"
 #include "ecs/components/PAGE50/effect_comp.h"
+#include "ecs/components/PAGE50/name_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
 
@@ -40,28 +41,28 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     [ITEM_KEY] = EQUIPPABLE_NONE
 };
 
-const char *name_base[ITEM_KIND_COUNT] = 
+const name_id_t item_name_base[ITEM_KIND_COUNT] = 
 {
-    [ITEM_NONE] = "NONE",
+    [ITEM_NONE] = NAME_NONE,
     /* Melee weapons */
-    [ITEM_CLUB] = "club",
-    [ITEM_SHORT_SWORD] = "short sword",
+    [ITEM_CLUB] = NAME_CLUB,
+    [ITEM_SHORT_SWORD] = NAME_SHORT_SWORD,
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = "leather armour",
+    [ITEM_LEATHER_ARMOUR] = NAME_LEATHER_ARMOUR,
     /* Shields */
-    [ITEM_SHIELD] = "shield",
+    [ITEM_SHIELD] = NAME_SHIELD,
     /* Ammo */
     /* Potions */    
-    [ITEM_POTION_OF_HEALING] = "potion of healing",
+    [ITEM_POTION_OF_HEALING] = NAME_POTION_OF_HEALING,
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = "bread",
+    [ITEM_BREAD] = NAME_BREAD,
     /* Wearable */
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = "key"
+    [ITEM_KEY] = NAME_KEY
 };
 
 const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
@@ -193,18 +194,16 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     if (effect_base[kind].type != EFFECT_NONE)
     {
         comp_effect_add(id, effect_base[kind]);
-    }    
+    }
 
     /* If item is consumable add consumable component e.g. bread, potions*/
     if (consumable_base[kind] == 1)
     {
         comp_consumable_add(id);
-    }    
+    }
+
+    /* All items have a name component*/
+    comp_name_add(id, item_name_base[kind]);
 
     return id;
-}
-
-void item_system_print_name(text_window_t *win, item_kind_t kind)
-{
-    text_print_string(win, name_base[kind]);
 }

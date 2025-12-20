@@ -30,8 +30,6 @@ typedef equipped_comp_t equipped_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void equipped_init(void);
-
 uint8_t equipped_add(entity_id_t entity, entity_id_t equipped_by);
 
 void equipped_remove(entity_id_t entity);

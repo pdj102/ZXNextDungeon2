@@ -303,7 +303,7 @@ static void display_inventory(void)
     while (item != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
-        system_item_print_name(&g.main_win, g.item_components[item].kind);
+        system_name_print(&g.msg_win, g.name_components[item]);
 
         if (system_equipment_is_equipped(g.player.id, item))
         {

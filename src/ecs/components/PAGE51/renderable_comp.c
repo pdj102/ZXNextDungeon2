@@ -26,15 +26,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void renderable_init(void)
-{
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
-    {
-        g.renderable_components[i].tile.tile_id = 'X'; 
-        g.renderable_components[i].tile.tile_attr = 0;
-    }
-}
-
 void renderable_add(entity_id_t id, const zxnext_tile_t tile )
 {
     util_assert(id < MAX_ENTITIES);

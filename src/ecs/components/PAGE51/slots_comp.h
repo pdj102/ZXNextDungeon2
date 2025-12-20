@@ -41,7 +41,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void slots_init(void);
 void slots_add(entity_id_t entity);
 void slots_remove(entity_id_t entity);
 

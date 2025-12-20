@@ -23,11 +23,6 @@
 /***************************************************
  * public functions
  ***************************************************/
-void effect_init(void)
-{
-
-}
-
 void effect_add(entity_id_t entity, const effect_comp_t effect)
 {
     util_assert(entity < MAX_ENTITIES);

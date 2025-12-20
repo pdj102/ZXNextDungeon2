@@ -142,11 +142,12 @@ void container_system_add(entity_id_t container, entity_id_t item)
     util_assert(!entity_has_component(item, COMPONENT_CONTAINED)); /* must not already be contained */
     util_assert(!entity_has_component(item, COMPONENT_LOCATION)); /* must not be placed on the map */
 
-    comp_contained_add(item);
+    /* Add contained component */
+    /* Contained item holds a reference to container */
+    /* Set next to current container head */
+    comp_contained_add(item, container, g.container_components[container].head);
 
-    g.contained_components[item].next = g.container_components[container].head; /* set next to current container head */
     g.container_components[container].head = item; /* set container head to entity */
-    g.contained_components[item].container = container;   /* contained item has a reference to container */
     g.container_components[container].count++;
 }
 

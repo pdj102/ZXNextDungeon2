@@ -31,6 +31,4 @@ entity_id_t monster_system_create(creature_kind_t kind);
 
 entity_id_t monster_system_create_player( void );
 
-void monster_system_print_name(text_window_t *win, creature_kind_t kind);
-
 #endif // MONSTER_SYSTEM_H
