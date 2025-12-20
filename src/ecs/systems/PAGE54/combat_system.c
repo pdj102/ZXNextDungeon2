@@ -55,7 +55,7 @@ void combat_system_init(void)
 bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     attack_roll_t attack_roll;
-    damage_type_t damage_type;
+    damage_kind_t damage_type;
     uint8_t damage_roll;
     event_t event;
 
@@ -70,7 +70,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     }    
 
     /* target must have stats and location component */
-    if (!entity_has_component(target, COMPONENT_DESTRUCTABLE))
+    if (!entity_has_component(target, COMPONENT_DESTRUCTIBLE))
     {
         return 0;
     }
@@ -87,11 +87,11 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
     /* Get the damage type of the weapon or basic melee attack */
     if (wielding_melee_weapon(attacker))
     {
-        damage_type = g.melee_components[g.slots[SLOT_HANDS]].damage_type;
+        damage_type = g.melee_components[g.slots[SLOT_HANDS]].damage_kind;
     }
     else
     {
-        damage_type = g.melee_components[attacker].damage_type;
+        damage_type = g.melee_components[attacker].damage_kind;
     }
 
     event.source = attacker;
@@ -231,7 +231,7 @@ static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker)
  */
 static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target)
 {
-    int8_t ac = g.destructable_components[target].ac;
+    int8_t ac = g.destructible_components[target].ac;
 
     if (roll.d20 == 1)
         return ATTACK_MISS;

@@ -196,15 +196,15 @@
 
 ---
 
-### 🪜 **Milestone 115 — Implement destructable component**
+### 🪜 **Milestone 115 — Implement destructible component**
 
 > *Goal: Entities can be tageted, take damage and be destroyed*
 
-* [✅] Implement destructable component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
-* [✅] Implement destructable object - vase
-* [✅] Attach to destructable entities
+* [✅] Implement destructible component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
+* [✅] Implement destructible object - vase
+* [✅] Attach to destructible entities
 
-[ ] *End result: Entities like monsters, doors, and traps can be destructable*
+[ ] *End result: Entities like monsters, doors, and traps can be destructible*
 
 ---
 
@@ -317,12 +317,12 @@
 
 * [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
 * [✅] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
-* [ ] Implment `effect_system`
-* [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
-* [ ] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
-* [ ] Add message log system for food `effect` events e.g. "You feel better"
+* [✅] Implment `effect_system`
+* [✅] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
+* [✅] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
+* [✅] Add message log system for food `effect` events e.g. "You feel better"
 
-[ ] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
+[✅] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
 
 ---
 
@@ -335,7 +335,7 @@
 * [ ] Implement `status_flags_t` flags e.g. poisoned
 * [ ] Extend `effect type` enum with effect_apply_status, effect_cure_status, effect_stat_mod
 * [ ] Place active effects in system banked memory as only ever access via system
-* [ ] Extend `apply_effects_by_source` to handle applying active effects to the actor
+* [ ] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
 * [ ] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
 * [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
 

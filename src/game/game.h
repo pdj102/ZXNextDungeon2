@@ -84,17 +84,20 @@ typedef enum {
 } attack_type_t;
 
 /* Damage type flags */
-#define DAMAGE_NONE 0
-#define DAMAGE_ACID 1 << 1
-#define DAMAGE_BLUDGEONING 1 << 2
-#define DAMAGE_COLD 1 << 3 
-#define DAMAGE_FIRE 1 << 4
-#define DAMAGE_LIGHTNING 1 << 5 
-#define DAMAGE_PIERCING 1 << 6 
-#define DAMAGE_POISON 1 << 7
-#define DAMAGE_SLASHING 1 <<8
+typedef enum {
+    DAMAGE_KIND_NONE = 0,
+    DAMAGE_KIND_ACID,
+    DAMAGE_KIND_BLUDGEONING,
+    DAMAGE_KIND_COLD,
+    DAMAGE_KIND_FIRE,
+    DAMAGE_KIND_LIGHTNING,
+    DAMAGE_KIND_PIERCING,
+    DAMAGE_KIND_POISON,
+    DAMAGE_KIND_SLASHING,
+    DAMAGE_KIND_COUNT
+} damage_kind_t;
 
-typedef uint8_t damage_type_t;
+typedef uint16_t damage_mask_t;
 
 typedef enum {
     STAT_NONE = 0,

@@ -192,28 +192,28 @@ void comp_creature_remove(entity_id_t entity)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
 }
 
-/* destructable */
-void comp_destructable_add(entity_id_t entity, const destructable_comp_t destructable)
+/* destructible */
+void comp_destructible_add(entity_id_t entity, const destructible_comp_t destructible)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_COMP_1);
 
-    destructable_add(entity, destructable);
+    destructible_add(entity, destructible);
 
     ZXN_WRITE_MMU6(current_bank);
 
 }
 
-void comp_destructable_remove(entity_id_t entity)
+void comp_destructible_remove(entity_id_t entity)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     
     ZXN_WRITE_MMU6(PAGE_COMP_1);          
 
-    destructable_remove(entity);
+    destructible_remove(entity);
 
     ZXN_WRITE_MMU6(current_bank);           
 }

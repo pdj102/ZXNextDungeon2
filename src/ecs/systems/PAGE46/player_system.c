@@ -148,7 +148,7 @@ static void melee_attack(void)
 
     while (target != ENTITY_ID_INVALID)
     {
-        if (entity_has_component(target, COMPONENT_DESTRUCTABLE))
+        if (entity_has_component(target, COMPONENT_DESTRUCTIBLE))
         {
             system_combat_try_melee_attack(g.player.id, target);
             return;

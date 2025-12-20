@@ -67,7 +67,7 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
 
 /* Damage system */
 void system_damage_init(void);
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type);
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_kind_t kind);
 bool_t system_damage_try_die(entity_id_t creature);
 
 /* Item system*/

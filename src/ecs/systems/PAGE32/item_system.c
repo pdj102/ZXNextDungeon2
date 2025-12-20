@@ -67,26 +67,26 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
 
 const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
 {
-    [ITEM_NONE] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_NONE] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* Melee weapons */
-    [ITEM_CLUB] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_type = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
-    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D6, .damage_type = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_CLUB] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_KIND_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* Shields */
-    [ITEM_SHIELD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHIELD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* Ammo */
     /* Potions */    
-    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_BREAD] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* Wearable */
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_type = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_KEY] = { .attack_type = ATTACK_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
 };
 
 const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {

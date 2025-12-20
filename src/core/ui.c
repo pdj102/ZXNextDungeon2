@@ -130,6 +130,7 @@ static void ui_nl(void);
         default:
             break;
     }
+    ui_nl();
  }
 
 static void ui_print_subject(entity_id_t e)
@@ -146,7 +147,6 @@ static void ui_print_object(entity_id_t e)
         text_print_string(&g.msg_win, "you");
     else
     {
-        text_printf(&g.msg_win, "Entity: %d\n", e);
         system_name_print(&g.msg_win, g.name_components[e]);
     }
 }

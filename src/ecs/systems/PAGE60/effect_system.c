@@ -72,7 +72,7 @@ static void apply_instant_effect(const effect_apply_t ctx)
     switch (g.effect_components[ctx.source].type)
     {
         case EFFECT_DAMAGE_HP:
-            system_damage_try_take_damage(ctx.target, g.effect_components[ctx.source].value, DAMAGE_NONE);
+            system_damage_try_take_damage(ctx.target, g.effect_components[ctx.source].value, DAMAGE_KIND_NONE);
             break;
         case EFFECT_RESTORE_HP:
             text_printf(&g.msg_win, "You feel better!\n");

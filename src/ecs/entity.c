@@ -171,8 +171,6 @@ void entity_destroy(entity_id_t id)
         return; /* invalid ID or entity not in use */
     }
 
-    text_printf(&g.msg_win, "Destroying entity %d\n",id);
-
     /* Clear all components associated with this entity */
     if (entity_has_component(id, COMPONENT_CONTAINED)) {
         comp_contained_remove(id);

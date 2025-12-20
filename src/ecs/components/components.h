@@ -12,7 +12,7 @@
 #include "ecs/components/PAGE50/attack_comp.h"
 #include "ecs/components/PAGE50/creature_comp.h"
 #include "ecs/components/PAGE50/consumable_comp.h"
-#include "ecs/components/PAGE50/destructable_comp.h"
+#include "ecs/components/PAGE50/destructible_comp.h"
 #include "ecs/components/PAGE50/effect_comp.h"
 #include "ecs/components/PAGE50/equippable_comp.h"
 #include "ecs/components/PAGE50/item_comp.h"
@@ -59,9 +59,9 @@ void comp_container_remove(entity_id_t entity);
 void comp_creature_add(entity_id_t entity, creature_kind_t kind);
 void comp_creature_remove(entity_id_t entity);
 
-/* destructable */
-void comp_destructable_add(entity_id_t entity, const destructable_comp_t destructable);
-void comp_destructable_remove(entity_id_t entity);
+/* destructible */
+void comp_destructible_add(entity_id_t entity, const destructible_comp_t destructible);
+void comp_destructible_remove(entity_id_t entity);
 
 /* equippable */
 void comp_equippable_add(entity_id_t entity, equippable_slot_t type);
