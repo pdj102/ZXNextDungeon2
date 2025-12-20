@@ -73,18 +73,10 @@ void player_system_update(void)
         return;
     }
 
-    /* Check if player's turn*/
-    if (system_timer_has_fired(entity) == 0)
-    {
-        return;
-    }
-
-    /* Reset timer */
-    system_timer_reset(entity);
-
     key = key_press();
 
     text_printf(&g.msg_win, "key: %d\n", key);
+    text_printf(&g.msg_win, "Str mod: %u\n", system_effect_attribute_mod_sum(entity, EFFECT_ATTRIBUTE_STR));
 
     switch(key) {
         case 8: /* left */
@@ -148,7 +140,7 @@ static void melee_attack(void)
 
     while (target != ENTITY_ID_INVALID)
     {
-        if (entity_has_component(target, COMPONENT_DESTRUCTABLE))
+        if (entity_has_component(target, COMPONENT_DESTRUCTIBLE))
         {
             system_combat_try_melee_attack(g.player.id, target);
             return;
@@ -216,56 +208,26 @@ static void inventory(void)
 
 void equip(void)
 {
-    entity_id_t item;
-    uint8_t index;
-    uint8_t count;
-
-    count = system_container_count(g.player.id);
-
-    if (count == 0)
-    {
-        text_printf(&g.msg_win, "Nothing in inventory\n");
+    entity_id_t item = prompt_inventory_item("Select item to equip");
+    if (item == ENTITY_ID_INVALID)
         return;
-    }
 
-    display_inventory();
-
-    index = prompt_letter(count - 1);
-
-    if (index == 99)
+    if (!system_equipment_try_equip(g.player.id, item))
     {
-        return;
-    }
-   
-    item = system_container_get_at(g.player.id, index);
-    system_equipment_try_equip(g.player.id, item);    
+        text_printf(&g.msg_win, "You cannot equip that\n");
+    } 
 }
 
 static void unequip(void)
 {
-    entity_id_t item;
-    uint8_t index;
-    uint8_t count;
-
-    count = system_container_count(g.player.id);
-
-    if (count == 0)
-    {
-        text_printf(&g.msg_win, "Nothing in inventory\n");
+    entity_id_t item = prompt_inventory_item("Select item to unequip");
+    if (item == ENTITY_ID_INVALID)
         return;
-    }
 
-    display_inventory();
-
-    index = prompt_letter(count - 1);
-
-    if (index == 99)
+    if (!system_equipment_try_unequip(g.player.id, item))
     {
-        return;
+        text_printf(&g.msg_win, "You cannot unequip that\n");
     }
-   
-    item = system_container_get_at(g.player.id, index);
-    system_equipment_try_unequip(g.player.id, item);
 }
 
 static entity_id_t prompt_inventory_item(const char *prompt_msg)

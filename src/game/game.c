@@ -32,7 +32,7 @@ const vector_t directions[DIRECTION_COUNT] = {
     [DIRECTION_EAST] = {1, 0}
 };
 
-const dice_t dice_roll[DICE_COUNT] = {
+const dice_roll_t dice_roll[DICE_COUNT] = {
     [DICE_NONE] = {0, 0, 0},
     [DICE_1D4] = {1, 4, 0},
     [DICE_1D6] = {1, 6, 0},
@@ -88,7 +88,7 @@ void game_init(void)
     map_init();
 }
 
-uint8_t game_roll_dice(dice_roll_t dice)
+uint8_t game_roll_dice(dice_kind_t dice)
 {
     uint8_t roll = 0;
 

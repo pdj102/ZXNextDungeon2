@@ -179,6 +179,7 @@
 * [✅] Manage dropping equiped items
 * [✅] Manage `equippable`, `equipped` and `slot` component cleanup on entity destroy
 * [✅] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
+* [ ] Implment `equipment_system_cleanup_entity(entity)`
 
 [✅] *End result: Player can equip and uneqip items.*
 
@@ -196,15 +197,15 @@
 
 ---
 
-### 🪜 **Milestone 115 — Implement destructable component**
+### 🪜 **Milestone 115 — Implement destructible component**
 
 > *Goal: Entities can be tageted, take damage and be destroyed*
 
-* [✅] Implement destructable component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
-* [✅] Implement destructable object - vase
-* [✅] Attach to destructable entities
+* [✅] Implement destructible component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
+* [✅] Implement destructible object e.g. a creature
+* [✅] Attach to destructible entities
 
-[ ] *End result: Entities like monsters, doors, and traps can be destructable*
+[🚧] *End result: Entities like monsters, doors, and traps can be destructible*
 
 ---
 
@@ -262,8 +263,6 @@
 
 * [✅] Implement `Stats` component
 * [🚧] Implement `Stats_system`
-* [🚧] Implement functions to obtain stats from component
-* [ ] Functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 
 [🚧] *End result: Stats takes active effects into account.*
 
@@ -298,50 +297,68 @@
 
 [ ] *End result: You can range attack and kill monsters.*
 
-### 🪜 **Milestone 122 — Experience and levelling up**
+### 🪜 **Milestone 122 — Experience**
 
-> *Goal: Player gains experience and level up.*
+> *Goal: Player gains experience.*
 
+* [ ] Implement experience component that gives experience
+* [ ] Implement experience system to track player's experience
 * [ ] Implement player experience
 * [ ] Implement gain experience
 * [ ] Implement player levels
 * [ ] Implement player levelling up
 
-[ ] *End result: player gains experience and levels up.*
+[ ] *End result: player gains experience.*
 
 ---
 
-### 🪜 **Milestone 123 — Instant effects**
+### 🪜 **Milestone 122 — Levels**
+
+> *Goal: Player can level up.*
+
+* [ ] Implement player levels
+* [ ] Implement player levelling up
+
+[ ] *End result: player can level up.*
+
+---
+
+### 🪜 **Milestone 124 — Instant effects**
 
 > *Goal: entities can have instant effects.*
 
-* [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
-* [✅] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
-* [ ] Implment `effect_system`
-* [ ] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
-* [ ] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
-* [ ] Add message log system for food `effect` events e.g. "You feel better"
+* [✅] Implement `effect_t` that describes an event that could happen - type, magnitude, duration (0 = instant), stat, status
+* [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
+* [✅] Implement `effect_attribute_t` enum e.g. EFFECT_ATTRIBUTE_CUR_HP
+* [✅] Implment `effect_system`
+* [✅] Implement `effect_system_handle_event()` - create effect triggers based on game events
+* [✅] Implement `process_trigger()` - process triggers and apply effects
+* [✅] Implement `apply_effect()` - apply an effect e.g. heal, damage etc
 
-[ ] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
+[✅] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
 
 ---
 
-### 🪜 **Milestone 124 — Active effects**
+### 🪜 **Milestone 125 — Active effects**
 
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
-* [ ] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), stat, status, item (source)
-* [ ] Implement `active effects` component - with count & active_effect[MAX_EFFECTS]
+* [✅] Implement `active effect` - details of an active effect - an effect_t and source
+* [✅] Implement `effect_attribute_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
+* [✅] Implement `active effects` component - an array of active_effect[MAX_EFFECTS]
 * [ ] Implement `status_flags_t` flags e.g. poisoned
-* [ ] Extend `effect type` enum with effect_apply_status, effect_cure_status, effect_stat_mod
-* [ ] Place active effects in system banked memory as only ever access via system
-* [ ] Extend `apply_effects_by_source` to handle applying active effects to the actor
-* [ ] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
-* [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
+* [✅] Extend `effect_kind_t` enum with EFFECT_STAT_MODIFIER (+/- stat while active)
+* [✅] Place active effects in system banked memory as only ever access via system and large in size
+* [✅] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
+* [✅] Implement `effect_system_process_entity_turn(actor)` to handle duration active effects. Remove effects when duration expires
+* [✅] Implement `remove_effects_by_source(actor, source)` - handle removing active effects of the source item from the actor
+* [ ] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
+* [🚧] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
+* [🚧] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect.
 
 [ ] *End result: stats and status are affected by active effect.*
 
-### 🪜 **Milestone 125 — Implement steppable entities**
+### 🪜 **Milestone 126 — Implement steppable entities**
 
 > *Goal: Entities can react to being stood on*
 
@@ -358,7 +375,7 @@
 
 ---
 
-### 🪜 **Milestone 126 — Implement bumpable entities**
+### 🪜 **Milestone 127 — Implement bumpable entities**
 
 > *Goal: Entities can react to bumped into*
 
@@ -366,12 +383,13 @@
 
 ---
 
-### 🪜 **Milestone 199 — Cleanup**
+### 🪜 **Milestone 199 — Cleanup & bugs**
 
 > *Goal: Cleanup code*
 
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
-* [ ] Eliminate player component as not inline with ECS principles
+* [ ] Change player in to character component and use for character specific things like experience
+* [ ] Bug - attack direction can select no direction and attack self
 
 [ ] *End result: Unlocked doors open if you walk into them*
 
@@ -379,12 +397,91 @@
 
 ## 🪜 **Milestone 2XX — Items**
 
-### 🪜 **Milestone 201 — Consumables**
+### 🪜 **Milestone 201 — Melee weapons**
+
+> *Goal: Variety of melee weapons*
+
+* [ ] Implement melee weapon items
+
+[ ] *End result: Game should have a variety of melee weapons.*
+
+---
+
+### 🪜 **Milestone 202 — Ranged weapons**
+
+> *Goal: Variety of ranged weapons*
+
+* [ ] Implement ranged weapon items
+
+[ ] *End result: Game should have a variety of ranged weapons.*
+
+---
+
+### 🪜 **Milestone 203 — Armour**
+
+> *Goal: Variety of armour*
+
+* [ ] Implement body armour items
+
+[ ] *End result: Game should have a varierty of armour.*
+
+---
+
+### 🪜 **Milestone 204 — Shields**
+
+> *Goal: Variety of shields*
+
+* [ ] Implement shield items
+
+[ ] *End result: Game should have a varierty of shields.*
+
+---
+
+### 🪜 **Milestone 205 — Ammo**
+
+> *Goal: Variety of ammo*
+
+* [ ] Implement ammo items
+
+[ ] *End result: Game should have a varierty of ammo.*
+
+---
+
+### 🪜 **Milestone 206 — Potions**
+
+> *Goal: PLayer can quaff potions*
+
+* [ ] Implement a potion e.g. potion of healing
+* [ ] Implement a variety of potions
+* [ ] Add player `quaff` command - select from inventory
+* [ ] Implement `consumable_system_try_quaff`
+* [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
+
+[ ] *End result: Potion is destroyed and any effect applied.*
+
+---
+
+### 🪜 **Milestone 206 — Scrolls**
+
+> *Goal: PLayer read scrolls*
+
+* [ ] Implement a scroll e.g. potion of teleportation
+* [ ] Implement a variety of scrolls
+* [ ] Add player `read` command - select from inventory
+* [ ] Implement `magic_system_try_readf`
+* [ ] Add message log system for reading scroll effects e.g. (“You read the scroll.”)
+
+[ ] *End result: Scroll is destroyed and any magic spell cast.*
+
+---
+
+### 🪜 **Milestone 207 — Consumables**
 
 > *Goal: eat food to restore health.*
 
 * [ ] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe, drink, etc.
 * [ ] Implement a consumable e.g. bread
+* [ ] Implement a variety of consumables
 * [ ] Add player `eat` command - select from inventory
 * [ ] Implment `consumption_system`
 * [ ] Implement `consumption_system_try_eat()`. Handle eating food including decrement or destroy, emitting `effect` events and `consumed` event
@@ -396,27 +493,31 @@
 
 ---
 
-### 🪜 **Milestone 202 — Potions**
+### 🪜 **Milestone 206 — Wands**
 
-> *Goal: PLayer can quaff potions*
+> *Goal: PLayer zap wands*
 
-* [ ] Implement a potion e.g. potion of healing
-* [ ] Add player `quaff` command - select from inventory
-* [ ] Implement `consumption_system_try_quaff`.  Handle quaffing potions including decrement or destroy, emitting `effect` events and `quaff` event
-* [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
+* [ ] Implement a wand
+* [ ] Implement a variety of wands
+* [ ] Add player `zap` command - select from inventory
+* [ ] Implement `magic_system_try_zap`
+* [ ] Add message log system for zap effects e.g. (“You zap the wand of fire.”)
 
-[ ] *End result: Potion is destroyed and any effect applied.*
+[ ] *End result: Zap charge is used and any magic spell cast.*
 
 ---
 
-### 🪜 **Milestone 204 — Armour**
+### 🪜 **Milestone 206 — Keys**
 
-> *Goal: Player can equip armour*
+> *Goal: Openable items can be locked with keys*
 
-* [ ] Implement body armour items - leather body armour
-* [ ] Implement other armour items - leather helmet, leather boots
+* [ ] Implement a key
+* [ ] Implement a variety of keys
+* [ ] Add player `unlock` command - select from inventory
+* [ ] Implement `lock_system_try_unlock`
+* [ ] Add message log system for unlock effects e.g. (“You unlock the door.”)
 
-[ ] *End result: Player can equip armour and stats are updated.*
+[ ] *End result: Lockable entity can be unlocked.*
 
 ---
 

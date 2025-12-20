@@ -49,7 +49,9 @@
     [EVENT_EQUIPPED]                = " equip ",
     [EVENT_PICKED_UP]               = " pickup ",
     [EVENT_STOOD_ON]                = " stood on ",
-    [EVENT_UNEQUIPPED]              = " unequip "
+    [EVENT_UNEQUIPPED]              = " unequip ",
+    [EVENT_HEALED_HP]               = " restore %d health\n",
+    [EVENT_HEALED_MP]               = " restore %d mana\n",
 };
 
  /* Third person singular */
@@ -69,7 +71,9 @@
     [EVENT_EQUIPPED]                = " equips ",
     [EVENT_PICKED_UP]               = " pickups ",
     [EVENT_STOOD_ON]                = " stands on ",
-    [EVENT_UNEQUIPPED]              = " unequips "    
+    [EVENT_UNEQUIPPED]              = " unequips ",
+    [EVENT_HEALED_HP]               = " restores %d health\n",
+    [EVENT_HEALED_MP]               = " restores %d mana\n",
 };
 
 
@@ -117,6 +121,8 @@ static void ui_nl(void);
         case EVENT_DAMAGED:
         case EVENT_DAMAGED_RESIST:
         case EVENT_DAMAGED_VULNERABLE:
+        case EVENT_HEALED_HP:
+        case EVENT_HEALED_MP:
             ui_print_subject(event.source);
             if (subject_is_player)
             {
@@ -130,6 +136,7 @@ static void ui_nl(void);
         default:
             break;
     }
+    ui_nl();
  }
 
 static void ui_print_subject(entity_id_t e)
@@ -146,7 +153,6 @@ static void ui_print_object(entity_id_t e)
         text_print_string(&g.msg_win, "you");
     else
     {
-        text_printf(&g.msg_win, "Entity: %d\n", e);
         system_name_print(&g.msg_win, g.name_components[e]);
     }
 }

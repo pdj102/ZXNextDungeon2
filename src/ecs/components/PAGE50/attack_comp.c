@@ -30,7 +30,7 @@ void melee_add(entity_id_t entity, const attack_comp_t attack)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_MELEE_ATTACK)); 
 
-    g.melee_components[entity].damage_type = attack.damage_type;
+    g.melee_components[entity].damage_kind = attack.damage_kind;
     g.melee_components[entity].damage_roll = attack.damage_roll;
     g.melee_components[entity].damage_mod = attack.damage_mod;
     g.melee_components[entity].hit_mod = attack.hit_mod;
@@ -44,7 +44,7 @@ void ranged_add(entity_id_t entity, const attack_comp_t attack)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_RANGED_ATTACK)); 
 
-    g.melee_components[entity].damage_type = attack.damage_type;
+    g.melee_components[entity].damage_kind = attack.damage_kind;
     g.melee_components[entity].damage_roll = attack.damage_roll;
     g.melee_components[entity].damage_mod = attack.damage_mod;
     g.melee_components[entity].hit_mod = attack.hit_mod;

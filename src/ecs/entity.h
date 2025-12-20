@@ -14,7 +14,7 @@
 /***************************************************
  * public defines
  ***************************************************/
-#define MAX_ENTITIES 8 /* Maximum number of entities */
+#define MAX_ENTITIES 12 /* Maximum number of entities */
 #define ENTITY_ID_INVALID 0xFF /* Invalid entity ID */
 
 /* Component masks for the various component types */
@@ -24,7 +24,7 @@ typedef enum {
     COMPONENT_CONTAINED,
     COMPONENT_CONTAINER,
     COMPONENT_CREATURE,
-    COMPONENT_DESTRUCTABLE,
+    COMPONENT_DESTRUCTIBLE,
     COMPONENT_EQUIPPABLE,
     COMPONENT_EQUIPPED,
     COMPONENT_ITEM,
@@ -38,6 +38,7 @@ typedef enum {
     COMPONENT_AI,
     COMPONENT_CONSUMABLE,
     COMPONENT_NAME,
+    COMPONENT_ACTIVE_EFFECT,
     COMPONENT_MAX
 } component_id_t;
 

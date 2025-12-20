@@ -25,6 +25,7 @@
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE62/consumable_system.h"
 #include "ecs/systems/PAGE64/name_system.h"
+#include "ecs/systems/PAGE66/healing_system.h"
 
 /***************************************************
  * private defines
@@ -48,22 +49,20 @@
 
  void systems_init(void)
  {
-    system_monster_init();
-    system_item_init();
-    system_timer_init();
-    system_container_init();
-    system_combat_init();
-    system_damage_init();
-    system_event_init();
     system_actions_init();
-    system_player_init();
-    system_equipment_init();
-    system_movement_init();
     system_combat_init();
+    system_consumable_init();    
+    system_container_init();
     system_damage_init();
-    system_stats_init();
     system_effect_init();
-    system_consumable_init();
+    system_equipment_init();
+    system_event_init();
+    system_item_init();
+    system_monster_init();
+    system_movement_init();
+    system_player_init();
+    system_stats_init();
+    system_timer_init();
  }
 
  /* Actions system*/
@@ -329,7 +328,7 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
 
  }
 
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_type_t type)
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag)
 {
     uint8_t current_bank;
     bool_t result;
@@ -337,7 +336,7 @@ int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
 
-    result = damage_system_try_take_damage(creature, damage, type);
+    result = damage_system_try_take_damage(creature, damage, flag);
 
     ZXN_WRITE_MMU6(current_bank);
 
@@ -362,19 +361,85 @@ bool_t system_damage_try_die(entity_id_t creature)
 /* Effect System */
 void system_effect_init(void)
 {
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
 
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    effect_system_init();
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 void system_effect_handle_event(const event_t event)
 {
-    uint8_t current_bank;
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
 
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM);
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_handle_event(event);
 
-    ZXN_WRITE_MMU6(current_bank);
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
+}
+
+void system_effect_process_entity_turn(entity_id_t entity)
+{
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    effect_system_process_entity_turn(entity);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
+}
+
+int8_t system_effect_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute)
+{
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
+    uint8_t attribute_mod_sum = 0;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    attribute_mod_sum = effect_system_attribute_mod_sum(actor, attribute);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
+
+    return attribute_mod_sum;
+}
+
+void system_effect_cleanup_entity(entity_id_t source)
+{
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    effect_system_cleanup_entity(source);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);    
 }
 
 /* Equipment System */
@@ -481,6 +546,22 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
 
     return entity;
+}
+
+/* Healing System*/
+int8_t system_healing_try_take_healing(entity_id_t actor, int8_t amount, healing_kind_t kind)
+{
+    uint8_t current_bank;
+    bool_t result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_HEALING_SYSTEM);
+
+    result = healing_system_try(actor, amount, kind);
+
+    ZXN_WRITE_MMU6(current_bank);         
+
+    return result; 
 }
 
 /* Name system*/

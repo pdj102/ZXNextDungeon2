@@ -9,7 +9,7 @@
 
 #include "ecs/entity_priv.h"
 #include "ecs/components/PAGE50/attack_comp.h"
-#include "ecs/components/PAGE50/destructable_comp.h"
+#include "ecs/components/PAGE50/destructible_comp.h"
 #include "ecs/components/PAGE50/item_comp.h"
 #include "ecs/components/PAGE50/location_comp.h"
 #include "ecs/components/PAGE50/effect_comp.h"
@@ -58,7 +58,7 @@ typedef struct
     equipped_components_t equipped_components;
     slots_t slots;
     timer_components_t timer_components; 
-    destructable_components_t destructable_components;
+    destructible_components_t destructible_components;
     effect_components_t effect_components;
     name_components_t name_components;
 
