@@ -25,11 +25,54 @@
 /***************************************************
  * public types
  ***************************************************/
+
 typedef enum {
     EFFECT_NONE = 0,
-    EFFECT_RESTORE_HP,
-    EFFECT_DAMAGE_HP,
+
+    /* Instant changes */
+    EFFECT_INSTANT_DAMAGE,      /* reduce current HP/MP/etc */
+    EFFECT_INSTANT_HEAL,        /* restore current HP/MP/etc */
+
+    /* Persistent stat modifiers */
+    EFFECT_STAT_MODIFIER,       /* +/- stat while active */
+
+    /* Status effects */
+    EFFECT_APPLY_STATUS,        /* poison, stun, slow, etc */
+    EFFECT_REMOVE_STATUS,
+
+    /* Utility / hooks */
+    EFFECT_DISPEL,              /* remove other effects */
+    EFFECT_TRIGGER_ONLY,        /* no direct change, just emits event */
+
+    EFFECT_COUNT
 } effect_kind_t;
+
+typedef enum {
+    EFFECT_TARGET_NONE = 0,
+
+    /* Resources */
+    EFFECT_TARGET_HP,
+    EFFECT_TARGET_MP,
+
+    /* Primary stats */
+    EFFECT_TARGET_STR,
+    EFFECT_TARGET_DEX,
+    EFFECT_TARGET_CON,
+    EFFECT_TARGET_INT,
+    EFFECT_TARGET_WIS,
+    EFFECT_TARGET_CHA,
+
+    /* Secondary stats */
+    EFFECT_TARGET_ARMOR_CLASS,
+    EFFECT_TARGET_SPEED,
+    EFFECT_TARGET_ATTACK,
+    EFFECT_TARGET_DAMAGE,
+
+    /* Status slot (used with EFFECT_APPLY_STATUS) */
+    EFFECT_TARGET_STATUS,
+
+    EFFECT_TARGET_COUNT
+} effect_target_t;
 
 typedef enum {
     TRIGGER_NONE            = 0,
@@ -46,11 +89,10 @@ typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 /* A single effect  */
 typedef struct {
     effect_kind_t kind;         /* kind of effect */
-    int8_t value;               /* value of effect */
-    uint8_t duration;           /* duration of effect. 0 = instant effect*/
-    uint8_t stat;               /* stat to affect */
-    uint8_t status;             /* status to affect */
-    trigger_mask_t triggers;    /* triggers that trigger this effect */
+    int8_t value;               /* magnitude of effect (+ / -) */
+    uint8_t duration;           /* duration of effect (turns). 0 = instant effect 0xFF = permanent (until removed) */
+    effect_target_t target;     /* effect target */
+    trigger_mask_t triggers;    /* when this effect applies */
 } effect_comp_t;
 
 typedef effect_comp_t effect_components_t[MAX_ENTITIES]; 

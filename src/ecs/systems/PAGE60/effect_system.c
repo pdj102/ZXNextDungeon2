@@ -11,6 +11,7 @@
 
 #include "ecs/components/components.h"
 #include "ecs/components/PAGE50/effect_comp.h"
+#include "ecs/components/PAGE50/active_effect_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -22,6 +23,11 @@
 /***************************************************
  * private defines
  ***************************************************/
+
+ /***************************************************
+ * private variables (static)
+ ***************************************************/
+__at (0xe000) static active_effect_components_t active_effect_components; /* Place active effects in 8k-slot 7 (MMU7) */
 
 /***************************************************
  * private function prototypes
@@ -71,10 +77,10 @@ static void apply_instant_effect(const effect_apply_t ctx)
 {
     switch (g.effect_components[ctx.source].kind)
     {
-        case EFFECT_DAMAGE_HP:
+        case EFFECT_INSTANT_DAMAGE:
             system_damage_try_take_damage(ctx.target, g.effect_components[ctx.source].value, DAMAGE_NONE);
             break;
-        case EFFECT_RESTORE_HP:
+        case EFFECT_INSTANT_HEAL:
             system_healing_try_take_healing(ctx.target, g.effect_components[ctx.source].value, HEALING_KIND_HP);
             text_printf(&g.msg_win, "You feel better!\n");
             break;

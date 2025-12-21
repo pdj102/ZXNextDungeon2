@@ -329,7 +329,7 @@
 > *Goal: entities can have instant effects.*
 
 * [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
-* [✅] Implement `effect type` enum e.g. effect_restore_hp, effect_damage_hp
+* [✅] Implement `effect type` enum e.g. effect_instant_heal, effect_instant_damage
 * [✅] Implment `effect_system`
 * [✅] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
 * [✅] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
