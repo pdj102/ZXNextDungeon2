@@ -77,6 +77,7 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
 /* Effect system */
 void system_effect_init(void);
 void system_effect_handle_event(const event_t event);
+void system_effect_cleanup_entity(entity_id_t source);
 
 /* Event System */
 void system_event_init(void);

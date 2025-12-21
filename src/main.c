@@ -110,7 +110,9 @@ void clean_up_and_destroy(void)
         
         util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
         system_container_clean_up(id);
-        // system_equipment_clean_up(id);
+        system_effect_cleanup_entity(id);
+
+        // TODO system_equipment_clean_up(id);
 
         i++;
     }

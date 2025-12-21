@@ -33,9 +33,11 @@ __at (0xe000) static active_effect_components_t active_effect_components; /* Pla
 /***************************************************
  * private function prototypes
  ***************************************************/
-static void effect_system_apply_effects_by_source( const effect_apply_t *ctx);
-static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t *effect);
-static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t* effect);
+static void process_trigger( const trigger_context_t *ctx);
+static void apply_instant_effect(const trigger_context_t *ctx, const effect_comp_t *effect);
+static bool_t attach_active_effect(const trigger_context_t *ctx, const effect_comp_t* effect);
+void apply_active_effect(entity_id_t entity, uint8_t slot);
+
 static uint8_t get_free_slot(active_effects_comp_t *effects);
 static uint8_t choose_precedence_slot(active_effects_comp_t *effects, const effect_comp_t *new_effect);
 void remove_active_effect(active_effects_comp_t* effects, uint8_t slot);
@@ -58,9 +60,9 @@ void effect_system_init(void)
     }
 }
 
- void effect_system_handle_event(const event_t event)
+void effect_system_handle_event(const event_t event)
 {
-    effect_apply_t ctx;
+    trigger_context_t ctx;
 
     switch (event.type)
     {
@@ -68,14 +70,14 @@ void effect_system_init(void)
             ctx.source = event.target;  /* This is correct - The event Player (source) quaffs Potion (target) becomes Apply Potion's effect (source) to Player (target) */
             ctx.target = event.source;
             ctx.trigger = TRIGGER_ON_CONSUMED;
-            effect_system_apply_effects_by_source(&ctx);
+            process_trigger(&ctx);
             break;
         default:
             util_abort("Unknown event type");
     }
 }
 
-static void effect_system_turn_entity(entity_id_t entity)
+static void effect_system_process_entity_turn(entity_id_t entity)
 {
     active_effects_comp_t *effects = &active_effect_components[entity];
 
@@ -83,6 +85,8 @@ static void effect_system_turn_entity(entity_id_t entity)
     {
         uint8_t slot = effects->active_stack[i];
         active_effect_comp_t *e = &effects->slots[slot];
+
+        apply_active_effect(entity, slot);
 
         if (e->remaining != 0xFF)
         {
@@ -96,81 +100,8 @@ static void effect_system_turn_entity(entity_id_t entity)
         i++;
     }
 }
- 
- /***************************************************
- * private functions
- ***************************************************/
 
- /*
-  * @brief Apply source entity's effect to the target entity if triggered
-  * @param ctx The context of the effect application. NB the effect applies from the source (e.g. potion) to the target (e.g player)
-  */
-static void effect_system_apply_effects_by_source( const effect_apply_t *ctx)
-{
-    effect_comp_t *effect;
-
-    if (!entity_has_component(ctx->source, COMPONENT_EFFECT))
-    {
-        return;
-    }
-
-    /* Get the effect component for the source entity */
-    effect = &g.effect_components[ctx->source];
-
-    /* Do nothing if no trigger match */
-    if ((effect->triggers & ctx->trigger) == 0)
-    {
-        return;
-    }
-
-    if (effect->duration == 0 )
-    {
-        apply_instant_effect(ctx, effect);
-    }
-    else if (entity_has_component(ctx->target, COMPONENT_ACTIVE_EFFECT))
-    {
-            apply_active_effect(ctx, effect); // ignore result 
-    }
-}
-
- /*
-  * @brief Remove any active effects that were applied by the source entity (e.g. ring of healing) to the target (e.g player)
-  * @details Call this function when the source entity is removed (e.g. unequip ring of healing)
-  * @param ctx The context of the effect application. 
-  */
-void remove_effects_by_source(const effect_apply_t *ctx)
-{
-    active_effects_comp_t* effects = &active_effect_components[ctx->target];
-
-    uint8_t i = 0;
-    while (i < effects->head)
-    {
-        uint8_t slot = effects->active_stack[i];
-        active_effect_comp_t* e = &effects->slots[slot];
-
-        if (e->source == ctx->source)
-        {
-            /* clear slot */
-            e->kind = EFFECT_NONE;
-
-            /* remove from active stack via swap-remove */
-            effects->active_stack[i] = effects->active_stack[--effects->head];
-
-            /* do NOT increment i — need to re-check swapped entry */
-        }
-        else
-        {
-            i++;
-        }
-    }
-}
-
-/*
- * @brief Removes active effects whose source is the source entity from all entities 
- * @details Call this function in the cleanup phase when the source entity is marked for destruction to ensure no dangling source references in active effects 
- * @param source The entity ID of the source entity that could have created active effects
- */
-void active_effects_cleanup_entity(entity_id_t source)
+void effect_system_cleanup_entity(entity_id_t source)
 {
     /* Early out: this entity could not have created active effects */
     if (!entity_has_component(source, COMPONENT_EFFECT))
@@ -200,15 +131,52 @@ void active_effects_cleanup_entity(entity_id_t source)
         }
     }
 }
+ 
+ /***************************************************
+ * private functions
+ ***************************************************/
 
+ /*
+  * @brief Process trigger 
+  * @param ctx The context of the effect application. NB the effect applies from the source (e.g. potion) to the target (e.g player)
+  */
+static void process_trigger( const trigger_context_t *ctx)
+{
+    effect_comp_t *effect;
 
+    /* Do nothing if the source has no effects */
+    if (!entity_has_component(ctx->source, COMPONENT_EFFECT))
+    {
+        return;
+    }
+
+    /* Get the effect component for the source entity */
+    effect = &g.effect_components[ctx->source];
+
+    /* Do nothing if no trigger match */
+    if ((effect->triggers & ctx->trigger) == 0)
+    {
+        return;
+    }
+
+    if (effect->duration == 0 )
+    {
+        /* If the effect is instant, apply immediately */
+        apply_instant_effect(ctx, effect);
+    }
+    else if (entity_has_component(ctx->target, COMPONENT_ACTIVE_EFFECT))
+    {
+        /*  If the effect is durational, attach to the target*/
+            attach_active_effect(ctx, effect); // ignore result 
+    }
+}
 
 /*
  * @brief Apply an instant effect to the target entity
  * @param ctx The context of the effect application 
  * @param effect The effect component to apply
  */
-static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t *effect)
+static void apply_instant_effect(const trigger_context_t *ctx, const effect_comp_t *effect)
 {
 
     switch (effect->kind)
@@ -226,12 +194,66 @@ static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t 
 }
 
 /*
- * @brief Apply an active effect to the target entity
+ * @brief Apply an entity's active effect 
+ */
+void apply_active_effect(entity_id_t entity, uint8_t slot)
+{
+    active_effect_comp_t *e = &active_effect_components[entity].slots[slot];
+
+    switch (e->kind)
+    {
+        case EFFECT_DAMAGE:
+            system_damage_try_take_damage(e->target, e->magnitude, DAMAGE_NONE);
+            break;
+
+        case EFFECT_STAT_MODIFIER:
+            /* already applied when attached — nothing per turn */
+            break;
+
+        default:
+            break;
+    }
+}
+
+ /*
+  * @brief Remove any active effects that were applied by the source entity (e.g. ring of healing) to the target (e.g player)
+  * @details Call this function when the source entity is removed (e.g. unequip ring of healing)
+  * @param ctx The context of the effect application. 
+  */
+void remove_effects_by_source(const trigger_context_t *ctx)
+{
+    active_effects_comp_t* effects = &active_effect_components[ctx->target];
+
+    uint8_t i = 0;
+    while (i < effects->head)
+    {
+        uint8_t slot = effects->active_stack[i];
+        active_effect_comp_t* e = &effects->slots[slot];
+
+        if (e->source == ctx->source)
+        {
+            /* clear slot */
+            e->kind = EFFECT_NONE;
+
+            /* remove from active stack via swap-remove */
+            effects->active_stack[i] = effects->active_stack[--effects->head];
+
+            /* do NOT increment i — need to re-check swapped entry */
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+/*
+ * @brief Attach an active effect to the target entity
  * @details If the entity's maximum number of active effects has been reached applies precendence rules 
  * @param ctx The context of the effect application 
  * @param effect The effect component to apply
  */
-static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t* effect)
+static bool_t attach_active_effect(const trigger_context_t *ctx, const effect_comp_t* effect)
 {
 
     active_effects_comp_t* effects = &active_effect_components[ctx->target];
@@ -254,7 +276,7 @@ static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t
 
     active_stack_append(effects, slot);
 
-    util_info("Applied active effect\n");
+    util_info("Attached active effect\n");
     return 1;
 }
 

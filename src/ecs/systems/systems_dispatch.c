@@ -391,6 +391,22 @@ void system_effect_handle_event(const event_t event)
     ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
+void system_effect_cleanup_entity(entity_id_t source)
+{
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    effect_system_cleanup_entity(source);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);    
+}
+
 /* Equipment System */
  void system_equipment_init(void)
  {
