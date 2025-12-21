@@ -29,16 +29,16 @@
 typedef enum {
     EFFECT_NONE = 0,
 
-    /* Instant changes */
-    EFFECT_INSTANT_DAMAGE,      /* reduce current HP/MP/etc */
-    EFFECT_INSTANT_HEAL,        /* restore current HP/MP/etc */
+    /* Direct stat changes */
+    EFFECT_DAMAGE,              /* reduce a resource or decrease a stat by a fixed amount once or per turn if active effect e.g. current hp*/
+    EFFECT_HEAL,                /* restore a resource or decrease a stat by a fixed amount once or per turn if active effect e.g. current hp */
 
     /* Persistent stat modifiers */
-    EFFECT_STAT_MODIFIER,       /* +/- stat while active */
+    EFFECT_STAT_MODIFIER,       /* apply +/- modifier to a resource or stat while active e.g. +1 */
 
     /* Status effects */
-    EFFECT_APPLY_STATUS,        /* poison, stun, slow, etc */
-    EFFECT_REMOVE_STATUS,
+    EFFECT_APPLY_STATUS,        /* apply a status e.g. poison etc */
+    EFFECT_REMOVE_STATUS,       /* remove a status e.g. blind etc */
 
     /* Utility / hooks */
     EFFECT_DISPEL,              /* remove other effects */
@@ -51,8 +51,10 @@ typedef enum {
     EFFECT_TARGET_NONE = 0,
 
     /* Resources */
-    EFFECT_TARGET_HP,
-    EFFECT_TARGET_MP,
+    EFFECT_TARGET_CUR_HP,
+    EFFECT_TARGET_CUR_MP,
+    EFFECT_TARGET_MAX_HP,
+    EFFECT_TARGET_MAX_MP,    
 
     /* Primary stats */
     EFFECT_TARGET_STR,

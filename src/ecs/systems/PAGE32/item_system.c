@@ -151,7 +151,7 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .kind = EFFECT_INSTANT_HEAL, .magnitude = 5, .duration = 0, .target = EFFECT_TARGET_HP, .triggers = TRIGGER_ON_CONSUMED},
+    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .target = EFFECT_TARGET_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
     /* Wearable */
     /* Wands */
     /* Light sources */

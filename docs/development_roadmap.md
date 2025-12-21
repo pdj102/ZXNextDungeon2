@@ -329,10 +329,11 @@
 > *Goal: entities can have instant effects.*
 
 * [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
-* [✅] Implement `effect type` enum e.g. effect_instant_heal, effect_instant_damage
+* [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
+* [✅] Implement `effect_target_t` enum e.g. EFFECT_TARGET_CUR_HP
 * [✅] Implment `effect_system`
-* [✅] Implement - `apply_effects_by_source(actor, item)` - handle applying the effects of a source item to the actor.
-* [✅] Implement  `apply_instant_effect` - handle instant effects (duration = 0) e.g. heal, damage etc.
+* [✅] Implement - `effect_system_apply_effects_by_source()` - handle applying the effects of a source item to the actor.
+* [✅] Implement  `apply_instant_effect()` - handle instant effects (duration = 0) e.g. heal, damage etc.
 * [✅] Add message log system for food `effect` events e.g. "You feel better"
 
 [✅] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
@@ -343,14 +344,14 @@
 
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
-* [ ] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), stat, status, item (source)
-* [ ] Implement `active effects` component - with count & active_effect[MAX_EFFECTS]
-* [ ] Implement `status_flags_t` flags e.g. poisoned
-* [ ] Extend `effect type` enum with effect_apply_status, effect_cure_status, effect_stat_mod
-* [ ] Place active effects in system banked memory as only ever access via system
-* [ ] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
+* [✅] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), stat, status, item (source)
+* [✅] Implement `active effects` component - with array of active_effect[MAX_EFFECTS]
+* [✅] Implement `status_flags_t` flags e.g. poisoned
+* [✅] Extend `effect_kind_t` enum with EFFECT_STAT_MODIFIER (+/- stat while active)
+* [✅] Place active effects in system banked memory as only ever access via system and large in size
+* [✅] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
 * [ ] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
-* [ ] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
+* [✅] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
 
 [ ] *End result: stats and status are affected by active effect.*
 

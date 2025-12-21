@@ -143,10 +143,10 @@ static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t 
 
     switch (effect->kind)
     {
-        case EFFECT_INSTANT_DAMAGE:
+        case EFFECT_DAMAGE:
             system_damage_try_take_damage(ctx->target, effect->magnitude, DAMAGE_NONE);
             break;
-        case EFFECT_INSTANT_HEAL:
+        case EFFECT_HEAL:
             system_healing_try_take_healing(ctx->target, effect->magnitude, HEALING_KIND_HP);
             text_printf(&g.msg_win, "You feel better!\n");
             break;
