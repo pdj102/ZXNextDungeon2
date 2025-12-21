@@ -366,12 +366,14 @@
 
 ---
 
-### 🪜 **Milestone 199 — Cleanup**
+### 🪜 **Milestone 199 — Cleanup & bugs**
 
 > *Goal: Cleanup code*
 
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
 * [ ] Eliminate player component as not inline with ECS principles
+* [ ] Bug - attack direction can select no direction and attack self
+
 
 [ ] *End result: Unlocked doors open if you walk into them*
 
