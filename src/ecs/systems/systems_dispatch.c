@@ -49,22 +49,20 @@
 
  void systems_init(void)
  {
-    system_monster_init();
-    system_item_init();
-    system_timer_init();
-    system_container_init();
-    system_combat_init();
-    system_damage_init();
-    system_event_init();
     system_actions_init();
-    system_player_init();
-    system_equipment_init();
-    system_movement_init();
     system_combat_init();
+    system_consumable_init();    
+    system_container_init();
     system_damage_init();
-    system_stats_init();
     system_effect_init();
-    system_consumable_init();
+    system_equipment_init();
+    system_event_init();
+    system_item_init();
+    system_monster_init();
+    system_movement_init();
+    system_player_init();
+    system_stats_init();
+    system_timer_init();
  }
 
  /* Actions system*/

@@ -101,6 +101,10 @@ static void effect_system_turn_entity(entity_id_t entity)
  * private functions
  ***************************************************/
 
+ /*
+  * @brief Apply source entity's effect to the target entity if triggered
+  * @param ctx The context of the effect application 
+  */
 static void effect_system_apply_effects_by_source( const effect_apply_t *ctx)
 {
     effect_comp_t *effect;
@@ -129,6 +133,11 @@ static void effect_system_apply_effects_by_source( const effect_apply_t *ctx)
     }
 }
 
+/*
+ * @brief Apply an instant effect to the target entity
+ * @param ctx The context of the effect application 
+ * @param effect The effect component to apply
+ */
 static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t *effect)
 {
 
@@ -146,6 +155,12 @@ static void apply_instant_effect(const effect_apply_t *ctx, const effect_comp_t 
     }
 }
 
+/*
+ * @brief Apply an active effect to the target entity
+ * @details If the entity's maximum number of active effects has been reached applies precendence rules 
+ * @param ctx The context of the effect application 
+ * @param effect The effect component to apply
+ */
 static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t* effect)
 {
 
@@ -167,11 +182,15 @@ static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t
     effects->slots[slot].magnitude = effect->magnitude;
 
     active_stack_append(effects, slot);
+
+    util_info("Applied active effect\n");
     return 1;
 }
 
 /*
  * @brief choose the precedence slot for an effect
+ * @param effects The effect component to check
+ * @param new_effect The effect to check against
  */
 static uint8_t choose_precedence_slot(active_effects_comp_t *effects, const effect_comp_t *new_effect)
 {
@@ -180,18 +199,21 @@ static uint8_t choose_precedence_slot(active_effects_comp_t *effects, const effe
     return INVALID_SLOT;
 }
 
-
+/*
+ * @brief Remove an active effect from an entity
+ * @param effects The entity's effects component
+ * @param slot The slot to remove the effect from
+ */
 void remove_active_effect(active_effects_comp_t* effects, uint8_t slot)
 {
     effects->slots[slot].kind = EFFECT_NONE;
     active_stack_remove(effects, slot);
 }
 
-
-
-
 /* 
- * @brief find a free slot
+ * @brief Find a free slot in the entity's effects component
+ * @param effects The entity's effects component
+ * @return The free slot or INVALID_SLOT
  */
 static uint8_t get_free_slot(active_effects_comp_t *effects)
 {
@@ -207,7 +229,9 @@ static uint8_t get_free_slot(active_effects_comp_t *effects)
 }
 
 /*
- * @brief appends the slot index to active stack
+ * @brief Appends the slot index to active stack
+ * param effects The entity's effects component
+ * @param index The slot to append
  */
 static void active_stack_append(active_effects_comp_t *effects, uint8_t index)
 {
@@ -217,7 +241,9 @@ static void active_stack_append(active_effects_comp_t *effects, uint8_t index)
 }
 
 /*
- * @brief removes the slot index from the active stack
+ * @brief Removes the slot index from the active stack
+ * @param effects The entity's effects component
+ * @param index The slot to remove
  */
 static void active_stack_remove(active_effects_comp_t *effects, uint8_t index)
 {

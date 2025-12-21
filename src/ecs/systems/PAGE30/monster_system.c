@@ -239,6 +239,9 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* All monsters have a name component*/
     comp_name_add(id, creature_name_base[kind]);
 
+    /* All monsters have an active effects component*/
+    comp_active_effect_add(id);
+
     return id;
 }
 

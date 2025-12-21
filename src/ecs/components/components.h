@@ -38,7 +38,7 @@
 void components_init(void);
 
 /* active effect */
-void comp_active_effect_add(entity_id_t entity, effect_comp_t effect);
+void comp_active_effect_add(entity_id_t entity);
 void comp_active_effect_remove(entity_id_t entity);
 
 /* attack */
