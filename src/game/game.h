@@ -85,16 +85,16 @@ typedef enum {
 
 /* Damage type flags */
 typedef enum {
-    DAMAGE_KIND_NONE = 0,
-    DAMAGE_KIND_ACID,
-    DAMAGE_KIND_BLUDGEONING,
-    DAMAGE_KIND_COLD,
-    DAMAGE_KIND_FIRE,
-    DAMAGE_KIND_LIGHTNING,
-    DAMAGE_KIND_PIERCING,
-    DAMAGE_KIND_POISON,
-    DAMAGE_KIND_SLASHING,
-} damage_kind_t;
+    DAMAGE_NONE            = 0,
+    DAMAGE_ACID            = 1 << 0,
+    DAMAGE_BLUDGEONING     = 1 << 1,
+    DAMAGE_COLD            = 1 << 2,
+    DAMAGE_FIRE            = 1 << 3,
+    DAMAGE_LIGHTNING       = 1 << 4,
+    DAMAGE_PIERCING        = 1 << 5,
+    DAMAGE_POISON          = 1 << 6,
+    DAMAGE_SLASHING        = 1 << 7
+} damage_flag_t;
 
 typedef uint16_t damage_mask_t;
 

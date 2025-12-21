@@ -24,15 +24,12 @@
  * private defines
  ***************************************************/
 
-/* Convert damage kind to bit*/
-#define DAMAGE_MASK(kind) ((damage_mask_t)(1u << (kind)))
-
 /***************************************************
  * private function prototypes
  ***************************************************/
-static bool_t damage_type_immune(entity_id_t actor, damage_kind_t type);
-static bool_t damage_type_resistant(entity_id_t actor, damage_kind_t type);
-static bool_t damage_type_vulnerable(entity_id_t actor, damage_kind_t type);
+static bool_t damage_type_immune(entity_id_t actor, damage_flag_t type);
+static bool_t damage_type_resistant(entity_id_t actor, damage_flag_t type);
+static bool_t damage_type_vulnerable(entity_id_t actor, damage_flag_t type);
 
 /***************************************************
  * public functions
@@ -59,7 +56,7 @@ bool_t damage_system_try_die(entity_id_t entity)
     return 1;
 }
 
-int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_kind_t kind)
+int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_flag_t flag)
 {
     event_t event;
 
@@ -76,19 +73,19 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ki
         damage = 0;
     */
 
-    if (damage_type_resistant(actor, kind))
+    if (damage_type_resistant(actor, flag))
     {
         damage /= 2;
         event.type = EVENT_DAMAGED_RESIST;
     }
 
-    if (damage_type_vulnerable(actor, kind))
+    if (damage_type_vulnerable(actor, flag))
     {
         damage *= 2;
         event.type = EVENT_DAMAGED_VULNERABLE;
     }
 
-    if (damage_type_immune(actor, kind))
+    if (damage_type_immune(actor, flag))
     {
         event.type = EVENT_DAMAGED_IMMUNE;
         damage = 0;
@@ -120,20 +117,17 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_ki
  * private functions
  ***************************************************/
 
-static bool_t damage_type_immune(entity_id_t actor, damage_kind_t kind)
+static bool_t damage_type_immune(entity_id_t actor, damage_flag_t flag)
 {
-    damage_mask_t mask = DAMAGE_MASK(kind);
-    return (g.destructible_components[actor].immune & mask) != 0;
+    return (g.destructible_components[actor].immune & flag) != 0;
 }
 
-static bool_t damage_type_resistant(entity_id_t actor, damage_kind_t kind)
+static bool_t damage_type_resistant(entity_id_t actor, damage_flag_t flag)
 {
-    damage_mask_t mask = DAMAGE_MASK(kind);    
-    return (g.destructible_components[actor].resist & mask) != 0;
+    return (g.destructible_components[actor].resist & flag) != 0;
 }
 
-static bool_t damage_type_vulnerable(entity_id_t actor, damage_kind_t kind)
+static bool_t damage_type_vulnerable(entity_id_t actor, damage_flag_t flag)
 {
-   damage_mask_t mask = DAMAGE_MASK(kind);
-   return (g.destructible_components[actor].vulnerable & mask) != 0;
+   return (g.destructible_components[actor].vulnerable & flag) != 0;
 }

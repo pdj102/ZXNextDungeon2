@@ -55,7 +55,7 @@ void combat_system_init(void)
 bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     attack_roll_t attack_roll;
-    damage_kind_t damage_type;
+    damage_flag_t damage_type;
     uint8_t damage_roll;
     event_t event;
 

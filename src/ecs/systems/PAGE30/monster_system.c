@@ -44,10 +44,10 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 
 const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
 {
-    [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .immune = DAMAGE_KIND_NONE, .resist = DAMAGE_KIND_NONE, .vulnerable = DAMAGE_KIND_NONE},
+    [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
    /* MONSTER_CLASS_ABERRATIONS */ 
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.ac = 10, .cur_hp = 1, .max_hp = 1, .immune = DAMAGE_KIND_NONE, .resist = DAMAGE_KIND_NONE, .vulnerable = DAMAGE_KIND_NONE},
+    [CREATURE_RAT] = {.ac = 10, .cur_hp = 1, .max_hp = 1, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -56,22 +56,22 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .immune = DAMAGE_KIND_NONE, .resist = DAMAGE_KIND_NONE, .vulnerable = DAMAGE_KIND_NONE},
-    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 2, .max_hp = 4, .immune = DAMAGE_KIND_NONE, .resist = DAMAGE_KIND_NONE, .vulnerable = DAMAGE_KIND_NONE},
+    [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
+    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 2, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.ac = 5, .cur_hp = 22, .max_hp = 22, .immune = DAMAGE_KIND_BLUDGEONING, .resist = DAMAGE_KIND_NONE, .vulnerable = DAMAGE_KIND_NONE}
+    [CREATURE_WITHERWEED] = {.ac = 5, .cur_hp = 22, .max_hp = 22, .immune = DAMAGE_BLUDGEONING, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE}
     /* MONSTER_CLASS_UNDEAD */    
 };
 
 
 /* Monster default melee attack*/
  const attack_comp_t monster_melee_base[CREATURE_KIND_COUNT] = {
-    [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
+    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -80,21 +80,21 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
-    [CREATURE_PLAYER] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    [CREATURE_PLAYER] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
+    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_POISON, .range = 1, .hit_mod = 2, .damage_mod = 0},
     /* MONSTER_CLASS_UNDEAD */    
 };
 
 /* Monster default ranged attack*/
  const attack_comp_t monster_ranged_base[CREATURE_KIND_COUNT] = {
-    [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -103,12 +103,12 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_KIND_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_WITHERWEED] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_UNDEAD */    
 };
 

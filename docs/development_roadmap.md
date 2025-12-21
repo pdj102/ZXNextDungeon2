@@ -204,7 +204,7 @@
 * [✅] Implement destructible object - vase
 * [✅] Attach to destructible entities
 
-[ ] *End result: Entities like monsters, doors, and traps can be destructible*
+[✅] *End result: Entities like monsters, doors, and traps can be destructible*
 
 ---
 
@@ -262,7 +262,7 @@
 
 * [✅] Implement `Stats` component
 * [🚧] Implement `Stats_system`
-* [🚧] Implement functions to obtain stats from component
+* [🚧] Implement functions to obtain stats from component returning a simple stat_t struct with base and modified stats
 * [ ] Functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 
 [🚧] *End result: Stats takes active effects into account.*
@@ -298,20 +298,33 @@
 
 [ ] *End result: You can range attack and kill monsters.*
 
-### 🪜 **Milestone 122 — Experience and levelling up**
+### 🪜 **Milestone 122 — Experience**
 
-> *Goal: Player gains experience and level up.*
+> *Goal: Player gains experience.*
 
+* [ ] Implement experience component that gives experience
+* [ ] Implement experience system to track player's experience
 * [ ] Implement player experience
 * [ ] Implement gain experience
 * [ ] Implement player levels
 * [ ] Implement player levelling up
 
-[ ] *End result: player gains experience and levels up.*
+[ ] *End result: player gains experience.*
 
 ---
 
-### 🪜 **Milestone 123 — Instant effects**
+### 🪜 **Milestone 122 — Levels**
+
+> *Goal: Player can level up.*
+
+* [ ] Implement player levels
+* [ ] Implement player levelling up
+
+[ ] *End result: player can level up.*
+
+---
+
+### 🪜 **Milestone 124 — Instant effects**
 
 > *Goal: entities can have instant effects.*
 
@@ -326,7 +339,7 @@
 
 ---
 
-### 🪜 **Milestone 124 — Active effects**
+### 🪜 **Milestone 125 — Active effects**
 
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
@@ -341,7 +354,7 @@
 
 [ ] *End result: stats and status are affected by active effect.*
 
-### 🪜 **Milestone 125 — Implement steppable entities**
+### 🪜 **Milestone 126 — Implement steppable entities**
 
 > *Goal: Entities can react to being stood on*
 
@@ -358,7 +371,7 @@
 
 ---
 
-### 🪜 **Milestone 126 — Implement bumpable entities**
+### 🪜 **Milestone 127 — Implement bumpable entities**
 
 > *Goal: Entities can react to bumped into*
 
@@ -371,7 +384,7 @@
 > *Goal: Cleanup code*
 
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
-* [ ] Eliminate player component as not inline with ECS principles
+* [ ] Change player in to character component and use for character specific things like experience
 * [ ] Bug - attack direction can select no direction and attack self
 
 

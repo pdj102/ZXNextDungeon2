@@ -330,7 +330,7 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
 
  }
 
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_kind_t kind)
+int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag)
 {
     uint8_t current_bank;
     bool_t result;
@@ -338,7 +338,7 @@ int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
 
-    result = damage_system_try_take_damage(creature, damage, kind);
+    result = damage_system_try_take_damage(creature, damage, flag);
 
     ZXN_WRITE_MMU6(current_bank);
 

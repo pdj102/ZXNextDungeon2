@@ -69,8 +69,8 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
 {
     [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
-    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_KIND_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
-    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_KIND_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* Ranged weapons*/
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },

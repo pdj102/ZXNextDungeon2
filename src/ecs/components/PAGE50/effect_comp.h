@@ -34,12 +34,12 @@ typedef enum {
 typedef enum {
     TRIGGER_NONE            = 0,
     TRIGGER_ON_CONSUMED     = 1 << 0,       /* eat food, quaff potion*/
-    TRIGGER_ON_EQUIPPED     = 2 << 0,       /* wield / wear */
-    TRIGGER_ON_UNEQUIPPED   = 3 << 0,        
-    TRIGGER_ON_HIT          = 4 << 0,            /* struck by */
-    TRIGGER_ON_STEP         = 5 << 0,           /* stepped on */
-    TRIGGER_ON_TURN         = 6 << 0,           /* turn occurs*/
-} trigger_kind_t;
+    TRIGGER_ON_EQUIPPED     = 1 << 1,       /* wield / wear */
+    TRIGGER_ON_UNEQUIPPED   = 1 << 2,        
+    TRIGGER_ON_HIT          = 1 << 3,       /* struck by */
+    TRIGGER_ON_STEP         = 1 << 4,       /* stepped on */
+    TRIGGER_ON_TURN         = 1 << 5,       /* turn occurs*/
+} trigger_flag_t;
 
 typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 
