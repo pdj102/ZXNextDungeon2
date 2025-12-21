@@ -100,8 +100,6 @@ typedef effect_comp_t effect_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void effect_init(void);
-
 void effect_add(entity_id_t entity, const effect_comp_t effect);
 
 void effect_remove(entity_id_t entity);

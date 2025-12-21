@@ -37,6 +37,10 @@
  ***************************************************/
 void components_init(void);
 
+/* active effect */
+void comp_active_effect_add(entity_id_t entity, effect_comp_t effect);
+void comp_active_effect_remove(entity_id_t entity);
+
 /* attack */
 void comp_melee_add(entity_id_t entity, const attack_comp_t melee);
 void comp_ranged_add(entity_id_t entity, const attack_comp_t attack);

@@ -48,8 +48,6 @@ typedef active_effects_comp_t active_effect_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void active_effect_init(void);
-
 void active_effect_add(entity_id_t entity);
 
 void active_effect_remove(entity_id_t entity);

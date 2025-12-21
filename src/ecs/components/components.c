@@ -13,6 +13,7 @@
 
 #include "ecs/entity.h"
 
+#include "ecs/components/PAGE50/active_effect_comp.h"
 #include "ecs/components/PAGE50/attack_comp.h"
 #include "ecs/components/PAGE50/contained_comp.h"
 #include "ecs/components/PAGE50/container_comp.h"
@@ -41,6 +42,31 @@ void components_init(void)
 {
     comp_location_init(); 
     comp_timer_init();
+}
+
+/* active effect */
+void comp_active_effect_add(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6(); 
+    ZXN_WRITE_MMU6(PAGE_COMP_1);
+
+    active_effect_add(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void comp_active_effect_remove(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6(); 
+    ZXN_WRITE_MMU6(PAGE_COMP_1);
+
+    active_effect_remove(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
 }
 
 /* attack */
