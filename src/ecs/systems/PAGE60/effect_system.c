@@ -103,7 +103,7 @@ static void effect_system_turn_entity(entity_id_t entity)
 
  /*
   * @brief Apply source entity's effect to the target entity if triggered
-  * @param ctx The context of the effect application 
+  * @param ctx The context of the effect application. NB the effect applies from the source (e.g. potion) to the target (e.g player)
   */
 static void effect_system_apply_effects_by_source( const effect_apply_t *ctx)
 {
@@ -132,6 +132,76 @@ static void effect_system_apply_effects_by_source( const effect_apply_t *ctx)
             apply_active_effect(ctx, effect); // ignore result 
     }
 }
+
+ /*
+  * @brief Remove any active effects that were applied by the source entity (e.g. ring of healing) to the target (e.g player)
+  * @details Call this function when the source entity is removed (e.g. unequip ring of healing)
+  * @param ctx The context of the effect application. 
+  */
+void remove_effects_by_source(const effect_apply_t *ctx)
+{
+    active_effects_comp_t* effects = &active_effect_components[ctx->target];
+
+    uint8_t i = 0;
+    while (i < effects->head)
+    {
+        uint8_t slot = effects->active_stack[i];
+        active_effect_comp_t* e = &effects->slots[slot];
+
+        if (e->source == ctx->source)
+        {
+            /* clear slot */
+            e->kind = EFFECT_NONE;
+
+            /* remove from active stack via swap-remove */
+            effects->active_stack[i] = effects->active_stack[--effects->head];
+
+            /* do NOT increment i — need to re-check swapped entry */
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+
+/*
+ * @brief Removes active effects whose source is the source entity from all entities 
+ * @details Call this function in the cleanup phase when the source entity is marked for destruction to ensure no dangling source references in active effects 
+ * @param source The entity ID of the source entity that could have created active effects
+ */
+void active_effects_cleanup_entity(entity_id_t source)
+{
+    /* Early out: this entity could not have created active effects */
+    if (!entity_has_component(source, COMPONENT_EFFECT))
+        return;
+
+    for (entity_id_t e = 0; e < MAX_ENTITIES; ++e)
+    {
+        if (!entity_has_component(e, COMPONENT_ACTIVE_EFFECT))
+            continue;
+
+        active_effects_comp_t *effects = &active_effect_components[e];
+
+        for (uint8_t i = 0; i < effects->head; )
+        {
+            uint8_t slot = effects->active_stack[i];
+            active_effect_comp_t *ae = &effects->slots[slot];
+
+            if (ae->source == source)
+            {
+                remove_active_effect(effects, slot);
+                /* do NOT increment i — stack was compacted */
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
+}
+
+
 
 /*
  * @brief Apply an instant effect to the target entity
@@ -180,6 +250,7 @@ static bool_t apply_active_effect(const effect_apply_t *ctx, const effect_comp_t
     effects->slots[slot].remaining = effect->duration;
     effects->slots[slot].target = effect->target;
     effects->slots[slot].magnitude = effect->magnitude;
+    effects->slots[slot].source = ctx->source;
 
     active_stack_append(effects, slot);
 
@@ -241,7 +312,7 @@ static void active_stack_append(active_effects_comp_t *effects, uint8_t index)
 }
 
 /*
- * @brief Removes the slot index from the active stack
+ * @brief Removes the slot index from the active stack via swap-remove 
  * @param effects The entity's effects component
  * @param index The slot to remove
  */

@@ -34,7 +34,8 @@ typedef struct {
     effect_kind_t kind;         /* kind of effect */
     int8_t magnitude;           /* magnitude of effect (+ / -) */
     uint8_t remaining;          /* remaining number of turns. 0xFF = permanent (until removed) */
-    effect_target_t target;     /* effect target */
+    effect_target_t target;     /* effect target e.g. resource or stat */
+    entity_id_t source;         /* effect source entity ID */
 } active_effect_comp_t;
 
 /* Each entity can have up to MAX_ACTIVE_EFFECTS active effects */

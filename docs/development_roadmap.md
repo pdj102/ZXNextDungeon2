@@ -201,10 +201,10 @@
 > *Goal: Entities can be tageted, take damage and be destroyed*
 
 * [✅] Implement destructible component with ac, hp, max_hp, damage_immunities, damage_resistances, damange_vulnerabilities
-* [✅] Implement destructible object - vase
+* [✅] Implement destructible object e.g. a creature
 * [✅] Attach to destructible entities
 
-[✅] *End result: Entities like monsters, doors, and traps can be destructible*
+[🚧] *End result: Entities like monsters, doors, and traps can be destructible*
 
 ---
 
@@ -262,8 +262,6 @@
 
 * [✅] Implement `Stats` component
 * [🚧] Implement `Stats_system`
-* [🚧] Implement functions to obtain stats from component returning a simple stat_t struct with base and modified stats
-* [ ] Functions to calculate stats using base value and active effects (e.g. buffs/debuffs)
 
 [🚧] *End result: Stats takes active effects into account.*
 
@@ -331,9 +329,9 @@
 * [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
 * [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
 * [✅] Implement `effect_target_t` enum e.g. EFFECT_TARGET_CUR_HP
-* [✅] Implment `effect_system`
-* [✅] Implement - `effect_system_apply_effects_by_source()` - handle applying the effects of a source item to the actor.
-* [✅] Implement  `apply_instant_effect()` - handle instant effects (duration = 0) e.g. heal, damage etc.
+* [✅] Implment `effect_system` and respond to events that could trigger an effect
+* [✅] Implement `effect_system_apply_effects_by_source()` - handle applying the effects of a source item to the actor.
+* [✅] Implement `apply_instant_effect()` - handle instant effects (duration = 0) e.g. heal, damage etc.
 * [✅] Add message log system for food `effect` events e.g. "You feel better"
 
 [✅] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
@@ -344,14 +342,18 @@
 
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
-* [✅] Implement `active effect` that details an active effect - type, value, stat, status, duration (0xFF = permanent), stat, status, item (source)
+* [✅] Implement `active effect` that details an active effect - kind, magnitude, remaining turns (0xFF = permanent), effect target, source
+* [✅] Implement `effect_target_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
 * [✅] Implement `active effects` component - with array of active_effect[MAX_EFFECTS]
 * [✅] Implement `status_flags_t` flags e.g. poisoned
 * [✅] Extend `effect_kind_t` enum with EFFECT_STAT_MODIFIER (+/- stat while active)
 * [✅] Place active effects in system banked memory as only ever access via system and large in size
 * [✅] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
-* [ ] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
-* [✅] Implement `remove_effects_by_source(actor, item)` - handle removing active effects of the source item from the actor
+* [🚧] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
+* [✅] Implement `remove_effects_by_source(actor, source)` - handle removing active effects of the source item from the actor
+* [ ] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
+* [🚧] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
+* [🚧] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect. 
 
 [ ] *End result: stats and status are affected by active effect.*
 
