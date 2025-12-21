@@ -29,7 +29,7 @@ void effect_add(entity_id_t entity, const effect_comp_t effect)
     util_assert(!entity_has_component(entity, COMPONENT_EFFECT)); 
 
     g.effect_components[entity].kind = effect.kind;
-    g.effect_components[entity].value = effect.value;
+    g.effect_components[entity].magnitude = effect.magnitude;
     g.effect_components[entity].duration = effect.duration;
     g.effect_components[entity].target = effect.target;
     g.effect_components[entity].triggers = effect.triggers;

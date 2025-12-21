@@ -32,11 +32,17 @@ typedef struct
 /***************************************************
  * public function prototypes
  ***************************************************/
+ /*
+  * @brief Pass event to effect system for processing 
+  *   
+  */
+void effect_system_init(void );
 
  /*
   * @brief Pass event to effect system for processing 
   *   
   */
 void effect_system_handle_event(const event_t event);
+
 
 #endif // EFFECT_SYSTEM_H

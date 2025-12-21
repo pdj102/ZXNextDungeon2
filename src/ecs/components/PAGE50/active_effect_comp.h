@@ -32,15 +32,17 @@
 /* An active effect */
 typedef struct {
     effect_kind_t kind;         /* kind of effect */
-    int8_t value;               /* magnitude of effect (+ / -) */
+    int8_t magnitude;           /* magnitude of effect (+ / -) */
     uint8_t remaining;          /* remaining number of turns. 0xFF = permanent (until removed) */
     effect_target_t target;     /* effect target */
 } active_effect_comp_t;
 
-/* An array of effects */
+/* Each entity can have up to MAX_ACTIVE_EFFECTS active effects */
 typedef struct {
-    active_effect_comp_t effects[MAX_ACTIVE_EFFECTS]; 
-    uint8_t count;
+    active_effect_comp_t slots[MAX_ACTIVE_EFFECTS]; /* slots for effects */
+
+    uint8_t active_stack[MAX_ACTIVE_EFFECTS];   /* stack of active slots */
+    uint8_t head;                               /* head of stack */
 } active_effects_comp_t;
 
 typedef active_effects_comp_t active_effect_components_t[MAX_ENTITIES]; 

@@ -37,6 +37,9 @@
  * private function prototypes
  ****************************************************/
  static void clear_component_mask(entity_id_t id);
+ static void active_list_append(entity_id_t id);
+ static void active_list_remove(entity_id_t id);
+ static void destroy_list_append(entity_id_t id);
 
 /***************************************************
  * public functions
@@ -50,6 +53,7 @@ void entity_init(void)
         clear_component_mask(i);
     }
 
+    /* Set active and destory heads to index 0 */
     g.entity_components.active_head = 0;
     g.entity_components.destroy_head = 0;
 }
@@ -68,7 +72,7 @@ entity_id_t entity_create(void)
             g.entity_components.entities[id].flags = FLAG_NONE | FLAG_IN_USE;        /* clear flags and set entity in use flag */
             clear_component_mask(id);
 
-            g.entity_components.active_list[g.entity_components.active_head++] = id; /* store in active list */
+            active_list_append(id); 
 
             return id;
         }
@@ -142,7 +146,7 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
 void entity_mark_for_destruction(entity_id_t id) 
 {
     /* append to destruction list */
-    g.entity_components.destroy_list[g.entity_components.destroy_head++] = id;
+    destroy_list_append(id);
     entity_set_flag(id, FLAG_PENDING_DESTROY);
 }
 
@@ -219,6 +223,39 @@ void entity_destroy(entity_id_t id)
     clear_component_mask(id);
 
     /* remove from active list */
+    active_list_remove(id);
+ 
+}
+
+ /***************************************************
+ * private functions
+ ***************************************************/
+
+ /*
+  * @brief clears the component mask of an entity
+  */
+static void clear_component_mask(entity_id_t id)
+{
+    for (uint8_t i = 0; i < COMPONENT_BYTES; i++)
+    {
+        g.entity_components.entities[id].components.mask[i] = 0;
+    }
+}
+
+/*
+ * @brief appends an entity to the active list
+ */
+static void active_list_append(entity_id_t id)
+{
+    util_assert ( g.entity_components.active_head < MAX_ENTITIES);
+    g.entity_components.active_list[g.entity_components.active_head++] = id; /* store in active list */
+}
+
+/*
+ * @brief removes an entity from the active list
+ */
+static void active_list_remove(entity_id_t id)
+{
     for (uint8_t i = 0; i < g.entity_components.active_head; i++)
     {
         if (g.entity_components.active_list[i] == id)
@@ -226,17 +263,14 @@ void entity_destroy(entity_id_t id)
             g.entity_components.active_list[i] = g.entity_components.active_list[--g.entity_components.active_head];
             break;
         }
-    }    
+    }   
 }
 
- /***************************************************
- * private functions
- ***************************************************/
-
-static void clear_component_mask(entity_id_t id)
+/*
+ * @brief appends an entity to the pending destruction list
+ */
+static void destroy_list_append(entity_id_t id)
 {
-    for (uint8_t i = 0; i < COMPONENT_BYTES; i++)
-    {
-        g.entity_components.entities[id].components.mask[i] = 0;
-    }
+    util_assert ( g.entity_components.destroy_head < MAX_ENTITIES);
+    g.entity_components.destroy_list[g.entity_components.destroy_head++] = id;
 }

@@ -363,19 +363,34 @@ bool_t system_damage_try_die(entity_id_t creature)
 /* Effect System */
 void system_effect_init(void)
 {
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
 
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
+
+    effect_system_init();
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 void system_effect_handle_event(const event_t event)
 {
-    uint8_t current_bank;
+    uint8_t mmu6_current_bank;
+    uint8_t mmu7_current_bank;
 
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM);
+    mmu6_current_bank = ZXN_READ_MMU6();
+    mmu7_current_bank = ZXN_READ_MMU7();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_handle_event(event);
 
-    ZXN_WRITE_MMU6(current_bank);
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 /* Equipment System */

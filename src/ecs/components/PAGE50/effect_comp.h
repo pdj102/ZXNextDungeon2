@@ -89,7 +89,7 @@ typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 /* A single effect  */
 typedef struct {
     effect_kind_t kind;         /* kind of effect */
-    int8_t value;               /* magnitude of effect (+ / -) */
+    int8_t magnitude;           /* magnitude of effect (+ / -) */
     uint8_t duration;           /* duration of effect (turns). 0 = instant effect 0xFF = permanent (until removed) */
     effect_target_t target;     /* effect target */
     trigger_mask_t triggers;    /* when this effect applies */
