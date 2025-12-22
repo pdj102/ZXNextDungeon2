@@ -41,7 +41,6 @@ typedef enum {
     EFFECT_REMOVE_STATUS,       /* remove a status e.g. blind etc */
 
     /* Utility / hooks */
-    EFFECT_DISPEL,              /* remove other effects */
     EFFECT_TRIGGER_ONLY,        /* no direct change, just emits event */
 
     EFFECT_COUNT
@@ -92,12 +91,14 @@ typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 typedef struct {
     effect_kind_t kind;         /* kind of effect */
     int8_t magnitude;           /* magnitude of effect (+ / -) */
-    uint8_t duration;           /* duration of effect (turns). 0 = instant effect 0xFF = permanent (until removed) */
-    effect_target_t target;     /* effect target */
-    trigger_mask_t triggers;    /* when this effect applies */
-} effect_comp_t;
+    uint8_t duration;           /* Instant effect = 0. Duration effect =  number of turns or 0xFF if permanaent (until removed) */
+    effect_target_t stat;       /* stat / resource the effect applies to e.g. HP */
+    trigger_mask_t triggers;    /* The triggers that cause the effect to trigger */
+} effect_t;
 
-typedef effect_comp_t effect_components_t[MAX_ENTITIES]; 
+typedef effect_t effect_comp_t; /* Effect component is an effect */
+
+typedef effect_t effect_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes

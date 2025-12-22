@@ -10,20 +10,17 @@
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE60/effect_system_priv.h"
 
+#include "ecs/entity.h"
 #include "ecs/components/PAGE50/effect_comp.h"
 #include "ecs/components/PAGE50/active_effect_comp.h"
-
-#include "ecs/systems/PAGE42/event_system.h"
 
 /***************************************************
  * private defines
  ***************************************************/
-#define INVALID_SLOT 0xFF
 
  /***************************************************
  * private variables (static)
  ***************************************************/
-
 
 /***************************************************
  * private function prototypes
@@ -32,33 +29,32 @@
 /***************************************************
  * public functions
  ***************************************************/
-void effect_system_init(void)
+void entity_turn(entity_id_t entity)
 {
-    for (uint8_t i = 0; i < MAX_ENTITIES; i++)
+    active_effects_comp_t *effects = &active_effect_components[entity];
+
+    for (uint8_t i = 0; i < effects->head; )
     {
-        active_effect_components[i].head = 0;
-        for (uint8_t j = 0; j < MAX_ACTIVE_EFFECTS; j++)
+        uint8_t slot = effects->active_stack[i];
+        effect_t *e = &effects->slots[slot].effect;
+
+        apply_effect(entity, e);
+
+        if (e->duration != 0xFF)
         {
-            active_effect_components[i].slots[j].effect.kind = EFFECT_NONE;
+            if (--e->duration == 0)
+            {
+                remove_active_effect(effects, slot);
+                continue; // don't increment i since we removed an element
+            }
         }
+
+        i++;
     }
-}
-
-void effect_system_handle_event(const event_t event)
-{
-    trigger_from_event(&event);
-}
-
-static void effect_system_process_entity_turn(entity_id_t entity)
-{
-    entity_turn(entity);
-}
-
-void effect_system_cleanup_entity(entity_id_t source)
-{
-
 }
  
  /***************************************************
  * private functions
  ***************************************************/
+
+ 
