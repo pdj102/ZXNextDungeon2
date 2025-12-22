@@ -401,7 +401,7 @@ void system_effect_process_entity_turn(entity_id_t entity)
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
     ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
-    system_effect_process_entity_turn(entity);
+    effect_system_process_entity_turn(entity);
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
     ZXN_WRITE_MMU7(mmu7_current_bank);

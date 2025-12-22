@@ -58,6 +58,10 @@ void handle_event(const event_t *event)
         case EVENT_EQUIPPED:
             ctx.trigger = TRIGGER_ON_EQUIPPED;
             break;
+        case EVENT_UNEQUIPPED:
+            ctx.trigger = TRIGGER_ON_UNEQUIPPED;
+            remove_effects_by_source(ctx.target, ctx.source);
+            break;
         default:
             return;
     }

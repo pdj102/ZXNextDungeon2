@@ -354,7 +354,7 @@
 * [✅] Implement `remove_effects_by_source(actor, source)` - handle removing active effects of the source item from the actor
 * [ ] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
 * [🚧] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
-* [🚧] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect. 
+* [🚧] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect.
 
 [ ] *End result: stats and status are affected by active effect.*
 
@@ -390,7 +390,6 @@
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
 * [ ] Change player in to character component and use for character specific things like experience
 * [ ] Bug - attack direction can select no direction and attack self
-
 
 [ ] *End result: Unlocked doors open if you walk into them*
 
@@ -498,7 +497,7 @@
 
 > *Goal: PLayer zap wands*
 
-* [ ] Implement a wand 
+* [ ] Implement a wand
 * [ ] Implement a variety of wands
 * [ ] Add player `zap` command - select from inventory
 * [ ] Implement `magic_system_try_zap`

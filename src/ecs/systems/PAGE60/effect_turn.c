@@ -14,6 +14,9 @@
 #include "ecs/components/PAGE50/effect_comp.h"
 #include "ecs/components/PAGE50/active_effect_comp.h"
 
+#include "core/text.h"
+#include "game/global_state.h"
+
 /***************************************************
  * private defines
  ***************************************************/
@@ -39,6 +42,8 @@ void entity_turn(entity_id_t entity)
         effect_t *e = &effects->slots[slot].effect;
 
         apply_effect(entity, e);
+
+        text_printf(&g.msg_win, "Remaining:%d\n", e->duration);
 
         if (e->duration != 0xFF)
         {

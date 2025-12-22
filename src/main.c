@@ -86,8 +86,6 @@ int main(void) {
 
         turn();
 
-        system_player_update();
-
         map_render();        
 
         clean_up_and_destroy();

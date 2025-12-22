@@ -87,7 +87,12 @@ bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect
   */
   void remove_effects_by_source(entity_id_t target, entity_id_t source)
 {
-    active_effects_comp_t* effects = &active_effect_components[target];
+    active_effects_comp_t* effects;
+    
+    if (!entity_has_component(target,COMPONENT_ACTIVE_EFFECT))
+        return;
+
+    effects = &active_effect_components[target];
 
     uint8_t i = 0;
     while (i < effects->head)
