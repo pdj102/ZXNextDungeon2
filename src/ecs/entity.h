@@ -14,7 +14,7 @@
 /***************************************************
  * public defines
  ***************************************************/
-#define MAX_ENTITIES 8 /* Maximum number of entities */
+#define MAX_ENTITIES 12 /* Maximum number of entities */
 #define ENTITY_ID_INVALID 0xFF /* Invalid entity ID */
 
 /* Component masks for the various component types */

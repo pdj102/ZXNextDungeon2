@@ -57,15 +57,19 @@ bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect
 
     if (slot == INVALID_SLOT)
     {
+        util_info("No free slot\n");
         slot = choose_precedence_slot(effects, effect);
         if (slot == INVALID_SLOT)
+        {
+            util_info("Does not take precendence\n");
             return 0;
+        }
     }
 
     /* Set up new active effect */
     effects->slots[slot].effect.kind = effect->kind;
     effects->slots[slot].effect.duration = effect->duration;
-    effects->slots[slot].effect.stat = effect->stat;
+    effects->slots[slot].effect.attribute = effect->attribute;
     effects->slots[slot].effect.magnitude = effect->magnitude;
     effects->slots[slot].source = source;
 
@@ -117,6 +121,27 @@ void remove_active_effect(active_effects_comp_t* effects, uint8_t slot)
 {
     effects->slots[slot].effect.kind = EFFECT_NONE;
     active_stack_remove(effects, slot);
+}
+
+int8_t attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute)
+{
+    int8_t mod_sum = 0;
+    
+    active_effects_comp_t* effects = &active_effect_components[actor];
+
+    uint8_t i = 0;
+    while (i < effects->head)
+    {
+        int8_t slot = effects->active_stack[i];
+        effect_t* e = &effects->slots[slot].effect;
+
+        if ((e->attribute == attribute) && (e->kind == EFFECT_STAT_MODIFIER))
+        {
+            mod_sum += e->magnitude;
+        }
+        i++;
+    }
+    return mod_sum;
 }
 
 

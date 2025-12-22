@@ -49,6 +49,7 @@ __at (0xe000) static active_effect_components_t active_effect_components; /* Pla
 /* Active effects */
 bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect);
 void remove_effects_by_source(entity_id_t target, entity_id_t source);
+int8_t attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute);
 void remove_active_effect(active_effects_comp_t* effects, uint8_t slot);
 
 /* Apply effects */
@@ -58,7 +59,7 @@ void apply_effect(entity_id_t target, const effect_t *effect);
 void cleanup_entity(entity_id_t source);
 
 /* Trigger */
-void trigger_from_event(const event_t *event);
+void handle_event(const event_t *event);
 
 /* Turn */
 void entity_turn(entity_id_t entity);

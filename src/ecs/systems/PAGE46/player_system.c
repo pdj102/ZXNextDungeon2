@@ -73,18 +73,10 @@ void player_system_update(void)
         return;
     }
 
-    /* Check if player's turn*/
-    if (system_timer_has_fired(entity) == 0)
-    {
-        return;
-    }
-
-    /* Reset timer */
-    system_timer_reset(entity);
-
     key = key_press();
 
     text_printf(&g.msg_win, "key: %d\n", key);
+    text_printf(&g.msg_win, "Str mod: %u\n", system_effect_attribute_mod_sum(entity, EFFECT_ATTRIBUTE_STR));
 
     switch(key) {
         case 8: /* left */

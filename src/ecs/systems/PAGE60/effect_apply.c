@@ -70,62 +70,62 @@ void apply_effect(entity_id_t target, const effect_t *effect)
 
 static void apply_damage_effect(entity_id_t target, const effect_comp_t *effect)
 {
-    switch (effect->stat)
+    switch (effect->attribute)
     {
-        case EFFECT_TARGET_CUR_HP:
+        case EFFECT_ATTRIBUTE_CUR_HP:
             system_damage_try_take_damage(target, effect->magnitude, DAMAGE_NONE);
             break;
-        case EFFECT_TARGET_CUR_MP:
-        case EFFECT_TARGET_MAX_HP:
-        case EFFECT_TARGET_MAX_MP:
+        case EFFECT_ATTRIBUTE_CUR_MP:
+        case EFFECT_ATTRIBUTE_MAX_HP:
+        case EFFECT_ATTRIBUTE_MAX_MP:
 
         /* Primary stats */
-        case EFFECT_TARGET_STR:
-        case EFFECT_TARGET_DEX:
-        case EFFECT_TARGET_CON:
-        case EFFECT_TARGET_INT:
-        case EFFECT_TARGET_WIS:
-        case EFFECT_TARGET_CHA:
+        case EFFECT_ATTRIBUTE_STR:
+        case EFFECT_ATTRIBUTE_DEX:
+        case EFFECT_ATTRIBUTE_CON:
+        case EFFECT_ATTRIBUTE_INT:
+        case EFFECT_ATTRIBUTE_WIS:
+        case EFFECT_ATTRIBUTE_CHA:
 
         /* Secondary stats */
-        case EFFECT_TARGET_ARMOR_CLASS:
-        case EFFECT_TARGET_SPEED:
-        case EFFECT_TARGET_ATTACK:
-        case EFFECT_TARGET_DAMAGE:
+        case EFFECT_ATTRIBUTE_ARMOR_CLASS:
+        case EFFECT_ATTRIBUTE_SPEED:
+        case EFFECT_ATTRIBUTE_ATTACK:
+        case EFFECT_ATTRIBUTE_DAMAGE:
             break;
 
         /* Status slot (used with EFFECT_APPLY_STATUS) */
-        EFFECT_TARGET_STATUS:
+        EFFECT_ATTRIBUTE_STATUS:
     }
 }
 
 static void apply_healing_effect(entity_id_t target, const effect_comp_t *effect)
 {
-    switch (effect->stat)
+    switch (effect->attribute)
     {
-        case EFFECT_TARGET_CUR_HP:
+        case EFFECT_ATTRIBUTE_CUR_HP:
             system_healing_try_take_healing(target, effect->magnitude, HEALING_KIND_HP);
             break;
-        case EFFECT_TARGET_CUR_MP:
-        case EFFECT_TARGET_MAX_HP:
-        case EFFECT_TARGET_MAX_MP:
+        case EFFECT_ATTRIBUTE_CUR_MP:
+        case EFFECT_ATTRIBUTE_MAX_HP:
+        case EFFECT_ATTRIBUTE_MAX_MP:
 
         /* Primary stats */
-        case EFFECT_TARGET_STR:
-        case EFFECT_TARGET_DEX:
-        case EFFECT_TARGET_CON:
-        case EFFECT_TARGET_INT:
-        case EFFECT_TARGET_WIS:
-        case EFFECT_TARGET_CHA:
+        case EFFECT_ATTRIBUTE_STR:
+        case EFFECT_ATTRIBUTE_DEX:
+        case EFFECT_ATTRIBUTE_CON:
+        case EFFECT_ATTRIBUTE_INT:
+        case EFFECT_ATTRIBUTE_WIS:
+        case EFFECT_ATTRIBUTE_CHA:
 
         /* Secondary stats */
-        case EFFECT_TARGET_ARMOR_CLASS:
-        case EFFECT_TARGET_SPEED:
-        case EFFECT_TARGET_ATTACK:
-        case EFFECT_TARGET_DAMAGE:
+        case EFFECT_ATTRIBUTE_ARMOR_CLASS:
+        case EFFECT_ATTRIBUTE_SPEED:
+        case EFFECT_ATTRIBUTE_ATTACK:
+        case EFFECT_ATTRIBUTE_DAMAGE:
             break;
 
         /* Status slot (used with EFFECT_APPLY_STATUS) */
-        EFFECT_TARGET_STATUS:
+        EFFECT_ATTRIBUTE_STATUS:
     }
 }

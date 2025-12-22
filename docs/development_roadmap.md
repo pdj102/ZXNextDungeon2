@@ -327,13 +327,13 @@
 
 > *Goal: entities can have instant effects.*
 
-* [✅] Implement `effect` component that describes what could happen - type, value, duration (0 = instant), stat, status
+* [✅] Implement `effect_t` that describes an event that could happen - type, magnitude, duration (0 = instant), stat, status
 * [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
-* [✅] Implement `effect_target_t` enum e.g. EFFECT_TARGET_CUR_HP
-* [✅] Implment `effect_system` and respond to events that could trigger an effect
-* [✅] Implement `process_trigger()` - handle applying the effects of a source item to the actor.
-* [✅] Implement `apply_instant_effect()` - handle instant effects (duration = 0) e.g. heal, damage etc.
-* [✅] Add message log system for food `effect` events e.g. "You feel better"
+* [✅] Implement `effect_attribute_t` enum e.g. EFFECT_ATTRIBUTE_CUR_HP
+* [✅] Implment `effect_system`
+* [✅] Implement `effect_system_handle_event()` - create effect triggers based on game events
+* [✅] Implement `process_trigger()` - process triggers and apply effects
+* [✅] Implement `apply_effect()` - apply an effect e.g. heal, damage etc
 
 [✅] *End result: Entities can apply instant effects e.g. when food is consumed, potion quaffed etc.*
 
@@ -343,14 +343,14 @@
 
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
-* [✅] Implement `active effect` that details an active effect - kind, magnitude, remaining turns (0xFF = permanent), effect target, source
-* [✅] Implement `effect_target_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
-* [✅] Implement `active effects` component - with array of active_effect[MAX_EFFECTS]
-* [✅] Implement `status_flags_t` flags e.g. poisoned
+* [✅] Implement `active effect` - details of an active effect - an effect_t and source
+* [✅] Implement `effect_attribute_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
+* [✅] Implement `active effects` component - an array of active_effect[MAX_EFFECTS]
+* [ ] Implement `status_flags_t` flags e.g. poisoned
 * [✅] Extend `effect_kind_t` enum with EFFECT_STAT_MODIFIER (+/- stat while active)
 * [✅] Place active effects in system banked memory as only ever access via system and large in size
 * [✅] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
-* [🚧] Implement `effect_system_update` to handle duration active effects. Remove effects when duration expires
+* [✅] Implement `effect_system_process_entity_turn(actor)` to handle duration active effects. Remove effects when duration expires
 * [✅] Implement `remove_effects_by_source(actor, source)` - handle removing active effects of the source item from the actor
 * [ ] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
 * [🚧] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)

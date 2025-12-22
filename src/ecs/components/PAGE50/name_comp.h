@@ -54,7 +54,8 @@
     /* Scrolls */
     /* Food and drink */
     NAME_BREAD,
-    /* Wearable */
+    /* Rings */
+    NAME_RING_OF_STRENGTH,
     /* Wands */
     /* Light sources */
     /* Keys */

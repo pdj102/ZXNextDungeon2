@@ -43,21 +43,26 @@ static void process_trigger( const trigger_context_t *ctx);
   * effect trigger and populates a trigger context with source, target,
   * and trigger type for use by the effect system.
   */
-void trigger_from_event(const event_t *event)
+void handle_event(const event_t *event)
 {
     trigger_context_t ctx;
+
+    ctx.source = event->target;  /* This is correct - The event Player (source) quaffs Potion (target) becomes Apply Potion's effect (source) to Player (target) */
+    ctx.target = event->source;
 
     switch (event->type)
     {
         case EVENT_CONSUMED:
-            ctx.source = event->target;  /* This is correct - The event Player (source) quaffs Potion (target) becomes Apply Potion's effect (source) to Player (target) */
-            ctx.target = event->source;
             ctx.trigger = TRIGGER_ON_CONSUMED;
-            process_trigger(&ctx);
+            break;
+        case EVENT_EQUIPPED:
+            ctx.trigger = TRIGGER_ON_EQUIPPED;
             break;
         default:
-            util_abort("Unknown event type");
+            return;
     }
+
+    process_trigger(&ctx);
 }
 
  /***************************************************
@@ -86,7 +91,7 @@ static void process_trigger( const trigger_context_t *ctx)
     {
         return;
     }
-
+    
     if (effect->duration == 0 )
     {
         /* If the effect is instant, apply immediately */
@@ -95,6 +100,6 @@ static void process_trigger( const trigger_context_t *ctx)
     else if (entity_has_component(ctx->target, COMPONENT_ACTIVE_EFFECT))
     {
         /*  If the effect is durational, attach to the target*/
-            attach_active_effect(ctx->target, ctx->source, effect); // ignore result 
+        attach_active_effect(ctx->target, ctx->source, effect); // ignore result 
     }
 }

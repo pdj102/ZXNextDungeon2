@@ -43,7 +43,7 @@ typedef enum {
     ITEM_CLASS_SCROLL,
     // Food and drink
     ITEM_CLASS_CONSUMABLE,
-    // Wearable
+    // Rings
     ITEM_CLASS_HELMET,
     ITEM_CLASS_NECKLACE,
     ITEM_CLASS_GLOVE,
@@ -74,7 +74,8 @@ typedef enum {
     // Scrolls
     // Food and drink
     ITEM_BREAD,
-    // Wearable
+    // Rings
+    ITEM_RING_OF_STRENGTH,
     // Wands
     // Light sources
     // Keys    

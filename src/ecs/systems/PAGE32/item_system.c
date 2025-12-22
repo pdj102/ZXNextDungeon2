@@ -34,7 +34,8 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = EQUIPPABLE_NONE,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = EQUIPPABLE_FINGER,
     /* Wands */
     /* Light sources */
     /* Keys */    
@@ -58,7 +59,8 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = NAME_BREAD,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = NAME_RING_OF_STRENGTH,
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -82,7 +84,8 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .attack_type = ATTACK_KIND_NONE },
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .attack_type = ATTACK_KIND_NONE},
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -104,7 +107,8 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .tile = { '%', 0}},
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .tile = { 'r', 0}},
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -128,7 +132,8 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = 1,
-    /* Wearable */
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = 0,
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -151,8 +156,9 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .target = EFFECT_TARGET_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
-    /* Wearable */
+    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .attribute = EFFECT_ATTRIBUTE_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .magnitude = 1, .duration = 5, .attribute = EFFECT_ATTRIBUTE_STR, .triggers = TRIGGER_ON_EQUIPPED},
     /* Wands */
     /* Light sources */
     /* Keys */

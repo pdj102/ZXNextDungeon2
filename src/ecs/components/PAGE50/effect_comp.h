@@ -47,33 +47,33 @@ typedef enum {
 } effect_kind_t;
 
 typedef enum {
-    EFFECT_TARGET_NONE = 0,
+    EFFECT_ATTRIBUTE_NONE = 0,
 
     /* Resources */
-    EFFECT_TARGET_CUR_HP,
-    EFFECT_TARGET_CUR_MP,
-    EFFECT_TARGET_MAX_HP,
-    EFFECT_TARGET_MAX_MP,    
+    EFFECT_ATTRIBUTE_CUR_HP,
+    EFFECT_ATTRIBUTE_CUR_MP,
+    EFFECT_ATTRIBUTE_MAX_HP,
+    EFFECT_ATTRIBUTE_MAX_MP,    
 
     /* Primary stats */
-    EFFECT_TARGET_STR,
-    EFFECT_TARGET_DEX,
-    EFFECT_TARGET_CON,
-    EFFECT_TARGET_INT,
-    EFFECT_TARGET_WIS,
-    EFFECT_TARGET_CHA,
+    EFFECT_ATTRIBUTE_STR,
+    EFFECT_ATTRIBUTE_DEX,
+    EFFECT_ATTRIBUTE_CON,
+    EFFECT_ATTRIBUTE_INT,
+    EFFECT_ATTRIBUTE_WIS,
+    EFFECT_ATTRIBUTE_CHA,
 
     /* Secondary stats */
-    EFFECT_TARGET_ARMOR_CLASS,
-    EFFECT_TARGET_SPEED,
-    EFFECT_TARGET_ATTACK,
-    EFFECT_TARGET_DAMAGE,
+    EFFECT_ATTRIBUTE_ARMOR_CLASS,
+    EFFECT_ATTRIBUTE_SPEED,
+    EFFECT_ATTRIBUTE_ATTACK,
+    EFFECT_ATTRIBUTE_DAMAGE,
 
     /* Status slot (used with EFFECT_APPLY_STATUS) */
-    EFFECT_TARGET_STATUS,
+    EFFECT_ATTRIBUTE_STATUS,
 
-    EFFECT_TARGET_COUNT
-} effect_target_t;
+    EFFECT_ATTRIBUTE_COUNT
+} effect_attribute_t;
 
 typedef enum {
     TRIGGER_NONE            = 0,
@@ -89,11 +89,11 @@ typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 
 /* A single effect  */
 typedef struct {
-    effect_kind_t kind;         /* kind of effect */
-    int8_t magnitude;           /* magnitude of effect (+ / -) */
-    uint8_t duration;           /* Instant effect = 0. Duration effect =  number of turns or 0xFF if permanaent (until removed) */
-    effect_target_t stat;       /* stat / resource the effect applies to e.g. HP */
-    trigger_mask_t triggers;    /* The triggers that cause the effect to trigger */
+    effect_kind_t kind;             /* kind of effect */
+    int8_t magnitude;               /* magnitude of effect (+ / -) */
+    uint8_t duration;               /* Instant effect = 0. Duration effect =  number of turns or 0xFF if permanaent (until removed) */
+    effect_attribute_t attribute;   /* stat / resource the effect applies to e.g. HP */
+    trigger_mask_t triggers;        /* The triggers that cause the effect to trigger */
 } effect_t;
 
 typedef effect_t effect_comp_t; /* Effect component is an effect */

@@ -31,7 +31,7 @@ void effect_add(entity_id_t entity, const effect_comp_t effect)
     g.effect_components[entity].kind = effect.kind;
     g.effect_components[entity].magnitude = effect.magnitude;
     g.effect_components[entity].duration = effect.duration;
-    g.effect_components[entity].target = effect.target;
+    g.effect_components[entity].stat = effect.stat;
     g.effect_components[entity].triggers = effect.triggers;
 
     entity_set_component(entity, COMPONENT_EFFECT); /* set entity effect component mask */

@@ -46,17 +46,28 @@ void effect_system_init(void)
 
 void effect_system_handle_event(const event_t event)
 {
-    trigger_from_event(&event);
+    handle_event(&event);
 }
 
-static void effect_system_process_entity_turn(entity_id_t entity)
+void effect_system_process_entity_turn(entity_id_t entity)
 {
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(entity_has_component(entity, COMPONENT_ACTIVE_EFFECT));
+
     entity_turn(entity);
+}
+
+int8_t effect_system_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute)
+{
+    util_assert(actor < MAX_ENTITIES);
+    util_assert(entity_has_component(actor, COMPONENT_ACTIVE_EFFECT));
+
+    return attribute_mod_sum(actor, attribute);
 }
 
 void effect_system_cleanup_entity(entity_id_t source)
 {
-
+    cleanup_entity(source);
 }
  
  /***************************************************

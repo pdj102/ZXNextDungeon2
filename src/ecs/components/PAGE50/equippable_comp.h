@@ -23,7 +23,7 @@
  ***************************************************/
 typedef enum {
     EQUIPPABLE_NONE = 0,
-    // Wearable
+    // Rings
     EQUIPPABLE_HEAD,
     EQUIPPABLE_NECK,
     EQUIPPABLE_BODY,
