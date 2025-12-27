@@ -45,7 +45,7 @@ void util_assert_f(const char *message, const char *file, unsigned line)
 
 void util_info_f(const char *message)
 {
-    text_printf(&g.msg_win, "INFO: %s\n", message);
+    text_printf(&g.msg_win, "INFO: %s", message);
 }
 
 void util_abort_f(const char *message, const char *file, unsigned line)

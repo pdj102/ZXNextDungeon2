@@ -40,6 +40,7 @@
  static void active_list_append(entity_id_t id);
  static void active_list_remove(entity_id_t id);
  static void destroy_list_append(entity_id_t id);
+static void entity_destroy(entity_id_t id);
 
 /***************************************************
  * public functions
@@ -164,68 +165,7 @@ void entity_cleanup(void)
     g.entity_components.destroy_head = 0;
 }
 
-/*
- * @brief Finalise entity destruction
- * @details Cleanup routines must have been called before calling this function
- */
-void entity_destroy(entity_id_t id)
-{
-    if (id >= MAX_ENTITIES || !entity_has_flag(id, FLAG_IN_USE))
-    {
-        return; /* invalid ID or entity not in use */
-    }
 
-    /* Clear all components associated with this entity */
-    if (entity_has_component(id, COMPONENT_CONTAINED)) {
-        comp_contained_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_CONTAINER)) {
-        comp_container_remove(id);
-    } 
-    if (entity_has_component(id, COMPONENT_CREATURE)) {
-        comp_creature_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_ITEM)) {
-        comp_item_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_LOCATION)) {
-        comp_location_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_PLAYER)) { 
-        comp_player_remove(id);
-    }    
-    if (entity_has_component(id, COMPONENT_RENDERABLE)) {
-        comp_renderable_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_TIMER)) {
-        comp_timer_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_EQUIPPABLE)) {
-        comp_equippable_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_MELEE_ATTACK)) {
-        comp_melee_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_RANGED_ATTACK)) {
-        comp_ranged_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_SLOTS)) {
-        comp_slots_remove(id);
-    }
-    if (entity_has_component(id, COMPONENT_EQUIPPED)) {
-        comp_equipped_remove(id);
-    }
-
-    /* TODO remove other components*/
-
-    /* mark entity as no longer active and free to use */
-    g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
-    clear_component_mask(id);
-
-    /* remove from active list */
-    active_list_remove(id);
- 
-}
 
  /***************************************************
  * private functions
@@ -273,4 +213,21 @@ static void destroy_list_append(entity_id_t id)
 {
     util_assert ( g.entity_components.destroy_head < MAX_ENTITIES);
     g.entity_components.destroy_list[g.entity_components.destroy_head++] = id;
+}
+
+/*
+ * @brief Finalise entity destruction
+ * @details Cleanup routines must have been called before calling this function
+ */
+static void entity_destroy(entity_id_t id)
+{
+    util_assert(id<MAX_ENTITIES);
+    util_assert(entity_has_flag(id, FLAG_IN_USE));
+
+    /* mark entity as no longer active and free to use */
+    g.entity_components.entities[id].flags = FLAG_NONE;             /* clear all flags including FLAG_IN_USE (in use) */
+    clear_component_mask(id);
+
+    /* remove from active list */
+    active_list_remove(id);
 }

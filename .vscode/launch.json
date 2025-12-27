@@ -17,8 +17,14 @@
             
             "rootFolder": "${workspaceFolder}",
             "load": "bin/dungeon2.nex",
-            "topOfStack": "0xbfff"
+            "topOfStack": "0xbfff",
 
+            "z88dkv2": [{
+                "path": ".tmp/disasm.list",
+                "srcDirs": [""],
+                "mapFile": "dungeon2.map",
+                "excludeFiles": [ "" ]
+            }]
         }
     ]
 }

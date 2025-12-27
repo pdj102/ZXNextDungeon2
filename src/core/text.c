@@ -57,6 +57,15 @@ void text_scroll_up( text_window_t *win_p );
     win_p->c_y = 0;
  }
 
+ void text_set_cursor(text_window_t *win_p, uint8_t x, uint8_t y)
+ {
+    util_assert(win_p != NULL);
+    util_assert(x < win_p->w);
+    util_assert(y < win_p->h);
+    win_p->c_x = x;
+    win_p->c_y = y;
+ }
+
  void text_putc(text_window_t *win_p, char c)
  {
     util_assert(win_p != NULL);

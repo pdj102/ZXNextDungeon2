@@ -13,10 +13,11 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/PAGE50/item_comp.h"
-#include "ecs/components/PAGE50/creature_comp.h"
-#include "ecs/components/PAGE50/name_comp.h"
-#include "ecs/components/PAGE50/effect_comp.h"
+#include "ecs/components/item_comp.h"
+#include "ecs/components/creature_comp.h"
+#include "ecs/components/name_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/stats_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
 
@@ -33,6 +34,9 @@
  ***************************************************/
 
 void systems_init(void);
+
+/* AI System */
+void system_ai_process_entity_turn(entity_id_t id);
 
 /* Actions System */
 void system_actions_init(void);
@@ -81,7 +85,7 @@ void system_effect_init(void);
 void system_effect_handle_event(const event_t event);
 void system_effect_process_entity_turn(entity_id_t entity);
 void system_effect_cleanup_entity(entity_id_t source);
-int8_t system_effect_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute);
+int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute);
 
 /* Event System */
 void system_event_init(void);
@@ -92,7 +96,7 @@ void system_equipment_init(void);
 bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
 bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
-void system_equipment_clean_up(entity_id_t id);
+void system_equipment_cleanup(entity_id_t id);
 
 /* Healing System*/
 int8_t system_healing_try_take_healing(entity_id_t creature, int8_t amount, healing_kind_t kind);
@@ -104,8 +108,10 @@ entity_id_t system_monster_create_player( void );
 
 /* Movement system */
 void system_movement_init(void);
+void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y);
 bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
 bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
+void system_movement_cleanup(entity_id_t id);
 
 /* Name system */
 void system_name_print(text_window_t *win, name_id_t name);
@@ -116,14 +122,21 @@ void system_player_update(void);
 
 /* Stats system */
 void system_stats_init(void);
-uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat);
-int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat);
-speed_t system_stats_get_speed(entity_id_t actor);
+uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_type_t stat);
+uint8_t system_stats_get_stat_base(entity_id_t actor, stat_type_t stat);
+int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_type_t stat);
+uint8_t system_stats_get_speed_cur(entity_id_t actor);
+uint8_t system_stats_get_speed_base(entity_id_t actor);
+uint8_t system_stats_get_ac_cur(entity_id_t actor);
+uint8_t system_stats_get_ac_base(entity_id_t actor);
+uint8_t system_stats_get_hp_cur(entity_id_t actor);
+uint8_t system_stats_get_hp_max(entity_id_t actor);
 
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);
 bool_t system_timer_has_fired(entity_id_t entity);
 void system_timer_reset(entity_id_t entity);
+void system_timer_cleanup(entity_id_t entity);
 
 #endif // SYSTEMS_DISPATCH_H

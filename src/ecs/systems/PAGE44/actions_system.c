@@ -12,9 +12,9 @@
 
 #include "ecs/entity.h"
 
-#include "ecs/components/PAGE50/equippable_comp.h"
-#include "ecs/components/PAGE50/equipped_comp.h"
-#include "ecs/components/PAGE51/slots_comp.h"
+#include "ecs/components/equippable_comp.h"
+#include "ecs/components/equipped_comp.h"
+#include "ecs/components/slots_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 

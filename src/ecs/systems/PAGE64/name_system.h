@@ -13,7 +13,7 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/PAGE50/name_comp.h"
+#include "ecs/components/name_comp.h"
 
 #include "game/game.h"
 

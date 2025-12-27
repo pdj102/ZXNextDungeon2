@@ -11,8 +11,8 @@
 #include "ecs/systems/PAGE60/effect_system_priv.h"
 
 #include "ecs/components/components.h"
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/active_effect_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/active_effect_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -39,35 +39,38 @@
  ***************************************************/
 void cleanup_entity(entity_id_t source)
 {
-    /* Early out: this entity could not have created active effects */
+
+    /* If entity has active effects clean up*/
+    if (entity_has_component(source, COMPONENT_ACTIVE_EFFECT))
+    {
+        active_effect_components[source].head = 0;
+        for (uint8_t j = 0; j < MAX_ACTIVE_EFFECTS; j++)
+        {
+            active_effect_components[source].slots[j].effect.kind = EFFECT_NONE;
+        }
+    }
+
+    /* Early out: this entity could not bestow active effects */
     if (!entity_has_component(source, COMPONENT_EFFECT))
         return;
 
-    for (entity_id_t e = 0; e < MAX_ENTITIES; ++e)
+    entity_id_t entity;         
+
+    /* Iterate through all active entities, and remove all effects bestowed by source */
+    for (uint8_t i = 0; i < g.entity_components.active_head; i++)
     {
-        if (!entity_has_component(e, COMPONENT_ACTIVE_EFFECT))
+        entity = g.entity_components.active_list[i];
+
+        if (!entity_has_component(entity, COMPONENT_ACTIVE_EFFECT))
             continue;
 
-        active_effects_comp_t *effects = &active_effect_components[e];
+        active_effects_comp_t *effects = &active_effect_components[entity];
 
-        for (uint8_t i = 0; i < effects->head; )
-        {
-            uint8_t slot = effects->active_stack[i];
-            active_effect_comp_t *ae = &effects->slots[slot];
-
-            if (ae->source == source)
-            {
-                remove_active_effect(effects, slot);
-                /* do NOT increment i — stack was compacted */
-            }
-            else
-            {
-                ++i;
-            }
-        }
+        /* Remove any active effects bestowed by source */
+        remove_effects_by_source(entity, source);
     }
 }
- 
- /***************************************************
+
+/***************************************************
  * private functions
  ***************************************************/

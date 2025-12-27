@@ -11,7 +11,7 @@
 
 #include <arch/zxn.h>   /* ZXN_READ_MMU6 and ZXN_WRITE_MMU6*/
 
-#include "zxnext.h"
+#include "game/game.h"
 
 #include "core/PAGE36/core_init.h"
 

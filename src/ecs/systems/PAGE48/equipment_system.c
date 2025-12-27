@@ -24,7 +24,13 @@
  * private variables
  * ***************************************************/
 
-
+/***************************************************
+ * private function prototypes
+ * ***************************************************/
+ static void remove_equippable(entity_id_t entity);
+ static uint8_t add_equipped(entity_id_t entity, entity_id_t equipped_by);
+ static void remove_equipped(entity_id_t entity);
+ static void remove_slots(entity_id_t entity);
 
 /***************************************************
  * public functions
@@ -124,7 +130,7 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 
     /* Equip item*/
     g.slots[slot] = item;
-    comp_equipped_add(item, actor);
+    add_equipped(item, actor);
 
     event.type = EVENT_EQUIPPED;
     event.source = actor;
@@ -158,7 +164,7 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
             /* Found slot, unequip the item*/
             g.slots[slot] = ENTITY_ID_INVALID;
             g.equipped_components[item].equipped_by = ENTITY_ID_INVALID;
-            comp_equipped_remove(item);
+            remove_equipped(item);
 
             event.type = EVENT_UNEQUIPPED;
             event.source = actor;
@@ -198,10 +204,59 @@ void equipment_system_clean_up(entity_id_t id)
 {
     if (entity_has_component(id, COMPONENT_EQUIPPED))
     {
-        /* unequip */ 
+        /* TODO unequip item */ 
     }
     if (entity_has_component(id, COMPONENT_SLOTS))
     {
-        /* unequip all items and mark for destruction */
+        /* TODO unequip all items and mark for destruction */
     }    
+}
+
+ /***************************************************
+ * private functions
+ ***************************************************/
+static void remove_equippable(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    entity_clear_component(entity, COMPONENT_EQUIPPABLE); /* clear entity equippable component mask */
+}
+
+static uint8_t add_equipped(entity_id_t entity, entity_id_t equipped_by)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_EQUIPPED)); /* entity must not have equipped component */
+
+    g.equipped_components[entity].equipped_by = equipped_by; 
+
+    entity_set_component(entity, COMPONENT_EQUIPPED); /* set entity equipped component mask */
+
+    return 1; /* success */
+}
+
+static void remove_equipped(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(g.equipped_components[entity].equipped_by == ENTITY_ID_INVALID);
+    entity_clear_component(entity, COMPONENT_EQUIPPED); /* clear entity equipped component mask */
+}
+
+static void remove_slots(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert( g.player.id == ENTITY_ID_INVALID);
+
+    util_assert( g.slots[SLOT_HEAD] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_NECK] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_BODY] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_HANDS] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_SHIELD] == ENTITY_ID_INVALID);    
+    util_assert( g.slots[SLOT_FINGER_LEFT] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_FINGER_RIGHT] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_LEGS] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_FEET] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_MELEE] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_RANGED] == ENTITY_ID_INVALID);
+    util_assert( g.slots[SLOT_AMMO] == ENTITY_ID_INVALID);
+
+    entity_clear_component(entity, COMPONENT_SLOTS); 
 }

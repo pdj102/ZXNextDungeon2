@@ -14,7 +14,7 @@
 
 #include "ecs/systems/systems_dispatch.h"
 
-#include "core/ui.h"
+#include "game/ui.h"
 
 /***************************************************
  * private variables
@@ -31,6 +31,6 @@ void event_system_init(void)
 
 void event_system_emit(const event_t event)
 {
-    ui_on_event(event);
     system_effect_handle_event(event);
+    ui_on_event(event);
 }

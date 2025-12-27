@@ -329,7 +329,7 @@
 
 * [✅] Implement `effect_t` that describes an event that could happen - type, magnitude, duration (0 = instant), stat, status
 * [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
-* [✅] Implement `effect_attribute_t` enum e.g. EFFECT_ATTRIBUTE_CUR_HP
+* [✅] Implement `ATTRIBUTE_t` enum e.g. ATTRIBUTE_CUR_HP
 * [✅] Implment `effect_system`
 * [✅] Implement `effect_system_handle_event()` - create effect triggers based on game events
 * [✅] Implement `process_trigger()` - process triggers and apply effects
@@ -344,7 +344,7 @@
 > *Goal: Entities can have active effects that last for a period of time or are permanant.*
 
 * [✅] Implement `active effect` - details of an active effect - an effect_t and source
-* [✅] Implement `effect_attribute_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
+* [✅] Implement `ATTRIBUTE_t` that details target type e.g. cur_hp, max_hp, cur_mp, max_mp etc.
 * [✅] Implement `active effects` component - an array of active_effect[MAX_EFFECTS]
 * [ ] Implement `status_flags_t` flags e.g. poisoned
 * [✅] Extend `effect_kind_t` enum with EFFECT_STAT_MODIFIER (+/- stat while active)
@@ -352,9 +352,9 @@
 * [✅] Extend `apply_effects_by_source(actor, item)` to handle applying active effects to the actor
 * [✅] Implement `effect_system_process_entity_turn(actor)` to handle duration active effects. Remove effects when duration expires
 * [✅] Implement `remove_effects_by_source(actor, source)` - handle removing active effects of the source item from the actor
-* [ ] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
-* [🚧] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
-* [🚧] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect.
+* [✅] Implement `active_effects_sum_mod` to calculate and return the sum of the modifiers applied to a target
+* [✅] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
+* [✅] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect.
 
 [ ] *End result: stats and status are affected by active effect.*
 
@@ -390,6 +390,7 @@
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
 * [ ] Change player in to character component and use for character specific things like experience
 * [ ] Bug - attack direction can select no direction and attack self
+* [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
 
 [ ] *End result: Unlocked doors open if you walk into them*
 
@@ -527,18 +528,38 @@
 
 > *Goal: monsters can act intelligently.*
 
-* [ ] Add `AI` component - implement helper functions e.g. add() and remove()
+* [ ] Implement `AI` component - implement helper functions e.g. add() and remove()
+* [ ] Implement `AI system`
 * [ ] Define `ai_state_t`
 * [ ] Implement `ai_on_event()` to process events and transition between states
 * [ ] Add `ai_system_update()` - entity takes it turn
-* [ ] Implement `ai_sleep_state()` - monster does nothing
 * [ ] Implement `ai_guard_state()` - monster will melee attack a creature in range
 
 [ ] *End result: Monsters can attack the player.*
 
 ---
 
-### 🪜 **Milestone 301 — Wandering state**
+### 🪜 **Milestone 301 — Sleep state**
+
+> *Goal: monsters can sleep.*
+
+* [ ] Implement `ai_sleep_state()` - monster performs 'drunk' walk
+
+[ ] *End result: Monsters can sleep.*
+
+---
+
+### 🪜 **Milestone 302 — Guard state**
+
+> *Goal: monsters can guard.*
+
+* [ ] Implement `ai_guard_state()` - monster will attack nearby enemies
+
+[ ] *End result: Monsters can guard and attack nearby enemies.*
+
+---
+
+### 🪜 **Milestone 303 — Wandering state**
 
 > *Goal: monsters can wander.*
 
@@ -649,9 +670,16 @@
 
 > *Goal: Display player status.*
 
-* [ ] Display player status (HP, depth etc)
+* [✅] Display player primary stats (Strength, dexterity etc)
+* [✅] Update primary stats on change (e.g. equip, unequip, levelup, attach/unattach effect etc)
+* [✅] Display player secondary stats (Speed etc)
+* [✅] Update secondary stats on change (e.g. equip, unequip, levelup, effect? etc)
+* [✅] Display player resource stats (Max HP, Cur HP etc)
+* [✅] Update resource stats on change (e.g. damage, equip, unequip, levelup, attach/unattach effect etc)
+* [ ] Display player status (posioned etc)
+* [ ] Update status on change (e.g. poisoned)
 
-[ ] *End result: Player can see current status.*
+[🚧] *End result: Player can see current status.*
 
 ---
 

@@ -44,7 +44,6 @@ static bool_t wielding_melee_weapon(entity_id_t actor);
 static entity_id_t get_melee_source(entity_id_t attacker);
 static uint8_t roll_damage_dice(dice_kind_t dice, bool_t crit);
 
-
 /***************************************************
  * public functions
  ***************************************************/
@@ -141,7 +140,12 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
     attack_roll_t roll;
     int8_t bonus = 0;
 
-    /* Step 1 – Determine attack bonus source */
+    /* Step 1 – Roll d20 (handle advantage later if needed) */
+    roll.d20 = game_roll_dice(DICE_1D20);
+
+    text_printf(&g.msg_win, "Attack roll:%u ", roll.d20);
+
+    /* Step 2 – Determine attack bonus source */
     if (entity_has_component(attacker, COMPONENT_PLAYER))
     {
         bonus = calc_player_melee_attack_bonus(attacker);
@@ -154,9 +158,6 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
     {
         util_abort("Entity cannot perform melee attack");
     }
-
-    /* Step 2 – Roll d20 (handle advantage later if needed) */
-    roll.d20 = game_roll_dice(DICE_1D20);
 
     /* Step 3 - Calculate total attack roll */
     roll.total = roll.d20 + bonus;
@@ -173,6 +174,12 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
 
  /*
  * @details Calculate player melee attack bonus
+ *
+ * Attack bonus = 
+ *  Ability modifier (strength or dexterity if finesse weapon and higher) +
+ *  proficency bonus (if proficient with weapon) +
+ *  weapon bonus (e.g. magic weapon) +
+ *  other modifiers (e.g. effects)
  */
 static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
 {
@@ -191,8 +198,7 @@ static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
 
     attack_bonus = g.melee_components[melee_source].hit_mod;
 
-    // ability_mod = modifiers[g.stats_components[attacker].str];
-    ability_mod = system_stats_get_stat_mod(attacker, STAT_STR);
+    ability_mod = system_stats_get_stat_modifier(attacker, STAT_STR);
 
     if (wielding_melee_weapon(attacker))
     {
@@ -204,6 +210,8 @@ static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
     /* TODO: Other effects (buffs, conditions)
     other_mods = effects_to_hit_bonus(attacker);
     */
+
+    text_printf(&g.msg_win, "Bonus:%u Abil:%u Prof:%u Other:%u\n", attack_bonus, ability_mod, proficiency_mod, other_mods);
 
     return attack_bonus + ability_mod + proficiency_mod + other_mods;
 }
@@ -270,7 +278,15 @@ static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
     return damage < 0 ? 0 : damage ;
 }
 
-
+/*
+ * @details Calculate player melee damage roll
+ *
+ * Damage roll = 
+ *  Dice roll (melee damage roll) +
+ *  ability modifier (strength or dexterity if finesse weapon and higher) +
+ *  weapon bonus (e.g. magic weapon) +
+ *  other modifiers (e.g. effects)
+ */
 static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_critical)
 {
     int8_t dice_roll = 0;
@@ -285,26 +301,18 @@ static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_criti
     dice_roll = roll_damage_dice(g.melee_components[melee_source].damage_roll, is_critical);
 
     bonus = g.melee_components[melee_source].damage_mod;
-
-    // ability_mod = modifiers[g.stats_components[attacker].str];  
-    ability_mod = system_stats_get_stat_mod(attacker, STAT_STR);              
+ 
+    ability_mod = system_stats_get_stat_modifier(attacker, STAT_STR);
 
     if (wielding_melee_weapon(attacker))
     {
-        /* TODO: If using a finesse weapon use DEX mod if greater than STR mod */
-        // ability_mod = modifiers[g.stats_components[attacker].str];        
+        /* TODO: If using a finesse weapon use DEX mod if greater than STR mod */        
     }
 
     /* TODO: calculate other effects (buffs, rage etc)*/
     /* other_mods = effects_damage_bonus(attacker); */
 
-
-    /*
-    text_printf(&g.msg_win, "Dice roll:%d", dice_roll);
-    text_printf(&g.msg_win, "Bonus:%d", dice_roll);
-    text_printf(&g.msg_win, "Ability mod:%d", ability_mod);
-    text_printf(&g.msg_win, "Other mods:%d", other_mods);
-    */
+    text_printf(&g.msg_win, "Roll:%u Bonus:%u Ability Mod:%u Other:%u\n", dice_roll, bonus, ability_mod, other_mods);
 
     return dice_roll + bonus + ability_mod + other_mods;
 }

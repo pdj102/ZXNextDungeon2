@@ -8,25 +8,27 @@
 #define GLOBAL_STATE_H
 
 #include "ecs/entity_priv.h"
-#include "ecs/components/PAGE50/attack_comp.h"
-#include "ecs/components/PAGE50/destructible_comp.h"
-#include "ecs/components/PAGE50/item_comp.h"
-#include "ecs/components/PAGE50/location_comp.h"
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/name_comp.h"
 
-#include "ecs/components/PAGE50/creature_comp.h"
+#include "ecs/components/ai_comp.h"
+#include "ecs/components/attack_comp.h"
+#include "ecs/components/destructible_comp.h"
+#include "ecs/components/item_comp.h"
+#include "ecs/components/location_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/name_comp.h"
 
-#include "ecs/components/PAGE50/container_comp.h"
-#include "ecs/components/PAGE50/contained_comp.h"
-#include "ecs/components/PAGE50/equippable_comp.h"
-#include "ecs/components/PAGE50/equipped_comp.h"
+#include "ecs/components/creature_comp.h"
 
-#include "ecs/components/PAGE51/player_comp.h"
-#include "ecs/components/PAGE51/renderable_comp.h"
-#include "ecs/components/PAGE51/stats_comp.h"
-#include "ecs/components/PAGE51/slots_comp.h"
-#include "ecs/components/PAGE51/timer_comp.h"
+#include "ecs/components/container_comp.h"
+#include "ecs/components/contained_comp.h"
+#include "ecs/components/equippable_comp.h"
+#include "ecs/components/equipped_comp.h"
+
+#include "ecs/components/player_comp.h"
+#include "ecs/components/renderable_comp.h"
+#include "ecs/components/stats_comp.h"
+#include "ecs/components/slots_comp.h"
+#include "ecs/components/timer_comp.h"
 
 #include "game/map_priv.h"
 
@@ -61,6 +63,7 @@ typedef struct
     destructible_components_t destructible_components;
     effect_components_t effect_components;
     name_components_t name_components;
+    ai_components_t ai_components;
 
     /* World */
     map_t map; /* the map */

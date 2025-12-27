@@ -8,7 +8,7 @@
 #include "monster_system.h"
 
 #include "ecs/components/components.h"
-#include "ecs/components/PAGE50/name_comp.h"
+#include "ecs/components/name_comp.h"
 
 #include "game/global_state.h"
 
@@ -181,6 +181,55 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */    
 };
 
+
+/* Speed into turns and ticks conversion table (rounded)
+| Speed (ft/turn) | Turns | Ticks (0–9) | Total Ticks   | Relative to Human (30 ft) |
+| --------------- | ----- | ----------- | -----------   | ------------------------- |
+| 5               | 6     | 0           | 60            |~6× slower                 |
+| 10              | 3     | 0           | 30            | ~3× slower                |
+| 15              | 2     | 0           | 20            | ~2× slower                |
+| 20              | 1     | 5           | 15            | 1.5× slower               |
+| 25              | 1     | 2           | 12            | 1.2× slower               |
+| 30              | 1     | 0           | 10            | baseline                  |
+| 35              | 0     | 9           |  9            | 1.15× faster              |
+| 40              | 0     | 8           |  8            | 1.3× faster               |
+| 45              | 0     | 7           |  7            | 1.5× faster               |
+| 50              | 0     | 6           |  6            | 1.6× faster               |
+| 55              | 0     | 5           |  5            | 1.8× faster               |
+| 60              | 0     | 4           |  4            | ~2× faster                |
+*/
+static const ticks_t speed_to_ticks_table[SPEED_COUNT] = {
+   [SPEED_NONE] = 0,
+   [SPEED_5FT]  = 60,
+   [SPEED_10FT] = 30,
+   [SPEED_15FT] = 20,
+   [SPEED_20FT] = 15,
+   [SPEED_25FT] = 12,
+   [SPEED_30FT] = 10,
+   [SPEED_35FT] = 9,
+   [SPEED_40FT] = 8,
+   [SPEED_45FT] = 7,
+   [SPEED_50FT] = 6,
+   [SPEED_55FT] = 5,
+   [SPEED_60FT] = 4
+};
+
+/***************************************************
+ * private function prototypes
+ ****************************************************/
+static void melee_add(entity_id_t entity, const attack_comp_t *attack);
+static void ranged_add(entity_id_t entity, const attack_comp_t *attack);
+static uint8_t creature_add(entity_id_t entity, creature_kind_t kind);
+static void creature_remove(entity_id_t entity);
+static void add_destructible(entity_id_t entity, const destructible_comp_t *destructible);
+static void add_stats(entity_id_t entity, const stats_comp_t *stats);
+static ticks_t speed_to_ticks(speed_t speed);
+static void add_container(entity_id_t entity);
+static void add_timer(entity_id_t entity, ticks_t ticks);
+static void add_name(entity_id_t entity, name_id_t name);
+static void add_active_effects(entity_id_t entity);
+void add_slots(entity_id_t id);
+
 /***************************************************
  * public functions
  ***************************************************/
@@ -204,43 +253,48 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     entity_set_flag(id, FLAG_BLOCKING);   
 
     /* Add creature component */
-    comp_creature_add(id, kind);
+    creature_add(id, kind);
 
     /* Add stat block */
-    comp_stats_add(id, monster_stats_base[kind]);
+    add_stats(id, &monster_stats_base[kind]);
 
     /* If monster has melee attack add */
     if (monster_melee_base[kind].attack_type == ATTACK_KIND_MELEE)
     {
-        comp_melee_add(id, monster_melee_base[kind]);
+        melee_add(id, &monster_melee_base[kind]);
     }
 
     /* If monster has ranged attack add */
     if (monster_ranged_base[kind].damage_kind == ATTACK_KIND_RANGED)
     {
-        comp_ranged_add(id, monster_ranged_base[kind]);
+        ranged_add(id, &monster_ranged_base[kind]);
     }
 
     /* If moster is destructible add (indicated by AC > 0) */
     if (monster_destructible_base[kind].ac > 0 )
     {
-        comp_destructible_add(id, monster_destructible_base[kind]);
+        add_destructible(id, &monster_destructible_base[kind]);
     }
 
     /* Add renderable component  */
-    comp_renderable_add(id, monster_renderable_base[kind].tile);
+    entity_set_component(id, COMPONENT_RENDERABLE);
+    g.renderable_components[id].tile = monster_renderable_base[kind].tile;
 
     /* Add container component */
-    comp_container_add(id);
+    add_container(id);
   
     /* Add timer component*/
-    comp_timer_add(id, speed_to_ticks(monster_stats_base[kind].speed ));
+    add_timer(id, speed_to_ticks(monster_stats_base[kind].speed));
 
     /* All monsters have a name component*/
-    comp_name_add(id, creature_name_base[kind]);
+    add_name(id, creature_name_base[kind]);
 
     /* All monsters have an active effects component*/
-    comp_active_effect_add(id);
+    entity_set_component(id, COMPONENT_ACTIVE_EFFECT);
+
+    /* Add an AI component*/
+    entity_set_component(id, COMPONENT_AI);
+    g.ai_components[id].state = AI_STATE_IDLE;
 
     return id;
 }
@@ -248,17 +302,165 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
 entity_id_t monster_system_create_player( void )
 {
     entity_id_t id = monster_system_create(CREATURE_PLAYER);
+
     if (id == ENTITY_ID_INVALID)
         return ENTITY_ID_INVALID;
 
+    g.player.id = id;
+
+    /* Remove AI component */
+    entity_clear_component(id, COMPONENT_AI);
+
     /* Add player control component */
     g.player.id = id;
-    comp_player_add(id);
+    entity_set_component(id, COMPONENT_PLAYER);
 
     /* Add slots component */
-    comp_slots_add(id);
+    add_slots(id);
 
     return id;
 }
 
+/***************************************************
+ * private functions
+ ****************************************************/
+static void melee_add(entity_id_t entity, const attack_comp_t *attack)
+{
+    g.melee_components[entity].damage_kind = attack->damage_kind;
+    g.melee_components[entity].damage_roll = attack->damage_roll;
+    g.melee_components[entity].damage_mod = attack->damage_mod;
+    g.melee_components[entity].hit_mod = attack->hit_mod;
+    g.melee_components[entity].range = attack->range;
 
+    entity_set_component(entity, COMPONENT_MELEE_ATTACK);
+}
+
+static void ranged_add(entity_id_t entity, const attack_comp_t *attack)
+{
+    g.melee_components[entity].damage_kind = attack->damage_kind;
+    g.melee_components[entity].damage_roll = attack->damage_roll;
+    g.melee_components[entity].damage_mod = attack->damage_mod;
+    g.melee_components[entity].hit_mod = attack->hit_mod;
+    g.melee_components[entity].range = attack->range;
+
+    entity_set_component(entity, COMPONENT_MELEE_ATTACK);
+}
+
+static uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
+
+    g.creature_components[entity].kind = kind; 
+    g.creature_components[entity].status = CREATURE_STATUS_ALIVE; 
+
+    entity_set_component(entity, COMPONENT_CREATURE); 
+
+    return 1; /* success */
+}
+
+static void creature_remove(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    if (!entity_has_component(entity, COMPONENT_CREATURE))
+    {
+        return;
+    }
+
+    entity_clear_component(entity, COMPONENT_CREATURE); /* clear entity creature component mask */
+}
+
+static void add_destructible(entity_id_t entity, const destructible_comp_t *destructible)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_DESTRUCTIBLE)); 
+
+    g.destructible_components[entity].ac = destructible->ac;
+    g.destructible_components[entity].cur_hp = destructible->cur_hp;
+    g.destructible_components[entity].max_hp = destructible->max_hp;
+    g.destructible_components[entity].immune = destructible->immune;
+    g.destructible_components[entity].resist = destructible->resist;
+    g.destructible_components[entity].vulnerable = destructible->vulnerable;
+
+    entity_set_component(entity, COMPONENT_DESTRUCTIBLE); 
+}
+
+static void add_stats(entity_id_t entity, const stats_comp_t *stats)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_STATS)); /* entity must not have creature component */
+
+    g.stats_components[entity].speed = speed_to_ticks_table[stats->speed];
+    g.stats_components[entity].stats[STAT_STR] = stats->stats[STAT_STR];
+    g.stats_components[entity].stats[STAT_DEX] = stats->stats[STAT_DEX];
+    g.stats_components[entity].stats[STAT_CON] = stats->stats[STAT_CON];
+    g.stats_components[entity].stats[STAT_INT] = stats->stats[STAT_INT];
+    g.stats_components[entity].stats[STAT_WIS] = stats->stats[STAT_WIS];
+    g.stats_components[entity].stats[STAT_CHA] = stats->stats[STAT_CHA];
+
+    entity_set_component(entity, COMPONENT_STATS); 
+}
+
+static ticks_t speed_to_ticks(speed_t speed)
+{
+    return speed_to_ticks_table[speed];
+}
+
+static void add_container(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_CONTAINER)); /* entity must not have container component */
+
+    g.container_components[entity].head = ENTITY_ID_INVALID; 
+    g.container_components[entity].capacity = 10;
+    g.container_components[entity].count = 0; 
+
+    entity_set_component(entity, COMPONENT_CONTAINER); /* set entity container component mask */
+}
+
+static void add_timer(entity_id_t entity, ticks_t ticks)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_TIMER)); /* entity must not have timer component */
+
+    /* Set timer */
+    g.timer_components.timers[entity].base_ticks = ticks;
+    g.timer_components.timers[entity].ticks = ticks; 
+    g.timer_components.timers[entity].active = 1;
+    g.timer_components.timers[entity].fired = 0;
+
+    /* Add to active timer list*/
+    g.timer_components.list[g.timer_components.count++] = entity;
+
+    entity_set_component(entity, COMPONENT_TIMER); /* set entity timer component mask */
+}
+
+static void add_name(entity_id_t entity, name_id_t name)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_NAME));
+
+    g.name_components[entity] = name; 
+
+    entity_set_component(entity, COMPONENT_NAME);
+}
+
+void add_slots(entity_id_t id)
+{
+    util_assert(id < MAX_ENTITIES);
+
+    g.slots[SLOT_HEAD] = ENTITY_ID_INVALID;
+    g.slots[SLOT_NECK] = ENTITY_ID_INVALID;
+    g.slots[SLOT_BODY] = ENTITY_ID_INVALID;
+    g.slots[SLOT_HANDS] = ENTITY_ID_INVALID;
+    g.slots[SLOT_SHIELD] = ENTITY_ID_INVALID;    
+    g.slots[SLOT_FINGER_LEFT] = ENTITY_ID_INVALID;
+    g.slots[SLOT_FINGER_RIGHT] = ENTITY_ID_INVALID;
+    g.slots[SLOT_LEGS] = ENTITY_ID_INVALID;
+    g.slots[SLOT_FEET] = ENTITY_ID_INVALID;
+    g.slots[SLOT_MELEE] = ENTITY_ID_INVALID;
+    g.slots[SLOT_RANGED] = ENTITY_ID_INVALID;
+    g.slots[SLOT_AMMO] = ENTITY_ID_INVALID;
+
+    entity_set_component(id, COMPONENT_SLOTS); 
+}

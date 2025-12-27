@@ -24,6 +24,7 @@ typedef struct
     uint8_t                 c_x;
     uint8_t                 c_y;
     zxnext_tile_t           tile;
+    uint8_t                 dirty;
 } text_window_t;
 
 /***************************************************
@@ -31,13 +32,18 @@ typedef struct
  ***************************************************/
 
 /**
- * @brief clears the window
- * 
- * Sets cursor to 0,0
+ * @brief clears the window and sets cursor to 0,0
  * 
  * @param win_p 
  */
 void text_cls(text_window_t *win_p);
+
+/**
+ * @brief move cursor to x, y
+ * 
+ * @param win_p 
+ */
+void text_set_cursor(text_window_t *win_p, uint8_t x, uint8_t y);
 
 /**
  * @brief Prints char to the specified window

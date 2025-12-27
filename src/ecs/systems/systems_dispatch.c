@@ -8,6 +8,8 @@
 
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
+#include "ecs/components/stats_comp.h"
+
 #include "core/zxnext.h"
 
 #include "ecs/systems/PAGE30/monster_system.h"
@@ -26,6 +28,7 @@
 #include "ecs/systems/PAGE62/consumable_system.h"
 #include "ecs/systems/PAGE64/name_system.h"
 #include "ecs/systems/PAGE66/healing_system.h"
+#include "ecs/systems/PAGE70/ai_system.h"
 
 /***************************************************
  * private defines
@@ -64,6 +67,21 @@
     system_stats_init();
     system_timer_init();
  }
+
+/* AI System */
+void system_ai_process_entity_turn(entity_id_t id)
+{
+    uint8_t current_bank;
+
+    return;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_AI); 
+
+    ai_system_process_entity_turn(id);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
 
  /* Actions system*/
  void system_actions_init(void)
@@ -407,7 +425,7 @@ void system_effect_process_entity_turn(entity_id_t entity)
     ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
-int8_t system_effect_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute)
+int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     uint8_t mmu6_current_bank;
     uint8_t mmu7_current_bank;
@@ -491,6 +509,18 @@ bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
     return result;
+}
+
+void system_equipment_cleanup(entity_id_t id)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    equipment_system_clean_up(id);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
 /* Event System */
@@ -608,7 +638,7 @@ void system_stats_init(void)
 
 }
 
-uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat)
+uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_type_t stat)
 {
     uint8_t current_bank;
     uint8_t value;
@@ -616,14 +646,14 @@ uint8_t system_stats_get_stat(entity_id_t actor, stat_type_t stat)
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
 
-    value = stats_system_get_stat(actor, stat);
+    value = stats_system_get_stat_cur(actor, stat);
 
     ZXN_WRITE_MMU6(current_bank);
 
     return value;
 }
 
-int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat)
+uint8_t system_stats_get_stat_base(entity_id_t actor, stat_type_t stat)
 {
     uint8_t current_bank;
     int8_t value;
@@ -631,15 +661,29 @@ int8_t system_stats_get_stat_mod(entity_id_t actor, stat_type_t stat)
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
 
-    value = stats_system_get_stat_mod(actor, stat);
+    value = stats_system_get_stat_base(actor, stat);
 
     ZXN_WRITE_MMU6(current_bank);
 
     return value;
-
 }
 
-speed_t system_stats_get_speed(entity_id_t actor)
+int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_type_t stat)
+{
+    uint8_t current_bank;
+    int8_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_stat_modifier(actor, stat);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_speed_cur(entity_id_t actor)
 {
     uint8_t current_bank;
     speed_t value;
@@ -647,11 +691,86 @@ speed_t system_stats_get_speed(entity_id_t actor)
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
 
-    value = stats_system_get_speed(actor);
+    value = stats_system_get_speed_cur(actor);
 
     ZXN_WRITE_MMU6(current_bank);
 
     return value;
+}
+
+uint8_t system_stats_get_speed_base(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_speed_base(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_ac_cur(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_ac_cur(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_ac_base(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_ac_base(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_hp_cur(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_hp_cur(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_hp_max(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_hp_max(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;    
 }
 
 /* Timer system*/
@@ -708,6 +827,18 @@ void system_timer_reset(entity_id_t entity)
 
 }
 
+void system_timer_cleanup(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);          
+
+    timer_system_cleanup(entity);
+
+    ZXN_WRITE_MMU6(current_bank);         
+}
+
 /* Monster system*/
 void system_monster_init(void)
 {
@@ -754,10 +885,29 @@ entity_id_t system_monster_create_player( void )
 /* Movement system */
 void system_movement_init(void)
 {
+    uint8_t current_bank;
 
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);
 }
 
-bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy)
+void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_place(actor, x, y);
+
+    ZXN_WRITE_MMU6(current_bank);    
+}
+
+bool_t system_movement_try_move(entity_id_t id, int8_t dx, int8_t dy)
 {
     uint8_t current_bank;
     bool_t result;
@@ -765,7 +915,7 @@ bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy)
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
-    result = movement_system_try_move(actor, dx, dy);
+    result = movement_system_try_move(id, dx, dy);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
@@ -785,6 +935,18 @@ bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
     return result;    
+}
+
+void system_movement_cleanup(entity_id_t id)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_cleanup(id);
+
+    ZXN_WRITE_MMU6(current_bank);    
 }
 
 /* Name system */

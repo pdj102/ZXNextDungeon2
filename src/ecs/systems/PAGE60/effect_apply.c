@@ -8,11 +8,11 @@
  */
 
 #include "ecs/systems/systems_dispatch.h"
- #include "ecs/systems/PAGE60/effect_system.h"
+#include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE60/effect_system_priv.h"
 
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/active_effect_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/active_effect_comp.h"
 
 #include "game/global_state.h"
 
@@ -72,30 +72,30 @@ static void apply_damage_effect(entity_id_t target, const effect_comp_t *effect)
 {
     switch (effect->attribute)
     {
-        case EFFECT_ATTRIBUTE_CUR_HP:
+        case ATTRIBUTE_CUR_HP:
             system_damage_try_take_damage(target, effect->magnitude, DAMAGE_NONE);
             break;
-        case EFFECT_ATTRIBUTE_CUR_MP:
-        case EFFECT_ATTRIBUTE_MAX_HP:
-        case EFFECT_ATTRIBUTE_MAX_MP:
+        case ATTRIBUTE_CUR_MP:
+        case ATTRIBUTE_MAX_HP:
+        case ATTRIBUTE_MAX_MP:
 
         /* Primary stats */
-        case EFFECT_ATTRIBUTE_STR:
-        case EFFECT_ATTRIBUTE_DEX:
-        case EFFECT_ATTRIBUTE_CON:
-        case EFFECT_ATTRIBUTE_INT:
-        case EFFECT_ATTRIBUTE_WIS:
-        case EFFECT_ATTRIBUTE_CHA:
+        case ATTRIBUTE_STR:
+        case ATTRIBUTE_DEX:
+        case ATTRIBUTE_CON:
+        case ATTRIBUTE_INT:
+        case ATTRIBUTE_WIS:
+        case ATTRIBUTE_CHA:
 
         /* Secondary stats */
-        case EFFECT_ATTRIBUTE_ARMOR_CLASS:
-        case EFFECT_ATTRIBUTE_SPEED:
-        case EFFECT_ATTRIBUTE_ATTACK:
-        case EFFECT_ATTRIBUTE_DAMAGE:
+        case ATTRIBUTE_ARMOR_CLASS:
+        case ATTRIBUTE_SPEED:
+        case ATTRIBUTE_ATTACK:
+        case ATTRIBUTE_DAMAGE:
             break;
 
         /* Status slot (used with EFFECT_APPLY_STATUS) */
-        EFFECT_ATTRIBUTE_STATUS:
+        ATTRIBUTE_STATUS:
     }
 }
 
@@ -103,29 +103,29 @@ static void apply_healing_effect(entity_id_t target, const effect_comp_t *effect
 {
     switch (effect->attribute)
     {
-        case EFFECT_ATTRIBUTE_CUR_HP:
+        case ATTRIBUTE_CUR_HP:
             system_healing_try_take_healing(target, effect->magnitude, HEALING_KIND_HP);
             break;
-        case EFFECT_ATTRIBUTE_CUR_MP:
-        case EFFECT_ATTRIBUTE_MAX_HP:
-        case EFFECT_ATTRIBUTE_MAX_MP:
+        case ATTRIBUTE_CUR_MP:
+        case ATTRIBUTE_MAX_HP:
+        case ATTRIBUTE_MAX_MP:
 
         /* Primary stats */
-        case EFFECT_ATTRIBUTE_STR:
-        case EFFECT_ATTRIBUTE_DEX:
-        case EFFECT_ATTRIBUTE_CON:
-        case EFFECT_ATTRIBUTE_INT:
-        case EFFECT_ATTRIBUTE_WIS:
-        case EFFECT_ATTRIBUTE_CHA:
+        case ATTRIBUTE_STR:
+        case ATTRIBUTE_DEX:
+        case ATTRIBUTE_CON:
+        case ATTRIBUTE_INT:
+        case ATTRIBUTE_WIS:
+        case ATTRIBUTE_CHA:
 
         /* Secondary stats */
-        case EFFECT_ATTRIBUTE_ARMOR_CLASS:
-        case EFFECT_ATTRIBUTE_SPEED:
-        case EFFECT_ATTRIBUTE_ATTACK:
-        case EFFECT_ATTRIBUTE_DAMAGE:
+        case ATTRIBUTE_ARMOR_CLASS:
+        case ATTRIBUTE_SPEED:
+        case ATTRIBUTE_ATTACK:
+        case ATTRIBUTE_DAMAGE:
             break;
 
         /* Status slot (used with EFFECT_APPLY_STATUS) */
-        EFFECT_ATTRIBUTE_STATUS:
+        ATTRIBUTE_STATUS:
     }
 }

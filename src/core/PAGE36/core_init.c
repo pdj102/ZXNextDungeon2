@@ -102,6 +102,7 @@ void init_ui(void)
     g.msg_win.h = 8;
     g.msg_win.c_x = 0;
     g.msg_win.c_y = 0;
+    g.msg_win.dirty = 0;
     g.msg_win.tile.tile_id = ' ';
     g.msg_win.tile.tile_attr = 0;
 
@@ -111,6 +112,7 @@ void init_ui(void)
     g.stat_win.h = 24;
     g.stat_win.c_x = 0;
     g.stat_win.c_y = 0;
+    g.stat_win.dirty = 0;
     g.stat_win.tile.tile_id = ' ';
     g.stat_win.tile.tile_attr = 0;
 
@@ -120,6 +122,7 @@ void init_ui(void)
     g.main_win.h = 24;
     g.main_win.c_x = 0;
     g.main_win.c_y = 0;
+    g.main_win.dirty = 0;
     g.main_win.tile.tile_id = ' ';
     g.main_win.tile.tile_attr = 0;    
 
@@ -129,6 +132,7 @@ void init_ui(void)
     g.assert_win.h = 32;
     g.assert_win.c_x = 0;
     g.assert_win.c_y = 0;
+    g.assert_win.dirty = 0;
     g.assert_win.tile.tile_id = ' ';
     g.assert_win.tile.tile_attr = 0;
 

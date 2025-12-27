@@ -76,7 +76,6 @@ void player_system_update(void)
     key = key_press();
 
     text_printf(&g.msg_win, "key: %d\n", key);
-    text_printf(&g.msg_win, "Str mod: %u\n", system_effect_attribute_mod_sum(entity, EFFECT_ATTRIBUTE_STR));
 
     switch(key) {
         case 8: /* left */

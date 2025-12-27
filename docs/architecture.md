@@ -183,7 +183,7 @@ AI_system_update determines if it is the monsters turn and takes a turn if it is
 | Category           | Convention                   | Example                              |
 | ------------------ | ---------------------------- | ------------------------------------ |
 | System function    | `system_<name>()`            | `system_ai_update()`                 |
-| Component function | `<component>_add()`          | `timer_add()`                        |
+| Component function | `<component>_add()`          | `timer_system_add_timer()`                        |
 | Intent function    | `<component>_try_<action>()` | `location_try_move()`                |
 | Event function     | `event_<action>()`           | `event_emit()`                       |
 | Global data        | `g.<subsystem>`              | `g.entity`, `g.map`                  |

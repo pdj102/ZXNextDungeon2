@@ -10,8 +10,8 @@
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE60/effect_system_priv.h"
 
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/active_effect_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/active_effect_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
 

@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
+#include "ecs/components/destructible_comp.h"
 
 #include "game/game.h"
 

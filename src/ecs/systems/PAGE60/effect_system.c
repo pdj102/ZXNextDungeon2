@@ -7,13 +7,16 @@
  * 
  */
 
+#include "ecs/systems/PAGE58/stats_system.h"
 #include "ecs/systems/PAGE60/effect_system.h"
 #include "ecs/systems/PAGE60/effect_system_priv.h"
 
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/active_effect_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/active_effect_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
+
+#include "game/global_state.h"
 
 /***************************************************
  * private defines
@@ -44,6 +47,8 @@ void effect_system_init(void)
     }
 }
 
+
+
 void effect_system_handle_event(const event_t event)
 {
     handle_event(&event);
@@ -57,7 +62,7 @@ void effect_system_process_entity_turn(entity_id_t entity)
     entity_turn(entity);
 }
 
-int8_t effect_system_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute)
+int8_t effect_system_attribute_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     util_assert(actor < MAX_ENTITIES);
     util_assert(entity_has_component(actor, COMPONENT_ACTIVE_EFFECT));
@@ -69,7 +74,7 @@ void effect_system_cleanup_entity(entity_id_t source)
 {
     cleanup_entity(source);
 }
- 
+
  /***************************************************
  * private functions
  ***************************************************/

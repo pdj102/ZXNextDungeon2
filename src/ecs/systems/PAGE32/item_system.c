@@ -7,8 +7,8 @@
 #include "item_system.h"
 
 #include "ecs/components/components.h"
-#include "ecs/components/PAGE50/effect_comp.h"
-#include "ecs/components/PAGE50/name_comp.h"
+#include "ecs/components/effect_comp.h"
+#include "ecs/components/name_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
 
@@ -156,14 +156,24 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .attribute = EFFECT_ATTRIBUTE_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
+    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .attribute = ATTRIBUTE_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
     /* Rings */
-    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .magnitude = 1, .duration = 5, .attribute = EFFECT_ATTRIBUTE_STR, .triggers = TRIGGER_ON_EQUIPPED},
+    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .magnitude = 2, .duration = 0xFF, .attribute = ATTRIBUTE_STR, .triggers = TRIGGER_ON_EQUIPPED},
     /* Wands */
     /* Light sources */
     /* Keys */
     [ITEM_KEY] = { .kind = EFFECT_NONE},
 };
+
+/***************************************************
+ * private function prototypes
+ ****************************************************/
+static void add_item(entity_id_t entity, item_kind_t kind, uint8_t quantity);
+static void add_equippable(entity_id_t entity, equippable_slot_t slot);
+static void melee_add(entity_id_t entity, const attack_comp_t *attack);
+static void ranged_add(entity_id_t entity, const attack_comp_t *attack);
+static void add_effect(entity_id_t entity, const effect_comp_t *effect);
+static void add_name(entity_id_t entity, name_id_t name);
 
 /***************************************************
  * public functions
@@ -182,34 +192,103 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
         return ENTITY_ID_INVALID;
 
     /* Add item component */
-    comp_item_add(id, kind, quantity);
+    add_item(id, kind, quantity);
     
     /* Add equippable component */
-    comp_equippable_add(id, equippable_base[kind]);
+    add_equippable(id, equippable_base[kind]);
 
     /* Add renderable component  */
-    comp_renderable_add(id, renderable_base[kind].tile);
+    entity_set_component(id, COMPONENT_RENDERABLE);
+    g.renderable_components[id].tile = renderable_base[kind].tile;    
 
-    /* If item has a melee attack and melee component e.g. swords*/
+    /* If item has a melee attack e.g. swords*/
     if (melee_base[kind].attack_type == ATTACK_KIND_MELEE)
     {
-        comp_melee_add(id, melee_base[kind]);
+        melee_add(id, &melee_base[kind]);
     }
 
-    /* If item has an effect attack and effect component e.g. bread restores health*/
+    /* If item has an effect e.g. bread restores health*/
     if (effect_base[kind].kind != EFFECT_NONE)
     {
-        comp_effect_add(id, effect_base[kind]);
+        add_effect(id, &effect_base[kind]);
     }
 
     /* If item is consumable add consumable component e.g. bread, potions*/
     if (consumable_base[kind] == 1)
     {
-        comp_consumable_add(id);
+        entity_set_component(id, COMPONENT_CONSUMABLE);
     }
 
     /* All items have a name component*/
-    comp_name_add(id, item_name_base[kind]);
+    add_name(id, item_name_base[kind]);
 
     return id;
+}
+
+/***************************************************
+ * private functions
+ ****************************************************/
+static void add_item(entity_id_t entity, item_kind_t kind, uint8_t quantity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_ITEM)); /* entity must not have item component */
+    util_assert(kind < ITEM_KIND_COUNT);
+    util_assert(quantity > 0);
+
+    g.item_components[entity].kind = kind; /* set item kind */
+    g.item_components[entity].quantity = quantity; /* set quantity */
+
+    entity_set_component(entity, COMPONENT_ITEM); /* set entity item component mask */
+}
+
+static void add_equippable(entity_id_t entity, equippable_slot_t slot)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_EQUIPPABLE)); /* entity must not have equippable component */
+
+    g.equippable_components[entity].slot = slot; 
+
+    entity_set_component(entity, COMPONENT_EQUIPPABLE); /* set entity equippable component mask */
+}
+
+static void melee_add(entity_id_t entity, const attack_comp_t *attack)
+{
+    g.melee_components[entity].damage_kind = attack->damage_kind;
+    g.melee_components[entity].damage_roll = attack->damage_roll;
+    g.melee_components[entity].damage_mod = attack->damage_mod;
+    g.melee_components[entity].hit_mod = attack->hit_mod;
+    g.melee_components[entity].range = attack->range;
+}
+
+static void ranged_add(entity_id_t entity, const attack_comp_t *attack)
+{
+    g.melee_components[entity].damage_kind = attack->damage_kind;
+    g.melee_components[entity].damage_roll = attack->damage_roll;
+    g.melee_components[entity].damage_mod = attack->damage_mod;
+    g.melee_components[entity].hit_mod = attack->hit_mod;
+    g.melee_components[entity].range = attack->range;
+}
+
+static void add_effect(entity_id_t entity, const effect_comp_t *effect)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_EFFECT)); 
+
+    g.effect_components[entity].kind = effect->kind;
+    g.effect_components[entity].magnitude = effect->magnitude;
+    g.effect_components[entity].duration = effect->duration;
+    g.effect_components[entity].attribute = effect->attribute;
+    g.effect_components[entity].triggers = effect->triggers;
+
+    entity_set_component(entity, COMPONENT_EFFECT); /* set entity effect component mask */
+}
+
+static void add_name(entity_id_t entity, name_id_t name)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_NAME));
+
+    g.name_components[entity] = name; 
+
+    entity_set_component(entity, COMPONENT_NAME);
 }

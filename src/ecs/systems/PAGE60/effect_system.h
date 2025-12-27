@@ -12,8 +12,10 @@
 
 #include <stdint.h>
 
-#include "ecs/components/PAGE50/effect_comp.h"
+#include "ecs/components/effect_comp.h"
+
 #include "ecs/systems/PAGE42/event_system.h"
+#include "ecs/systems/PAGE58/stats_system.h"
 
 #include "ecs/entity.h"
 
@@ -21,6 +23,7 @@
 /***************************************************
  * public types
  ***************************************************/
+
 
 /***************************************************
  * public function prototypes
@@ -51,7 +54,7 @@ void effect_system_cleanup_entity(entity_id_t source);
  * @details This function calculates the total modifiers applied to a specific attribute by all active effects
  * @param actor The actor 
  */
-int8_t effect_system_attribute_mod_sum(entity_id_t actor, effect_attribute_t attribute);
+int8_t effect_system_attribute_mod_sum(entity_id_t actor, attribute_t attribute);
 
 
 #endif // EFFECT_SYSTEM_H

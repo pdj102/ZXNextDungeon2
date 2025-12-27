@@ -8,7 +8,7 @@
 #ifndef MONSTER_SYSTEM_H
 #define MONSTER_SYSTEM_H
 
-#include "ecs/components/PAGE50/creature_comp.h"
+#include "ecs/components/creature_comp.h"
 
 #include "core/text.h"
 

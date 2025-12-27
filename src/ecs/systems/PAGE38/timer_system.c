@@ -13,7 +13,7 @@
 #include <sys\types.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/PAGE51/timer_comp.h"
+#include "ecs/components/timer_comp.h"
 
 #include "game/global_state.h"
 
@@ -33,6 +33,7 @@ static bool_t timer_system_tick(entity_id_t entity);
  ***************************************************/
 void timer_system_init(void)
 {
+    g.timer_components.count = 0;
 }
 
 void timer_system_update(void)
@@ -89,3 +90,23 @@ static bool_t timer_system_tick(entity_id_t entity)
     return 0;
 }
 
+void timer_system_cleanup(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+
+    if (!entity_has_component(entity, COMPONENT_TIMER))
+    {
+        return;
+    }
+    g.timer_components.timers[entity].active = 0;
+
+    /* Remove from active timer list */
+    for (uint8_t i = 0; i < g.timer_components.count; i++) {
+        if (g.timer_components.list[i] == entity) {
+            g.timer_components.list[i] = g.timer_components.list[--g.timer_components.count];
+            break;
+        }
+    }    
+
+    entity_clear_component(entity, COMPONENT_TIMER); /* clear entity timer component mask */
+}

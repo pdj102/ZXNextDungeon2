@@ -7,7 +7,7 @@
 #ifndef ITEM_SYSTEM_H
 #define ITEM_SYSTEM_H
 
-#include "ecs/components/PAGE50/item_comp.h"
+#include "ecs/components/item_comp.h"
 
 #include "core/text.h"
 

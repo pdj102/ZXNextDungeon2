@@ -15,8 +15,8 @@
 
 #include "ecs/components/components.h"
 
-#include "ecs/components/PAGE50/container_comp.h"
-#include "ecs/components/PAGE50/contained_comp.h"
+#include "ecs/components/container_comp.h"
+#include "ecs/components/contained_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 #include "ecs/systems/PAGE42/event_system.h"
@@ -26,9 +26,13 @@
 
 /***************************************************
  * private variables
- * ***************************************************/
+ ****************************************************/
 
-
+/***************************************************
+ * private functions
+ ****************************************************/
+ static void contained_add(entity_id_t entity, entity_id_t container, entity_id_t next);
+ static void contained_remove(entity_id_t entity);
 
 /***************************************************
  * public functions
@@ -73,7 +77,7 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
     }    
 
     /* Remove item from floor */
-    comp_location_remove(item);
+    system_movement_cleanup(item);
 
     /* Place item in container */
     container_system_add(actor, item);
@@ -123,7 +127,7 @@ bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
     container_system_remove(actor, item);
     
     /* Place item on the floor*/
-    comp_location_add(item, g.location_components[actor].x, g.location_components[actor].y);
+    system_movement_place(item, g.location_components[actor].x, g.location_components[actor].y);
 
     event.type = EVENT_DROPPED;
     event.source = actor;
@@ -145,7 +149,7 @@ void container_system_add(entity_id_t container, entity_id_t item)
     /* Add contained component */
     /* Contained item holds a reference to container */
     /* Set next to current container head */
-    comp_contained_add(item, container, g.container_components[container].head);
+    contained_add(item, container, g.container_components[container].head);
 
     g.container_components[container].head = item; /* set container head to entity */
     g.container_components[container].count++;
@@ -170,7 +174,7 @@ void container_system_remove(entity_id_t container, entity_id_t item)
                 g.contained_components[prev].next = g.contained_components[current].next; /* bypass current */
             }
             g.contained_components[item].container = ENTITY_ID_INVALID; /* must clear .container to remove contained */
-            comp_contained_remove(item); /* remove contained component*/
+            contained_remove(item); /* remove contained component*/
             g.container_components[container].count--;
             return;
         }
@@ -280,5 +284,34 @@ void container_system_mark_contents_for_destruction(entity_id_t container)
 
         entity = g.container_components[container].head;
     }
+}
 
+/***************************************************
+ * private functions
+ ****************************************************/
+
+/*
+ * @brief Add a contained component to the entity and place the entity in the container entity e.g. add potion (item) to chest (container)
+ */
+static void contained_add(entity_id_t entity, entity_id_t container, entity_id_t next)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_CONTAINED)); /* entity must not have contained component */
+    util_assert(!entity_has_component(entity, COMPONENT_LOCATION)); /* entity must not have location component */
+
+    g.contained_components[entity].container = container;
+    g.contained_components[entity].next = next;
+
+    entity_set_component(entity, COMPONENT_CONTAINED); /* set entity contained component mask */    
+}
+
+/*
+ * @brief Remove the contained entity from its container and remove its contained component e.g. remove potion (item) from a chest (container)
+*/
+static void contained_remove(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(g.contained_components[entity].container == ENTITY_ID_INVALID); /* entity must not be in a container */
+
+    entity_clear_component(entity, COMPONENT_CONTAINED);
 }

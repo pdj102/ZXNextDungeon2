@@ -13,7 +13,7 @@
 
 #include "ecs/components/components.h"
 
-#include "ecs/components/PAGE50/name_comp.h"
+#include "ecs/components/name_comp.h"
 
 #include "core/text.h"
 
