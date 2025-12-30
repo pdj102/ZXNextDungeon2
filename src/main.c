@@ -29,10 +29,26 @@
 #include "core/text.h"
 #include "core/core_init_bank.h"
 
+#define STACK_LOW  0xBF00
+#define STACK_HIGH 0xBFFF
+#define STACK_PATTERN 0xCD
+
+static uint16_t stack_max_usage(void);
 static void clean_up_and_destroy(void);
 static void turn(void);
  
 int main(void) {
+
+    uint16_t stack_max;
+    uint16_t stack;
+
+    /* Stack guard */
+    uint8_t *p = (uint8_t*)STACK_LOW;
+    while ((uintptr_t)p < STACK_HIGH)
+        *p++ = STACK_PATTERN;
+
+    stack_max = 0;
+    stack = 0;
 
    core_init_bank();
 
@@ -46,10 +62,9 @@ int main(void) {
 
    map_gen();
 
-   util_info("Debug build");
+   util_info("Debug build\n");
    text_printf(&g.msg_win, "Global size:%U\n", sizeof(g));
    util_assert(sizeof(g) < 0x3FFF);
-
 
     entity_id_t e1 = system_item_create(ITEM_SHORT_SWORD, 1);
     system_movement_place(e1, 10, 10);
@@ -61,7 +76,7 @@ int main(void) {
 
     entity_id_t e4 = system_monster_create(CREATURE_RAT);  
     system_container_add(e4, e3);
-    system_movement_place(e4, 10, 12);
+    system_movement_place(e4, 25, 12);
 
     entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
     system_movement_place(e5, 12, 12);    
@@ -76,8 +91,6 @@ int main(void) {
     entity_id_t e8 = system_item_create(ITEM_RING_OF_STRENGTH, 1);
     system_movement_place(e8, 7, 15);
 
-    util_info("map render");
-
     map_render();
 
     ui_update_primary_stats();
@@ -90,7 +103,11 @@ int main(void) {
 
         turn();
 
-        map_render();
+        if (g.main_win.dirty == 1)
+        {
+            map_render();
+            g.main_win.dirty = 0;
+        }
 
         if (g.stat_win.dirty == 1)
         {
@@ -101,6 +118,15 @@ int main(void) {
         }
 
         clean_up_and_destroy();
+
+        #ifndef NDEBUG
+            stack = stack_max_usage();
+            if (stack > stack_max)
+            {
+                stack_max = stack;
+                text_printf(&g.msg_win, "Max stack usage: %u bytes\n", stack_max);
+            }
+        #endif 
     }
 
     util_abort("Hello World");
@@ -113,6 +139,7 @@ int main(void) {
  */
 static void turn(void)
 {
+    /* TODO iterate active entities */
     for (uint8_t id = 0; id < MAX_ENTITIES; id++)
     {
         if (entity_has_component(id, COMPONENT_TIMER) && system_timer_has_fired(id))
@@ -121,11 +148,16 @@ static void turn(void)
 
             if (entity_has_component(id, COMPONENT_PLAYER))
             {
+                if (g.main_win.dirty == 1)
+                {
+                    map_render();
+                    g.main_win.dirty = 0;
+                }
                 system_player_update();
             }
             else if (entity_has_component(id, COMPONENT_AI))
             {
-                // system_ai_process_entity_turn(id);
+                system_ai_process_entity_turn(id);
             }
 
             if (entity_has_component(id, COMPONENT_ACTIVE_EFFECT))
@@ -167,4 +199,13 @@ static void clean_up_and_destroy(void)
     /* Now all entities are marked for destruction and cleanup has been run*/
     /* Finalise the destruction */
     entity_cleanup();
+}
+
+static uint16_t stack_max_usage(void)
+{
+    uint8_t *p = (uint8_t*)STACK_LOW;
+    while (*p == STACK_PATTERN && (uintptr_t)p < STACK_HIGH)
+        p++;
+
+    return (uint16_t)(STACK_HIGH - (uintptr_t)p);
 }

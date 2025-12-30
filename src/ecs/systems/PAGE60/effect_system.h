@@ -38,7 +38,7 @@ void effect_system_init(void );
   * @brief Handle events
   *   
   */
-void effect_system_handle_event(const event_t event);
+void effect_system_handle_event(const event_t *event);
 
 void effect_system_process_entity_turn(entity_id_t entity);
 

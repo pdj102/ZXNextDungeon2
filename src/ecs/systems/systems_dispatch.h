@@ -36,6 +36,7 @@
 void systems_init(void);
 
 /* AI System */
+void system_ai_handle_event(const event_t *event);
 void system_ai_process_entity_turn(entity_id_t id);
 
 /* Actions System */
@@ -82,14 +83,15 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
 
 /* Effect system */
 void system_effect_init(void);
-void system_effect_handle_event(const event_t event);
+void system_effect_handle_event(const event_t *event);
 void system_effect_process_entity_turn(entity_id_t entity);
 void system_effect_cleanup_entity(entity_id_t source);
 int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute);
 
 /* Event System */
 void system_event_init(void);
-void system_event_emit(const event_t event);
+void system_event_emit(const event_t *event);
+
 
 /* Equipment System */
 void system_equipment_init(void);
@@ -110,11 +112,15 @@ entity_id_t system_monster_create_player( void );
 void system_movement_init(void);
 void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y);
 bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
+bool_t system_movement_try_move_random(entity_id_t actor);
 bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
 void system_movement_cleanup(entity_id_t id);
 
 /* Name system */
 void system_name_print(text_window_t *win, name_id_t name);
+
+/* Perception system*/
+uint8_t system_perception_try_check(entity_id_t creature);
 
 /* Player System */
 void system_player_init(void);

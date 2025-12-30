@@ -81,7 +81,7 @@ bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect
     event.type = EVENT_ACTIVE_EFFECT_ATTACHED;
     event.target = target;
     event.source = source;
-    system_event_emit(event);
+    system_event_emit(&event);
 
     return 1;
 }
@@ -100,8 +100,10 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     active_stack_remove(effects, slot);
 
     event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
+    /* TODO record source entity? */
+    event.source = ENTITY_ID_INVALID;
     event.target = target;
-    system_event_emit(event);    
+    system_event_emit(&event);    
 }
 
  /*
@@ -135,7 +137,7 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
             event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
             event.target = target;
             event.source = source;
-            system_event_emit(event);    
+            system_event_emit(&event);    
         }
         else
         {

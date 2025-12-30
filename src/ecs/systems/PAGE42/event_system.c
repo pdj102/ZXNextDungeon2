@@ -29,8 +29,9 @@ void event_system_init(void)
 {
 }
 
-void event_system_emit(const event_t event)
+void event_system_emit(const event_t *event)
 {
     system_effect_handle_event(event);
+    system_ai_handle_event(event);
     ui_on_event(event);
 }

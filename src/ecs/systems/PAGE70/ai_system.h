@@ -12,6 +12,8 @@
 
 #include "ecs/entity.h"
 
+#include "ecs/systems/PAGE42/event_system.h"
+
 /***************************************************
  * public defines
  ***************************************************/
@@ -24,6 +26,7 @@
  * public function prototypes
  ***************************************************/
 void ai_system_init(void);
+void ai_system_handle_event(const event_t *event);
 void ai_system_process_entity_turn(entity_id_t entity);
 
 #endif // AI_SYSTEM_H

@@ -44,7 +44,7 @@ bool_t consumable_system_try_consume(entity_id_t actor, entity_id_t entity)
     event.target = entity;
     event.value = 1;
 
-    system_event_emit(event);
+    system_event_emit(&event);
     entity_mark_for_destruction(entity);
 
     return 1;

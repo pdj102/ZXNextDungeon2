@@ -1,7 +1,7 @@
 /**
  * @file systems_dispatch.c
  * @author Paul  Johnson
- * @brief Game SYSTEMS_DISPATCH
+ * @brief Game SYSTEMS_DISPATCH. Ensure parameters are not paged out of memory e.g. on stack or global game state
  */
 
 #include "ecs/systems/systems_dispatch.h"
@@ -20,6 +20,7 @@
 #include "ecs/systems/PAGE44/actions_system.h"
 #include "ecs/systems/PAGE46/player_system.h"
 #include "ecs/systems/PAGE48/equipment_system.h"
+#include "ecs/systems/PAGE50/perception_system.h"
 #include "ecs/systems/PAGE52/movement_system.h"
 #include "ecs/systems/PAGE54/combat_system.h"
 #include "ecs/systems/PAGE56/damage_system.h"
@@ -29,6 +30,8 @@
 #include "ecs/systems/PAGE64/name_system.h"
 #include "ecs/systems/PAGE66/healing_system.h"
 #include "ecs/systems/PAGE70/ai_system.h"
+
+#include "game/global_state.h"
 
 /***************************************************
  * private defines
@@ -69,11 +72,21 @@
  }
 
 /* AI System */
-void system_ai_process_entity_turn(entity_id_t id)
+void system_ai_handle_event(const event_t *event)
 {
     uint8_t current_bank;
 
-    return;
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_AI); 
+
+    ai_system_handle_event(event);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void system_ai_process_entity_turn(entity_id_t id)
+{
+    uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_AI); 
@@ -393,7 +406,7 @@ void system_effect_init(void)
     ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
-void system_effect_handle_event(const event_t event)
+void system_effect_handle_event(const event_t *event)
 {
     uint8_t mmu6_current_bank;
     uint8_t mmu7_current_bank;
@@ -536,7 +549,7 @@ void system_event_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
 }
 
-void system_event_emit(const event_t event)
+void system_event_emit(const event_t *event)
 {
     uint8_t current_bank;
 
@@ -618,6 +631,22 @@ void system_player_init(void)
     player_system_init();
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+/* Perception system */
+uint8_t system_perception_try_check(entity_id_t creature)
+{
+    uint8_t current_bank;
+    uint8_t result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_PERCEPTION_SYSTEM);
+
+    result = perception_system_try_check(creature);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result; 
 }
 
 void system_player_update(void)
@@ -916,6 +945,21 @@ bool_t system_movement_try_move(entity_id_t id, int8_t dx, int8_t dy)
     ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
 
     result = movement_system_try_move(id, dx, dy);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;    
+}
+
+bool_t system_movement_try_move_random(entity_id_t actor)
+{
+    uint8_t current_bank;
+    bool_t result;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    result = movement_system_try_move_random(actor);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 

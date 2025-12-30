@@ -38,15 +38,15 @@
  * functions
  ***************************************************/
 
-void ui_on_event(const event_t event)
+void ui_on_event(const event_t *event)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_UI);
 
-    ui_msg_win_on_event(&event);
-    ui_stat_win_on_event(&event);
+    ui_msg_win_on_event(event);
+    ui_stat_win_on_event(event);
 
     ZXN_WRITE_MMU6(current_bank);
 

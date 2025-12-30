@@ -34,6 +34,7 @@
  * 0x6a00 - 0x7FFF      NOT USED
  * 
  * 0xbfff               Top of stack (TODO move stack to unused space at top of bank 5)
+ * 0x7fff               Top of stack for bank 5 (does not work) 0x69FF
  */
 
  /*
@@ -57,6 +58,7 @@
 #define PAGE_ACTIONS_SYSTEM   44
 #define PAGE_PLAYER_SYSTEM    46
 #define PAGE_EQUIPMENT_SYSTEM 48
+#define PAGE_PERCEPTION_SYSTEM 50
 #define PAGE_MOVEMENT_SYSTEM  52
 #define PAGE_COMBAT_SYSTEM    54
 #define PAGE_DAMAGE_SYSTEM    56

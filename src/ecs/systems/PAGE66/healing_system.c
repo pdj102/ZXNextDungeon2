@@ -28,16 +28,16 @@
  * public functions
  ***************************************************/
 
-int8_t healing_system_try(entity_id_t actor, int8_t amount, healing_kind_t kind)
+int8_t healing_system_try(entity_id_t target, int8_t amount, healing_kind_t kind)
 {
     event_t event;
 
-    if (!entity_has_component(actor, COMPONENT_DESTRUCTIBLE))
+    if (!entity_has_component(target, COMPONENT_DESTRUCTIBLE))
     {
         return 0;
     }
 
-    event.source = actor;
+    event.source = target;
     event.target = ENTITY_ID_INVALID;
 
     if (kind == HEALING_KIND_HP)
@@ -45,15 +45,14 @@ int8_t healing_system_try(entity_id_t actor, int8_t amount, healing_kind_t kind)
         event.type = EVENT_HEALED_HP;
 
         /* clamp amount to max hp */
-        if (g.destructible_components[actor].cur_hp + amount > g.destructible_components[actor].max_hp)
+        if (g.destructible_components[target].cur_hp + amount > g.destructible_components[target].max_hp)
         {
-            amount = g.destructible_components[actor].max_hp - g.destructible_components[actor].cur_hp; 
+            amount = g.destructible_components[target].max_hp - g.destructible_components[target].cur_hp; 
         }
 
-        g.destructible_components[actor].cur_hp += amount;
+        g.destructible_components[target].cur_hp += amount;
         event.value = (uint8_t)amount;
-        system_event_emit(event);
-        
+        system_event_emit(&event);
     }
     
     return 1;

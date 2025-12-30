@@ -9,6 +9,8 @@
 
 #include "ecs/systems/PAGE52/movement_system.h"
 
+#include <stdlib.h>
+
 #include "ecs/components/components.h"
 #include "ecs/components/location_comp.h"
 
@@ -60,7 +62,7 @@ bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
     tx = g.location_components[actor].x + dx;
     ty = g.location_components[actor].y + dy;
 
-    if (map_can_enter(actor, tx, ty))
+    if (map_can_enter(tx, ty))
     {
         location_move(actor, tx, ty);
         return 1;
@@ -69,6 +71,15 @@ bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
     {
         return 0;
     }
+}
+
+bool_t movement_system_try_move_random(entity_id_t actor)
+ {
+    direction_t dir;
+    
+    dir = (rand() % 4) + 1; /* random direction */
+
+    return movement_system_try_move(actor, directions[dir].x, directions[dir].y);
 }
 
 /*
@@ -144,6 +155,9 @@ static void location_link(entity_id_t entity)
     uint8_t x = g.location_components[entity].x;
     uint8_t y = g.location_components[entity].y;
 
+    /* Mark map window as dirty*/
+    g.main_win.dirty = 1;
+
     g.location_components[entity].next_in_location = g.map.cell_head[x][y]; /* link to previous head entity at this map cell */
     g.map.cell_head[x][y] = entity; /* set this entity as the head of the list at this map cell */
 }
@@ -156,6 +170,9 @@ static void location_unlink(entity_id_t entity)
 {
     entity_id_t x = g.location_components[entity].x;
     entity_id_t y = g.location_components[entity].y;
+
+    /* Mark map window as dirty*/
+    g.main_win.dirty = 1;
 
     /* find entity in cell list */
     entity_id_t current = g.map.cell_head[x][y]; /* start at the head of the list */

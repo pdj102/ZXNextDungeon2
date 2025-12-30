@@ -179,7 +179,7 @@
 * [✅] Manage dropping equiped items
 * [✅] Manage `equippable`, `equipped` and `slot` component cleanup on entity destroy
 * [✅] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
-* [ ] Implment `equipment_system_cleanup_entity(entity)`
+* [ ] Implment `equipment_system_cleanup_entity(entity)` - cleanup equipped and slots components on entity destroy
 
 [✅] *End result: Player can equip and uneqip items.*
 
@@ -389,6 +389,7 @@
 
 * [ ] Turn item component into a flag to indicate can be picked up (consider renaming)
 * [ ] Change player in to character component and use for character specific things like experience
+* [ ] Change pass by value to pass by pointer if parameter is on stack or in global game state
 * [ ] Bug - attack direction can select no direction and attack self
 * [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
 

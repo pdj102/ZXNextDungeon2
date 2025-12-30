@@ -1,5 +1,5 @@
 /**
- * @file map.h
+ * @file perception_system.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -7,38 +7,26 @@
  * 
  */
 
-#ifndef MAP_H
-#define MAP_H
-
-#include "ecs/entity.h"
+#ifndef PERCEPTION_SYSTEM_H
+#define PERCEPTION_SYSTEM_H
 
 #include <stdint.h>
+#include <sys/types.h>
+
+#include "ecs/entity.h"
 
 /***************************************************
  * public defines
  ***************************************************/
-#define MAP_WIDTH 80
-#define MAP_HEIGHT 24
-
 
 /***************************************************
  * public types
  ***************************************************/
 
-
-/***************************************************
- * public variables
- ***************************************************/
-
-
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_init(void);
-bool_t map_can_enter(uint8_t x, uint8_t y);
-// bool_t map_has_line_of_sight(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
-bool_t map_has_line_of_sight(entity_id_t e1, entity_id_t e2);
+uint8_t perception_system_try_check(entity_id_t creature);
 
-void map_gen(void);
 
-#endif // MAP_H
+#endif // PERCEPTION_SYSTEM_H

@@ -47,22 +47,17 @@ bool_t damage_system_try_die(entity_id_t entity)
     event.source = entity;
     event.target = ENTITY_ID_INVALID;
     event.value = 0;
-    system_event_emit(event);
-
-    /* TODO: This should not be done here. Destroyed creatures, items etc should respond to event*/
-    g.creature_components[entity].status = CREATURE_STATUS_DEAD;
-    entity_mark_for_destruction(entity);
-
+    system_event_emit(&event);
     return 1;
 }
 
-int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_flag_t flag)
+int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_flag_t flag)
 {
     event_t event;
 
     event.type = EVENT_DAMAGED;
 
-    if (!entity_has_component(actor, COMPONENT_DESTRUCTIBLE ))
+    if (!entity_has_component(target, COMPONENT_DESTRUCTIBLE ))
     {
         return 0;
     }
@@ -73,41 +68,43 @@ int8_t damage_system_try_take_damage(entity_id_t actor, int8_t damage, damage_fl
         damage = 0;
     */
 
-    if (damage_type_resistant(actor, flag))
+    if (damage_type_resistant(target, flag))
     {
         damage /= 2;
         event.type = EVENT_DAMAGED_RESIST;
     }
 
-    if (damage_type_vulnerable(actor, flag))
+    if (damage_type_vulnerable(target, flag))
     {
         damage *= 2;
         event.type = EVENT_DAMAGED_VULNERABLE;
     }
 
-    if (damage_type_immune(actor, flag))
+    if (damage_type_immune(target, flag))
     {
         event.type = EVENT_DAMAGED_IMMUNE;
         damage = 0;
     }    
 
-    event.source = actor;
-    event.target = ENTITY_ID_INVALID;
+    /* TODO record source? */
+    event.source = ENTITY_ID_INVALID;
+    event.target = target;
     event.value = damage;
 
     /* if cur_hp reduced to zero or less kill creature, otherwise reduce cur_hp by damage */
-    if (g.destructible_components[actor].cur_hp <= damage)
+    if (g.destructible_components[target].cur_hp <= damage)
     {        
-        g.destructible_components[actor].cur_hp = 0;
-        system_event_emit(event);
-        damage_system_try_die(actor);
+        g.destructible_components[target].cur_hp = 0;
+        system_event_emit(&event);
+        damage_system_try_die(target);
     }
     else
     {
-        g.destructible_components[actor].cur_hp -= damage;
-        system_event_emit(event);
+        g.destructible_components[target].cur_hp -= damage;
+        system_event_emit(&event);
 
-        text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructible_components[actor].max_hp, g.destructible_components[actor].cur_hp);
+        /* TODO get rid of this debug */
+        text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructible_components[target].max_hp, g.destructible_components[target].cur_hp);
     }
     
     return 1;

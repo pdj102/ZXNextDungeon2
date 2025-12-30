@@ -38,7 +38,7 @@
     [EVENT_ATTACKED]                = " attack ",
     [EVENT_ATTACKED_AND_MISSED]     = " miss ",    
     [EVENT_ATTACKED_AND_CRITICAL]   = " critically attack ",
-    [EVENT_BUMPED]                  = " bumped ",
+    [EVENT_BUMPED]                  = " bump ",
     [EVENT_CONSUMED]                = " consume ",
     [EVENT_DAMAGED]                 = " take %d damage\n",
     [EVENT_DAMAGED_IMMUNE]          = " are immune!\n",
@@ -52,6 +52,7 @@
     [EVENT_UNEQUIPPED]              = " unequip ",
     [EVENT_HEALED_HP]               = " restore %d health\n",
     [EVENT_HEALED_MP]               = " restore %d mana\n",
+    [EVENT_SPOTTED_TARGET]          = " see ",
 };
 
  /* Third person singular */
@@ -74,6 +75,7 @@
     [EVENT_UNEQUIPPED]              = " unequips ",
     [EVENT_HEALED_HP]               = " restores %d health\n",
     [EVENT_HEALED_MP]               = " restores %d mana\n",
+    [EVENT_SPOTTED_TARGET]          = " sees ",
 };
 
 
@@ -97,7 +99,8 @@ static void ui_msg_win_nl(void);
 
  void ui_msg_win_on_event(const event_t *event)
   {
-    bool_t subject_is_player = ui_msg_win_is_player(event->source);
+    bool_t source_is_player = ui_msg_win_is_player(event->source);
+    bool_t target_is_player = ui_msg_win_is_player(event->target);
 
     switch( event->type )
     {
@@ -111,22 +114,26 @@ static void ui_msg_win_nl(void);
         case EVENT_EQUIPPED:
         case EVENT_UNEQUIPPED:
         case EVENT_PICKED_UP:
+        case EVENT_SPOTTED_TARGET:
             ui_msg_win_print_subject(event->source);
-            ui_msg_win_print_verb(event->type, subject_is_player);
+            ui_msg_win_print_verb(event->type, source_is_player);
             ui_msg_win_print_object(event->target);
             break;
         case EVENT_DIED:
-        case EVENT_DAMAGED_IMMUNE:
             ui_msg_win_print_subject(event->source);
-            ui_msg_win_print_verb(event->type, subject_is_player);
+            ui_msg_win_print_verb(event->type, source_is_player);
+            break;
+        case EVENT_DAMAGED_IMMUNE:
+            ui_msg_win_print_subject(event->target);
+            ui_msg_win_print_verb(event->type, target_is_player);
             break;
         case EVENT_DAMAGED:
         case EVENT_DAMAGED_RESIST:
         case EVENT_DAMAGED_VULNERABLE:
         case EVENT_HEALED_HP:
         case EVENT_HEALED_MP:
-            ui_msg_win_print_subject(event->source);
-            if (subject_is_player)
+            ui_msg_win_print_subject(event->target);
+            if (target_is_player)
             {
                 text_printf(&g.msg_win, verb_present_tense[event->type], event->value);
             }

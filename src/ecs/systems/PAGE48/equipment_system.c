@@ -137,7 +137,7 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
     event.target = item;
     event.value = 1;
 
-    system_event_emit(event);
+    system_event_emit(&event);
     
     return 1;
 }
@@ -171,7 +171,7 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
             event.target = item;
             event.value = 1;
 
-            system_event_emit(event);
+            system_event_emit(&event);
             return 1;
         }
     }

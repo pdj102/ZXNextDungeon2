@@ -22,7 +22,7 @@
  * public function prototypes
  ***************************************************/
 
-void ui_on_event(const event_t event);
+void ui_on_event(const event_t *event);
 
 void ui_update_primary_stats(void);
 void ui_update_secondary_stats(void);

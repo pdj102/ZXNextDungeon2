@@ -103,7 +103,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
         case ATTACK_CRITICAL:
             /* crit damage */
             event.type = EVENT_ATTACKED_AND_CRITICAL;
-            system_event_emit(event);
+            system_event_emit(&event);
             damage_roll = roll_melee_damage(attacker, 1);
             system_damage_try_take_damage(target, damage_roll, damage_type);
             return 1;
@@ -111,7 +111,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
         case ATTACK_HIT:
             /* normal damage */
             event.type = EVENT_ATTACKED;
-            system_event_emit(event);
+            system_event_emit(&event);
             damage_roll = roll_melee_damage(attacker, 0);
             system_damage_try_take_damage(target, damage_roll, damage_type);
             return 1;
@@ -119,7 +119,7 @@ bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
         case ATTACK_MISS:
             /* missed */
             event.type = EVENT_ATTACKED_AND_MISSED;
-            system_event_emit(event);
+            system_event_emit(&event);
             return 0;
         default:
             util_abort("Unknown attack roll result");

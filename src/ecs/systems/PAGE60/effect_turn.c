@@ -52,8 +52,10 @@ void entity_turn(entity_id_t entity)
             {
                 unattach_active_effect(entity, slot);
                 event.type = EVENT_ACTIVE_EFFECT_EXPIRED;
+                /* TODO record source entity?*/
+                event.source = ENTITY_ID_INVALID;
                 event.target = entity;
-                system_event_emit(event);    
+                system_event_emit(&event);
                 continue; // don't increment i since we removed an element
             }
         }

@@ -79,6 +79,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE44/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE46/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE48/*.c) \
+	   $(wildcard $(SRCDIR)/ecs/systems/PAGE50/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE52/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE54/*.c) \
 	   $(wildcard $(SRCDIR)/ecs/systems/PAGE56/*.c) \
@@ -153,7 +154,8 @@ CFLAGS += $(TARGET) $(VERBOSITY) $(C_OPT_FLAGS) -compiler=sdcc -pragma-include:$
 # -pragma-include:$(PRAGMAS) tells zcc to include the pragmas
 # -create-app tells zcc to create an application
 # -subtype=nex specifies the subtype as nex for ZX Spectrum Next
-LDFLAGS=$(TARGET) $(VERBOSITY) -startup=$(CRT) -clib=sdcc_iy -pragma-include:$(PRAGMAS) -create-app -subtype=nex
+# -m create a map file
+LDFLAGS=$(TARGET) $(VERBOSITY) -startup=$(CRT) -clib=sdcc_iy -pragma-include:$(PRAGMAS) -create-app -subtype=nex -m
 
 # LDLIBS - Libraries to link against, such as -lfoo
 LDLIBS=

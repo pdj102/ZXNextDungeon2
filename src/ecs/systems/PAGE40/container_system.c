@@ -87,7 +87,7 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
     event.target = item;
     event.value = 0;
 
-    system_event_emit(event);
+    system_event_emit(&event);
 
     return 1;
 }
@@ -134,7 +134,7 @@ bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
     event.target = item;
     event.value = 0;
 
-    system_event_emit(event);
+    system_event_emit(&event);
 
     return 1;
 }
