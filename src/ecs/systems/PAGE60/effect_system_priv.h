@@ -18,7 +18,6 @@
 
 #include "ecs/systems/PAGE42/event_system.h"
 
-#include "game/game.h"
 
 /***************************************************
  * Defines
@@ -47,7 +46,7 @@ __at (0xe000) static active_effect_components_t active_effect_components; /* Pla
 
 
 /* Active effects */
-bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect);
+bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect);
 void unattach_active_effect(entity_id_t target, uint8_t slot);
 void remove_effects_by_source(entity_id_t target, entity_id_t source);
 int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute);

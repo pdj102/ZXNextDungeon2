@@ -16,7 +16,6 @@
 
 #include "ecs/systems/PAGE42/event_system.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 #include "core/util.h"
@@ -33,22 +32,26 @@
 /***************************************************
  * public functions
  ***************************************************/
-uint8_t perception_system_try_check(entity_id_t creature)
+bool perception_system_try_check(entity_id_t creature)
 {
-    uint8_t result; 
     event_t event;
 
-    result = map_has_line_of_sight(g.player.id, creature);
+    if (g.player.id == ENTITY_ID_INVALID)
+        return 0;
 
-    if (result == 1)
+    if (map_has_line_of_sight(g.player.id, creature))
     {
-        util_info("Seen\n");
-
         event.type = EVENT_SPOTTED_TARGET;
         event.source = creature;
         event.target = g.player.id;
         system_event_emit(&event);
+        return 1;
     }
 
-    return result; 
+    return 0; 
+}
+
+bool perception_system_can_see_target(entity_id_t ai, entity_id_t target)
+{
+    return map_has_line_of_sight(ai, target);
 }

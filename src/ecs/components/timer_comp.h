@@ -12,8 +12,6 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
-
 #include "core/util.h"
 
 /***************************************************
@@ -23,12 +21,15 @@
 /***************************************************
  * public types
  ***************************************************/
+ 
+ typedef uint8_t ticks_t;
+ 
  /* timer component */
 typedef struct {
     ticks_t base_ticks; /* reset period ticks */
     ticks_t ticks;      /* remaining ticks */
-    bool_t  active;     /* true if counting down */
-    bool_t  fired;      /* true if count down reached zero */
+    bool  active;     /* true if counting down */
+    bool  fired;      /* true if count down reached zero */
 } timer_comp_t;
 
 /* Timer components - fast iterate */

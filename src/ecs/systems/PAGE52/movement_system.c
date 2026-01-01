@@ -22,7 +22,6 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-static bool_t location_equal(entity_id_t entity1, entity_id_t entity2);
 static void location_move(entity_id_t entity, uint8_t x, uint8_t y);
 static void location_link(entity_id_t entity);
 static void location_unlink(entity_id_t entity);
@@ -46,21 +45,24 @@ void movement_system_place(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert(!entity_has_component(entity, COMPONENT_LOCATION));  /* entity must not already have a location component */
     util_assert(!entity_has_component(entity, COMPONENT_CONTAINED)); /* entity must not be contained */
 
-    g.location_components[entity].x = x;
-    g.location_components[entity].y = y;
+    g.location_components[entity].coord.x = x;
+    g.location_components[entity].coord.y = y;
 
     location_link(entity);
 
     entity_set_component(entity, COMPONENT_LOCATION); /* set entity location component mask */
 }
 
-bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
+bool movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
  {
     uint8_t tx;
     uint8_t ty;
 
-    tx = g.location_components[actor].x + dx;
-    ty = g.location_components[actor].y + dy;
+    if ((dx == 0) && (dy == 0))
+        return 0;
+
+    tx = g.location_components[actor].coord.x + dx;
+    ty = g.location_components[actor].coord.y + dy;
 
     if (map_can_enter(tx, ty))
     {
@@ -73,13 +75,58 @@ bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)
     }
 }
 
-bool_t movement_system_try_move_random(entity_id_t actor)
+bool movement_system_try_move_random(entity_id_t actor)
  {
     direction_t dir;
     
     dir = (rand() % 4) + 1; /* random direction */
 
     return movement_system_try_move(actor, directions[dir].x, directions[dir].y);
+}
+
+bool movement_system_try_move_towards(entity_id_t entity, coord_t *coord)
+{
+coord_t *m = &g.location_components[entity].coord;
+    
+
+    /* Determine chase direction */
+    int8_t dx = 0;
+    int8_t dy = 0; 
+
+    if (coord->x > m->x) dx = 1;
+    else if (coord->x < m->x) dx = -1;
+
+    if (coord->y > m->y) dy = 1;
+    else if (coord->y < m->y) dy = -1;
+
+    /* No move needed */
+    if ((dx == 0) && (dy == 0))
+        return 0;
+
+    /* Try direct move */
+    if (movement_system_try_move(entity, dx, dy))
+        return 1;
+
+    /* Try axis-only fallback */
+    if (dx && movement_system_try_move(entity, dx, 0))
+        return 1;
+
+    if (dy && movement_system_try_move(entity, 0, dy))
+        return 1;
+
+    /* Try small sidestep to avoid obstacles */
+    static const int8_t sidestep[4][2] = {
+        { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+    };
+
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        if (movement_system_try_move(entity, sidestep[i][0], sidestep[i][1]))
+            return 1;
+    }
+
+    /* Can't move anywhere useful */
+    return 0;
 }
 
 /*
@@ -99,39 +146,29 @@ void movement_system_cleanup(entity_id_t entity)
     entity_clear_component(entity, COMPONENT_LOCATION); /* clear entity location component mask */    
 }
 
-bool_t movement_system_location_equal(entity_id_t entity1, entity_id_t entity2)
+bool movement_system_location_equal(entity_id_t entity1, entity_id_t entity2)
 {
     util_assert(entity1 < MAX_ENTITIES);
     util_assert(entity2 < MAX_ENTITIES);
     util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
     util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
 
-    if ((g.location_components[entity1].x == g.location_components[entity2].x) &&
-        (g.location_components[entity1].y == g.location_components[entity2].y))
-    {
-        return 1;
-    }
-    return 0;
+    return coord_equal(g.location_components[entity1].coord, g.location_components[entity2].coord);
+}
+
+bool movement_system_are_adjacent(entity_id_t entity1, entity_id_t entity2)
+{
+    util_assert(entity1 < MAX_ENTITIES);
+    util_assert(entity2 < MAX_ENTITIES);
+    util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
+
+    return are_adjacent(g.location_components[entity1].coord, g.location_components[entity2].coord);
 }
 
  /***************************************************
  * private functions
  ***************************************************/
-
-static bool_t location_equal(entity_id_t entity1, entity_id_t entity2)
-{
-    util_assert(entity1 < MAX_ENTITIES);
-    util_assert(entity2 < MAX_ENTITIES);
-    util_assert(entity_has_component(entity1, COMPONENT_LOCATION));
-    util_assert(entity_has_component(entity2, COMPONENT_LOCATION));
-
-    if ((g.location_components[entity1].x == g.location_components[entity2].x) &&
-        (g.location_components[entity1].y == g.location_components[entity2].y))
-    {
-        return 1;
-    }
-    return 0;
-}
 
 static void location_move(entity_id_t entity, uint8_t x, uint8_t y)
 {
@@ -141,8 +178,8 @@ static void location_move(entity_id_t entity, uint8_t x, uint8_t y)
     util_assert(entity_has_component(entity, COMPONENT_LOCATION));
 
     location_unlink(entity);
-    g.location_components[entity].x = x;
-    g.location_components[entity].y = y;
+    g.location_components[entity].coord.x = x;
+    g.location_components[entity].coord.y = y;
     location_link(entity);
 }
 
@@ -152,8 +189,8 @@ static void location_move(entity_id_t entity, uint8_t x, uint8_t y)
  */
 static void location_link(entity_id_t entity)
 {
-    uint8_t x = g.location_components[entity].x;
-    uint8_t y = g.location_components[entity].y;
+    uint8_t x = g.location_components[entity].coord.x;
+    uint8_t y = g.location_components[entity].coord.y;
 
     /* Mark map window as dirty*/
     g.main_win.dirty = 1;
@@ -168,8 +205,8 @@ static void location_link(entity_id_t entity)
 */
 static void location_unlink(entity_id_t entity)
 {
-    entity_id_t x = g.location_components[entity].x;
-    entity_id_t y = g.location_components[entity].y;
+    entity_id_t x = g.location_components[entity].coord.x;
+    entity_id_t y = g.location_components[entity].coord.y;
 
     /* Mark map window as dirty*/
     g.main_win.dirty = 1;

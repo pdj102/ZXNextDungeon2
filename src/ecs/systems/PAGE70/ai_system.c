@@ -1,8 +1,7 @@
 /**
  * @file ai_system.c
  * @author Paul Johnson
- * @brief
-
+ * @brief AI system for Spectrum Next roguelike
  *
  * @copyright Copyright (c) 2025
  *
@@ -12,18 +11,20 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <sys\types.h> /* bool_t */
+#include <stdbool.h> /* bool */
 
 #include "ecs/entity.h"
 #include "ecs/components/components.h"
 
 #include "ecs/systems/systems_dispatch.h"
+#include "ecs/systems/PAGE52/movement_system.h"
 
 #include "game/global_state.h"
 #include "game/map.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"
+#include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
 /***************************************************
  * private variables
@@ -35,11 +36,21 @@
 static void idle(entity_id_t entity);
 static void ai_sleep(entity_id_t entity);
 static void wander(entity_id_t entity);
-static void alert(entity_id_t entity);
-static void chase(entity_id_t entity);
-static void attack(entity_id_t entity);
+static void attack_target(entity_id_t entity);
+static void track_target(entity_id_t entity);
+static void search_target(entity_id_t entity);
 static void flee(entity_id_t entity);
 static void dead(entity_id_t entity);
+
+static bool target_valid(entity_id_t target);
+static bool try_acquire_visible_target(entity_id_t entity, entity_id_t target);
+static void acquire_target(entity_id_t ai_entity, entity_id_t target);
+static void update_last_seen(entity_id_t entity, entity_id_t target);
+static bool reached_last_seen(entity_id_t entity);
+static void give_up_target(entity_id_t entity);
+static bool in_attack_range(entity_id_t ai, entity_id_t target);
+static bool move_towards_last_seen(entity_id_t entity);
+static void begin_search(entity_id_t entity, uint8_t turns);
 
 /***************************************************
  * public functions
@@ -59,17 +70,15 @@ void ai_system_handle_event(const event_t *event)
         switch (event->type)
         {
         case EVENT_DIED:
-            ai->state = AI_STATE_DEAD;
+            util_info("AI state change:died\n");
+            g.creature_components[event->source].status = CREATURE_STATUS_DEAD;
             break;
 
         case EVENT_SPOTTED_TARGET:
             util_info("AI event saw entity\n");
-            if ((ai->state == AI_STATE_IDLE) || (ai->state == AI_STATE_WANDER))
+            if ((ai->state == AI_STATE_IDLE) || (ai->state == AI_STATE_WANDER) || (ai->state == AI_STATE_TRACK_TARGET) || ai->state == AI_STATE_SEARCH_TARGET)
             {
-                util_info("AI state change:alert\n");
-                ai->state = AI_STATE_ALERT;
-                ai->target = event->target;
-                ai->alert_timer = 5;
+                acquire_target(event->source, event->target);
             }
             break;
         }
@@ -82,8 +91,7 @@ void ai_system_handle_event(const event_t *event)
         {
         case EVENT_ATTACKED:
         case EVENT_DAMAGED:
-            ai->state = AI_STATE_CHASE;
-            ai->target = event->source;
+            acquire_target(event->target, event->source);     
             break;
         }
     }
@@ -91,6 +99,12 @@ void ai_system_handle_event(const event_t *event)
 
 void ai_system_process_entity_turn(entity_id_t entity)
 {
+    util_assert(entity_has_component(entity, COMPONENT_CREATURE));
+    util_assert(entity_has_component(entity, COMPONENT_LOCATION));
+    util_assert(entity_has_component(entity, COMPONENT_AI));
+
+    if (g.creature_components[entity].status == CREATURE_STATUS_DEAD)
+        return;
 
     switch (g.ai_components[entity].state)
     {
@@ -98,25 +112,26 @@ void ai_system_process_entity_turn(entity_id_t entity)
         ai_sleep(entity);
         break;
     case AI_STATE_IDLE:
+        util_info("Idle\n");
         idle(entity);
         break;
     case AI_STATE_WANDER:
         wander(entity);
         break;
-    case AI_STATE_ALERT:
-        alert(entity);
+    case AI_STATE_ATTACK_TARGET:
+        util_info("Attack\n");   
+        attack_target(entity);
         break;
-    case AI_STATE_CHASE:
-        chase(entity);
+    case AI_STATE_TRACK_TARGET:
+        util_info("Track\n");
+        track_target(entity);
         break;
-    case AI_STATE_ATTACK:
-        attack(entity);
+    case AI_STATE_SEARCH_TARGET:
+        util_info("Search\n");
+        search_target(entity);
         break;
     case AI_STATE_FLEE:
         flee(entity);
-        break;
-    case AI_STATE_DEAD:
-        dead(entity);
         break;
     }
 }
@@ -130,12 +145,9 @@ void ai_system_process_entity_turn(entity_id_t entity)
  */
 static void idle(entity_id_t entity)
 {
-    util_info("Idle\n");
-
-    bool_t result; 
+    bool result; 
 
     result = system_perception_try_check(entity);
-    // result = map_has_line_of_sight(g.location_components[g.player.id].x, g.location_components[g.player.id].y, g.location_components[entity].x, g.location_components[entity].y);
 
     if (result == 1)
     {
@@ -155,25 +167,123 @@ static void wander(entity_id_t entity)
 }
 
 /*
- * @brief When alert, the monster does not immediately chase
+ * @brief When tracking a target, the monster will move towards the target's last known position
+ * @details
+ * 1) If the target is no longer valid the monster will switch to idle
+ * 2) Try and acquire target, if successful switch to attack target
+ * 3) If the monster reaches the target's last known position switch to searching for the target
+ * 4) Otherwise move towards the target's last known position
  */
-static void alert(entity_id_t entity)
+static void track_target(entity_id_t entity)
 {
-    util_info("Alert\n");
-    if (g.ai_components[entity].alert_timer > 0)
-        g.ai_components[entity].alert_timer--;
-    else
-        g.ai_components[entity].state = AI_STATE_CHASE;
+    ai_comp_t *ai = &g.ai_components[entity];
+    entity_id_t target = ai->target; 
+
+    /* 1) Target no longer valid -> idle */
+    if (!target_valid(target))
+    {
+        give_up_target(entity);
+        return;
+    }
+
+    /* 2) Try and acquire target */
+    if (try_acquire_visible_target(entity, target))
+        return;
+
+    /* 3) Reached last known position -> search target */
+    if (reached_last_seen(entity))
+    {
+        begin_search(entity, 10);
+        return;
+    }
+
+    /* 4) Move towards last known position */
+    if (!move_towards_last_seen(entity))
+    {
+        if (rand() & 1)
+            system_movement_try_move_random(entity);
+    }
 }
-static void chase(entity_id_t entity)
+
+/*
+ * @brief When searching, the monster will search the area around where the target was last seen for a number of turns.
+ * @details
+ * 1) If the target is no longer valid the monster will switch to idle
+ * 2) Try and acquire target, if successful switch to attack target
+ * 3) If search timer has reached zero, give up and switch to idle
+ * 4) Otherwise, decrement search timer and continue searching 
+ */
+static void search_target(entity_id_t entity)
 {
-    util_info("Chase\n");
-    if (rand() % 4)
-        system_movement_try_move_random(entity);
+    ai_comp_t *ai = &g.ai_components[entity];
+    entity_id_t target = ai->target;
+
+
+    /* 1) Target no longer valid -> idle */
+    if (!target_valid(target))
+    {
+        give_up_target(entity);
+        return;
+    }
+
+    /* 2) Try and acquire target */
+    if (try_acquire_visible_target(entity, target))
+        return;    
+
+    /* 3) If search timer has reached zero, give up and switch to idle */
+    if (ai->search_timer == 0)
+    {
+        give_up_target(entity);
+        return;
+    }
+
+    /* 4) Otherwise, decrement search timer and continue searching */
+    ai->search_timer--;
+    system_movement_try_move_random(entity);
 }
-static void attack(entity_id_t entity)
+
+/*
+ * @brief When attacking, the monster will attack the target if it is in range and move towards it if not.
+ * @details
+ * 1) If the target is no longer valid the monster will switch to idle
+ * 2) Try to (re)acquire visible target
+ * 3) If the target is in range, attack
+ * 4) Otherwise move towards target
+ */
+static void attack_target(entity_id_t entity)
 {
+    ai_comp_t *ai = &g.ai_components[entity];
+    entity_id_t target = ai->target;
+
+    /* 1) Target no longer valid -> idle */
+    if (!target_valid(target))
+    {
+        give_up_target(entity);
+        return;
+    }
+
+    /* 2) Try to (re)acquire visible target */
+    if (!try_acquire_visible_target(entity, target))
+    {
+        ai->state = AI_STATE_TRACK_TARGET;
+        return;
+    }
+
+    /* 3) If the target is in range, attack */
+    if (in_attack_range(entity, target))
+    {
+        system_combat_try_melee_attack(entity, target);
+        return; 
+    }
+
+    /* 4) Otherwise move towards target */
+    if (!move_towards_last_seen(entity))
+    {
+        if (rand() & 1)
+            system_movement_try_move_random(entity);
+    }
 }
+
 static void flee(entity_id_t entity)
 {
 }
@@ -182,3 +292,81 @@ static void dead(entity_id_t entity)
     g.creature_components[entity].status = CREATURE_STATUS_DEAD;
     entity_mark_for_destruction(entity);
 }
+
+static bool target_valid(entity_id_t target)
+{
+    if (target == ENTITY_ID_INVALID)
+        return 0;
+
+    if (!entity_has_component(target, COMPONENT_CREATURE))
+        return 0;
+
+    if (!entity_has_component(target, COMPONENT_LOCATION))
+        return 0;        
+
+    if (g.creature_components[target].status == CREATURE_STATUS_DEAD)
+        return 0;
+    
+    return 1;
+}
+
+static bool try_acquire_visible_target(entity_id_t entity, entity_id_t target)
+{
+    if (!system_perception_can_see_target(entity, target))
+        return 0;
+
+    acquire_target(entity, target);
+    return 1;
+}
+
+static bool in_attack_range(entity_id_t ai, entity_id_t target)
+{
+    /* TODO support ranged attacks */
+    return system_movement_are_adjacent(ai, target);
+}
+
+static void acquire_target(entity_id_t ai_entity, entity_id_t target)
+{
+    ai_comp_t *ai = &g.ai_components[ai_entity];
+    ai->state = AI_STATE_ATTACK_TARGET;
+    ai->target = target;
+    ai->last_seen.x = g.location_components[target].coord.x;
+    ai->last_seen.y = g.location_components[target].coord.y;
+}
+
+static void give_up_target(entity_id_t entity)
+{
+    ai_comp_t *ai = &g.ai_components[entity];
+    ai->target = ENTITY_ID_INVALID;
+    ai->state  = AI_STATE_IDLE;
+}
+
+static void update_last_seen(entity_id_t entity, entity_id_t target)
+{
+    ai_comp_t *ai = &g.ai_components[entity];
+    ai->last_seen.x = g.location_components[target].coord.x;
+    ai->last_seen.y = g.location_components[target].coord.y;
+}
+
+static bool reached_last_seen(entity_id_t entity)
+{
+    ai_comp_t *ai = &g.ai_components[entity];
+    coord_t *m = &g.location_components[entity].coord;
+
+    return ((m->x == ai->last_seen.x) && (m->y == ai->last_seen.y));
+}
+
+
+static bool move_towards_last_seen(entity_id_t entity)
+{
+    coord_t *l = &g.ai_components[entity].last_seen;
+    return system_movement_try_move_towards(entity, l); 
+}
+
+static void begin_search(entity_id_t entity, uint8_t turns)
+{
+    ai_comp_t *ai = &g.ai_components[entity];
+    ai->state = AI_STATE_SEARCH_TARGET;
+    ai->search_timer = turns;
+}
+

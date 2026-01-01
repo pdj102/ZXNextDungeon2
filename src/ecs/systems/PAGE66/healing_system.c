@@ -62,17 +62,17 @@ int8_t healing_system_try(entity_id_t target, int8_t amount, healing_kind_t kind
  * private functions
  ***************************************************/
 
-static bool_t healing_type_immune(entity_id_t actor, healing_kind_t type)
+static bool healing_type_immune(entity_id_t actor, healing_kind_t type)
 {
     return (g.destructible_components[actor].immune & type) != 0;
 }
 
-static bool_t healing_type_resistant(entity_id_t actor, healing_kind_t type)
+static bool healing_type_resistant(entity_id_t actor, healing_kind_t type)
 {
    return (g.destructible_components[actor].resist & type) != 0;
 }
 
-static bool_t healing_type_vulnerable(entity_id_t actor, healing_kind_t type)
+static bool healing_type_vulnerable(entity_id_t actor, healing_kind_t type)
 {
    // return 0;
    return (g.destructible_components[actor].vulnerable & type) != 0;

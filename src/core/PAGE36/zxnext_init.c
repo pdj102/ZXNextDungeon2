@@ -1,18 +1,17 @@
 /**
- * @file core_init.c
+ * @file zxnext_init.c
  * @author Paul Johnson
  * @brief 
  */
 
-#include "core_init.h"
+#include "zxnext_init.h"
 
 #include <arch/zxn.h>
 /* #include <config_zxn.h> */
 #include <stdint.h>
 
+#include "game/memory_map.h"
 #include "game/global_state.h"
-#include "core/zxnext.h"
-
 
 /***************************************************
  * private defines
@@ -50,10 +49,9 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-void init_zxnext(void);
-void init_zxnext_tilemap(void);
-void init_zxnext_palette(void);
-void init_ui(void);
+static void init_zxnext(void);
+static void init_zxnext_tilemap(void);
+static void init_zxnext_palette(void);
 
 /***************************************************
  * private variables 
@@ -65,13 +63,14 @@ void init_ui(void);
  */
 extern uint8_t tile_palette[]; 
 
-void core_init(void) 
+void zxnext_init_b(void) 
 {
     init_zxnext();
-    init_ui();
+    init_zxnext_tilemap();
+    init_zxnext_palette();
 }
 
-void init_zxnext(void) 
+static void init_zxnext(void) 
 {
     /* set CPU speed 28MHz */
     ZXN_WRITE_REG(REG_TURBO_MODE, RTM_28MHZ);
@@ -94,52 +93,7 @@ void init_zxnext(void)
     init_zxnext_palette();
 } 
 
-void init_ui(void)
-{
-    g.msg_win.x = 0;
-    g.msg_win.y = 24;
-    g.msg_win.w = 40;
-    g.msg_win.h = 8;
-    g.msg_win.c_x = 0;
-    g.msg_win.c_y = 0;
-    g.msg_win.dirty = 0;
-    g.msg_win.tile.tile_id = ' ';
-    g.msg_win.tile.tile_attr = 0;
-
-    g.stat_win.x = 30;
-    g.stat_win.y = 0;
-    g.stat_win.w = 10;
-    g.stat_win.h = 24;
-    g.stat_win.c_x = 0;
-    g.stat_win.c_y = 0;
-    g.stat_win.dirty = 0;
-    g.stat_win.tile.tile_id = ' ';
-    g.stat_win.tile.tile_attr = 0;
-
-    g.main_win.x = 0;
-    g.main_win.y = 0;
-    g.main_win.w = 30;
-    g.main_win.h = 24;
-    g.main_win.c_x = 0;
-    g.main_win.c_y = 0;
-    g.main_win.dirty = 0;
-    g.main_win.tile.tile_id = ' ';
-    g.main_win.tile.tile_attr = 0;    
-
-    g.assert_win.x = 0;
-    g.assert_win.y = 0;
-    g.assert_win.w = 40;
-    g.assert_win.h = 32;
-    g.assert_win.c_x = 0;
-    g.assert_win.c_y = 0;
-    g.assert_win.dirty = 0;
-    g.assert_win.tile.tile_id = ' ';
-    g.assert_win.tile.tile_attr = 0;
-
-    zxnext_tilemap_clear(&(g.msg_win.tile));
-}
-
-void init_zxnext_tilemap(void)
+static void init_zxnext_tilemap(void)
 {
    /* 
     * Set the Tilemap Control Register
@@ -188,7 +142,7 @@ void init_zxnext_tilemap(void)
     ZXN_NEXTREG( REG_TILEDEFS_BASE_ADDR , 10);
 }
 
-void init_zxnext_palette(void)
+static void init_zxnext_palette(void)
 {
     /*
     * Select the tilemap palette 0 for writing

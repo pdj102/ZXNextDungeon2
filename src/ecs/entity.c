@@ -12,7 +12,7 @@
 
 #include <stddef.h> /* NULL */
 #include <stdint.h> /* uint8_t, uint16_t etc */
-#include <sys/types.h> /* bool_t */
+#include <stdbool.h> /* bool */
 
 #include "ecs/entity.h"
 
@@ -81,7 +81,7 @@ entity_id_t entity_create(void)
     return ENTITY_ID_INVALID;
 }
 
-bool_t entity_has_component(entity_id_t id, component_id_t comp)
+bool entity_has_component(entity_id_t id, component_id_t comp)
 {
     if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
         return 0;
@@ -111,7 +111,7 @@ void entity_clear_component(entity_id_t id, component_id_t comp)
 }
 
 
-bool_t entity_has_flag(entity_id_t id, uint8_t flag)
+bool entity_has_flag(entity_id_t id, uint8_t flag)
 {
     if (id >= MAX_ENTITIES)
     {

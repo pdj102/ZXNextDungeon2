@@ -18,7 +18,6 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 /***************************************************

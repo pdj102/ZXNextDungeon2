@@ -15,7 +15,6 @@
 
 #include "ecs/components/components.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 #include "core/text.h"
@@ -85,11 +84,11 @@
  ***************************************************/
 static void ui_msg_win_print_subject(entity_id_t e);
 
-static void ui_msg_win_print_verb(event_type_t type, bool_t subject_is_player);
+static void ui_msg_win_print_verb(event_type_t type, bool subject_is_player);
 
 static void ui_msg_win_print_object(entity_id_t e);
 
-static bool_t ui_msg_win_is_player(entity_id_t e);
+static bool ui_msg_win_is_player(entity_id_t e);
 
 static void ui_msg_win_nl(void);
 
@@ -99,8 +98,8 @@ static void ui_msg_win_nl(void);
 
  void ui_msg_win_on_event(const event_t *event)
   {
-    bool_t source_is_player = ui_msg_win_is_player(event->source);
-    bool_t target_is_player = ui_msg_win_is_player(event->target);
+    bool source_is_player = ui_msg_win_is_player(event->source);
+    bool target_is_player = ui_msg_win_is_player(event->target);
 
     switch( event->type )
     {
@@ -176,7 +175,7 @@ static void ui_msg_win_print_object(entity_id_t e)
     }
 }
 
-static void ui_msg_win_print_verb(event_type_t type, bool_t subject_is_player)
+static void ui_msg_win_print_verb(event_type_t type, bool subject_is_player)
 {
     if (subject_is_player)
     {
@@ -188,7 +187,7 @@ static void ui_msg_win_print_verb(event_type_t type, bool_t subject_is_player)
     }
 }
 
-static bool_t ui_msg_win_is_player(entity_id_t e)
+static bool ui_msg_win_is_player(entity_id_t e)
 {
     return (e == g.player.id);
 }

@@ -1,18 +1,15 @@
 /**
- * @file core_init_bank.h
+ * @file ui_init.h
  * @author Paul Johnson
- * @brief Game INIT_BANK
+ * @brief Game UI_INIT
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef CORE_INIT_BANK_H
-#define CORE_INIT_BANK_H
+#ifndef UI_INIT_H
+#define UI_INIT_H
 
-#include <stdint.h>
-
-#include "core/PAGE36/core_init.h"
 
  /***************************************************
  * public types
@@ -21,7 +18,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
+void ui_init_b(void);
 
- void core_init_bank(void);
-
-#endif // CORE_INIT_BANK_H
+#endif // UI_INIT_H

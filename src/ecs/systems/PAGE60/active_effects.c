@@ -20,7 +20,6 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 /***************************************************
@@ -50,7 +49,7 @@ static void active_stack_remove(active_effects_comp_t *effects, uint8_t slot);
  * @param source The entity that is applying the effect or INVALID_ENTITY_ID to apply the effect from the system context
  * @param effect The effect to apply
  */
-bool_t attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect)
+bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect)
 {
     event_t event;
 

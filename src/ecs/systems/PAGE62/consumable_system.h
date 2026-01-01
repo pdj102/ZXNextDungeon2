@@ -14,8 +14,6 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
-
 /***************************************************
  * public types
  ***************************************************/
@@ -23,6 +21,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-bool_t consumable_system_try_consume(entity_id_t actor, entity_id_t entity);
+bool consumable_system_try_consume(entity_id_t actor, entity_id_t entity);
 
 #endif // CONSUMABLE_SYSTEM_H

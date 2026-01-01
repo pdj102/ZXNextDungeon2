@@ -13,10 +13,11 @@
 
 #include "ecs/systems/PAGE42/event_system.h"
 
+#include "game/PAGE68/ui_init.h"
 #include "game/PAGE68/ui_msg.h"
 #include "game/PAGE68/ui_stat.h"
 
-#include "game/game.h"
+#include "game/memory_map.h"
 
 /***************************************************
  * private defines
@@ -37,6 +38,18 @@
 /***************************************************
  * functions
  ***************************************************/
+void ui_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_UI);
+
+    ui_init_b();
+
+    ZXN_WRITE_MMU6(current_bank);
+
+ }
 
 void ui_on_event(const event_t *event)
 {

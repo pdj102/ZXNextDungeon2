@@ -16,7 +16,6 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 /***************************************************
@@ -30,7 +29,7 @@
 /***************************************************
  * public functions
  ***************************************************/
-bool_t consumable_system_try_consume(entity_id_t actor, entity_id_t entity)
+bool consumable_system_try_consume(entity_id_t actor, entity_id_t entity)
 {
     event_t event;
 

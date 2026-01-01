@@ -10,6 +10,8 @@
 
 #include "map_render.h"
 
+#include <stdlib.h>
+
 #include "game/map_terrain.h"
 
 #include "game/global_state.h"
@@ -66,3 +68,4 @@ void map_render(void)
         map_x++;
     }
 }
+

@@ -10,10 +10,11 @@
 
 #include <stdint.h>
 
-#include "core/util.h"
-
 #include "ecs/entity.h"
 
+#include "game/spatial.h"
+
+#include "core/util.h"
 #include "core/text.h"
 
 /***************************************************
@@ -21,22 +22,20 @@
  ***************************************************/
 typedef enum {
     AI_STATE_NONE,
-    AI_STATE_IDLE,        // Not aware of player
-    AI_STATE_WANDER,      // Roaming around
-    AI_STATE_ALERT,       // Heard/saw something suspicious
-    AI_STATE_CHASE,       // Actively pursuing target
-    AI_STATE_ATTACK,      // In melee / ready to attack
-    AI_STATE_FLEE,        // Low HP or afraid
-    AI_STATE_SLEEP,      // Asleep until disturbed
-    AI_STATE_DEAD
+    AI_STATE_SLEEP,             // Asleep until disturbed    
+    AI_STATE_IDLE,              // Not aware of player
+    AI_STATE_WANDER,            // Roaming around
+    AI_STATE_ATTACK_TARGET,     // Move towards target and melee attack 
+    AI_STATE_TRACK_TARGET,      // Move towards target's last known position
+    AI_STATE_SEARCH_TARGET,     // Search for target
+    AI_STATE_FLEE,              // Low HP or afraid
 } ai_state_t;
 
 typedef struct {
     ai_state_t state;
     entity_id_t target;      // usually the player
-    uint8_t alert_timer;     // how many turns the monster stays alert
-    uint8_t last_seen_x;
-    uint8_t last_seen_y;
+    uint8_t search_timer;    // how many turns the monster will search
+    coord_t last_seen;
 } ai_comp_t;
 
 

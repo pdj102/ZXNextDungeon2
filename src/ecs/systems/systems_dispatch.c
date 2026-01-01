@@ -32,6 +32,7 @@
 #include "ecs/systems/PAGE70/ai_system.h"
 
 #include "game/global_state.h"
+#include "game/memory_map.h"
 
 /***************************************************
  * private defines
@@ -102,10 +103,10 @@ void system_ai_process_entity_turn(entity_id_t id)
 
  }
 
-bool_t system_actions_try_quaff(entity_id_t creature, entity_id_t item)
+bool system_actions_try_quaff(entity_id_t creature, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -117,10 +118,10 @@ bool_t system_actions_try_quaff(entity_id_t creature, entity_id_t item)
     return result;
 }
 
-bool_t system_actions_try_eat(entity_id_t creature, entity_id_t item)
+bool system_actions_try_eat(entity_id_t creature, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -132,10 +133,10 @@ bool_t system_actions_try_eat(entity_id_t creature, entity_id_t item)
     return result;
 }
 
-bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature)
+bool system_actions_try_open(entity_id_t creature, entity_id_t feature)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -147,10 +148,10 @@ bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature)
     return result;
 }
 
-bool_t system_actions_try_close(entity_id_t creature, entity_id_t feature)
+bool system_actions_try_close(entity_id_t creature, entity_id_t feature)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -175,10 +176,10 @@ void system_container_init(void)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-bool_t system_container_try_pickup(entity_id_t container, entity_id_t item)
+bool system_container_try_pickup(entity_id_t container, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t success;
+    bool success;
 
     current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
@@ -190,10 +191,10 @@ bool_t system_container_try_pickup(entity_id_t container, entity_id_t item)
     return success;
 }
 
-bool_t system_container_try_drop(entity_id_t container, entity_id_t item)
+bool system_container_try_drop(entity_id_t container, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t success;
+    bool success;
 
     current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
@@ -316,10 +317,10 @@ void system_consumable_init(void)
 
 }
 
-bool_t system_consumable_try_consume(entity_id_t actor, entity_id_t entity)
+bool system_consumable_try_consume(entity_id_t actor, entity_id_t entity)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_CONSUMABLE_SYSTEM);
@@ -338,10 +339,10 @@ void system_combat_init(void)
 
 }
 
-bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
+bool system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_COMBAT_SYSTEM);
@@ -362,7 +363,7 @@ bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
 int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
@@ -374,10 +375,10 @@ int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage
     return result;
 }
 
-bool_t system_damage_try_die(entity_id_t creature)
+bool system_damage_try_die(entity_id_t creature)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
@@ -479,10 +480,10 @@ void system_effect_cleanup_entity(entity_id_t source)
 
  }
 
-bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item)
+bool system_equipment_try_equip(entity_id_t actor, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -494,10 +495,10 @@ bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item)
     return result;
 }
 
-bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item)
+bool system_equipment_try_unequip(entity_id_t actor, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -509,10 +510,10 @@ bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item)
     return result;
 }
 
-bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item)
+bool system_equipment_is_equipped(entity_id_t actor, entity_id_t item)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_EQUIPMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
@@ -595,7 +596,7 @@ entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
 int8_t system_healing_try_take_healing(entity_id_t actor, int8_t amount, healing_kind_t kind)
 {
     uint8_t current_bank;
-    bool_t result;
+    bool result;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_HEALING_SYSTEM);
@@ -605,6 +606,163 @@ int8_t system_healing_try_take_healing(entity_id_t actor, int8_t amount, healing
     ZXN_WRITE_MMU6(current_bank);         
 
     return result; 
+}
+
+
+
+/* Monster system*/
+void system_monster_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    monster_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+}
+
+entity_id_t system_monster_create(creature_kind_t kind)
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = monster_system_create(kind);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
+entity_id_t system_monster_create_player( void )
+{
+    entity_id_t entity;
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+
+    entity = monster_system_create_player();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;
+}
+
+/* Movement system */
+void system_movement_init(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_init();
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_place(actor, x, y);
+
+    ZXN_WRITE_MMU6(current_bank);    
+}
+
+bool system_movement_try_move(entity_id_t id, int8_t dx, int8_t dy)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    result = movement_system_try_move(id, dx, dy);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;    
+}
+
+bool system_movement_try_move_random(entity_id_t actor)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    result = movement_system_try_move_random(actor);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;    
+}
+
+bool system_movement_try_move_towards(entity_id_t entity, coord_t *coord)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);
+
+    result = movement_system_try_move_towards(entity, coord);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result;        
+}
+
+bool system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    result = movement_system_location_equal(entity1, entity2);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;    
+}
+
+bool system_movement_are_adjacent(entity_id_t entity1, entity_id_t entity2)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
+
+    result = movement_system_are_adjacent(entity1, entity2);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;        
+}
+
+void system_movement_cleanup(entity_id_t id)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
+
+    movement_system_cleanup(id);
+
+    ZXN_WRITE_MMU6(current_bank);    
 }
 
 /* Name system*/
@@ -634,7 +792,7 @@ void system_player_init(void)
 }
 
 /* Perception system */
-uint8_t system_perception_try_check(entity_id_t creature)
+bool system_perception_try_check(entity_id_t creature)
 {
     uint8_t current_bank;
     uint8_t result;
@@ -643,6 +801,21 @@ uint8_t system_perception_try_check(entity_id_t creature)
     ZXN_WRITE_MMU6(PAGE_PERCEPTION_SYSTEM);
 
     result = perception_system_try_check(creature);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result; 
+}
+
+bool system_perception_can_see_target(entity_id_t ai, entity_id_t target)
+{
+    uint8_t current_bank;
+    uint8_t result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_PERCEPTION_SYSTEM);
+
+    result = perception_system_can_see_target(ai, target);
 
     ZXN_WRITE_MMU6(current_bank);
 
@@ -828,10 +1001,10 @@ void system_timer_update(void)
 
 }
 
-bool_t system_timer_has_fired(entity_id_t entity)
+bool system_timer_has_fired(entity_id_t entity)
 {
     uint8_t current_bank;
-    bool_t fired;
+    bool fired;
 
     current_bank = ZXN_READ_MMU6();     
     ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);  
@@ -867,132 +1040,3 @@ void system_timer_cleanup(entity_id_t entity)
 
     ZXN_WRITE_MMU6(current_bank);         
 }
-
-/* Monster system*/
-void system_monster_init(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    monster_system_init();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
-}
-
-entity_id_t system_monster_create(creature_kind_t kind)
-{
-    entity_id_t entity;
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    entity = monster_system_create(kind);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
-
-    return entity;
-}
-
-entity_id_t system_monster_create_player( void )
-{
-    entity_id_t entity;
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MONSTER_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
-
-    entity = monster_system_create_player();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
-
-    return entity;
-}
-
-/* Movement system */
-void system_movement_init(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
-
-    movement_system_init();
-
-    ZXN_WRITE_MMU6(current_bank);
-}
-
-void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
-
-    movement_system_place(actor, x, y);
-
-    ZXN_WRITE_MMU6(current_bank);    
-}
-
-bool_t system_movement_try_move(entity_id_t id, int8_t dx, int8_t dy)
-{
-    uint8_t current_bank;
-    bool_t result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = movement_system_try_move(id, dx, dy);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;    
-}
-
-bool_t system_movement_try_move_random(entity_id_t actor)
-{
-    uint8_t current_bank;
-    bool_t result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = movement_system_try_move_random(actor);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;    
-}
-
-bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2)
-{
-    uint8_t current_bank;
-    bool_t result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = movement_system_location_equal(entity1, entity2);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;    
-}
-
-void system_movement_cleanup(entity_id_t id)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
-
-    movement_system_cleanup(id);
-
-    ZXN_WRITE_MMU6(current_bank);    
-}
-
-/* Name system */
-void system_name_print(text_window_t *win, name_id_t name);
-

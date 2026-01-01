@@ -16,7 +16,8 @@
 
 #include "ecs/systems/systems_dispatch.h"
 
-#include "game/game.h"
+#include "game/dice.h"
+#include "game/spatial.h"
 #include "game/global_state.h"
 #include "game/map_terrain.h"
 
@@ -36,13 +37,13 @@ static int8_t calc_player_melee_attack_bonus(entity_id_t attacker);
 static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker);
 static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target);
 
-static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical);
-static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_critical);
-static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_critical);
+static int8_t roll_melee_damage(entity_id_t attacker, bool is_critical);
+static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool is_critical);
+static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool is_critical);
 
-static bool_t wielding_melee_weapon(entity_id_t actor);
+static bool wielding_melee_weapon(entity_id_t actor);
 static entity_id_t get_melee_source(entity_id_t attacker);
-static uint8_t roll_damage_dice(dice_kind_t dice, bool_t crit);
+static uint8_t roll_damage_dice(dice_kind_t dice, bool crit);
 
 /***************************************************
  * public functions
@@ -51,7 +52,7 @@ void combat_system_init(void)
 {
 }
 
-bool_t combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
+bool combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
 {
     attack_roll_t attack_roll;
     damage_flag_t damage_type;
@@ -141,7 +142,7 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
     int8_t bonus = 0;
 
     /* Step 1 – Roll d20 (handle advantage later if needed) */
-    roll.d20 = game_roll_dice(DICE_1D20);
+    roll.d20 = dice_roll(DICE_1D20);
 
     text_printf(&g.msg_win, "Attack roll:%u ", roll.d20);
 
@@ -257,7 +258,7 @@ static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target)
 /*
  * @brief Calculate melee damgage roll
  */
-static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
+static int8_t roll_melee_damage(entity_id_t attacker, bool is_critical)
 {
     int8_t damage;
     
@@ -287,7 +288,7 @@ static int8_t roll_melee_damage(entity_id_t attacker, bool_t is_critical)
  *  weapon bonus (e.g. magic weapon) +
  *  other modifiers (e.g. effects)
  */
-static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_critical)
+static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool is_critical)
 {
     int8_t dice_roll = 0;
     int8_t bonus = 0;
@@ -320,7 +321,7 @@ static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool_t is_criti
 /*
  * @brief calculate basic melee damage (monster/trap etc)
  */
-static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_critical)
+static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool is_critical)
 {
     int8_t dice_roll = 0;
     int8_t other_mods = 0;
@@ -338,7 +339,7 @@ static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool_t is_criti
  /*
   * @brief returns true if the actor is wielding a melee weapon
   */
- static bool_t wielding_melee_weapon(entity_id_t actor)
+ static bool wielding_melee_weapon(entity_id_t actor)
  {
     entity_id_t weapon; 
 
@@ -363,10 +364,10 @@ static entity_id_t get_melee_source(entity_id_t attacker)
 /*
  * @brief rolls a damage die and optionally doubles it for critical
  */
-static uint8_t roll_damage_dice(dice_kind_t dice, bool_t crit)
+static uint8_t roll_damage_dice(dice_kind_t dice, bool crit)
 {
-    uint8_t r = game_roll_dice(dice);
+    uint8_t r = dice_roll(dice);
     if (crit)
-        r += game_roll_dice(dice);
+        r += dice_roll(dice);
     return r;
 }

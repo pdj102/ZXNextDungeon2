@@ -10,7 +10,7 @@
 
 #include "game/map.h"
 
-#include <sys\types.h>      /* bool_t */
+#include <stdbool.h>      /* bool */
 #include <stdlib.h>         /* abs() */
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
@@ -19,6 +19,7 @@
 #include "game/map_terrain.h"
 #include "game/PAGE34/dungeon_gen.h"
 #include "game/global_state.h"
+#include "game/memory_map.h"
 
 #include "core/util.h"
 
@@ -37,9 +38,7 @@
  * private function prototypes
  ***************************************************/
 static void map_init_cell_heads(void);
-static bool_t can_enter(uint8_t x, uint8_t y);
-static bool_t in_bounds(uint8_t x, uint8_t y);
-static bool_t is_opaque(uint8_t x, uint8_t y);
+static bool can_enter(uint8_t x, uint8_t y);
 
 /***************************************************
  * public functions
@@ -51,10 +50,9 @@ void map_init(void)
     map_init_cell_heads();
     g.map.camera.x = 0;
     g.map.camera.y = 0;
-
 }
 
-bool_t map_can_enter(uint8_t x, uint8_t y)
+bool map_can_enter(uint8_t x, uint8_t y)
 {
     util_assert( x < MAP_WIDTH);
     util_assert( y < MAP_HEIGHT);
@@ -62,14 +60,18 @@ bool_t map_can_enter(uint8_t x, uint8_t y)
     return can_enter(x, y);
 }
 
-// bool_t map_has_line_of_sight(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
-bool_t map_has_line_of_sight(entity_id_t e1, entity_id_t e2)
+entity_id_t map_get_first(uint8_t x, uint8_t y)
+{
+    return g.map.cell_head[x][y];
+}
+
+bool map_has_line_of_sight(entity_id_t e1, entity_id_t e2)
 {
 
-    uint8_t x0 = g.location_components[e1].x;
-    uint8_t y0 = g.location_components[e1].y;
-    uint8_t x1 = g.location_components[e2].x;
-    uint8_t y1 = g.location_components[e2].y;
+    uint8_t x0 = g.location_components[e1].coord.x;
+    uint8_t y0 = g.location_components[e1].coord.y;
+    uint8_t x1 = g.location_components[e2].coord.x;
+    uint8_t y1 = g.location_components[e2].coord.y;
 
     uint8_t dx = abs(x1 - x0);
     uint8_t dy = abs(y1 - y0);
@@ -129,6 +131,26 @@ void map_gen(void)
     ZXN_WRITE_MMU6(current_bank);         
 }
 
+/* 
+ * @brief check if x,y is within map
+ */
+bool in_bounds(uint8_t x, uint8_t y)
+{
+    return ((x < MAP_WIDTH) && (y < MAP_HEIGHT));
+}
+
+bool is_opaque(uint8_t x, uint8_t y)
+{
+    if (g.map.terrain[x][y] == TERRAIN_FLOOR)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 /***************************************************
  * private functions
  ***************************************************/
@@ -148,16 +170,12 @@ static void map_init_cell_heads(void)
 /*
  * @brief returns 1 if cell is not blocked by terrain or entities
  */
-static bool_t can_enter(uint8_t x, uint8_t y)
+static bool can_enter(uint8_t x, uint8_t y)
 {
     entity_id_t entity;
 
     /* Check if terrain is blocking */
-    if (g.map.terrain[x][y] == TERRAIN_FLOOR)
-    {
-        return 1;
-    }
-    else
+    if (g.map.terrain[x][y] != TERRAIN_FLOOR)
     {
         return 0;
     }
@@ -173,24 +191,5 @@ static bool_t can_enter(uint8_t x, uint8_t y)
         }
         entity = g.location_components[entity].next_in_location;
     }
-}
-
-/* 
- * @brief check if x,y is within map
- */
-static bool_t in_bounds(uint8_t x, uint8_t y)
-{
-    return ((x < MAP_WIDTH) && (y < MAP_HEIGHT));
-}
-
-static bool_t is_opaque(uint8_t x, uint8_t y)
-{
-    if (g.map.terrain[x][y] == TERRAIN_FLOOR)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
+    return 1;
 }

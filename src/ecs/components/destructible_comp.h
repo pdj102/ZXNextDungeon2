@@ -11,8 +11,7 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-
-#include "game/game.h"
+#include "ecs/components/attack_comp.h"
 
 #include "core/text.h"
 #include "core/util.h"
@@ -34,6 +33,12 @@ typedef struct {
     damage_mask_t vulnerable;
 } destructible_comp_t;
 
+/* Healing type flags */
+typedef enum {
+    HEALING_KIND_NONE = 0,
+    HEALING_KIND_HP,
+    HEALING_KIND_MP,
+} healing_kind_t;
 
 typedef destructible_comp_t destructible_components_t[MAX_ENTITIES]; 
 

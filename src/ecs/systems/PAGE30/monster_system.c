@@ -163,7 +163,7 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
     [CREATURE_NONE] = { .tile = {' ', 0}},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */      
-    [CREATURE_RAT] = { .tile = { 'R', 0}},
+    [CREATURE_RAT] = { .tile = { 'R', PALETTE_BROWN}},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -172,12 +172,12 @@ const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = { .tile = { 'H', 0}},
-    [CREATURE_PLAYER] = { .tile = { '@', 0}},
+    [CREATURE_COMMONER] = { .tile = { 'H', PALETTE_WHITE}},
+    [CREATURE_PLAYER] = { .tile = { '@', 16}},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = { .tile = { 'P', 0}}
+    [CREATURE_WITHERWEED] = { .tile = { 'P', PALETTE_WHITE}}
     /* MONSTER_CLASS_UNDEAD */    
 };
 

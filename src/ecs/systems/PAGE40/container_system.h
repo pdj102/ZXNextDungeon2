@@ -8,7 +8,7 @@
 #ifndef CONTAINER_SYSTEM_H
 #define CONTAINER_SYSTEM_H
 
-#include <sys\types.h>
+#include <stdbool.h>
 
 #include "ecs/entity.h"
 
@@ -24,8 +24,8 @@
  * public function prototypes
  ***************************************************/
 void container_system_init(void);
-bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item);
-bool_t container_system_try_drop(entity_id_t actor, entity_id_t item);
+bool container_system_try_pickup(entity_id_t actor, entity_id_t item);
+bool container_system_try_drop(entity_id_t actor, entity_id_t item);
 void container_system_add(entity_id_t container, entity_id_t item);
 void container_system_remove(entity_id_t container, entity_id_t item);
 uint8_t container_system_count(entity_id_t container);

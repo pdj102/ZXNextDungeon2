@@ -1,5 +1,5 @@
 /**
- * @file core_init.h
+ * @file zxnext_init.h
  * @author Paul Johnson
  * @brief 
  
@@ -8,14 +8,14 @@
  * 
  */
 
-#ifndef CORE_INIT_H
-#define CORE_INIT_H
+#ifndef ZXNEXT_INIT_H
+#define ZXNEXT_INIT_H
 
 
  /**
  * @brief Initialize ZX Spectrum Next and core features
  * 
  */
-void core_init(void);
+void zxnext_init_b(void);
 
-#endif // CORE_INIT_H
+#endif // ZXNEXT_INIT_H

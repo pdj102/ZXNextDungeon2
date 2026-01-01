@@ -17,7 +17,6 @@
 
 #include "core/text.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 /***************************************************

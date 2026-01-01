@@ -17,11 +17,16 @@
 /***************************************************
  * public types
  ***************************************************/
+typedef enum {
+    ATTACK_MISS,
+    ATTACK_HIT,
+    ATTACK_CRITICAL
+} attack_result_t;
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 void combat_system_init(void);
-bool_t combat_system_try_melee_attack(entity_id_t creature, entity_id_t target);
+bool combat_system_try_melee_attack(entity_id_t creature, entity_id_t target);
 
 #endif // COMBAT_SYSTEM_H

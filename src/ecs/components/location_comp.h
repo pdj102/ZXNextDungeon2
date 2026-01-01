@@ -18,8 +18,7 @@
  * public types
  ***************************************************/
 typedef struct {
-    uint8_t  x; /* x coordinate on the map */
-    uint8_t  y; /* y coordinate on the map */
+    coord_t  coord;
     entity_id_t next_in_location; /* next entity in the same location */
 } location_comp_t;
 

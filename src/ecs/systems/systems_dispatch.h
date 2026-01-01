@@ -18,10 +18,12 @@
 #include "ecs/components/name_comp.h"
 #include "ecs/components/effect_comp.h"
 #include "ecs/components/stats_comp.h"
+#include "ecs/components/attack_comp.h"
+#include "ecs/components/destructible_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
 
-#include "game/game.h"
+#include "game/spatial.h"
 
 #include "core/text.h"
 
@@ -41,24 +43,24 @@ void system_ai_process_entity_turn(entity_id_t id);
 
 /* Actions System */
 void system_actions_init(void);
-bool_t system_actions_try_melee_attack(entity_id_t creature, entity_id_t target);
-bool_t system_actions_try_pickup(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_drop(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_quaff(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_eat(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_equip(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_unequip(entity_id_t creature, entity_id_t item);
-bool_t system_actions_try_open(entity_id_t creature, entity_id_t feature);
-bool_t system_actions_try_close(entity_id_t creature, entity_id_t feature);
+bool system_actions_try_melee_attack(entity_id_t creature, entity_id_t target);
+bool system_actions_try_pickup(entity_id_t creature, entity_id_t item);
+bool system_actions_try_drop(entity_id_t creature, entity_id_t item);
+bool system_actions_try_quaff(entity_id_t creature, entity_id_t item);
+bool system_actions_try_eat(entity_id_t creature, entity_id_t item);
+bool system_actions_try_equip(entity_id_t creature, entity_id_t item);
+bool system_actions_try_unequip(entity_id_t creature, entity_id_t item);
+bool system_actions_try_open(entity_id_t creature, entity_id_t feature);
+bool system_actions_try_close(entity_id_t creature, entity_id_t feature);
 
 /* Consumable System*/
 void system_consumable_init(void);
-bool_t system_consumable_try_consume(entity_id_t actor, entity_id_t entity);
+bool system_consumable_try_consume(entity_id_t actor, entity_id_t entity);
 
 /* Container System*/
 void system_container_init(void);
-bool_t system_container_try_pickup(entity_id_t container, entity_id_t item);
-bool_t system_container_try_drop(entity_id_t container, entity_id_t item);
+bool system_container_try_pickup(entity_id_t container, entity_id_t item);
+bool system_container_try_drop(entity_id_t container, entity_id_t item);
 void system_container_add(entity_id_t container, entity_id_t item);
 void system_container_remove(entity_id_t container, entity_id_t item);
 uint8_t system_container_count(entity_id_t container);
@@ -70,12 +72,12 @@ void system_container_clean_up(entity_id_t id);
 
 /* Combat system */
 void system_combat_init(void);
-bool_t system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
+bool system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
 
 /* Damage system */
 void system_damage_init(void);
 int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag);
-bool_t system_damage_try_die(entity_id_t creature);
+bool system_damage_try_die(entity_id_t creature);
 
 /* Item system*/
 void system_item_init(void);
@@ -95,9 +97,9 @@ void system_event_emit(const event_t *event);
 
 /* Equipment System */
 void system_equipment_init(void);
-bool_t system_equipment_try_equip(entity_id_t actor, entity_id_t item);
-bool_t system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
-bool_t system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
+bool system_equipment_try_equip(entity_id_t actor, entity_id_t item);
+bool system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
+bool system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
 void system_equipment_cleanup(entity_id_t id);
 
 /* Healing System*/
@@ -111,16 +113,19 @@ entity_id_t system_monster_create_player( void );
 /* Movement system */
 void system_movement_init(void);
 void system_movement_place(entity_id_t actor, uint8_t x, uint8_t y);
-bool_t system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
-bool_t system_movement_try_move_random(entity_id_t actor);
-bool_t system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
+bool system_movement_try_move(entity_id_t actor, int8_t dx, int8_t dy);
+bool system_movement_try_move_random(entity_id_t actor);
+bool system_movement_try_move_towards(entity_id_t entity, coord_t *coord);
+bool system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
+bool system_movement_are_adjacent(entity_id_t entity1, entity_id_t entity2);
 void system_movement_cleanup(entity_id_t id);
 
 /* Name system */
 void system_name_print(text_window_t *win, name_id_t name);
 
 /* Perception system*/
-uint8_t system_perception_try_check(entity_id_t creature);
+bool system_perception_try_check(entity_id_t creature);
+bool system_perception_can_see_target(entity_id_t ai, entity_id_t target);
 
 /* Player System */
 void system_player_init(void);
@@ -141,7 +146,7 @@ uint8_t system_stats_get_hp_max(entity_id_t actor);
 /* Timer System */
 void system_timer_init(void);
 void system_timer_update(void);
-bool_t system_timer_has_fired(entity_id_t entity);
+bool system_timer_has_fired(entity_id_t entity);
 void system_timer_reset(entity_id_t entity);
 void system_timer_cleanup(entity_id_t entity);
 

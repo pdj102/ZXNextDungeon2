@@ -129,9 +129,9 @@ If permissable,
 
 Examples of try functions:
 
-- `bool_t inventory_system_try_pickup(entity_id_t actor, entity_id_t item)`
-- `bool_t combat_system_try_melee_attack(entity_id_t actor, entity_id_t target)`
-- `bool_t movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)`
+- `bool inventory_system_try_pickup(entity_id_t actor, entity_id_t item)`
+- `bool combat_system_try_melee_attack(entity_id_t actor, entity_id_t target)`
+- `bool movement_system_try_move(entity_id_t actor, int8_t dx, int8_t dy)`
 
 ### Action functions
 

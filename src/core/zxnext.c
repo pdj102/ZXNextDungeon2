@@ -1,9 +1,6 @@
 /**
  * @file zxnext.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- 
+ * @brief Spectrum Next routines
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -12,6 +9,10 @@
 
 #include <arch/zxn.h>
 #include <input.h>              // Functions for Reading Keyboards, Joysticks and Mice
+
+#include "game/memory_map.h"
+
+#include "core/PAGE36/zxnext_init.h"
 
 #include "util.h"
 
@@ -39,7 +40,12 @@ static  zxnext_tile_t *tilemap_base_p = (volatile zxnext_tile_t *) TILEMAP_BASE;
 /***************************************************
  * functions
  ***************************************************/
-void zxnext_tilemap_clear(const zxnext_tile_t *tile_p)
+void zxnext_init(void)
+{
+    CALL_BANKED_VOID0(PAGE_INIT, zxnext_init_b);
+}
+
+ void zxnext_tilemap_clear(const zxnext_tile_t *tile_p)
 {
     util_assert(tile_p != NULL);
 
@@ -59,10 +65,22 @@ void zxnext_tilemap_set(uint8_t x, uint8_t y, const zxnext_tile_t *tile_p)
     util_assert(y < TILEMAP_HEIGHT);
     util_assert(tile_p != NULL);
 
+    zxnext_tile_t *t_p = tilemap_base_p + ( (y * TILEMAP_WIDTH) + x);
+
+    t_p->tile_id = tile_p->tile_id;
+    t_p->tile_attr = tile_p->tile_attr;
+}
+
+void zxnext_tilemap_set_attr(uint8_t x, uint8_t y, uint8_t tile_attr)
+{
+    util_assert(x < TILEMAP_WIDTH);
+    util_assert(y < TILEMAP_HEIGHT);
+
     volatile zxnext_tile_t *t_p = tilemap_base_p + ( (y * TILEMAP_WIDTH) + x);
 
-    *t_p = *tile_p; /* copy the tile */
+    t_p->tile_attr = tile_attr;
 }
+
 
 void  zxnext_tilemap_copy(uint8_t fx, uint8_t fy, uint8_t tx, uint8_t ty)
 {

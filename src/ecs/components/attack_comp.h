@@ -14,7 +14,7 @@
 
 #include "ecs/entity.h"
 
-#include "game/game.h"
+#include "game/dice.h"
 
 #include "core/util.h"
 
@@ -25,6 +25,27 @@
 /***************************************************
  * public types
  ***************************************************/
+typedef enum {
+    ATTACK_KIND_NONE,
+    ATTACK_KIND_MELEE,
+    ATTACK_KIND_RANGED,
+    ATTACK_KIND_MAGIC
+} attack_kind_t;
+
+/* Damage kind flags */
+typedef enum {
+    DAMAGE_NONE            = 0,
+    DAMAGE_ACID            = 1 << 0,
+    DAMAGE_BLUDGEONING     = 1 << 1,
+    DAMAGE_COLD            = 1 << 2,
+    DAMAGE_FIRE            = 1 << 3,
+    DAMAGE_LIGHTNING       = 1 << 4,
+    DAMAGE_PIERCING        = 1 << 5,
+    DAMAGE_POISON          = 1 << 6,
+    DAMAGE_SLASHING        = 1 << 7
+} damage_flag_t;
+
+typedef uint16_t damage_mask_t;
 
 typedef struct {
     attack_kind_t attack_type;

@@ -9,7 +9,7 @@
 #define ENTITY_H
 
 #include <stdint.h>
-#include <sys/types.h>
+#include <stdbool.h>
 
 /***************************************************
  * public defines
@@ -61,11 +61,11 @@ void entity_init(void);
 
 entity_id_t entity_create(void);
 
-bool_t entity_has_component(entity_id_t id, component_id_t comp);
+bool entity_has_component(entity_id_t id, component_id_t comp);
 void entity_set_component(entity_id_t id, component_id_t comp);
 void entity_clear_component(entity_id_t id, component_id_t comp);
 
-bool_t entity_has_flag(entity_id_t id, uint8_t flag);
+bool entity_has_flag(entity_id_t id, uint8_t flag);
 void entity_set_flag(entity_id_t id, uint8_t flag);
 void entity_clear_flag(entity_id_t id, uint8_t flag);
 

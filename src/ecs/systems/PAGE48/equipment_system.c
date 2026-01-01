@@ -9,7 +9,7 @@
 
 #include "equipment_system.h"
 
-#include <sys\types.h>
+#include <stdbool.h>
 
 #include "ecs/entity.h"
 
@@ -40,7 +40,7 @@ void equipment_system_init(void)
 
 }
 
-bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
+bool equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 {
     event_t event;
 
@@ -143,7 +143,7 @@ bool_t equipment_system_try_equip(entity_id_t actor, entity_id_t item)
 }
 
 
-bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
+bool equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
 {
     event_t event;
     
@@ -181,7 +181,7 @@ bool_t equipment_system_try_unequip(entity_id_t actor, entity_id_t item)
 /*
  * @brief Check if an entity is equipped
  */
-bool_t equipment_system_is_equipped(entity_id_t actor, entity_id_t item)
+bool equipment_system_is_equipped(entity_id_t actor, entity_id_t item)
 {
     /* item must be equipped */
     if (!entity_has_component(item, COMPONENT_EQUIPPED))

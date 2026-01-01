@@ -27,7 +27,6 @@
 
 #include "core/util.h"
 #include "core/text.h"
-#include "core/core_init_bank.h"
 
 #define STACK_LOW  0xBF00
 #define STACK_HIGH 0xBFFF
@@ -50,16 +49,12 @@ int main(void) {
     stack_max = 0;
     stack = 0;
 
-   core_init_bank();
-
+   zxnext_init();
    entity_init();
-
    component_init();
-
    systems_init();
-
-   game_init();
-
+   ui_init();
+   map_init();
    map_gen();
 
    util_info("Debug build\n");
@@ -78,8 +73,8 @@ int main(void) {
     system_container_add(e4, e3);
     system_movement_place(e4, 25, 12);
 
-    entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
-    system_movement_place(e5, 12, 12);    
+    // entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
+    // system_movement_place(e5, 12, 12);    
 
     g.player.id = ENTITY_ID_INVALID;
     entity_id_t e6 = system_monster_create_player();

@@ -15,7 +15,7 @@
 #include "ecs/entity.h"
 #include "ecs/components/name_comp.h"
 
-#include "game/game.h"
+#include "core/text.h"
 
 /***************************************************
  * public types

@@ -38,7 +38,7 @@ int num_rooms = 0;
  ***************************************************/
 
 void clear_map(void);
-bool_t overlap(Room a, Room b);
+bool overlap(Room a, Room b);
 void make_rooms(void);
 void connect_rooms(void);
 
@@ -62,7 +62,7 @@ void clear_map(void)
          g.map.terrain[x][y] = TERRAIN_WALL;
 }
 
-bool_t overlap(Room a, Room b)
+bool overlap(Room a, Room b)
 {
    return !(a.x + a.w < b.x || b.x + b.w < a.x ||
             a.y + a.h < b.y || b.y + b.h < a.y);
@@ -78,7 +78,7 @@ void make_rooms(void)
       r.x = 1 + rand() % (MAP_WIDTH - r.w - 2);
       r.y = 1 + rand() % (MAP_HEIGHT - r.h - 2);
 
-      bool_t valid = 1;
+      bool valid = 1;
       for (int j = 0; j < num_rooms; j++)
          if (overlap(r, rooms[j]))
          {

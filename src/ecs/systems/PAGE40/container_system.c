@@ -9,7 +9,7 @@
 
 #include "container_system.h"
 
-#include <sys\types.h>
+#include <stdbool.h>
 
 #include "ecs/entity.h"
 
@@ -43,7 +43,7 @@ void container_system_init(void)
 }
 
 
-bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
+bool container_system_try_pickup(entity_id_t actor, entity_id_t item)
 {  
     event_t event;
 
@@ -92,7 +92,7 @@ bool_t container_system_try_pickup(entity_id_t actor, entity_id_t item)
     return 1;
 }
 
-bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
+bool container_system_try_drop(entity_id_t actor, entity_id_t item)
 {
     event_t event;
 
@@ -127,7 +127,7 @@ bool_t container_system_try_drop(entity_id_t actor, entity_id_t item)
     container_system_remove(actor, item);
     
     /* Place item on the floor*/
-    system_movement_place(item, g.location_components[actor].x, g.location_components[actor].y);
+    system_movement_place(item, g.location_components[actor].coord.x, g.location_components[actor].coord.y);
 
     event.type = EVENT_DROPPED;
     event.source = actor;

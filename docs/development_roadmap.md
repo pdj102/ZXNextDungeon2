@@ -268,13 +268,14 @@
 
 ---
 
-### 🪜 **Milestone 120 — Basic targetting and line of sight**
+### 🪜 **Milestone 120 — Targetting mode and line of sight**
 
 > *Goal: entities can target.*
 
+* [ ] Add targetting mode - supporting differrent target types tile/entity etc, if line of sight is required, maximum distance, etc.
 * [ ] Add player `look` command (examine tile/entity)
 * [ ] Implement player target selection input
-* [ ] Implement line of sight test
+* [✅] Implement line of sight test
 * [ ] Implement `player_try_look()`
 
 [ ] *End result: Player can target a tile and examine a tile/entity if in line of sight.*
@@ -529,14 +530,13 @@
 
 > *Goal: monsters can act intelligently.*
 
-* [ ] Implement `AI` component - implement helper functions e.g. add() and remove()
-* [ ] Implement `AI system`
-* [ ] Define `ai_state_t`
-* [ ] Implement `ai_on_event()` to process events and transition between states
-* [ ] Add `ai_system_update()` - entity takes it turn
-* [ ] Implement `ai_guard_state()` - monster will melee attack a creature in range
+* [✅] Implement `AI` component - implement helper functions e.g. add() and remove()
+* [✅] Implement `AI system`
+* [✅] Define `ai_state_t`
+* [✅] Implement `ai_on_event()` to process events and transition between states
+* [✅] Add `ai_system_process_entity_turn()` - entity takes it turn
 
-[ ] *End result: Monsters can attack the player.*
+[✅] *End result: AI framework.*
 
 ---
 
@@ -544,29 +544,61 @@
 
 > *Goal: monsters can sleep.*
 
-* [ ] Implement `ai_sleep_state()` - monster performs 'drunk' walk
+* [✅] Implement `sleep()` - monster does nothing
+* [ ] Implement chance of waking up
 
-[ ] *End result: Monsters can sleep.*
-
----
-
-### 🪜 **Milestone 302 — Guard state**
-
-> *Goal: monsters can guard.*
-
-* [ ] Implement `ai_guard_state()` - monster will attack nearby enemies
-
-[ ] *End result: Monsters can guard and attack nearby enemies.*
+[🚧] *End result: Monsters can sleep.*
 
 ---
 
-### 🪜 **Milestone 303 — Wandering state**
+### 🪜 **Milestone 302 — Wandering state**
 
 > *Goal: monsters can wander.*
 
-* [ ] Implement `ai_wandering_state()` - monster performs 'drunk' walk
+* [✅] Implement `wander()` - monster performs 'drunk' walk
 
-[ ] *End result: Monsters can drunken walk.*
+[✅] *End result: Monsters can drunken walk.*
+
+---
+
+### 🪜 **Milestone 303 — Attack state**
+
+> *Goal: monsters can attack.*
+
+* [✅] Implement `attack_target()` - perform melee attacks
+* [ ] Extend - to support ranged attacks
+
+[🚧] *End result: Monsters can attack.*
+
+---
+
+### 🪜 **Milestone 304 — Track state**
+
+> *Goal: monsters will track target when not visible.*
+
+* [✅] Implement `track_target()` - monster will move to last known position of target
+
+[✅] *End result: Monsters can drunken walk.*
+
+---
+
+### 🪜 **Milestone 305 — Track state**
+
+> *Goal: monsters will search target when not visible.*
+
+* [✅] Implement `search_target()` - monster will search to reaquire target
+
+[ ] *End result: Monsters can reacquire target.*
+
+---
+
+### 🪜 **Milestone 305 — Flee state**
+
+> *Goal: monsters will flee.*
+
+* [✅] Implement `flee()` - monster will flee
+
+[ ] *End result: Monsters can flee.*
 
 ---
 

@@ -97,7 +97,7 @@ CFILES=$(wildcard $(SRCDIR)/*.c) \
 # Add other source file directories as needed
 # Note don't use the same file name for both C and ASM files
 AFILES=$(wildcard $(SRCDIR)/core/*.asm) \
-	   $(wildcard $(SRCDIR)/core/PAGE37/*.asm)
+	   $(wildcard $(SRCDIR)/core/PAGE36/*.asm)
 
 # Set object files
 # Convert source file names to object file names

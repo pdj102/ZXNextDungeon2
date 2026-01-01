@@ -96,19 +96,19 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_NONE] = { .tile = {' ', 0}},
     /* Melee weapons */
     [ITEM_CLUB] = { .tile = { 's', 0}},
-    [ITEM_SHORT_SWORD] = { .tile = { 's', 0}},
+    [ITEM_SHORT_SWORD] = { .tile = { 's', PALETTE_WHITE}},
     /* Ranged weapons*/
     /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = { .tile = { 'a', 0}},
+    [ITEM_LEATHER_ARMOUR] = { .tile = { 'a', PALETTE_BROWN}},
     /* Shields */
     [ITEM_SHIELD] = { .tile = { 'a', 0}},
     /* Potions */
-    [ITEM_POTION_OF_HEALING] = { .tile = { 'p', 0}},
+    [ITEM_POTION_OF_HEALING] = { .tile = { 'p', PALETTE_BLUE}},
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .tile = { '%', 0}},
     /* Rings */
-    [ITEM_RING_OF_STRENGTH] = { .tile = { 'r', 0}},
+    [ITEM_RING_OF_STRENGTH] = { .tile = { 'r', PALETTE_ORANGE}},
     /* Wands */
     /* Light sources */
     /* Keys */

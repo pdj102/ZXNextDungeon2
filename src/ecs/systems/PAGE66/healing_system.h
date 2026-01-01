@@ -13,12 +13,12 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-
-#include "game/game.h"
+#include "ecs/components/destructible_comp.h"
 
 /***************************************************
  * public types
  ***************************************************/
+
 
 /***************************************************
  * public function prototypes

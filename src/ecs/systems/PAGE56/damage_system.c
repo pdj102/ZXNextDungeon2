@@ -27,22 +27,34 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-static bool_t damage_type_immune(entity_id_t actor, damage_flag_t type);
-static bool_t damage_type_resistant(entity_id_t actor, damage_flag_t type);
-static bool_t damage_type_vulnerable(entity_id_t actor, damage_flag_t type);
+static bool damage_type_immune(entity_id_t actor, damage_flag_t type);
+static bool damage_type_resistant(entity_id_t actor, damage_flag_t type);
+static bool damage_type_vulnerable(entity_id_t actor, damage_flag_t type);
 
 /***************************************************
  * public functions
  ***************************************************/
-bool_t damage_system_try_die(entity_id_t entity)
+bool damage_system_try_die(entity_id_t entity)
 {
     event_t event;
 
-    if (!entity_has_component(entity, COMPONENT_DESTRUCTIBLE))
+    if (entity_has_component(entity, COMPONENT_DESTRUCTIBLE))
     {
-        return 0;
+        g.destructible_components[entity].cur_hp = 0;
     }
-    
+
+    if (entity_has_component(entity, COMPONENT_CREATURE))
+    {
+        g.creature_components[entity].status = CREATURE_STATUS_DEAD;
+    }
+
+    if (g.player.id == entity)
+    {
+        g.player.id = ENTITY_ID_INVALID;
+    }
+
+    entity_mark_for_destruction(entity);
+
     event.type = EVENT_DIED;
     event.source = entity;
     event.target = ENTITY_ID_INVALID;
@@ -114,17 +126,17 @@ int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_f
  * private functions
  ***************************************************/
 
-static bool_t damage_type_immune(entity_id_t actor, damage_flag_t flag)
+static bool damage_type_immune(entity_id_t actor, damage_flag_t flag)
 {
     return (g.destructible_components[actor].immune & flag) != 0;
 }
 
-static bool_t damage_type_resistant(entity_id_t actor, damage_flag_t flag)
+static bool damage_type_resistant(entity_id_t actor, damage_flag_t flag)
 {
     return (g.destructible_components[actor].resist & flag) != 0;
 }
 
-static bool_t damage_type_vulnerable(entity_id_t actor, damage_flag_t flag)
+static bool damage_type_vulnerable(entity_id_t actor, damage_flag_t flag)
 {
    return (g.destructible_components[actor].vulnerable & flag) != 0;
 }

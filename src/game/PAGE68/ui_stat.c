@@ -12,7 +12,6 @@
 #include "ecs/components/components.h"
 #include "ecs/systems/systems_dispatch.h"
 
-#include "game/game.h"
 #include "game/global_state.h"
 
 #include "core/text.h"
@@ -69,6 +68,9 @@ void ui_stat_win_on_event(event_t *event)
 }
 void ui_stat_update_primary_stats(void)
 {
+    if (g.player.id == ENTITY_ID_INVALID)
+        return;
+
     text_set_cursor(&g.stat_win, 0, 0);
 
     // TODO clear the lines
@@ -84,6 +86,9 @@ void ui_stat_update_primary_stats(void)
 
 void ui_stat_update_secondary_stats(void)
 {
+    if (g.player.id == ENTITY_ID_INVALID)
+        return;
+
     text_set_cursor(&g.stat_win, 0, 7);
     text_printf(&g.stat_win, " AC:%u %d\n", system_stats_get_ac_base(g.player.id), system_effect_mod_sum(g.player.id, ATTRIBUTE_ARMOR_CLASS));
     text_printf(&g.stat_win, "SPD:%u %d\n", system_stats_get_speed_base(g.player.id), system_effect_mod_sum(g.player.id, ATTRIBUTE_SPEED));
@@ -91,6 +96,9 @@ void ui_stat_update_secondary_stats(void)
 
 void ui_stat_update_resource_stats(void)
 {
+    if (g.player.id == ENTITY_ID_INVALID)
+        return;
+        
     text_set_cursor(&g.stat_win, 0, 10);
     text_printf(&g.stat_win, "HP:%u/%u\n", system_stats_get_hp_max(g.player.id), system_stats_get_hp_cur(g.player.id));
     text_printf(&g.stat_win, "MP:\n");

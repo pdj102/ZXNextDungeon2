@@ -11,12 +11,13 @@
 #include "player_system.h"
 
 #include <stdint.h>
-#include <sys\types.h>      /* bool_t */
+#include <stdbool.h>      /* bool */
 
 #include "ecs/entity.h"
 #include "ecs/components/components.h"
 
 #include "ecs/systems/systems_dispatch.h"
+#include "ecs/systems/PAGE46/target_mode.h"
 
 #include "game/global_state.h"
 #include "game/map.h"
@@ -32,17 +33,20 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-static void melee_attack(void);
 static void drop(void);
 static void eat(void);
 static void equip(void);
 static void inventory(void);
+static void look(void);
+static void melee_attack(void);
 static void pickup(void);
+static void target(void);
 static void unequip(void);
 
 static void display_inventory(void);
 static entity_id_t prompt_inventory_item(const char *prompt_msg);
 static uint8_t prompt_letter(uint8_t max_index);
+static direction_t dir_or_cancel( void );
 
  /***************************************************
  * public functions
@@ -68,7 +72,7 @@ void player_system_update(void)
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
     /* Check player is not dead */
-    if (g.creature_components[entity].status != CREATURE_STATUS_ALIVE)
+    if (g.creature_components[entity].status == CREATURE_STATUS_DEAD)
     {
         return;
     }
@@ -78,40 +82,46 @@ void player_system_update(void)
     text_printf(&g.msg_win, "key: %d\n", key);
 
     switch(key) {
-        case 8: /* left */
+        case KEY_LEFT: /* left */
             system_movement_try_move(entity, -1, 0);
             break;
-        case 9: /* right */
+        case KEY_RIGHT: /* right */
             system_movement_try_move(entity, 1, 0);
             break;
-        case 11: /* up */
+        case KEY_UP: /* up */
             system_movement_try_move(entity, 0, -1);
             break;
-        case 10: /* down */
+        case KEY_DOWN: /* down */
             system_movement_try_move(entity, 0, 1);
             break;
         case 56: /* '8' camera right */
             g.map.camera.x++;
             break;
-        case 69: /* 'E' eat */
+        case KEY_U_E: /* 'E' eat */
             eat();
             break;                        
-        case 97: /* 'a' melee attack */
+        case KEY_L_A: /* 'a' melee attack */
             melee_attack();
             break;            
-        case 100: /* 'd' drop an item */
+        case KEY_L_D: /* 'd' drop an item */
             drop();
             break;
-        case 101: /* 'e' equip an item */
+        case KEY_L_E: /* 'e' equip an item */
             equip();            
             break;
-        case 103: /* 'g' get object from floor */
+        case KEY_L_G: /* 'g' get object from floor */
             pickup();
             break;
-        case 105: /* 'i' view inventory */
+        case KEY_L_I: /* 'i' view inventory */
             inventory();
             break;
-        case 117: /* 'u' unequip an item */
+        case KEY_L_L: /* 'l' look around */
+            look();
+            break;            
+        case KEY_L_T: /* 't' target (ranged attack) */
+            target();
+            break;            
+        case KEY_L_U: /* 'u' unequip an item */
             unequip();
             break;
         default:
@@ -130,10 +140,13 @@ static void melee_attack(void)
     uint8_t x;
     uint8_t y;
 
-    dir = game_get_dir_or_cancel_b();
+    dir = dir_or_cancel();
 
-    x = g.location_components[g.player.id].x + directions[dir].x;
-    y = g.location_components[g.player.id].y + directions[dir].y;
+    if (dir == DIRECTION_NONE)
+        return;
+
+    x = g.location_components[g.player.id].coord.x + directions[dir].x;
+    y = g.location_components[g.player.id].coord.y + directions[dir].y;
 
     target = g.map.cell_head[x][y];
 
@@ -176,8 +189,8 @@ static void eat(void)
 static void pickup(void)
 {
     entity_id_t item;
-    uint8_t x = g.location_components[g.player.id].x;
-    uint8_t y = g.location_components[g.player.id].y;
+    uint8_t x = g.location_components[g.player.id].coord.x;
+    uint8_t y = g.location_components[g.player.id].coord.y;
 
     item = g.map.cell_head[x][y];
 
@@ -191,6 +204,39 @@ static void pickup(void)
         item = g.location_components[item].next_in_location;
     }
     text_printf(&g.msg_win, "Nothing to pick up here\n");
+}
+
+static void target(void)
+{
+    target_context_t tcx;
+
+    tcx.filter = TARGET_FILTER_ENTITY;
+    tcx.max_range = 10;
+    tcx.require_los = true;
+    tcx.source.x = g.location_components[g.player.id].coord.x;
+    tcx.source.y = g.location_components[g.player.id].coord.y;
+
+    target_mode(&tcx);
+}
+
+static void look(void)
+{
+    target_context_t tcx;
+
+    tcx.filter = TARGET_FILTER_ENTITY;
+    tcx.max_range = 255;
+    tcx.require_los = false;
+    tcx.source.x = g.location_components[g.player.id].coord.x;
+    tcx.source.y = g.location_components[g.player.id].coord.y;
+
+    target_mode(&tcx);
+
+    if (tcx.target_selected)
+    {
+        text_print_string(&g.msg_win, "Target:");
+        system_name_print(&g.msg_win, g.name_components[tcx.selected_entity]);
+        text_print_string(&g.msg_win, "\n");
+    }
 }
 
 static void inventory(void)
@@ -275,6 +321,7 @@ static void display_inventory(void)
         c++;
         item = system_container_get_next(item);
     }
+    g.main_win.dirty = 1;
 }
 
 /*
@@ -300,4 +347,30 @@ static uint8_t prompt_letter(uint8_t max_index)
         return 99;            /* Cancel */
 
     return (uint8_t)(ch - 'a');
+}
+
+static direction_t dir_or_cancel( void )
+{
+    unsigned int key;
+
+    key = key_press();   
+
+    switch (key)
+    {
+
+    case KEY_DOWN: // down
+        return DIRECTION_SOUTH;
+
+    case KEY_UP: // up
+        return DIRECTION_NORTH;
+
+    case KEY_LEFT: // left
+        return DIRECTION_WEST;
+
+    case KEY_RIGHT: // right
+        return DIRECTION_EAST;
+
+    default:
+        return DIRECTION_NONE;
+    }
 }
