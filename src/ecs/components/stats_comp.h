@@ -31,7 +31,7 @@ typedef enum {
     STAT_CHA,
     STAT_COUNT,
     STAT_NONE,    
-} stat_type_t;
+} stat_kind_t;
 
 typedef enum creature_speed_e {
     SPEED_NONE = 0,

@@ -38,7 +38,7 @@ static inline uint8_t clamp_stat(int8_t value);
 /***************************************************
  * public functions
  ***************************************************/
-uint8_t stats_system_get_stat_cur(entity_id_t actor, stat_type_t stat)
+uint8_t stats_system_get_stat_cur(entity_id_t actor, stat_kind_t stat)
 {
     int8_t value;
 
@@ -72,7 +72,7 @@ uint8_t stats_system_get_stat_cur(entity_id_t actor, stat_type_t stat)
     return clamp_stat(value);
 }
 
-uint8_t stats_system_get_stat_base(entity_id_t actor, stat_type_t stat)
+uint8_t stats_system_get_stat_base(entity_id_t actor, stat_kind_t stat)
 {
      util_assert(entity_has_component(actor, COMPONENT_STATS));
 
@@ -82,7 +82,7 @@ uint8_t stats_system_get_stat_base(entity_id_t actor, stat_type_t stat)
 /*
  * @brief Returns abilty stat modifier e.g. 10 > 0, 12 > +1 
  */
-int8_t stats_system_get_stat_modifier(entity_id_t actor, stat_type_t stat)
+int8_t stats_system_get_stat_modifier(entity_id_t actor, stat_kind_t stat)
 {
     return modifiers[stats_system_get_stat_cur(actor, stat)];
 }

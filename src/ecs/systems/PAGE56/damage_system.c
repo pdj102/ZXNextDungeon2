@@ -113,11 +113,10 @@ int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_f
     else
     {
         g.destructible_components[target].cur_hp -= damage;
-        system_event_emit(&event);
-
-        /* TODO get rid of this debug */
-        text_printf(&g.msg_win, "Dmg: %d Hp:[%d %d]", damage, g.destructible_components[target].max_hp, g.destructible_components[target].cur_hp);
+        system_event_emit(&event);   
     }
+     /* TODO get rid of this debug */
+    // text_printf(&g.msg_win, "\nDmg: %d Kind: %d Hp:[%d %d]", damage, flag, g.destructible_components[target].max_hp, g.destructible_components[target].cur_hp);
     
     return 1;
 }

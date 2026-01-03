@@ -39,7 +39,8 @@ bool perception_system_try_check(entity_id_t creature)
     if (g.player.id == ENTITY_ID_INVALID)
         return 0;
 
-    if (map_has_line_of_sight(g.player.id, creature))
+
+    if (perception_system_can_see_target(g.player.id, creature))
     {
         event.type = EVENT_SPOTTED_TARGET;
         event.source = creature;
@@ -53,5 +54,5 @@ bool perception_system_try_check(entity_id_t creature)
 
 bool perception_system_can_see_target(entity_id_t ai, entity_id_t target)
 {
-    return map_has_line_of_sight(ai, target);
+    return map_has_line_of_sight(&g.location_components[ai].coord, &g.location_components[target].coord);
 }

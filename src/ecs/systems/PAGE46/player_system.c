@@ -79,7 +79,7 @@ void player_system_update(void)
 
     key = key_press();
 
-    text_printf(&g.msg_win, "key: %d\n", key);
+    text_printf(&g.msg_win, "\nkey: %d", key);
 
     switch(key) {
         case KEY_LEFT: /* left */
@@ -95,7 +95,7 @@ void player_system_update(void)
             system_movement_try_move(entity, 0, 1);
             break;
         case 56: /* '8' camera right */
-            g.map.camera.x++;
+            g.camera.x++;
             break;
         case KEY_U_E: /* 'E' eat */
             eat();
@@ -154,12 +154,12 @@ static void melee_attack(void)
     {
         if (entity_has_component(target, COMPONENT_DESTRUCTIBLE))
         {
-            system_combat_try_melee_attack(g.player.id, target);
+            system_combat_try_attack(g.player.id, target, ATTACK_KIND_MELEE);
             return;
         }
         target = g.location_components[target].next_in_location;
     }
-    text_printf(&g.msg_win, "Nothing to attack here\n");
+    text_printf(&g.msg_win, "\nNothing to attack here");
 }
 
 static void drop(void)
@@ -170,7 +170,7 @@ static void drop(void)
 
     if (!system_container_try_drop(g.player.id, item))
     {
-        text_printf(&g.msg_win, "You cannot drop that\n");
+        text_printf(&g.msg_win, "\nYou cannot drop that");
     }
 }
 
@@ -182,7 +182,7 @@ static void eat(void)
 
     if (!system_consumable_try_consume(g.player.id, item))
     {
-        text_printf(&g.msg_win, "You cannot eat that\n");
+        text_printf(&g.msg_win, "\nYou cannot eat that");
     }
 }
 
@@ -203,7 +203,7 @@ static void pickup(void)
         }
         item = g.location_components[item].next_in_location;
     }
-    text_printf(&g.msg_win, "Nothing to pick up here\n");
+    text_printf(&g.msg_win, "\nNothing to pick up here");
 }
 
 static void target(void)
@@ -211,12 +211,22 @@ static void target(void)
     target_context_t tcx;
 
     tcx.filter = TARGET_FILTER_ENTITY;
-    tcx.max_range = 10;
+    tcx.max_range = system_combat_attack_range(g.player.id, ATTACK_KIND_RANGED);
     tcx.require_los = true;
     tcx.source.x = g.location_components[g.player.id].coord.x;
     tcx.source.y = g.location_components[g.player.id].coord.y;
 
+    text_printf(&g.msg_win, "\nRange:%d", tcx.max_range);
+
+    text_printf(&g.info_win, "\n[%PYcursor%PW-dir] [%PYt%PW-attack] [%PYspace%PW-cancel]");
+
     target_mode(&tcx);
+
+    if (tcx.target_selected)
+    {
+        text_print_string(&g.msg_win, "\nRanged attack:");
+        system_combat_try_attack(g.player.id, tcx.selected_entity, ATTACK_KIND_RANGED);
+    }
 }
 
 static void look(void)
@@ -229,13 +239,14 @@ static void look(void)
     tcx.source.x = g.location_components[g.player.id].coord.x;
     tcx.source.y = g.location_components[g.player.id].coord.y;
 
+    text_printf(&g.info_win, "\n[%PYcursor%PW-dir] [%PYl%PW-look] [%PYspace%PW-cancel]");
+    
     target_mode(&tcx);
 
     if (tcx.target_selected)
     {
-        text_print_string(&g.msg_win, "Target:");
+        text_print_string(&g.msg_win, "\nSee:");
         system_name_print(&g.msg_win, g.name_components[tcx.selected_entity]);
-        text_print_string(&g.msg_win, "\n");
     }
 }
 
@@ -244,9 +255,9 @@ static void inventory(void)
     int key;
 
     text_cls(&g.main_win);
-    text_printf(&g.main_win, "Inventory\n");
+    text_printf(&g.main_win, "\nInventory");
     display_inventory();
-    text_print_string(&g.main_win, "Press any key to continue...\n");
+    text_print_string(&g.main_win, "\nPress any key to continue...");
 
     key = key_press();
 }
@@ -259,7 +270,7 @@ void equip(void)
 
     if (!system_equipment_try_equip(g.player.id, item))
     {
-        text_printf(&g.msg_win, "You cannot equip that\n");
+        text_printf(&g.msg_win, "\nYou cannot equip that");
     } 
 }
 
@@ -271,7 +282,7 @@ static void unequip(void)
 
     if (!system_equipment_try_unequip(g.player.id, item))
     {
-        text_printf(&g.msg_win, "You cannot unequip that\n");
+        text_printf(&g.msg_win, "\nYou cannot unequip that");
     }
 }
 
@@ -283,7 +294,7 @@ static entity_id_t prompt_inventory_item(const char *prompt_msg)
     count = system_container_count(g.player.id);
     if (count == 0)
     {
-        text_printf(&g.msg_win, "%s\n", "Inventory is empty\n");
+        text_printf(&g.msg_win, "\nInventory is empty");
         return ENTITY_ID_INVALID;
     }
 
@@ -333,7 +344,7 @@ static uint8_t prompt_letter(uint8_t max_index)
 {
     uint8_t max_char = 'a' + max_index;
 
-    text_printf(&g.main_win, "Select a letter [a-%c] (or any other key to cancel)\n", max_char);
+    text_printf(&g.info_win, "\n[%PYa-%c%PW-select] [%PYspace%PW-cancel]", max_char);
 
     /* Get a single character */
     int ch = key_press();
@@ -352,6 +363,8 @@ static uint8_t prompt_letter(uint8_t max_index)
 static direction_t dir_or_cancel( void )
 {
     unsigned int key;
+
+    text_printf(&g.info_win, "\n[%ACursor keys%A-direction] [%ASpace%A-cancel]", PALETTE_YELLOW, PALETTE_WHITE, PALETTE_YELLOW, PALETTE_WHITE);
 
     key = key_press();   
 

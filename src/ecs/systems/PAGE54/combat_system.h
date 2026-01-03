@@ -13,11 +13,12 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
+#include "ecs/components/attack_comp.h"
 
 /***************************************************
  * public types
  ***************************************************/
-typedef enum {
+ typedef enum {
     ATTACK_MISS,
     ATTACK_HIT,
     ATTACK_CRITICAL
@@ -27,6 +28,7 @@ typedef enum {
  * public function prototypes
  ***************************************************/
 void combat_system_init(void);
-bool combat_system_try_melee_attack(entity_id_t creature, entity_id_t target);
+bool combat_system_try_attack(entity_id_t attacker, entity_id_t target, attack_kind_t kind);
+uint8_t combat_system_attack_range(entity_id_t attacker, attack_kind_t kind);
 
 #endif // COMBAT_SYSTEM_H

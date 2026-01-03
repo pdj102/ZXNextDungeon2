@@ -48,8 +48,8 @@ void map_init(void)
 {
     map_terrain_init();
     map_init_cell_heads();
-    g.map.camera.x = 0;
-    g.map.camera.y = 0;
+    g.camera.x = 0;
+    g.camera.y = 0;
 }
 
 bool map_can_enter(uint8_t x, uint8_t y)
@@ -65,58 +65,23 @@ entity_id_t map_get_first(uint8_t x, uint8_t y)
     return g.map.cell_head[x][y];
 }
 
-bool map_has_line_of_sight(entity_id_t e1, entity_id_t e2)
+bool map_has_line_of_sight(coord_t *a, coord_t *b)
 {
+    line_stepper_t ls;
+    line_stepper_init(&ls, a->x, a->y, b->x, b->y);
 
-    uint8_t x0 = g.location_components[e1].coord.x;
-    uint8_t y0 = g.location_components[e1].coord.y;
-    uint8_t x1 = g.location_components[e2].coord.x;
-    uint8_t y1 = g.location_components[e2].coord.y;
-
-    uint8_t dx = abs(x1 - x0);
-    uint8_t dy = abs(y1 - y0);
-
-    // if (dx + dy > MAX_VIEW_DISTANCE) return 0;
-
-    int8_t sx = (x0 < x1) ? 1 : -1;
-    int8_t sy = (y0 < y1) ? 1 : -1;
-
-    int8_t err = dx - dy;
-
-
-    while (1)
+    // Skip the starting tile
+    while (line_stepper_step(&ls))
     {
-        if (!in_bounds(x0, y0))
-        {
-            return 0;
-        }
+        if (!in_bounds(ls.x0, ls.y0))
+            return false;
 
-        // Skip blocking check for the starting tile
-        if (!((x0 == x1) && (y0 == y1)))
-        {
-            if (is_opaque(x0, y0))
-                return 0;
-        }
-
-        if ((x0 == x1) && (y0 == y1))
-            return 1;
-
-        int e2 = err << 1;
-
-        if (e2 > -dy)
-        {
-            err -= dy;
-            x0 += sx;
-        }
-
-        if (e2 < dx)
-        {
-            err += dx;
-            y0 += sy;
-        }
+        if (is_opaque(ls.x0, ls.y0))
+            return false;
     }
-}
 
+    return true;
+}
 
 void map_gen(void)
 {

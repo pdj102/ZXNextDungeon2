@@ -49,7 +49,7 @@ void apply_effect(entity_id_t target, const effect_t *effect)
             break;
         case EFFECT_HEAL:
             system_healing_try_take_healing(target, effect->magnitude, HEALING_KIND_HP);
-            text_printf(&g.msg_win, "You feel better!\n"); // TODO remove
+            text_printf(&g.msg_win, "\nYou feel better!"); // TODO remove
             break;
         case EFFECT_STAT_MODIFIER:
         /* Not applicable - stats are not directly modified by effects. */

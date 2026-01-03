@@ -57,7 +57,7 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
     [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
-    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 2, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
+    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 12, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
@@ -71,7 +71,8 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
     [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
+   /* [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2}, */
+    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_NONE},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -104,7 +105,7 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
     [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D8, .damage_kind = DAMAGE_PIERCING, .range = 5, .hit_mod = 0, .damage_mod = 0},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
@@ -265,7 +266,7 @@ void add_slots(entity_id_t id);
     }
 
     /* If monster has ranged attack add */
-    if (monster_ranged_base[kind].damage_kind == ATTACK_KIND_RANGED)
+    if (monster_ranged_base[kind].attack_type == ATTACK_KIND_RANGED)
     {
         ranged_add(id, &monster_ranged_base[kind]);
     }
@@ -337,13 +338,13 @@ static void melee_add(entity_id_t entity, const attack_comp_t *attack)
 
 static void ranged_add(entity_id_t entity, const attack_comp_t *attack)
 {
-    g.melee_components[entity].damage_kind = attack->damage_kind;
-    g.melee_components[entity].damage_roll = attack->damage_roll;
-    g.melee_components[entity].damage_mod = attack->damage_mod;
-    g.melee_components[entity].hit_mod = attack->hit_mod;
-    g.melee_components[entity].range = attack->range;
+    g.ranged_components[entity].damage_kind = attack->damage_kind;
+    g.ranged_components[entity].damage_roll = attack->damage_roll;
+    g.ranged_components[entity].damage_mod = attack->damage_mod;
+    g.ranged_components[entity].hit_mod = attack->hit_mod;
+    g.ranged_components[entity].range = attack->range;
 
-    entity_set_component(entity, COMPONENT_MELEE_ATTACK);
+    entity_set_component(entity, COMPONENT_RANGED_ATTACK);
 }
 
 static uint8_t creature_add(entity_id_t entity, creature_kind_t kind)

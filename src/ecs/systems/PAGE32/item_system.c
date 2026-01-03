@@ -24,6 +24,7 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     [ITEM_CLUB] = EQUIPPABLE_HANDS,
     [ITEM_SHORT_SWORD] = EQUIPPABLE_HANDS,
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = EQUIPPABLE_RANGED,
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = EQUIPPABLE_BODY,
     /* Shields */
@@ -49,6 +50,7 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
     [ITEM_CLUB] = NAME_CLUB,
     [ITEM_SHORT_SWORD] = NAME_SHORT_SWORD,
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = NAME_SHORT_BOW,
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = NAME_LEATHER_ARMOUR,
     /* Shields */
@@ -74,6 +76,33 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_NONE },
+    /* Armour */    
+    [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
+    /* Shields */
+    [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
+    /* Ammo */
+    /* Potions */    
+    [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
+    /* Scrolls */
+    /* Food and drink */
+    [ITEM_BREAD] = { .attack_type = ATTACK_KIND_NONE },
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .attack_type = ATTACK_KIND_NONE},
+    /* Wands */
+    /* Light sources */
+    /* Keys */
+    [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
+};
+
+const attack_comp_t ranged_base[ITEM_KIND_COUNT] = 
+{
+    [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
+    /* Melee weapons */
+    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_NONE },
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_NONE },
+    /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 10, .hit_mod = 0, .damage_mod = 0},
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
     /* Shields */
@@ -95,9 +124,10 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
 const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_NONE] = { .tile = {' ', 0}},
     /* Melee weapons */
-    [ITEM_CLUB] = { .tile = { 's', 0}},
+    [ITEM_CLUB] = { .tile = { 's', PALETTE_WHITE}},
     [ITEM_SHORT_SWORD] = { .tile = { 's', PALETTE_WHITE}},
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = { .tile = { '}', PALETTE_WHITE}},
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = { .tile = { 'a', PALETTE_BROWN}},
     /* Shields */
@@ -122,6 +152,7 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
     [ITEM_CLUB] = 0, 
     [ITEM_SHORT_SWORD] = 0,
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = 0,
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = 0,
     /* Shields */
@@ -147,6 +178,7 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_CLUB] = { .kind = EFFECT_NONE},
     [ITEM_SHORT_SWORD] = { .kind = EFFECT_NONE},
     /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = { .kind = EFFECT_NONE},
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = { .kind = EFFECT_NONE},
     /* Shields */
@@ -207,6 +239,12 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
         melee_add(id, &melee_base[kind]);
     }
 
+    /* If item has a ranged attack e.g. bows*/
+    if (ranged_base[kind].attack_type == ATTACK_KIND_RANGED)
+    {
+        ranged_add(id, &ranged_base[kind]);
+    }    
+
     /* If item has an effect e.g. bread restores health*/
     if (effect_base[kind].kind != EFFECT_NONE)
     {
@@ -258,15 +296,19 @@ static void melee_add(entity_id_t entity, const attack_comp_t *attack)
     g.melee_components[entity].damage_mod = attack->damage_mod;
     g.melee_components[entity].hit_mod = attack->hit_mod;
     g.melee_components[entity].range = attack->range;
+
+    entity_set_component(entity, COMPONENT_MELEE_ATTACK);
 }
 
 static void ranged_add(entity_id_t entity, const attack_comp_t *attack)
 {
-    g.melee_components[entity].damage_kind = attack->damage_kind;
-    g.melee_components[entity].damage_roll = attack->damage_roll;
-    g.melee_components[entity].damage_mod = attack->damage_mod;
-    g.melee_components[entity].hit_mod = attack->hit_mod;
-    g.melee_components[entity].range = attack->range;
+    g.ranged_components[entity].damage_kind = attack->damage_kind;
+    g.ranged_components[entity].damage_roll = attack->damage_roll;
+    g.ranged_components[entity].damage_mod = attack->damage_mod;
+    g.ranged_components[entity].hit_mod = attack->hit_mod;
+    g.ranged_components[entity].range = attack->range;
+
+    entity_set_component(entity, COMPONENT_RANGED_ATTACK);
 }
 
 static void add_effect(entity_id_t entity, const effect_comp_t *effect)

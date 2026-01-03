@@ -72,7 +72,8 @@ void system_container_clean_up(entity_id_t id);
 
 /* Combat system */
 void system_combat_init(void);
-bool system_combat_try_melee_attack(entity_id_t creature, entity_id_t target);
+bool system_combat_try_attack(entity_id_t creature, entity_id_t target, attack_kind_t kind);
+uint8_t system_combat_attack_range(entity_id_t attacker, attack_kind_t kind);
 
 /* Damage system */
 void system_damage_init(void);
@@ -133,9 +134,9 @@ void system_player_update(void);
 
 /* Stats system */
 void system_stats_init(void);
-uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_type_t stat);
-uint8_t system_stats_get_stat_base(entity_id_t actor, stat_type_t stat);
-int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_type_t stat);
+uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_kind_t stat);
+uint8_t system_stats_get_stat_base(entity_id_t actor, stat_kind_t stat);
+int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_kind_t stat);
 uint8_t system_stats_get_speed_cur(entity_id_t actor);
 uint8_t system_stats_get_speed_base(entity_id_t actor);
 uint8_t system_stats_get_ac_cur(entity_id_t actor);

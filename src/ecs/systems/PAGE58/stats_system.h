@@ -25,9 +25,9 @@
  ***************************************************/
 
 /* primary stats */
-uint8_t stats_system_get_stat_cur(entity_id_t actor, stat_type_t stat);
-uint8_t stats_system_get_stat_base(entity_id_t actor, stat_type_t stat);
-int8_t stats_system_get_stat_modifier(entity_id_t actor, stat_type_t stat);
+uint8_t stats_system_get_stat_cur(entity_id_t actor, stat_kind_t stat);
+uint8_t stats_system_get_stat_base(entity_id_t actor, stat_kind_t stat);
+int8_t stats_system_get_stat_modifier(entity_id_t actor, stat_kind_t stat);
 
 /* secondary stats */
 uint8_t stats_system_get_speed_cur(entity_id_t actor);

@@ -59,11 +59,11 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
 
     if (slot == INVALID_SLOT)
     {
-        util_info("No free slot\n");
+        util_info("No free slot");
         slot = choose_precedence_slot(effects, effect);
         if (slot == INVALID_SLOT)
         {
-            util_info("Does not take precendence\n");
+            util_info("Does not take precendence");
             return 0;
         }
     }

@@ -39,17 +39,17 @@
  ***************************************************/
 void util_assert_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&g.msg_win, "ASSERT FAIL: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
+    text_printf(&g.msg_win, "\nASSERT FAIL: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
     while(1);
 }
 
 void util_info_f(const char *message)
 {
-    text_printf(&g.msg_win, "INFO: %s", message);
+    text_printf(&g.msg_win, "\nINFO: %s", message);
 }
 
 void util_abort_f(const char *message, const char *file, unsigned line)
 {
-    text_printf(&g.msg_win, "ABORT: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
+    text_printf(&g.msg_win, "\nABORT: %s FILE:%s LINE:%l", message, file, (unsigned long)line);
     while(1);
 }

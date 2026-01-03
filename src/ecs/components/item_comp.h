@@ -64,6 +64,7 @@ typedef enum {
     ITEM_CLUB,
     ITEM_SHORT_SWORD,
     // Ranged weapons
+    ITEM_SHORT_BOW,
     // Armour
     ITEM_LEATHER_ARMOUR,
     // Shields

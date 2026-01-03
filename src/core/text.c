@@ -66,7 +66,7 @@ void text_scroll_up( text_window_t *win_p );
     win_p->c_y = y;
  }
 
- void text_putc(text_window_t *win_p, char c)
+ void text_putc(text_window_t *win_p, unsigned char c)
  {
     util_assert(win_p != NULL);
 
@@ -138,12 +138,59 @@ void text_scroll_up( text_window_t *win_p );
             break;
 
             case 'c':   // char (promoted to int)
-            text_putc(win_p, (char) va_arg(ptr, int) );
+            text_putc(win_p, (unsigned char)va_arg(ptr, int) );
             break;
 
             case 's':   // string
             text_print_string(win_p, (const char*) va_arg(ptr, const char*) );
-            break;        
+            break;
+
+            case 'P':    // palette 
+            {
+                i++;
+                switch (text[i])
+                {
+                    case 'R':
+                        win_p->tile.tile_attr = PALETTE_RED;
+                        break;
+                    case 'G':
+                        win_p->tile.tile_attr = PALETTE_GREEN;
+                        break;
+                    case 'B':
+                        win_p->tile.tile_attr = PALETTE_BLUE;
+                        break;
+                    case 'Y':
+                        win_p->tile.tile_attr = PALETTE_YELLOW;
+                        break;
+                    case 'W':
+                        win_p->tile.tile_attr = PALETTE_WHITE;
+                        break;
+                }
+                break;
+            }
+
+            case 'A':   // raw tile attribute (uint8_t)
+            {
+                uint8_t attr = (uint8_t)va_arg(ptr, int);  // promoted
+                win_p->tile.tile_attr = attr;
+                break;
+            }
+
+            case 'C':   // signed int8 with color
+            {
+                int8_t v = (int8_t)va_arg(ptr, int);
+
+                uint8_t old_attr = win_p->tile.tile_attr;
+
+                if (v < 0) win_p->tile.tile_attr = PALETTE_RED;
+                else if (v ==0) win_p->tile.tile_attr = PALETTE_WHITE;
+                else       win_p->tile.tile_attr = PALETTE_GREEN;
+
+                text_print_int8(win_p, v);
+
+                win_p->tile.tile_attr = old_attr;
+                break;
+            }                   
 
             case '%':   // a literal % character
             text_putc(win_p, '%');

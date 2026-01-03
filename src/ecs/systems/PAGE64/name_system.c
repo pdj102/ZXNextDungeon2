@@ -52,6 +52,7 @@ static const char *name_base[NAME_COUNT] =
     [NAME_CLUB] = "club",
     [NAME_SHORT_SWORD] = "short sword",
     /* Ranged weapons*/
+    [NAME_SHORT_BOW] = "short bow",
     /* Armour */    
     [NAME_LEATHER_ARMOUR] = "leather armour",
     /* Shields */

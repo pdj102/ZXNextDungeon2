@@ -12,6 +12,8 @@
 
 #include <stdint.h>
 
+#define VIEW_WIDTH 30
+#define VIEW_HEIGHT 24
 
 /***************************************************
  * public defines

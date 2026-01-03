@@ -70,12 +70,12 @@ void ai_system_handle_event(const event_t *event)
         switch (event->type)
         {
         case EVENT_DIED:
-            util_info("AI state change:died\n");
+            util_info("AI state change:died");
             g.creature_components[event->source].status = CREATURE_STATUS_DEAD;
             break;
 
         case EVENT_SPOTTED_TARGET:
-            util_info("AI event saw entity\n");
+            util_info("AI event saw entity");
             if ((ai->state == AI_STATE_IDLE) || (ai->state == AI_STATE_WANDER) || (ai->state == AI_STATE_TRACK_TARGET) || ai->state == AI_STATE_SEARCH_TARGET)
             {
                 acquire_target(event->source, event->target);
@@ -112,22 +112,22 @@ void ai_system_process_entity_turn(entity_id_t entity)
         ai_sleep(entity);
         break;
     case AI_STATE_IDLE:
-        util_info("Idle\n");
+        util_info("Idle");
         idle(entity);
         break;
     case AI_STATE_WANDER:
         wander(entity);
         break;
     case AI_STATE_ATTACK_TARGET:
-        util_info("Attack\n");   
+        util_info("Attack");   
         attack_target(entity);
         break;
     case AI_STATE_TRACK_TARGET:
-        util_info("Track\n");
+        util_info("Track");
         track_target(entity);
         break;
     case AI_STATE_SEARCH_TARGET:
-        util_info("Search\n");
+        util_info("Search");
         search_target(entity);
         break;
     case AI_STATE_FLEE:
@@ -151,7 +151,7 @@ static void idle(entity_id_t entity)
 
     if (result == 1)
     {
-        util_info("Creature sees player\n");
+        util_info("Creature sees player");
         return;
     }
     
@@ -272,7 +272,7 @@ static void attack_target(entity_id_t entity)
     /* 3) If the target is in range, attack */
     if (in_attack_range(entity, target))
     {
-        system_combat_try_melee_attack(entity, target);
+        system_combat_try_attack(entity, target, ATTACK_KIND_MELEE);
         return; 
     }
 

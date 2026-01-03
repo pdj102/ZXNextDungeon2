@@ -13,6 +13,7 @@
 #include "ecs/entity.h"
 
 #include "ecs/components/components.h"
+#include "ecs/components/attack_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -32,18 +33,20 @@ typedef struct {
 /***************************************************
  * private function prototypes
  ***************************************************/
-static attack_roll_t roll_melee_attack(entity_id_t attacker);
-static int8_t calc_player_melee_attack_bonus(entity_id_t attacker);
-static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker);
+static entity_id_t get_attack_source(entity_id_t attacker, attack_kind_t kind);
+static attack_roll_t roll_attack(entity_id_t attacker, attack_kind_t kind);
+static int8_t calc_player_attack_bonus(entity_id_t attacker, attack_kind_t kind);
+static int8_t calc_nonplayer_attack_bonus(entity_id_t attacker, attack_kind_t kind);
 static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target);
-
-static int8_t roll_melee_damage(entity_id_t attacker, bool is_critical);
-static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool is_critical);
-static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool is_critical);
-
-static bool wielding_melee_weapon(entity_id_t actor);
-static entity_id_t get_melee_source(entity_id_t attacker);
-static uint8_t roll_damage_dice(dice_kind_t dice, bool crit);
+static entity_id_t get_equipped_weapon(entity_id_t actor, attack_kind_t kind);
+static int8_t get_attack_base_bonus(entity_id_t source, attack_kind_t kind);
+static stat_kind_t get_attack_ability(attack_kind_t kind);
+static int8_t roll_attack_damage(entity_id_t attacker, attack_kind_t kind, bool critical);
+static int8_t roll_damage_dice(dice_kind_t dice, bool critical);
+static damage_flag_t get_damage_type(entity_id_t attacker, attack_kind_t kind);
+static int8_t calc_player_damage(entity_id_t attacker, attack_kind_t kind, bool critical);
+static int8_t calc_nonplayer_damage(entity_id_t attacker, attack_kind_t kind, bool critical);
+static attack_comp_t* get_attack_component(entity_id_t source, attack_kind_t kind);
 
 /***************************************************
  * public functions
@@ -52,129 +55,129 @@ void combat_system_init(void)
 {
 }
 
-bool combat_system_try_melee_attack(entity_id_t attacker, entity_id_t target)
+bool combat_system_try_attack(entity_id_t attacker, entity_id_t target, attack_kind_t kind)
 {
-    attack_roll_t attack_roll;
-    damage_flag_t damage_type;
-    uint8_t damage_roll;
-    event_t event;
+    attack_roll_t roll;
+    entity_id_t source;
+    attack_comp_t *comp;
+    event_t event = { .source = attacker, .target = target, .value = 1 };
+    attack_result_t result;
 
-    /* attacker must have melee_attack and location component */
-    if (!entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
-    {
-        return 0;
-    }
-    if (!entity_has_component(attacker, COMPONENT_LOCATION ))
-    {
-        return 0;
-    }    
+    /* determine the entity that is the source of the attack e.g. weapon or natural */
+    source = get_attack_source(attacker, kind);
 
-    /* target must have stats and location component */
-    if (!entity_has_component(target, COMPONENT_DESTRUCTIBLE))
-    {
-        return 0;
-    }
-    if (!entity_has_component(target, COMPONENT_LOCATION))
-    {
-        return 0;
-    }        
+    if ((kind == ATTACK_KIND_MELEE) && !entity_has_component(source, COMPONENT_MELEE_ATTACK))
+        return false;
+    if ((kind == ATTACK_KIND_RANGED) && !entity_has_component(source, COMPONENT_RANGED_ATTACK))
+        return false;
+    if (!entity_has_component(attacker, COMPONENT_LOCATION)) return false;
+    if (!entity_has_component(target, COMPONENT_LOCATION)) return false;
+    if (!entity_has_component(target, COMPONENT_DESTRUCTIBLE)) return false;
 
-    /* TODO: check target within melee attack range */
+    /* get the attack component of the source */
+    comp = get_attack_component(source, kind);
 
-    /* Attack roll */
-    attack_roll = roll_melee_attack(attacker);
+    /* check target is in range */
+    if (!in_range(g.location_components[attacker].coord, g.location_components[target].coord, comp->range))
+        return false;
 
-    /* Get the damage type of the weapon or basic melee attack */
-    if (wielding_melee_weapon(attacker))
-    {
-        damage_type = g.melee_components[g.slots[SLOT_HANDS]].damage_kind;
-    }
-    else
-    {
-        damage_type = g.melee_components[attacker].damage_kind;
-    }
+    /* get the roll of the attack */
+    roll = roll_attack(attacker, kind);
 
-    event.source = attacker;
-    event.target = target;
-    event.value = 1;
+    text_printf(&g.msg_win, "Attack roll:%d", roll);
+    text_printf(&g.msg_win, "Weapon:%d ", get_equipped_weapon(attacker, kind));
+    text_printf(&g.msg_win, "Source:%d ", source);
+    text_printf(&g.msg_win, "Damage kind:%d ", comp->damage_kind);
+    text_printf(&g.msg_win, "Dice:%d ", comp->damage_roll);
 
-    /* Resolve attack result */
-    switch (resolve_attack(attack_roll, target))
+    result = resolve_attack(roll, target);
+
+    switch (result)
     {
         case ATTACK_CRITICAL:
-            /* crit damage */
             event.type = EVENT_ATTACKED_AND_CRITICAL;
-            system_event_emit(&event);
-            damage_roll = roll_melee_damage(attacker, 1);
-            system_damage_try_take_damage(target, damage_roll, damage_type);
-            return 1;
-
+            break;
         case ATTACK_HIT:
-            /* normal damage */
             event.type = EVENT_ATTACKED;
-            system_event_emit(&event);
-            damage_roll = roll_melee_damage(attacker, 0);
-            system_damage_try_take_damage(target, damage_roll, damage_type);
-            return 1;
-
+            break;
         case ATTACK_MISS:
-            /* missed */
             event.type = EVENT_ATTACKED_AND_MISSED;
-            system_event_emit(&event);
-            return 0;
-        default:
-            util_abort("Unknown attack roll result");
             break;
     }
 
-    return 0;
+    system_event_emit(&event);
+
+    if (result == ATTACK_MISS)
+        return false;
+
+    system_damage_try_take_damage(
+        target,
+        roll_attack_damage(attacker, kind, result == ATTACK_CRITICAL),
+        get_damage_type(attacker, kind)
+    );
+
+    return true;
 }
 
- 
+uint8_t combat_system_attack_range(entity_id_t attacker, attack_kind_t kind)
+{
+    entity_id_t source;
+    attack_comp_t *comp;
+    
+    /* determine the entity that is the source of the attack e.g. weapon or natural */
+    source = get_attack_source(attacker, kind);
+
+    text_printf(&g.msg_win, "\nAttacker %d", attacker);
+    system_name_print(&g.msg_win, g.name_components[attacker]);
+
+    text_printf(&g.msg_win, "\nWeapon source %d", source);
+    system_name_print(&g.msg_win, g.name_components[source]);
+
+    if ((kind == ATTACK_KIND_MELEE) && !entity_has_component(source, COMPONENT_MELEE_ATTACK))
+        return 0;
+    if ((kind == ATTACK_KIND_RANGED) && !entity_has_component(source, COMPONENT_RANGED_ATTACK))
+        return 0;
+    if (!entity_has_component(attacker, COMPONENT_LOCATION)) return 0;
+
+    /* get the attack component of the source */
+    comp = get_attack_component(source, kind);
+
+    return comp->range;
+}
+
+
  /***************************************************
  * private functions
  ***************************************************/
+static entity_id_t get_attack_source(entity_id_t attacker, attack_kind_t kind)
+{
+    entity_id_t weapon = get_equipped_weapon(attacker, kind);
+    return (weapon != ENTITY_ID_INVALID) ? weapon : attacker;
+}
 
-
-static attack_roll_t roll_melee_attack(entity_id_t attacker)
+static attack_roll_t roll_attack(entity_id_t attacker, attack_kind_t kind)
 {
     attack_roll_t roll;
     int8_t bonus = 0;
 
-    /* Step 1 – Roll d20 (handle advantage later if needed) */
     roll.d20 = dice_roll(DICE_1D20);
 
-    text_printf(&g.msg_win, "Attack roll:%u ", roll.d20);
-
-    /* Step 2 – Determine attack bonus source */
-    if (entity_has_component(attacker, COMPONENT_PLAYER))
-    {
-        bonus = calc_player_melee_attack_bonus(attacker);
+    if (entity_has_component(attacker, COMPONENT_PLAYER)) {
+        bonus = calc_player_attack_bonus(attacker, kind);
     }
-    else if (entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
+    else 
     {
-        bonus = calc_basic_melee_attack_bonus(attacker);
-    }
-    else
-    {
-        util_abort("Entity cannot perform melee attack");
+        bonus = calc_nonplayer_attack_bonus(attacker, kind);
     }
 
-    /* Step 3 - Calculate total attack roll */
     roll.total = roll.d20 + bonus;
-
-    /* Clamp to 1 or higher*/
-    if (roll.total < 1) 
-    { 
-        roll.total = 1;
-    }
+    if (roll.total < 1) roll.total = 1;
 
     return roll;
 }
 
-
- /*
- * @details Calculate player melee attack bonus
+/*
+ * @details Calculate player attack bonus
  *
  * Attack bonus = 
  *  Ability modifier (strength or dexterity if finesse weapon and higher) +
@@ -182,57 +185,37 @@ static attack_roll_t roll_melee_attack(entity_id_t attacker)
  *  weapon bonus (e.g. magic weapon) +
  *  other modifiers (e.g. effects)
  */
-static int8_t calc_player_melee_attack_bonus(entity_id_t attacker)
+static int8_t calc_player_attack_bonus(entity_id_t attacker, attack_kind_t kind)
 {
-    int8_t attack_bonus = 0;
-    int8_t ability_mod = 0;
-    int8_t proficiency_mod = 0;
-    int8_t other_mods = 0;
-    entity_id_t melee_source = ENTITY_ID_INVALID;
-
     util_assert(entity_has_component(attacker, COMPONENT_PLAYER));
-    util_assert(entity_has_component(attacker, COMPONENT_MELEE_ATTACK));
     util_assert(entity_has_component(attacker, COMPONENT_STATS));
 
-    /* Determine melee source entity, attacker if unarmed / natural attack or weapon entity if a melee weapon is being wielded */
-    melee_source = get_melee_source(attacker);
-
-    attack_bonus = g.melee_components[melee_source].hit_mod;
-
-    ability_mod = system_stats_get_stat_modifier(attacker, STAT_STR);
-
-    if (wielding_melee_weapon(attacker))
-    {
-        /* TODO: If finesse weapon - ability mod is DEX if DEX > STR*/
-        
-        /* TODO: if proficient with weapon, determine proficiency bonus */
-    }
-
-    /* TODO: Other effects (buffs, conditions)
-    other_mods = effects_to_hit_bonus(attacker);
-    */
-
-    text_printf(&g.msg_win, "Bonus:%u Abil:%u Prof:%u Other:%u\n", attack_bonus, ability_mod, proficiency_mod, other_mods);
-
-    return attack_bonus + ability_mod + proficiency_mod + other_mods;
-}
-
- /*
- * @brief Calculate basic melee attack bonus (e.g. monster / trap etc)
- */
-static int8_t calc_basic_melee_attack_bonus(entity_id_t attacker)
-{
-    int8_t attack_bonus = 0;
+    int8_t base_bonus;
+    int8_t ability_mod;
+    int8_t proficiency_mod = 0;
     int8_t other_mods = 0;
 
-    util_assert(entity_has_component(attacker, COMPONENT_MELEE_ATTACK));
+    entity_id_t source = get_attack_source(attacker, kind);
+    
+    base_bonus  = get_attack_base_bonus(source, kind);
+    ability_mod = system_stats_get_stat_modifier(attacker, get_attack_ability(kind));
 
-    attack_bonus = g.melee_components[attacker].hit_mod;
-    /* TODO: Other effects (buffs, conditions)
-    other_mods = effects_to_damage_bonus(attacker);
-    */        
+    /* TODO proficiency system */
+    /* TODO buffs / effects */
 
-    return attack_bonus + other_mods;
+    return base_bonus + ability_mod + proficiency_mod + other_mods;
+}
+
+static int8_t calc_nonplayer_attack_bonus(entity_id_t attacker, attack_kind_t kind)
+{
+    int8_t base_bonus;
+    int8_t other_mods = 0;
+
+    base_bonus  = get_attack_base_bonus(attacker, kind);
+
+    /* TODO buffs / effects */
+
+    return base_bonus + other_mods;
 }
 
 /*
@@ -254,120 +237,144 @@ static attack_result_t resolve_attack(attack_roll_t roll, entity_id_t target)
     return ATTACK_MISS;
 }
 
-
-/*
- * @brief Calculate melee damgage roll
- */
-static int8_t roll_melee_damage(entity_id_t attacker, bool is_critical)
+static entity_id_t get_equipped_weapon(entity_id_t actor, attack_kind_t kind)
 {
-    int8_t damage;
-    
+    if (!entity_has_component(actor, COMPONENT_SLOTS))
+        return ENTITY_ID_INVALID;
+
+    entity_id_t weapon = (kind == ATTACK_KIND_MELEE)
+        ? g.slots[SLOT_HANDS]
+        : g.slots[SLOT_RANGED];
+
+    if (weapon == ENTITY_ID_INVALID)
+        return ENTITY_ID_INVALID;
+
+    if ((kind == ATTACK_KIND_MELEE) && (entity_has_component(weapon, COMPONENT_MELEE_ATTACK)))
+        return weapon;
+
+    if ((kind == ATTACK_KIND_RANGED) && (entity_has_component(weapon, COMPONENT_RANGED_ATTACK)))
+        return weapon;
+
+    text_printf(&g.msg_win, "  invalid weapon  ");
+
+    return ENTITY_ID_INVALID;
+}
+
+static int8_t roll_attack_damage(entity_id_t attacker, attack_kind_t kind, bool critical)
+{
     if (entity_has_component(attacker, COMPONENT_PLAYER))
+        return calc_player_damage(attacker, kind, critical);
+    else
+        return calc_nonplayer_damage(attacker, kind, critical);
+}
+
+static attack_comp_t* get_attack_component(entity_id_t source,
+                                           attack_kind_t kind)
+{
+    return (kind == ATTACK_KIND_MELEE)
+           ? &g.melee_components[source]
+           : &g.ranged_components[source];
+}
+
+static damage_flag_t get_damage_type(entity_id_t attacker, attack_kind_t kind)
+ {
+    entity_id_t source = get_attack_source(attacker, kind);
+
+    attack_comp_t *comp = get_attack_component(source, kind);
+
+    return comp->damage_kind;
+}
+
+static int8_t get_attack_base_bonus(entity_id_t source, attack_kind_t kind)
+{
+    attack_comp_t *comp = get_attack_component(source, kind);
+
+    return comp->hit_mod;
+}
+
+static stat_kind_t get_attack_ability(attack_kind_t kind)
+{
+    return (kind == ATTACK_KIND_MELEE) ? STAT_STR : STAT_DEX;
+}
+
+static int8_t calc_player_damage(entity_id_t attacker,
+                                 attack_kind_t kind,
+                                 bool critical)
+{
+    util_assert(entity_has_component(attacker, COMPONENT_PLAYER));
+    util_assert(entity_has_component(attacker, COMPONENT_STATS));
+
+    entity_id_t source = get_attack_source(attacker, kind);
+
+    int8_t dice;
+    int8_t base_bonus;
+    int8_t ability_mod;
+    int8_t other_mods = 0;
+
+    attack_comp_t *comp = get_attack_component(source, kind);
+
+    dice = comp->damage_roll;
+    base_bonus = comp->damage_mod;
+
+    if (kind == ATTACK_KIND_MELEE)
     {
-        damage = calc_player_melee_damage_roll(attacker, is_critical);
-    }
-    else if (entity_has_component(attacker, COMPONENT_MELEE_ATTACK))
-    {
-        damage = calc_basic_melee_damage_roll(attacker, is_critical);
+        ability_mod = system_stats_get_stat_modifier(attacker, STAT_STR);
+        /* TODO finesse: use DEX if finesse weapon and DEX > STR */
     }
     else
     {
-        util_abort("Entity cannot deal melee damage");
-        return 0;
+        ability_mod = system_stats_get_stat_modifier(attacker, STAT_DEX);
     }
 
-    return damage < 0 ? 0 : damage ;
-}
-
-/*
- * @details Calculate player melee damage roll
- *
- * Damage roll = 
- *  Dice roll (melee damage roll) +
- *  ability modifier (strength or dexterity if finesse weapon and higher) +
- *  weapon bonus (e.g. magic weapon) +
- *  other modifiers (e.g. effects)
- */
-static int8_t calc_player_melee_damage_roll(entity_id_t attacker,bool is_critical)
-{
-    int8_t dice_roll = 0;
-    int8_t bonus = 0;
-    int8_t ability_mod = 0;
-    int8_t other_mods = 0;
-    entity_id_t melee_source;
-
-    /* Determine melee source entity, attacker if unarmed / natural attack or weapon entity if a melee weapon is being wielded */
-    melee_source = get_melee_source(attacker);
-
-    dice_roll = roll_damage_dice(g.melee_components[melee_source].damage_roll, is_critical);
-
-    bonus = g.melee_components[melee_source].damage_mod;
- 
-    ability_mod = system_stats_get_stat_modifier(attacker, STAT_STR);
-
-    if (wielding_melee_weapon(attacker))
-    {
-        /* TODO: If using a finesse weapon use DEX mod if greater than STR mod */        
-    }
-
-    /* TODO: calculate other effects (buffs, rage etc)*/
+    /* TODO: buffs, effects, conditions, enchantments */
     /* other_mods = effects_damage_bonus(attacker); */
 
-    text_printf(&g.msg_win, "Roll:%u Bonus:%u Ability Mod:%u Other:%u\n", dice_roll, bonus, ability_mod, other_mods);
+    int8_t roll = roll_damage_dice(dice, critical);
 
-    return dice_roll + bonus + ability_mod + other_mods;
+    int8_t total = roll + base_bonus + ability_mod + other_mods;
+
+    if (total < 0) total = 0;
+    return total;
 }
 
-/*
- * @brief calculate basic melee damage (monster/trap etc)
- */
-static int8_t calc_basic_melee_damage_roll(entity_id_t attacker, bool is_critical)
+static int8_t calc_nonplayer_damage(entity_id_t attacker,
+                                   attack_kind_t kind,
+                                   bool critical)
 {
-    int8_t dice_roll = 0;
+    int8_t dice;
     int8_t other_mods = 0;
 
-    dice_roll = roll_damage_dice(g.melee_components[attacker].damage_roll, is_critical);
+    if (kind == ATTACK_KIND_MELEE)
+    {
+        util_assert(entity_has_component(attacker, COMPONENT_MELEE_ATTACK));
+        dice = g.melee_components[attacker].damage_roll;
+    }
+    else
+    {
+        util_assert(entity_has_component(attacker, COMPONENT_RANGED_ATTACK));
+        dice = g.ranged_components[attacker].damage_roll;
+    }
 
-    /* NB monster modifiers already baked in */
-
-    /* TODO: Other effects (buffs, rage, etc.) */
+    /* TODO: buffs, rage, status effects, etc */
     /* other_mods = effects_damage_bonus(attacker); */
 
-    return dice_roll + other_mods;
+    int8_t total = roll_damage_dice(dice, critical) + other_mods;
+
+    if (total < 0) total = 0;
+    return total;
 }
 
- /*
-  * @brief returns true if the actor is wielding a melee weapon
-  */
- static bool wielding_melee_weapon(entity_id_t actor)
- {
-    entity_id_t weapon; 
 
-    if (entity_has_component(actor, COMPONENT_SLOTS))
-    {
-        weapon = g.slots[SLOT_HANDS];
-        return (weapon != ENTITY_ID_INVALID && entity_has_component(weapon, COMPONENT_MELEE_ATTACK));
-    }
-    return 0;
- }
 
- /*
-  * @brief returns the melee source of an attack 
-  */
-static entity_id_t get_melee_source(entity_id_t attacker)
+static int8_t roll_damage_dice(dice_kind_t dice, bool critical)
 {
-    if (wielding_melee_weapon(attacker))
-        return g.slots[SLOT_HANDS];
-    return attacker;
-}
-
-/*
- * @brief rolls a damage die and optionally doubles it for critical
- */
-static uint8_t roll_damage_dice(dice_kind_t dice, bool crit)
-{
-    uint8_t r = dice_roll(dice);
-    if (crit)
+    int8_t r = dice_roll(dice);
+    if (critical)
         r += dice_roll(dice);
     return r;
 }
+
+
+/* ********************************************************************************************************* */
+
+

@@ -34,8 +34,8 @@ typedef struct {
 
 /* Timer components - fast iterate */
 typedef struct {
-    timer_comp_t timers[MAX_ENTITIES]; /* array of timers */
-    uint8_t list[MAX_ENTITIES]; /* list of entities with timer component*/
+    timer_comp_t timers[MAX_ENTITIES];  /* array of timers */
+    uint8_t list[MAX_ENTITIES];         /* list of entities with timer component*/
     uint8_t count;
 } timer_components_t;
 

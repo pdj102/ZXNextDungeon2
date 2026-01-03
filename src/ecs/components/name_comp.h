@@ -44,6 +44,7 @@
     NAME_CLUB,
     NAME_SHORT_SWORD,
     /* Ranged weapons*/
+    NAME_SHORT_BOW,
     /* Armour */    
     NAME_LEATHER_ARMOUR,
     /* Shields */

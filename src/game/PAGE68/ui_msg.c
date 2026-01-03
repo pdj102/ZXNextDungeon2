@@ -39,18 +39,18 @@
     [EVENT_ATTACKED_AND_CRITICAL]   = " critically attack ",
     [EVENT_BUMPED]                  = " bump ",
     [EVENT_CONSUMED]                = " consume ",
-    [EVENT_DAMAGED]                 = " take %d damage\n",
-    [EVENT_DAMAGED_IMMUNE]          = " are immune!\n",
-    [EVENT_DAMAGED_RESIST]          = " resist and take %d damage\n",
-    [EVENT_DAMAGED_VULNERABLE]      = " are vulnerable and take %d damage\n",
-    [EVENT_DIED]                    = " died!\n",
+    [EVENT_DAMAGED]                 = " take %d damage",
+    [EVENT_DAMAGED_IMMUNE]          = " are immune!",
+    [EVENT_DAMAGED_RESIST]          = " resist and take %d damage",
+    [EVENT_DAMAGED_VULNERABLE]      = " are vulnerable and take %d damage",
+    [EVENT_DIED]                    = " died!",
     [EVENT_DROPPED]                 = " drop ",
     [EVENT_EQUIPPED]                = " equip ",
     [EVENT_PICKED_UP]               = " pickup ",
     [EVENT_STOOD_ON]                = " stood on ",
     [EVENT_UNEQUIPPED]              = " unequip ",
-    [EVENT_HEALED_HP]               = " restore %d health\n",
-    [EVENT_HEALED_MP]               = " restore %d mana\n",
+    [EVENT_HEALED_HP]               = " restore %d health",
+    [EVENT_HEALED_MP]               = " restore %d mana",
     [EVENT_SPOTTED_TARGET]          = " see ",
 };
 
@@ -62,18 +62,18 @@
     [EVENT_ATTACKED_AND_CRITICAL]   = " critically attacks ",
     [EVENT_BUMPED]                  = " bumps ",
     [EVENT_CONSUMED]                = " consumes ",
-    [EVENT_DAMAGED]                 = " takes %d damage\n",
-    [EVENT_DAMAGED_IMMUNE]          = " is immune!\n",
-    [EVENT_DAMAGED_RESIST]          = " resists and takes %d damage\n",
-    [EVENT_DAMAGED_VULNERABLE]      = " is vulnerable and takes %d damage\n",
-    [EVENT_DIED]                    = " dies!\n",
+    [EVENT_DAMAGED]                 = " takes %d damage",
+    [EVENT_DAMAGED_IMMUNE]          = " is immune!",
+    [EVENT_DAMAGED_RESIST]          = " resists and takes %d damage",
+    [EVENT_DAMAGED_VULNERABLE]      = " is vulnerable and takes %d damage",
+    [EVENT_DIED]                    = " dies!",
     [EVENT_DROPPED]                 = " drops ",
     [EVENT_EQUIPPED]                = " equips ",
     [EVENT_PICKED_UP]               = " pickups ",
     [EVENT_STOOD_ON]                = " stands on ",
     [EVENT_UNEQUIPPED]              = " unequips ",
-    [EVENT_HEALED_HP]               = " restores %d health\n",
-    [EVENT_HEALED_MP]               = " restores %d mana\n",
+    [EVENT_HEALED_HP]               = " restores %d health",
+    [EVENT_HEALED_MP]               = " restores %d mana",
     [EVENT_SPOTTED_TARGET]          = " sees ",
 };
 
@@ -114,15 +114,18 @@ static void ui_msg_win_nl(void);
         case EVENT_UNEQUIPPED:
         case EVENT_PICKED_UP:
         case EVENT_SPOTTED_TARGET:
+            ui_msg_win_nl();
             ui_msg_win_print_subject(event->source);
             ui_msg_win_print_verb(event->type, source_is_player);
             ui_msg_win_print_object(event->target);
             break;
         case EVENT_DIED:
+            ui_msg_win_nl();
             ui_msg_win_print_subject(event->source);
             ui_msg_win_print_verb(event->type, source_is_player);
             break;
         case EVENT_DAMAGED_IMMUNE:
+            ui_msg_win_nl();
             ui_msg_win_print_subject(event->target);
             ui_msg_win_print_verb(event->type, target_is_player);
             break;
@@ -131,6 +134,7 @@ static void ui_msg_win_nl(void);
         case EVENT_DAMAGED_VULNERABLE:
         case EVENT_HEALED_HP:
         case EVENT_HEALED_MP:
+            ui_msg_win_nl();
             ui_msg_win_print_subject(event->target);
             if (target_is_player)
             {
@@ -153,8 +157,6 @@ static void ui_msg_win_nl(void);
         default:
             break;
     }
-    
-    ui_msg_win_nl();
  }
 
 static void ui_msg_win_print_subject(entity_id_t e)

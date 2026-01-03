@@ -75,12 +75,12 @@ void ui_stat_update_primary_stats(void)
 
     // TODO clear the lines
 
-    text_printf(&g.stat_win, "STR:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_STR), system_effect_mod_sum(g.player.id, ATTRIBUTE_STR));
-    text_printf(&g.stat_win, "DEX:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_DEX), system_effect_mod_sum(g.player.id, ATTRIBUTE_DEX));
-    text_printf(&g.stat_win, "CON:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_CON), system_effect_mod_sum(g.player.id, ATTRIBUTE_CON));
-    text_printf(&g.stat_win, "INT:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_INT), system_effect_mod_sum(g.player.id, ATTRIBUTE_INT));
-    text_printf(&g.stat_win, "WIS:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_WIS), system_effect_mod_sum(g.player.id, ATTRIBUTE_WIS));
-    text_printf(&g.stat_win, "CHA:%u %d\n", system_stats_get_stat_base(g.player.id, STAT_CHA), system_effect_mod_sum(g.player.id, ATTRIBUTE_CHA));
+    text_printf(&g.stat_win, "STR:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_STR), system_effect_mod_sum(g.player.id, ATTRIBUTE_STR));
+    text_printf(&g.stat_win, "DEX:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_DEX), system_effect_mod_sum(g.player.id, ATTRIBUTE_DEX));
+    text_printf(&g.stat_win, "CON:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_CON), system_effect_mod_sum(g.player.id, ATTRIBUTE_CON));
+    text_printf(&g.stat_win, "INT:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_INT), system_effect_mod_sum(g.player.id, ATTRIBUTE_INT));
+    text_printf(&g.stat_win, "WIS:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_WIS), system_effect_mod_sum(g.player.id, ATTRIBUTE_WIS));
+    text_printf(&g.stat_win, "CHA:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_CHA), system_effect_mod_sum(g.player.id, ATTRIBUTE_CHA));
 
 }
 

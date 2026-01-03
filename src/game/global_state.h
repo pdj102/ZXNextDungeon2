@@ -67,11 +67,13 @@ typedef struct
 
     /* World */
     map_t map; /* the map */
+    camera_t camera;
 
     /* UI */
     text_window_t stat_win;
     text_window_t msg_win;
     text_window_t main_win;
+    text_window_t info_win;
     text_window_t assert_win;
 
 } global_state_t;

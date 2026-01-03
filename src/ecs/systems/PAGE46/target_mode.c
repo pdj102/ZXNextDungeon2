@@ -46,6 +46,7 @@ static void target_init(target_context_t *ctx);
 static void render_target_mode(target_context_t *ctx);
 static input_result_t handle_input(target_context_t *ctx, unsigned int key);
 static void target_resolve(target_context_t *ctx);
+static inline bool map_to_screen(uint8_t map_x, uint8_t map_y, uint8_t *screen_x, uint8_t *screen_y);
 
 /***************************************************
  * public functions
@@ -67,6 +68,8 @@ void target_mode(target_context_t *ctx)
 
     if (r == TARGET)
         target_resolve(ctx);
+
+    g.main_win.dirty = true;
 }
 
 static void target_init(target_context_t *ctx)
@@ -114,6 +117,7 @@ static void render_target_mode(target_context_t *ctx)
 
     line_stepper_t ls;
     uint8_t colour;
+    uint8_t sx, sy;
 
     line_stepper_init(&ls, ctx->source.x, ctx->source.y, ctx->cursor.x, ctx->cursor.y);
 
@@ -130,7 +134,10 @@ static void render_target_mode(target_context_t *ctx)
             if (is_opaque(ls.x0, ls.y0))
                 colour = PALETTE_TARGETING_BLOCKED;
         }
-        zxnext_tilemap_set_attr(ls.x0, ls.y0, colour);
+        if (map_to_screen(ls.x0, ls.y0, &sx, &sy))
+        {
+            zxnext_tilemap_set_attr(sx, sy, colour);
+        }
     }
 }
 
@@ -139,6 +146,9 @@ static void target_resolve(target_context_t *ctx)
     coord_t *c = &ctx->cursor;
 
     if (!in_range(ctx->source, ctx->cursor, ctx->max_range))
+        return;
+
+    if (ctx->require_los && !map_has_line_of_sight(&ctx->source, &ctx->cursor))
         return;
 
     if (ctx->filter == TARGET_FILTER_ENTITY)
@@ -156,3 +166,21 @@ static void target_resolve(target_context_t *ctx)
         ctx->target_selected = 1;
     }
 }
+
+/*
+ * @brief Converts a map coordinate to screen coordinates
+ * @details Relies upon unsigned int underflows to a large number and fails >= VIEW_WIDTH or VIEW_HEIGHT
+ */
+static inline bool map_to_screen(uint8_t map_x, uint8_t map_y, uint8_t *screen_x, uint8_t *screen_y)
+{
+    uint8_t sx = map_x - g.camera.x;
+    uint8_t sy = map_y - g.camera.y;
+
+    if (sx >= VIEW_WIDTH || sy >= VIEW_HEIGHT)
+        return false;
+
+    *screen_x = sx;
+    *screen_y = sy;
+    return true;
+}
+

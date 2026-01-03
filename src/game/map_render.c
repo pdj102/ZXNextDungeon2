@@ -43,12 +43,12 @@ const terrain_base_t terrain_bases[TERRAIN_TYPE_COUNT] = {
 void map_render(void)
 {
     zxnext_tile_t tile = {0};
-    uint8_t map_x = g.map.camera.x;
-    uint8_t map_y = g.map.camera.y;
+    uint8_t map_x = g.camera.x;
+    uint8_t map_y = g.camera.y;
 
-    for (uint8_t x = 0; x < 30; x++)
+    for (uint8_t x = 0; x < VIEW_WIDTH; x++)
     {
-        for (uint8_t y = 0; y < 24; y++)
+        for (uint8_t y = 0; y < VIEW_HEIGHT; y++)
         {
             if (g.map.cell_head[map_x][map_y] != ENTITY_ID_INVALID)
             {
@@ -64,7 +64,7 @@ void map_render(void)
             }
             map_y++;
         }
-        map_y = g.map.camera.y;
+        map_y = g.camera.y;
         map_x++;
     }
 }

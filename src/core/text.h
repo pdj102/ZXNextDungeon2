@@ -54,7 +54,7 @@ void text_set_cursor(text_window_t *win_p, uint8_t x, uint8_t y);
  * @param win_p 
  * @param c 
  */
-void text_putc(text_window_t *win_p, char c);
+void text_putc(text_window_t *win_p, unsigned char c);
 
 void text_print_string(text_window_t *win_p, const char text[]);
 

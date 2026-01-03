@@ -9,6 +9,7 @@
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
 
 #include "ecs/components/stats_comp.h"
+#include "ecs/components/attack_comp.h"
 
 #include "core/zxnext.h"
 
@@ -339,7 +340,7 @@ void system_combat_init(void)
 
 }
 
-bool system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
+bool system_combat_try_attack(entity_id_t creature, entity_id_t target, attack_kind_t kind)
 {
     uint8_t current_bank;
     bool result;
@@ -347,11 +348,26 @@ bool system_combat_try_melee_attack(entity_id_t creature, entity_id_t target)
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_COMBAT_SYSTEM);
 
-    result = combat_system_try_melee_attack(creature, target);
+    result = combat_system_try_attack(creature, target, kind);
 
     ZXN_WRITE_MMU6(current_bank);
 
     return result;
+}
+
+uint8_t system_combat_attack_range(entity_id_t attacker, attack_kind_t kind)
+{
+    uint8_t current_bank;
+    uint8_t result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_COMBAT_SYSTEM);
+
+    result = combat_system_attack_range(attacker, kind);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result;    
 }
 
 /* Damage System*/
@@ -822,6 +838,7 @@ bool system_perception_can_see_target(entity_id_t ai, entity_id_t target)
     return result; 
 }
 
+
 void system_player_update(void)
 {
     uint8_t current_bank;
@@ -840,7 +857,7 @@ void system_stats_init(void)
 
 }
 
-uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_type_t stat)
+uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_kind_t stat)
 {
     uint8_t current_bank;
     uint8_t value;
@@ -855,7 +872,7 @@ uint8_t system_stats_get_stat_cur(entity_id_t actor, stat_type_t stat)
     return value;
 }
 
-uint8_t system_stats_get_stat_base(entity_id_t actor, stat_type_t stat)
+uint8_t system_stats_get_stat_base(entity_id_t actor, stat_kind_t stat)
 {
     uint8_t current_bank;
     int8_t value;
@@ -870,7 +887,7 @@ uint8_t system_stats_get_stat_base(entity_id_t actor, stat_type_t stat)
     return value;
 }
 
-int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_type_t stat)
+int8_t system_stats_get_stat_modifier(entity_id_t actor, stat_kind_t stat)
 {
     uint8_t current_bank;
     int8_t value;
