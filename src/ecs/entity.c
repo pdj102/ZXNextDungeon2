@@ -142,6 +142,44 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
 }
 
 /*
+ * @brief reduce quantity of entity and if quantity reaches zero, mark for destruction
+ */
+void entity_consume_or_destroy(entity_id_t entity)
+{
+    if (entity_has_component(entity, COMPONENT_STACKABLE))
+    {
+        g.stackable_components[entity].quantity--;
+        if (g.stackable_components[entity].quantity == 0)
+        {
+            entity_mark_for_destruction(entity);
+        }
+        return;
+    }
+    entity_mark_for_destruction(entity);
+}
+
+/*
+ * @brief returns true if the entity is protected by persistence or is contained by an entity with persistence
+ */
+bool entity_is_protected_by_persistence(entity_id_t id)
+{
+    entity_id_t cur = id;
+
+    while (cur != ENTITY_ID_INVALID)
+    {
+        if (entity_has_flag(cur, FLAG_PERSISTANT))
+            return true;
+
+        if (!entity_has_component(cur, COMPONENT_CONTAINED))
+            break;
+
+        cur = g.contained_components[cur].container;
+    }
+
+    return false;
+}
+
+/*
  * @brief Mark an entity for destruction and append to for destuction list
  */
 void entity_mark_for_destruction(entity_id_t id) 

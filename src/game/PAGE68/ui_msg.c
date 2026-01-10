@@ -154,6 +154,9 @@ static void ui_msg_win_nl(void);
         case EVENT_ACTIVE_EFFECT_EXPIRED:
             util_info("Active effect expired");
             break;
+        case EVENT_TRANSITION:
+            text_printf(&g.msg_win, "Transitioning...");
+            break;
         default:
             break;
     }

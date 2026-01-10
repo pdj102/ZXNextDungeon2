@@ -19,7 +19,7 @@
  * private variables
  * ***************************************************/
 
-const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
+static const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
 {
     [CREATURE_NONE] = {.speed = SPEED_NONE, .stats = {0, 0, 0, 0, 0, 0}},
    /* MONSTER_CLASS_ABERRATIONS */
@@ -42,7 +42,7 @@ const stats_comp_t monster_stats_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */    
 };
 
-const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
+static const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
 {
     [CREATURE_NONE] = {.ac = 0, .cur_hp = 0, .max_hp = 0, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
    /* MONSTER_CLASS_ABERRATIONS */ 
@@ -67,12 +67,11 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
 
 
 /* Monster default melee attack*/
- const attack_comp_t monster_melee_base[CREATURE_KIND_COUNT] = {
+ static const attack_comp_t monster_melee_base[CREATURE_KIND_COUNT] = {
     [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
-   /* [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2}, */
-    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_NONE},
+    [CREATURE_RAT] = {.attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 4, .damage_mod = 2},
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -91,7 +90,7 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
 };
 
 /* Monster default ranged attack*/
- const attack_comp_t monster_ranged_base[CREATURE_KIND_COUNT] = {
+ static const attack_comp_t monster_ranged_base[CREATURE_KIND_COUNT] = {
     [CREATURE_NONE] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */    
@@ -105,7 +104,7 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
     [CREATURE_COMMONER] = {.attack_type = ATTACK_KIND_NONE, .damage_roll = DICE_NONE, .damage_kind = DAMAGE_NONE, .range = 0, .hit_mod = 0, .damage_mod = 0},
-    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D8, .damage_kind = DAMAGE_PIERCING, .range = 5, .hit_mod = 0, .damage_mod = 0},
+    [CREATURE_PLAYER] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D8, .damage_kind = DAMAGE_PIERCING, .range = 5, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_NONE},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
@@ -113,7 +112,7 @@ const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */    
 };
 
-const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] = 
+static const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] = 
 {
     [CREATURE_NONE] = 0,
    /* MONSTER_CLASS_ABERRATIONS */
@@ -136,7 +135,7 @@ const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */    
 };
 
-const name_id_t creature_name_base[CREATURE_KIND_COUNT] = 
+static const name_id_t creature_name_base[CREATURE_KIND_COUNT] = 
 {
     [CREATURE_NONE] = NAME_NONE,
    /* MONSTER_CLASS_ABERRATIONS */
@@ -159,7 +158,7 @@ const name_id_t creature_name_base[CREATURE_KIND_COUNT] =
     /* MONSTER_CLASS_UNDEAD */
 };
 
-const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] = 
+static const renderable_comp_t monster_renderable_base[CREATURE_KIND_COUNT] = 
 {
     [CREATURE_NONE] = { .tile = {' ', 0}},
    /* MONSTER_CLASS_ABERRATIONS */
@@ -295,7 +294,7 @@ void add_slots(entity_id_t id);
 
     /* Add an AI component*/
     entity_set_component(id, COMPONENT_AI);
-    g.ai_components[id].state = AI_STATE_IDLE;
+    g.ai_components[id].state = AI_STATE_IDLE;    
 
     return id;
 }
@@ -308,6 +307,8 @@ entity_id_t monster_system_create_player( void )
         return ENTITY_ID_INVALID;
 
     g.player.id = id;
+    
+    entity_set_flag(id, FLAG_PERSISTANT);  
 
     /* Remove AI component */
     entity_clear_component(id, COMPONENT_AI);
@@ -317,7 +318,7 @@ entity_id_t monster_system_create_player( void )
     entity_set_component(id, COMPONENT_PLAYER);
 
     /* Add slots component */
-    add_slots(id);
+    add_slots(id);    
 
     return id;
 }
@@ -433,7 +434,7 @@ static void add_timer(entity_id_t entity, ticks_t ticks)
     /* Add to active timer list*/
     g.timer_components.list[g.timer_components.count++] = entity;
 
-    entity_set_component(entity, COMPONENT_TIMER); /* set entity timer component mask */
+    entity_set_component(entity, COMPONENT_TIMER); /* set entity timer component mask */ 
 }
 
 static void add_name(entity_id_t entity, name_id_t name)

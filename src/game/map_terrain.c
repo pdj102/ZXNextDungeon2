@@ -22,22 +22,7 @@
  ***************************************************/
 void map_terrain_init(void)
 {
-    /*
-    for (uint8_t x = 0; x < MAP_WIDTH; x++) {
-        for (uint8_t y = 0; y < MAP_HEIGHT; y++) {
-            g.map.terrain[x][y] = TERRAIN_FLOOR; 
-        }
-    }
 
-    for (uint8_t x = 0; x < MAP_WIDTH; x++) {
-        g.map.terrain[x][0] = TERRAIN_WALL;
-        g.map.terrain[x][MAP_HEIGHT - 1] = TERRAIN_WALL;
-    }
-    for (uint8_t y = 0; y < MAP_HEIGHT; y++) {
-        g.map.terrain[0][y] = TERRAIN_WALL;
-        g.map.terrain[MAP_WIDTH - 1][y] = TERRAIN_WALL;
-    }
-    */
 }
 
 terrain_type_t map_terrain_get_terrain( uint8_t x, uint8_t y)

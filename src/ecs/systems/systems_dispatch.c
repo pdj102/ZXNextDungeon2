@@ -31,6 +31,9 @@
 #include "ecs/systems/PAGE64/name_system.h"
 #include "ecs/systems/PAGE66/healing_system.h"
 #include "ecs/systems/PAGE70/ai_system.h"
+#include "ecs/systems/PAGE72/feature_system.h"
+#include "ecs/systems/PAGE74/door_system.h"
+#include "ecs/systems/PAGE74/transition_system.h"
 
 #include "game/global_state.h"
 #include "game/memory_map.h"
@@ -65,7 +68,6 @@
     system_effect_init();
     system_equipment_init();
     system_event_init();
-    system_item_init();
     system_monster_init();
     system_movement_init();
     system_player_init();
@@ -219,14 +221,14 @@ void system_container_add(entity_id_t container, entity_id_t item)
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
-void system_container_remove(entity_id_t container, entity_id_t item)
+void system_container_remove(entity_id_t item)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
 
-    container_system_remove(container, item);
+    container_system_remove(item);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
@@ -406,6 +408,36 @@ bool system_damage_try_die(entity_id_t creature)
     return result;
 }
 
+bool system_door_try_open(entity_id_t actor, entity_id_t entity)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_DOOR_SYSTEM);
+
+    result = door_system_try_open(actor, entity);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result;
+}
+
+bool system_door_try_close(entity_id_t actor, entity_id_t entity)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_DOOR_SYSTEM);
+
+    result = door_system_try_close(actor, entity);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return result;
+}
+
 /* Effect System */
 void system_effect_init(void)
 {
@@ -579,20 +611,23 @@ void system_event_emit(const event_t *event)
 
 }
 
-/* Item system*/
-
-void system_item_init(void)
+/* Feature system*/
+entity_id_t system_feature_create(feature_kind_t kind)
 {
+    entity_id_t entity;
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ITEM_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_FEATURE_SYSTEM);  /* Page timer system into 8k MMU slot 6 */    
 
-    item_system_init();
+    entity = feature_system_create(kind);
 
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */     
+
+    return entity;    
 }
 
+/* Item system*/
 entity_id_t system_item_create(item_kind_t kind, uint8_t quantity)
 {
     entity_id_t entity;
@@ -769,14 +804,14 @@ bool system_movement_are_adjacent(entity_id_t entity1, entity_id_t entity2)
     return result;        
 }
 
-void system_movement_cleanup(entity_id_t id)
+void system_movement_detach(entity_id_t id)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_MOVEMENT_SYSTEM);  
 
-    movement_system_cleanup(id);
+    movement_system_detach(id);
 
     ZXN_WRITE_MMU6(current_bank);    
 }
@@ -1043,6 +1078,30 @@ void system_timer_reset(entity_id_t entity)
     timer_system_reset(entity);
 
     ZXN_WRITE_MMU6(current_bank);       
+}
+
+void system_timer_start(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);          
+
+    timer_system_start(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
+}
+
+void system_timer_stop(entity_id_t entity)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TIMER_SYSTEM);          
+
+    timer_system_stop(entity);
+
+    ZXN_WRITE_MMU6(current_bank);
 
 }
 
@@ -1056,4 +1115,17 @@ void system_timer_cleanup(entity_id_t entity)
     timer_system_cleanup(entity);
 
     ZXN_WRITE_MMU6(current_bank);         
+}
+
+/* Transition System */
+void system_transition_try(entity_id_t source, entity_id_t target)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     
+    ZXN_WRITE_MMU6(PAGE_TRANSITION_SYSTEM);          
+
+    transition_system_try(source, target);
+
+    ZXN_WRITE_MMU6(current_bank);   
 }

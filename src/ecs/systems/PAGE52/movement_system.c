@@ -133,7 +133,7 @@ coord_t *m = &g.location_components[entity].coord;
  * @brief Unlink entity from the map and remove its location component
  * @param[in] entity to remove component from
  */
-void movement_system_cleanup(entity_id_t entity)
+void movement_system_detach(entity_id_t entity)
 {
     util_assert(entity < MAX_ENTITIES);
 

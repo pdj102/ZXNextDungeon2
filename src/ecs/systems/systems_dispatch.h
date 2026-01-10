@@ -13,7 +13,6 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/item_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/name_comp.h"
 #include "ecs/components/effect_comp.h"
@@ -21,7 +20,9 @@
 #include "ecs/components/attack_comp.h"
 #include "ecs/components/destructible_comp.h"
 
+#include "ecs/systems/PAGE32/item_system.h"
 #include "ecs/systems/PAGE42/event_system.h"
+#include "ecs/systems/PAGE72/feature_system.h"
 
 #include "game/spatial.h"
 
@@ -62,7 +63,7 @@ void system_container_init(void);
 bool system_container_try_pickup(entity_id_t container, entity_id_t item);
 bool system_container_try_drop(entity_id_t container, entity_id_t item);
 void system_container_add(entity_id_t container, entity_id_t item);
-void system_container_remove(entity_id_t container, entity_id_t item);
+void system_container_remove(entity_id_t item);
 uint8_t system_container_count(entity_id_t container);
 entity_id_t system_container_get_first(entity_id_t container);
 entity_id_t system_container_get_next(entity_id_t entity);
@@ -80,8 +81,11 @@ void system_damage_init(void);
 int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag);
 bool system_damage_try_die(entity_id_t creature);
 
+/* Door system*/
+bool system_door_try_open(entity_id_t actor, entity_id_t entity);
+bool system_door_try_close(entity_id_t actor, entity_id_t entity);
+
 /* Item system*/
-void system_item_init(void);
 entity_id_t system_item_create(item_kind_t kind, uint8_t quantity);
 
 /* Effect system */
@@ -103,6 +107,10 @@ bool system_equipment_try_unequip(entity_id_t actor, entity_id_t item);
 bool system_equipment_is_equipped(entity_id_t actor, entity_id_t item);
 void system_equipment_cleanup(entity_id_t id);
 
+/* Feature system*/
+void system_feature_init(void);
+entity_id_t system_feature_create(feature_kind_t kind);
+
 /* Healing System*/
 int8_t system_healing_try_take_healing(entity_id_t creature, int8_t amount, healing_kind_t kind);
 
@@ -119,7 +127,7 @@ bool system_movement_try_move_random(entity_id_t actor);
 bool system_movement_try_move_towards(entity_id_t entity, coord_t *coord);
 bool system_movement_location_equal(entity_id_t entity1, entity_id_t entity2);
 bool system_movement_are_adjacent(entity_id_t entity1, entity_id_t entity2);
-void system_movement_cleanup(entity_id_t id);
+void system_movement_detach(entity_id_t id);
 
 /* Name system */
 void system_name_print(text_window_t *win, name_id_t name);
@@ -149,6 +157,11 @@ void system_timer_init(void);
 void system_timer_update(void);
 bool system_timer_has_fired(entity_id_t entity);
 void system_timer_reset(entity_id_t entity);
+void system_timer_start(entity_id_t entity);
+void system_timer_stop(entity_id_t entity);
 void system_timer_cleanup(entity_id_t entity);
+
+/* Transition System */
+void system_transition_try(entity_id_t source, entity_id_t target);
 
 #endif // SYSTEMS_DISPATCH_H

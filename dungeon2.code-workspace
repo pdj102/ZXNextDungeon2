@@ -23,7 +23,7 @@
 			"creature_comp_priv.h": "c",
 			"init.h": "c",
 			"text.h": "c",
-			"item_comp.h": "c",
+			"stackable_comp.h": "c",
 			"entity_factory.h": "c",
 			"util.h": "c",
 			"entity_priv.h": "c",

@@ -37,7 +37,7 @@ typedef struct {
     uint8_t flags;              /* entity flags */
 } entity_t;
 
-/* Entity arena structure - fast iterate */
+/* Entites and fast iterate lists */
 typedef struct {
     entity_t    entities[MAX_ENTITIES];     /* array of entities */
 

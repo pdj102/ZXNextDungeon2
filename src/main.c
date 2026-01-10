@@ -22,8 +22,9 @@
 #include "game/ui.h"
 #include "game/map.h"
 #include "game/map_render.h"
-
 #include "game/global_state.h"
+#include "game/world.h"
+#include "game/PAGE34/dungeon_gen.h"
 
 #include "core/util.h"
 #include "core/text.h"
@@ -33,13 +34,13 @@
 #define STACK_PATTERN 0xCD
 
 static uint16_t stack_max_usage(void);
-static void clean_up_and_destroy(void);
 static void turn(void);
 static void process_entity_turn(entity_id_t id);
 
+static void map(void);
+
 int main(void)
 {
-
     uint16_t stack_max;
     uint16_t stack;
 
@@ -52,44 +53,13 @@ int main(void)
     stack = 0;
 
     zxnext_init();
-    entity_init();
-    component_init();
-    systems_init();
     ui_init();
-    map_init();
-    map_gen();
-
+    
     util_info("Debug build");
     text_printf(&g.msg_win, "\nGlobal size:%U", sizeof(g));
     util_assert(sizeof(g) < 0x3FFF);
 
-    entity_id_t e1 = system_item_create(ITEM_SHORT_SWORD, 1);
-    system_movement_place(e1, 10, 10);
-
-    entity_id_t e2 = system_item_create(ITEM_POTION_OF_HEALING, 1);
-    system_movement_place(e2, 12, 10);
-
-    entity_id_t e3 = system_item_create(ITEM_KEY, 1);
-
-    entity_id_t e4 = system_monster_create(CREATURE_RAT);
-    system_container_add(e4, e3);
-    system_movement_place(e4, 25, 12);
-
-    // entity_id_t e5 = system_monster_create(CREATURE_WITHERWEED);
-    // system_movement_place(e5, 12, 12);
-
-    g.player.id = ENTITY_ID_INVALID;
-    entity_id_t e6 = system_monster_create_player();
-    system_movement_place(e6, 10, 15);
-
-    entity_id_t e7 = system_item_create(ITEM_BREAD, 1);
-    system_movement_place(e7, 6, 15);
-
-    entity_id_t e8 = system_item_create(ITEM_RING_OF_STRENGTH, 1);
-    system_movement_place(e8, 7, 15);
-
-    entity_id_t e9 = system_item_create(ITEM_SHORT_BOW, 1);
-    system_movement_place(e9, 5, 14);
+    new_game();
 
     map_render();
 
@@ -119,16 +89,17 @@ int main(void)
             g.stat_win.dirty = 0;
         }
 
-        clean_up_and_destroy();
+        world_process_entity_destructions();
 
-#ifndef NDEBUG
+
+        #ifndef NDEBUG
         stack = stack_max_usage();
         if (stack > stack_max)
         {
             stack_max = stack;
             text_printf(&g.msg_win, "\nMax stack usage: %u bytes", stack_max);
         }
-#endif
+        #endif
     }
     return 0;
 }
@@ -175,37 +146,6 @@ static void process_entity_turn(entity_id_t id)
     }
 }
 
-static void clean_up_and_destroy(void)
-{
-    uint8_t i = 0;
-    entity_id_t id;
-
-    /* Run clean up for each entity marked for destruction */
-    /* Note: clean up may append more entities to the list for destruction */
-    /* So we need to iterate until the list is empty */
-    /* Do not destroy anything yet */
-
-    while (g.entity_components.destroy_head > i)
-    {
-        id = g.entity_components.destroy_list[i];
-        // text_printf(&g.msg_win, "\n%d entities to cleanup", g.entity_components.destroy_head);
-
-        util_assert(entity_has_flag(id, FLAG_PENDING_DESTROY));
-        util_assert(entity_has_flag(id, FLAG_IN_USE));
-        system_container_clean_up(id);
-        system_effect_cleanup_entity(id);
-        system_movement_cleanup(id);
-        system_timer_cleanup(id);
-        system_equipment_cleanup(id);
-
-        i++;
-    }
-
-    /* Now all entities are marked for destruction and cleanup has been run*/
-    /* Finalise the destruction */
-    entity_cleanup();
-}
-
 static uint16_t stack_max_usage(void)
 {
     uint8_t *p = (uint8_t *)STACK_LOW;
@@ -214,3 +154,5 @@ static uint16_t stack_max_usage(void)
 
     return (uint16_t)(STACK_HIGH - (uintptr_t)p);
 }
+
+

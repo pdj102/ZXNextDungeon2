@@ -1,11 +1,18 @@
 /**
- * @file components.h
+ * @file openable_comp.h
  * @author Paul Johnson
  * @brief 
+ * 
+ * @copyright Copyright (c) 2025
+ * 
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef OPENABLE_COMP_H
+#define OPENABLE_COMP_H
+
+#include <stdint.h>
+
+#include "ecs/entity.h"
 
 /***************************************************
  * public defines
@@ -14,13 +21,15 @@
 /***************************************************
  * public types
  ***************************************************/
+/* Item component data per entity */
+typedef struct {
+    bool is_open;
+} openable_comp_t;
+
+typedef openable_comp_t openable_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
-
-#endif // COMPONENTS_H
+#endif // OPENABLE_COMP_H

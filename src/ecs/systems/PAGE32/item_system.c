@@ -12,13 +12,12 @@
 
 #include "ecs/systems/PAGE42/event_system.h"
 
-
 #include "game/global_state.h"
 
 /***************************************************
  * private variables
  * ***************************************************/
-const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
+static const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     [ITEM_NONE] = EQUIPPABLE_NONE,
     /* Melee weapons */
     [ITEM_CLUB] = EQUIPPABLE_HANDS,
@@ -30,6 +29,7 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     /* Shields */
     [ITEM_SHIELD] = EQUIPPABLE_SHIELD,
     /* Ammo */
+    [ITEM_ARROW] = EQUIPPABLE_AMMO,
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = EQUIPPABLE_NONE,
     /* Scrolls */
@@ -43,7 +43,7 @@ const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     [ITEM_KEY] = EQUIPPABLE_NONE
 };
 
-const name_id_t item_name_base[ITEM_KIND_COUNT] = 
+static const name_id_t item_name_base[ITEM_KIND_COUNT] = 
 {
     [ITEM_NONE] = NAME_NONE,
     /* Melee weapons */
@@ -56,6 +56,7 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
     /* Shields */
     [ITEM_SHIELD] = NAME_SHIELD,
     /* Ammo */
+    [ITEM_ARROW] = NAME_ARROW,
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = NAME_POTION_OF_HEALING,
     /* Scrolls */
@@ -69,12 +70,12 @@ const name_id_t item_name_base[ITEM_KIND_COUNT] =
     [ITEM_KEY] = NAME_KEY
 };
 
-const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
+static const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
 {
     [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
-    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0},
-    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_CLUB] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D4, .damage_kind = DAMAGE_BLUDGEONING, .range = 1, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_NONE},
+    [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_NONE},
     /* Ranged weapons*/
     [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_NONE },
     /* Armour */    
@@ -82,6 +83,7 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     /* Shields */
     [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ammo */
+    [ITEM_ARROW] = { .attack_type = ATTACK_KIND_NONE },
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
     /* Scrolls */
@@ -95,19 +97,20 @@ const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
 };
 
-const attack_comp_t ranged_base[ITEM_KIND_COUNT] = 
+static const attack_comp_t ranged_base[ITEM_KIND_COUNT] = 
 {
     [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
     [ITEM_CLUB] = { .attack_type = ATTACK_KIND_NONE },
     [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ranged weapons*/
-    [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 10, .hit_mod = 0, .damage_mod = 0},
+    [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 10, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_ARROW},
     /* Armour */    
     [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
     /* Shields */
     [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ammo */
+    [ITEM_ARROW] = { .attack_type = ATTACK_KIND_NONE },
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
     /* Scrolls */
@@ -121,7 +124,34 @@ const attack_comp_t ranged_base[ITEM_KIND_COUNT] =
     [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
 };
 
-const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
+static const ammo_comp_t ammo_base[ITEM_KIND_COUNT] = 
+{
+    [ITEM_NONE] = { .ammo_type = AMMO_NONE },
+    /* Melee weapons */
+    [ITEM_CLUB] = { .ammo_type = AMMO_NONE },
+    [ITEM_SHORT_SWORD] = { .ammo_type = AMMO_NONE },
+    /* Ranged weapons*/
+    [ITEM_SHORT_BOW] = { .ammo_type = AMMO_NONE },
+    /* Armour */    
+    [ITEM_LEATHER_ARMOUR] = { .ammo_type = AMMO_NONE },
+    /* Shields */
+    [ITEM_SHIELD] = { .ammo_type = AMMO_NONE },
+    /* Ammo */
+    [ITEM_ARROW] = { .ammo_type = AMMO_ARROW, .damage_kind = DAMAGE_PIERCING, .damage_roll = DICE_1D6, .damage_mod = 0, .hit_mod = 0},
+    /* Potions */
+    [ITEM_POTION_OF_HEALING] = { .ammo_type = AMMO_NONE },
+    /* Scrolls */
+    /* Food and drink */
+    [ITEM_BREAD] = { .ammo_type = AMMO_NONE },
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH] = { .ammo_type = AMMO_NONE },
+    /* Wands */
+    /* Light sources */
+    /* Keys */
+    [ITEM_KEY] = { .ammo_type = AMMO_NONE },   
+};
+
+static const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_NONE] = { .tile = {' ', 0}},
     /* Melee weapons */
     [ITEM_CLUB] = { .tile = { 's', PALETTE_WHITE}},
@@ -132,6 +162,8 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_LEATHER_ARMOUR] = { .tile = { 'a', PALETTE_BROWN}},
     /* Shields */
     [ITEM_SHIELD] = { .tile = { 'a', 0}},
+    /* Ammo */
+    [ITEM_ARROW] = { .tile = { '{', PALETTE_WHITE}},
     /* Potions */
     [ITEM_POTION_OF_HEALING] = { .tile = { 'p', PALETTE_BLUE}},
     /* Scrolls */
@@ -145,7 +177,7 @@ const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_KEY] = { .tile = { 'k', 0}}
 };
 
-const uint8_t consumable_base[ITEM_KIND_COUNT] = 
+static const uint8_t consumable_base[ITEM_KIND_COUNT] = 
 {
     [ITEM_NONE] = 0,
     /* Melee weapons */
@@ -158,6 +190,7 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
     /* Shields */
     [ITEM_SHIELD] = 0,
     /* Ammo */
+    [ITEM_ARROW] = 0,
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = 1,
     /* Scrolls */
@@ -171,7 +204,7 @@ const uint8_t consumable_base[ITEM_KIND_COUNT] =
     [ITEM_KEY] = 0
 };
 
-const effect_comp_t effect_base[ITEM_KIND_COUNT] = 
+static const effect_comp_t effect_base[ITEM_KIND_COUNT] = 
 {
     [ITEM_NONE] = { .kind = EFFECT_NONE},
     /* Melee weapons */
@@ -184,6 +217,7 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     /* Shields */
     [ITEM_SHIELD] = { .kind = EFFECT_NONE},
     /* Ammo */
+    [ITEM_ARROW] = { .kind = EFFECT_NONE},
     /* Potions */    
     [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
@@ -200,21 +234,17 @@ const effect_comp_t effect_base[ITEM_KIND_COUNT] =
 /***************************************************
  * private function prototypes
  ****************************************************/
-static void add_item(entity_id_t entity, item_kind_t kind, uint8_t quantity);
+static void add_stackable(entity_id_t entity, uint8_t quantity);
 static void add_equippable(entity_id_t entity, equippable_slot_t slot);
 static void melee_add(entity_id_t entity, const attack_comp_t *attack);
 static void ranged_add(entity_id_t entity, const attack_comp_t *attack);
+static void add_ammo(entity_id_t entity, const ammo_comp_t *ammo);
 static void add_effect(entity_id_t entity, const effect_comp_t *effect);
 static void add_name(entity_id_t entity, name_id_t name);
 
 /***************************************************
  * public functions
  ***************************************************/
-
- void item_system_init(void)
- {
-
- }
 
 entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
 {
@@ -223,8 +253,8 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     if (id == ENTITY_ID_INVALID)
         return ENTITY_ID_INVALID;
 
-    /* Add item component */
-    add_item(id, kind, quantity);
+    /* Add stackable component */
+    add_stackable(id, quantity);
     
     /* Add equippable component */
     add_equippable(id, equippable_base[kind]);
@@ -243,7 +273,13 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     if (ranged_base[kind].attack_type == ATTACK_KIND_RANGED)
     {
         ranged_add(id, &ranged_base[kind]);
-    }    
+    }
+
+    /* If item has ammo component e.g. arrow, bolt, trap*/
+    if (ammo_base[kind].ammo_type != AMMO_NONE)
+    {
+        add_ammo(id, &ammo_base[kind]);
+    }            
 
     /* If item has an effect e.g. bread restores health*/
     if (effect_base[kind].kind != EFFECT_NONE)
@@ -266,17 +302,15 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
 /***************************************************
  * private functions
  ****************************************************/
-static void add_item(entity_id_t entity, item_kind_t kind, uint8_t quantity)
+static void add_stackable(entity_id_t entity, uint8_t quantity)
 {
     util_assert(entity < MAX_ENTITIES);
-    util_assert(!entity_has_component(entity, COMPONENT_ITEM)); /* entity must not have item component */
-    util_assert(kind < ITEM_KIND_COUNT);
+    util_assert(!entity_has_component(entity, COMPONENT_STACKABLE)); /* entity must not have item component */
     util_assert(quantity > 0);
 
-    g.item_components[entity].kind = kind; /* set item kind */
-    g.item_components[entity].quantity = quantity; /* set quantity */
+    g.stackable_components[entity].quantity = quantity; /* set quantity */
 
-    entity_set_component(entity, COMPONENT_ITEM); /* set entity item component mask */
+    entity_set_component(entity, COMPONENT_STACKABLE); /* set entity stackable component mask */
 }
 
 static void add_equippable(entity_id_t entity, equippable_slot_t slot)
@@ -296,6 +330,7 @@ static void melee_add(entity_id_t entity, const attack_comp_t *attack)
     g.melee_components[entity].damage_mod = attack->damage_mod;
     g.melee_components[entity].hit_mod = attack->hit_mod;
     g.melee_components[entity].range = attack->range;
+    g.melee_components[entity].allowed_ammo = attack->allowed_ammo;
 
     entity_set_component(entity, COMPONENT_MELEE_ATTACK);
 }
@@ -307,8 +342,20 @@ static void ranged_add(entity_id_t entity, const attack_comp_t *attack)
     g.ranged_components[entity].damage_mod = attack->damage_mod;
     g.ranged_components[entity].hit_mod = attack->hit_mod;
     g.ranged_components[entity].range = attack->range;
+    g.ranged_components[entity].allowed_ammo = attack->allowed_ammo;
 
     entity_set_component(entity, COMPONENT_RANGED_ATTACK);
+}
+
+static void add_ammo(entity_id_t entity, const ammo_comp_t *ammo)
+{
+    g.ammo_components[entity].ammo_type = ammo->ammo_type;
+    g.ammo_components[entity].damage_kind = ammo->damage_kind;
+    g.ammo_components[entity].damage_roll = ammo->damage_roll;
+    g.ammo_components[entity].damage_mod = ammo->damage_mod;
+    g.ammo_components[entity].hit_mod = ammo->hit_mod;
+    
+    entity_set_component(entity, COMPONENT_AMMO);
 }
 
 static void add_effect(entity_id_t entity, const effect_comp_t *effect)

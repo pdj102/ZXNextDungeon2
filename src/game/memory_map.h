@@ -70,6 +70,9 @@
 #define PAGE_HEALING_SYSTEM   66
 #define PAGE_UI               68
 #define PAGE_AI               70
+#define PAGE_FEATURE_SYSTEM   72
+#define PAGE_DOOR_SYSTEM      74
+#define PAGE_TRANSITION_SYSTEM      74
 
 /*
  * Bank switching macros. Do not use from within a bank that is being switched out. 

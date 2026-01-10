@@ -45,6 +45,10 @@ typedef enum {
     EVENT_ACTIVE_EFFECT_UNATTACHED, // Source (entity_id_invalid if no specific source) removed an effect from target
     EVENT_ACTIVE_EFFECT_EXPIRED,    // Source's (entity_id_invalid if no specific source) effect expired on target
     EVENT_SPOTTED_TARGET,           // Source spotted target
+    EVENT_OPENED,                   // Source opened target 
+    EVENT_CLOSED,                   // Source closed target
+    EVENT_TRANSITION,               // Source transitions target to a new depth
+    EVENT_TRANSITION_TELEPORT,      // Source transitions target to a new depth
     EVENT_COUNT
 
 } event_type_t;

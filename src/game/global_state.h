@@ -10,25 +10,25 @@
 #include "ecs/entity_priv.h"
 
 #include "ecs/components/ai_comp.h"
+#include "ecs/components/ammo_comp.h"
 #include "ecs/components/attack_comp.h"
-#include "ecs/components/destructible_comp.h"
-#include "ecs/components/item_comp.h"
-#include "ecs/components/location_comp.h"
-#include "ecs/components/effect_comp.h"
-#include "ecs/components/name_comp.h"
-
-#include "ecs/components/creature_comp.h"
-
 #include "ecs/components/container_comp.h"
 #include "ecs/components/contained_comp.h"
+#include "ecs/components/creature_comp.h"
+#include "ecs/components/destructible_comp.h"
+#include "ecs/components/effect_comp.h"
 #include "ecs/components/equippable_comp.h"
 #include "ecs/components/equipped_comp.h"
-
+#include "ecs/components/location_comp.h"
+#include "ecs/components/name_comp.h"
+#include "ecs/components/openable_comp.h"
 #include "ecs/components/player_comp.h"
 #include "ecs/components/renderable_comp.h"
+#include "ecs/components/stackable_comp.h"
 #include "ecs/components/stats_comp.h"
 #include "ecs/components/slots_comp.h"
 #include "ecs/components/timer_comp.h"
+#include "ecs/components/transition_com.h"
 
 #include "game/map_priv.h"
 
@@ -46,7 +46,7 @@ typedef struct
 {
     /* ECS */
     entity_components_t entity_components; 
-    item_components_t item_components; 
+    stackable_components_t stackable_components; 
     equippable_components_t equippable_components; 
     melee_components_t melee_components; 
     ranged_components_t ranged_components; 
@@ -64,9 +64,13 @@ typedef struct
     effect_components_t effect_components;
     name_components_t name_components;
     ai_components_t ai_components;
+    ammo_components_t ammo_components;
+    openable_components_t openable_components;
+    transition_components_t transition_components;
 
     /* World */
-    map_t map; /* the map */
+    uint8_t depth;
+    map_t map; 
     camera_t camera;
 
     /* UI */

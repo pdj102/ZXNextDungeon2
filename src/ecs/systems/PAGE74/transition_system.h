@@ -1,11 +1,15 @@
 /**
- * @file components.h
+ * @file transition_system.h
  * @author Paul Johnson
- * @brief 
+ * @brief Transitions system
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef TRANSITION_SYSTEM_H
+#define TRANSITION_SYSTEM_H
+
+#include "ecs/entity.h"
+#include "core/text.h"
+
 
 /***************************************************
  * public defines
@@ -15,12 +19,11 @@
  * public types
  ***************************************************/
 
+
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
+bool transition_system_try(entity_id_t source, entity_id_t target);
 
-#endif // COMPONENTS_H
+#endif // TRANSITION_SYSTEM_H

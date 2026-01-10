@@ -58,6 +58,7 @@ static const char *name_base[NAME_COUNT] =
     /* Shields */
     [NAME_SHIELD] = "shield",
     /* Ammo */
+    [NAME_ARROW] = "arrow",
     /* Potions */    
     [NAME_POTION_OF_HEALING] = "potion of healing",
     /* Scrolls */
@@ -68,7 +69,21 @@ static const char *name_base[NAME_COUNT] =
     /* Wands */
     /* Light sources */
     /* Keys */
-    [NAME_KEY] = "key"    
+    [NAME_KEY] = "key",
+
+    // Doors
+    [NAME_CLOSED_DOOR] = "closed door",
+    [NAME_OPEN_DOOR] = "open door",
+    // Containers & Storage
+    [NAME_CHEST] = "chest",
+    // Alters
+    // Mechanisms (levers, switches, )
+    // Traps (hidden)
+    // Statues
+    // Stairs
+    [NAME_UP_STAIRS] = "up stairs",
+    [NAME_DOWN_STAIRS] = "down stairs",
+    // Hazards
 };
 
 /***************************************************

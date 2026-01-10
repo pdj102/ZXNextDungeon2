@@ -83,14 +83,14 @@ bool map_has_line_of_sight(coord_t *a, coord_t *b)
     return true;
 }
 
-void map_gen(void)
+void map_gen(dungeon_transition_t *c)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
     ZXN_WRITE_MMU6(PAGE_DUNGEON_GEN);   /* Map dungeon generation code into ZX Spectrum 8k MMU slot 6 */    
 
-    dungeon_gen();
+    dungeon_generate(c);
 
     /* restore previous bank */
     ZXN_WRITE_MMU6(current_bank);         

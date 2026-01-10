@@ -1,5 +1,5 @@
 /**
- * @file map.h
+ * @file world.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -7,21 +7,20 @@
  * 
  */
 
-#ifndef MAP_H
-#define MAP_H
+#ifndef world_H
+#define world_H
 
 #include "ecs/entity.h"
+#include "ecs/systems/PAGE42/event_system.h"
+#include "game/global_state.h"
 
-#include "game/spatial.h"
-#include "game/PAGE34/dungeon_gen.h"
 
 #include <stdint.h>
 
 /***************************************************
  * public defines
  ***************************************************/
-#define MAP_WIDTH 80
-#define MAP_HEIGHT 24
+
 
 /***************************************************
  * public types
@@ -36,14 +35,12 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_init(void);
-entity_id_t map_get_first(uint8_t x, uint8_t y);
-bool map_can_enter(uint8_t x, uint8_t y);
-bool map_has_line_of_sight(coord_t *a, coord_t *b);
+void world_handle_event(const event_t *event);
+void new_game(void);
+void world_process_entity_destructions(void);
+void world_destroy_non_persistent_entities(void);
+void world_detach_persistent_entities(void);
+void world_attach_entity(entity_id_t id, uint8_t x, uint8_t y);
+void world_detach_entity(entity_id_t id);
 
-void map_gen(dungeon_transition_t *c);
-
-bool in_bounds(uint8_t x, uint8_t y);
-bool is_opaque(uint8_t x, uint8_t y);
-
-#endif // MAP_H
+#endif // world_H

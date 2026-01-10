@@ -1,11 +1,14 @@
 /**
- * @file components.h
+ * @file dungeon_reset.h
  * @author Paul Johnson
  * @brief 
+ * 
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef DUNGEON_RESET_H
+#define DUNGEON_RESET_H
+
+#include "game/PAGE34/dungeon_gen.h"
 
 /***************************************************
  * public defines
@@ -18,9 +21,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
+void dungeon_reset_level(dungeon_transition_t *c);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
-
-#endif // COMPONENTS_H
+#endif // DUNGEON_RESET_H

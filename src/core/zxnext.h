@@ -17,14 +17,18 @@
 #define KEY_LEFT        8
 #define KEY_RIGHT       9
 #define KEY_L_A           97
+#define KEY_L_C           99
 #define KEY_L_D           100
 #define KEY_L_E           101
 #define KEY_L_G           103
 #define KEY_L_I           105
 #define KEY_L_L           108
+#define KEY_L_O           111
 #define KEY_L_T           116
 #define KEY_L_U           117
 
+#define KEY_LESSTHAN         60
+#define KEY_GREATERTHAN      62
 #define KEY_U_E         69
 
 #define PALETTE_GREYSCALE   0b00000000

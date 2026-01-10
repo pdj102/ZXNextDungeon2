@@ -1,5 +1,5 @@
 /**
- * @file melee_comp.h
+ * @file attack_comp.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -32,6 +32,14 @@ typedef enum {
     ATTACK_KIND_MAGIC
 } attack_kind_t;
 
+typedef enum {
+    AMMO_NONE   = 0,
+    AMMO_ARROW  = 1 << 0,
+    AMMO_BOLT   = 1 << 1,
+    AMMO_STONE  = 1 << 2,
+    AMMO_DART   = 1 << 3,
+} ammo_type_t;
+
 /* Damage kind flags */
 typedef enum {
     DAMAGE_NONE            = 0,
@@ -52,8 +60,9 @@ typedef struct {
     dice_kind_t damage_roll;
     damage_flag_t damage_kind;
     uint8_t range;
-    int8_t hit_mod;     /* to hit modifier */
-    int8_t damage_mod;  /* to damage modifier */
+    int8_t hit_mod;
+    int8_t damage_mod;
+    ammo_type_t allowed_ammo; 
 } attack_comp_t;
 
 typedef attack_comp_t melee_components_t[MAX_ENTITIES]; 

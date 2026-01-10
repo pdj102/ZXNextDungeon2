@@ -1,12 +1,14 @@
 /**
- * @file dungeon_gen.h
+ * @file transition_comp.h
  * @author Paul Johnson
  * @brief 
  * 
+ * @copyright Copyright (c) 2025
+ * 
  */
 
-#ifndef DUNGEON_GEN_H
-#define DUNGEON_GEN_H
+#ifndef TRANSITION_COMP_H
+#define TRANSITION_COMP_H
 
 #include <stdint.h>
 
@@ -17,23 +19,28 @@
  * public defines
  ***************************************************/
 
- typedef struct 
-{
-    uint8_t from_depth;
-    uint8_t to_depth;
-    transistion_kind_t entry_kind;
-    entity_id_t source_entity;
-    entity_id_t actor;
-} dungeon_transition_t;
-
 /***************************************************
  * public types
  ***************************************************/
+typedef enum 
+{
+    TRANSITION_NONE,
+    TRANSITION_UP,
+    TRANSITION_DOWN,
+    TRANSITION_FALL,
+    TRANSITION_TELEPORT,
+} transistion_kind_t;
+
+ /* Item component data per entity */
+typedef struct {
+    int8_t delta_depth;
+    transistion_kind_t kind;
+} transition_comp_t;
+
+typedef transition_comp_t transition_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 
-void dungeon_generate(dungeon_transition_t *c);
-
-#endif // DUNGEON_GEN_H
+#endif // TRANSITION_COMP_H

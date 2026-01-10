@@ -15,43 +15,44 @@
 #include "game/map.h"
 #include "game/map_terrain.h"
 
-#include "game/PAGE34/dungeon_contents.h"
-#include "game/PAGE34/dungeon_features.h"
-#include "game/PAGE34/dungeon_layout.h"
-#include "game/PAGE34/dungeon_reset.h"
-
 #include "game/global_state.h"
 
 /***************************************************
  * private defines
  ***************************************************/
 
-
 /***************************************************
  * private types
  ***************************************************/
+
 
 /***************************************************
  * private variables
  * ***************************************************/
 
+
 /***************************************************
  * private function prototypes
  ***************************************************/
+static void clear_terrain(void);
 
 /***************************************************
  * public functions
  ***************************************************/
-void dungeon_generate(dungeon_transition_t *c)
+void dungeon_reset_level(dungeon_transition_t *c)
 {
-    dungeon_reset_level(c);
-    dungeon_build_layout(c);
-    dungeon_spawn_features(c);
-    dungeon_spawn_contents(c);
-    dungeon_place_persistents(c);
+   world_destroy_non_persistent_entities();
+   world_detach_persistent_entities();
+   clear_terrain();
 }
-
 
 /***************************************************
  * private functions
  ***************************************************/
+static void clear_terrain(void)
+{
+   for (int y = 0; y < MAP_HEIGHT; ++y)
+      for (int x = 0; x < MAP_WIDTH; ++x)
+         g.map.terrain[x][y] = TERRAIN_WALL;
+}
+

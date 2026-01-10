@@ -27,6 +27,8 @@ void timer_system_init(void);
 void timer_system_update(void);
 bool timer_system_has_fired(entity_id_t entity);
 void timer_system_reset(entity_id_t entity);
+void timer_system_start(entity_id_t entity);
+void timer_system_stop(entity_id_t entity);
 void timer_system_cleanup(entity_id_t entity);
 
 #endif // TIMER_SYSTEM_H

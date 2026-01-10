@@ -55,7 +55,7 @@ void timer_system_update(void)
     }
  }
 
- bool timer_system_has_fired(entity_id_t entity)
+bool timer_system_has_fired(entity_id_t entity)
 {
     return g.timer_components.timers[entity].fired;
 }
@@ -66,8 +66,28 @@ void timer_system_reset(entity_id_t entity)
     util_assert(entity_has_component(entity, COMPONENT_TIMER)); /* entity must have timer component */
 
     g.timer_components.timers[entity].ticks = g.timer_components.timers[entity].base_ticks; 
-    g.timer_components.timers[entity].active = 1; 
+    g.timer_components.timers[entity].active = 1;
     g.timer_components.timers[entity].fired = 0;
+}
+
+void timer_system_start(entity_id_t entity)
+{
+    if (!entity_has_component(entity, COMPONENT_TIMER))
+        return;
+
+    g.timer_components.timers[entity].active = 1;
+
+    /* TODO also remove from active timer list */
+}
+
+void timer_system_stop(entity_id_t entity)
+{
+    if (!entity_has_component(entity, COMPONENT_TIMER))
+        return;
+
+    g.timer_components.timers[entity].active = 0;
+
+    /* TODO also add to active timer list */
 }
 
 void timer_system_cleanup(entity_id_t entity)
@@ -75,9 +95,8 @@ void timer_system_cleanup(entity_id_t entity)
     util_assert(entity < MAX_ENTITIES);
 
     if (!entity_has_component(entity, COMPONENT_TIMER))
-    {
         return;
-    }
+    
     g.timer_components.timers[entity].active = 0;
 
     /* Remove from active timer list */

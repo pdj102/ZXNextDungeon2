@@ -1,11 +1,15 @@
 /**
- * @file components.h
+ * @file door_system.h
  * @author Paul Johnson
- * @brief 
+ * @brief Doors system
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef DOOR_SYSTEM_H
+#define DOOR_SYSTEM_H
+
+#include "ecs/entity.h"
+#include "core/text.h"
+
 
 /***************************************************
  * public defines
@@ -15,12 +19,12 @@
  * public types
  ***************************************************/
 
+
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
+bool door_system_try_open(entity_id_t actor, entity_id_t entity);
+bool door_system_try_close(entity_id_t actor, entity_id_t entity);
 
-#endif // COMPONENTS_H
+#endif // DOOR_SYSTEM_H

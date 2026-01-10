@@ -30,6 +30,6 @@
  bool movement_system_try_move_towards(entity_id_t entity, coord_t *coord);
 bool movement_system_location_equal(entity_id_t entity1, entity_id_t entity2);
 bool movement_system_are_adjacent(entity_id_t entity1, entity_id_t entity2);
-void movement_system_cleanup(entity_id_t entity);
+void movement_system_detach(entity_id_t entity);
 
 #endif // MOVEMENT_SYSTEM_H

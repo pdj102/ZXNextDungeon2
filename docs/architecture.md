@@ -17,15 +17,17 @@ The engine uses an **Entity-Component-System (ECS)** model optimized for 8-bit c
 ### Entities
 
 - Entities represent unique game objects (player, monsters, items, map features, etc.).
-- Identified by a small integer ID (`entity_id_t`).
-- Entities contain no logic, only an ID and limited flags.
+- Identified by a small integer ID (`entity_id_t`)
+- Entities own no data
+- Entities contain no game logic, only an ID and limited flags.
 - `MAX_ENTITIES` defines the maximum number of entities
 - `ENTITY_ID_INVALID` refers to an invalid entity ID
 
 ### Components
 
-- Components store data for one aspect of an entity e.g. position, AI, health, timer, container.
+- Components own data for one aspect of an entity e.g. position, AI, health, timer, container.
 - Components contain only data and simple helper functions (no logic) that only operate on the component's data
+- Components never call systems
 - Implemented as **arrays** for efficient access:
   - location_t location[MAX_ENTITIES];
   - health_t health[MAX_ENTITIES];
@@ -37,6 +39,16 @@ Access to components is controlled by a mask bitfield on the entity.
 - Perform logic over entities that have specific combinations of components.
 - Examples:
   - system_timer() – advances entity timers.
+
+- Gameplay systems follow the following structure
+bool system_try_xxx(...)
+{
+    ctx_init(&c);    // Validate & gather data
+    ctx_update(&c);  // Simulate & compute outcome
+    ctx_apply(&c);   // Apply side
+}
+- Complex actions must use a context struct
+
 
 ## 3. ECS Update Flow
 
@@ -180,16 +192,31 @@ AI_system_update determines if it is the monsters turn and takes a turn if it is
 
 ## 13. Naming Conventions
 
+| Category      | Convention       |
+| ------------- | ---------------- |
+| Functions     | snake_case       |
+| Types         | snake_case_t     |
+|Struct fields  | snake_case       |
+| Macros        | UPPER_SNAKE_CASE |
+
 | Category           | Convention                   | Example                              |
 | ------------------ | ---------------------------- | ------------------------------------ |
 | System function    | `system_<name>()`            | `system_ai_update()`                 |
-| Component function | `<component>_add()`          | `timer_system_add_timer()`                        |
+| Component function | `<component>_add()`          | `timer_system_add_timer()`           |
 | Intent function    | `<component>_try_<action>()` | `location_try_move()`                |
 | Event function     | `event_<action>()`           | `event_emit()`                       |
 | Global data        | `g.<subsystem>`              | `g.entity`, `g.map`                  |
 | Flags              | `FLAG_<NAME>`                | `FLAG_ALIVE`, `FLAG_DESTROY_PENDING` |
 
-## 14. Performance Guidelines
+## 14. Function purity
+
+| Function type     | Rules                     |
+| ----------------- | ------------------------- |
+| Init              | No side effects           |
+| Update            | Only validation & setup   |
+| Apply             | Only mutation             |
+
+## 15. Performance Guidelines
 
 Use fixed sized arrays.
 
@@ -261,3 +288,13 @@ To create a new bank, follow these steps:
 - Manually create the corresponding /obj/PAGEXX directory
 
 The make file will automatically assign the correct bank for each source file based on its location within the project structure.
+
+## 19. C language best practics
+
+- Never use int use uint8_t, int8_t, uint16_t etc
+- No magic numbers
+- Use `const` everywhere possible
+- Validate inputs early
+- Fail fast
+- use util_assert() for program issues
+- return false for gameplay failure

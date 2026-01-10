@@ -205,7 +205,7 @@
 * [✅] Implement destructible object e.g. a creature
 * [✅] Attach to destructible entities
 
-[🚧] *End result: Entities like monsters, doors, and traps can be destructible*
+[✅] *End result: Entities like monsters, doors, and traps can be destructible*
 
 ---
 
@@ -272,13 +272,13 @@
 
 > *Goal: entities can target.*
 
-* [ ] Add targetting mode - supporting differrent target types tile/entity etc, if line of sight is required, maximum distance, etc.
-* [ ] Add player `look` command (examine tile/entity)
-* [ ] Implement player target selection input
+* [✅] Add targetting mode - supporting differrent target types tile/entity etc, if line of sight is required, maximum distance, etc.
+* [✅] Add player `look` command (examine tile/entity)
+* [✅] Implement player target selection input
 * [✅] Implement line of sight test
-* [ ] Implement `player_try_look()`
+* [✅] Implement `player_try_look()`
 
-[ ] *End result: Player can target a tile and examine a tile/entity if in line of sight.*
+[✅] *End result: Player can target a tile and examine a tile/entity if in line of sight.*
 
 ---
 
@@ -286,17 +286,28 @@
 
 > *Goal: entities can range attack.*
 
-* [ ] Implement `ranged` component
-* [ ] Implement ranged weapon equipment - dart
-* [ ] Implement basic ranged attack component e.g. creatures / traps
-* [ ] Add player `fire` command (ranged attack)
-* [ ] Implement `combat_system_try_ranged_attack()` - use equipped ranged or default ranged if not
-* [ ] Implement `roll_ranged_attack` - calculate attack roll for ranged attack
-* [ ] Support attack rolls by player, with or without ranged weapon, and basic attack rolls (monster, trap etc)
-* [ ] Implement `roll_ranged_damage` - calculate damage roll for melee attack
-* [ ] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc)
+* [✅] Implement `ranged` attack component
+* [✅] Implement ranged weapon equipment
+* [✅] Implement basic ranged attack component e.g. creatures / traps
+* [✅] Add player `target` command (ranged attack)
+* [✅] Update combat system to support ranged attacks 
 
-[ ] *End result: You can range attack and kill monsters.*
+[✅] *End result: You can range attack and kill monsters.*
+
+---
+
+### 🪜 **Milestone 121b — Ammo**
+
+> *Goal: Ammo.*
+
+* [✅] Implement `ammo` component
+* [✅] Update `ranged` attack component to implement `allowed_ammo`
+* [✅] Update `item_system` to support `allowed_ammo`
+* [✅] Update `item_system` to support ammo items
+* [✅] Update combat system to support ranged ammo
+* [✅] Implement a generic `consume` item or destroy function
+
+[✅] *End result: Ranged attacks can use ammo.*
 
 ### 🪜 **Milestone 122 — Experience**
 
@@ -306,14 +317,12 @@
 * [ ] Implement experience system to track player's experience
 * [ ] Implement player experience
 * [ ] Implement gain experience
-* [ ] Implement player levels
-* [ ] Implement player levelling up
 
 [ ] *End result: player gains experience.*
 
 ---
 
-### 🪜 **Milestone 122 — Levels**
+### 🪜 **Milestone 122 — Player Levels**
 
 > *Goal: Player can level up.*
 
@@ -608,9 +617,7 @@
 
 > *Goal: dungeons can have features that can be interacted with.*
 
-* [] Add `Feature` component  - implement helper functions e.g. add() and remove()
-* [] Implement entity factory to spawn features
-* [] Implement feature base
+* [] Implement feature factory to spawn features
 * [ ] Implement a basic door feature
 * [ ] Add player `open` command for doors
 * [ ] Add player `close` command for doors

@@ -1,11 +1,14 @@
 /**
- * @file components.h
+ * @file dungeon_contents.h
  * @author Paul Johnson
  * @brief 
+ * 
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef DUNGEON_CONTENTS_H
+#define DUNGEON_CONTENTS_H
+
+#include "game/PAGE34/dungeon_gen.h"
 
 /***************************************************
  * public defines
@@ -18,9 +21,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
+void dungeon_spawn_contents(dungeon_transition_t *c);
+void dungeon_place_persistents(dungeon_transition_t *c);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
-
-#endif // COMPONENTS_H
+#endif // DUNGEON_CONTENTS_H

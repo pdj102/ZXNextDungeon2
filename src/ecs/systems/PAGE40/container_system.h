@@ -27,7 +27,7 @@ void container_system_init(void);
 bool container_system_try_pickup(entity_id_t actor, entity_id_t item);
 bool container_system_try_drop(entity_id_t actor, entity_id_t item);
 void container_system_add(entity_id_t container, entity_id_t item);
-void container_system_remove(entity_id_t container, entity_id_t item);
+void container_system_remove(entity_id_t item);
 uint8_t container_system_count(entity_id_t container);
 entity_id_t container_system_get_first(entity_id_t container);
 entity_id_t container_system_get_next(entity_id_t entity);

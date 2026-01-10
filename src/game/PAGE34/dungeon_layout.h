@@ -1,11 +1,14 @@
 /**
- * @file components.h
+ * @file dungeon_layout.h
  * @author Paul Johnson
  * @brief 
+ * 
  */
 
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef DUNGEON_LAYOUT_H
+#define DUNGEON_LAYOUT_H
+
+#include "game/PAGE34/dungeon_gen.h"
 
 /***************************************************
  * public defines
@@ -14,13 +17,18 @@
 /***************************************************
  * public types
  ***************************************************/
+typedef struct
+{
+   int x, y, w, h;
+} Room;
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void component_init(void);
+void dungeon_build_layout(dungeon_transition_t *c);
+Room *pick_random_room(void);
+uint8_t dungeon_room_count(void);
+void random_point_in_room(const Room *r, int *x, int *y);
+void pick_two_distinct_rooms(Room **a, Room **b);
 
-void component_add(entity_id_t entity);
-void component_remove(entity_id_t entity);
-
-#endif // COMPONENTS_H
+#endif // DUNGEON_LAYOUT_H

@@ -1,39 +1,44 @@
 /**
- * @file dungeon_gen.h
+ * @file ammo_comp.h
  * @author Paul Johnson
  * @brief 
  * 
+ * @copyright Copyright (c) 2026
+ * 
  */
 
-#ifndef DUNGEON_GEN_H
-#define DUNGEON_GEN_H
+#ifndef AMMO_COMP_H
+#define AMMO_COMP_H
 
 #include <stdint.h>
 
 #include "ecs/entity.h"
-#include "ecs/components/transition_com.h"
+#include "ecs/components/attack_comp.h"
+
+#include "game/dice.h"
+
+#include "core/util.h"
 
 /***************************************************
  * public defines
  ***************************************************/
 
- typedef struct 
-{
-    uint8_t from_depth;
-    uint8_t to_depth;
-    transistion_kind_t entry_kind;
-    entity_id_t source_entity;
-    entity_id_t actor;
-} dungeon_transition_t;
-
 /***************************************************
  * public types
  ***************************************************/
+
+typedef struct {
+    ammo_type_t ammo_type;
+    dice_kind_t damage_roll;
+    damage_flag_t damage_kind;
+    int8_t damage_mod;
+    int8_t hit_mod;
+} ammo_comp_t;
+
+typedef ammo_comp_t ammo_components_t[MAX_ENTITIES]; 
 
 /***************************************************
  * public function prototypes
  ***************************************************/
 
-void dungeon_generate(dungeon_transition_t *c);
-
-#endif // DUNGEON_GEN_H
+#endif // AMMO_COMP_H

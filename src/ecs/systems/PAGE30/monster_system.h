@@ -28,7 +28,6 @@
 void monster_system_init(void);
 
 entity_id_t monster_system_create(creature_kind_t kind);
-
 entity_id_t monster_system_create_player( void );
 
 #endif // MONSTER_SYSTEM_H

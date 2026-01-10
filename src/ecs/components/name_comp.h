@@ -50,6 +50,7 @@
     /* Shields */
     NAME_SHIELD,
     /* Ammo */
+    NAME_ARROW,
     /* Potions */    
     NAME_POTION_OF_HEALING,
     /* Scrolls */
@@ -60,7 +61,21 @@
     /* Wands */
     /* Light sources */
     /* Keys */
-    NAME_KEY, 
+    NAME_KEY,
+
+    // Doors
+    NAME_CLOSED_DOOR,
+    NAME_OPEN_DOOR,
+    // Containers & Storage
+    NAME_CHEST,
+    // Alters
+    // Mechanisms (levers, switches, )
+    // Traps (hidden)
+    // Statues
+    // Stairs
+    NAME_DOWN_STAIRS,
+    NAME_UP_STAIRS,
+    // Hazards
 
     NAME_COUNT
 } name_id_t;

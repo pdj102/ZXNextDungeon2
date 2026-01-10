@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src/**",
+                "D:\\Documents\\_PROGRAMMING\\z88dk\\include\\**"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,7 +14,8 @@
             ],
             "cStandard": "c11",
             "cppStandard": "gnu++14",
-            "intelliSenseMode": "windows-gcc-x86"
+            "intelliSenseMode": "windows-gcc-x86",
+            "compilerPath": "d:/Documents/_PROGRAMMING/z88dk/bin/zcc.exe"
         }
     ],
     "version": 4

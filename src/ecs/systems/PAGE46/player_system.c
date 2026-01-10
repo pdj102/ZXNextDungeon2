@@ -33,11 +33,14 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+static void climb(void);
+static void close(void);
 static void drop(void);
 static void eat(void);
 static void equip(void);
 static void inventory(void);
 static void look(void);
+static void open(void);
 static void melee_attack(void);
 static void pickup(void);
 static void target(void);
@@ -97,12 +100,21 @@ void player_system_update(void)
         case 56: /* '8' camera right */
             g.camera.x++;
             break;
+        case KEY_LESSTHAN: /* '<' down */
+            climb();
+            break;
+        case KEY_GREATERTHAN: /* '>' down */
+            climb();
+            break;            
         case KEY_U_E: /* 'E' eat */
             eat();
-            break;                        
+            break;                     
         case KEY_L_A: /* 'a' melee attack */
             melee_attack();
-            break;            
+            break;
+        case KEY_L_C: /* 'c' close */
+            close();
+            break;                  
         case KEY_L_D: /* 'd' drop an item */
             drop();
             break;
@@ -118,6 +130,9 @@ void player_system_update(void)
         case KEY_L_L: /* 'l' look around */
             look();
             break;            
+        case KEY_L_O: /* 'o' open */
+            open();
+            break;             
         case KEY_L_T: /* 't' target (ranged attack) */
             target();
             break;            
@@ -132,10 +147,29 @@ void player_system_update(void)
  /***************************************************
  * private functions
  ***************************************************/
-
-static void melee_attack(void)
+static void climb(void)
 {
-    entity_id_t target;
+    entity_id_t e;
+    uint8_t x = g.location_components[g.player.id].coord.x;
+    uint8_t y = g.location_components[g.player.id].coord.y;
+
+    e = g.map.cell_head[x][y];
+
+    while (e != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(e, COMPONENT_TRANSITION))
+        {
+            system_transition_try(e, g.player.id);
+            return;
+        }
+        e = g.location_components[e].next_in_location;
+    }
+    text_printf(&g.msg_win, "\nNothing to climb here");
+}
+
+ static void close(void)
+{
+    entity_id_t e;
     direction_t dir;
     uint8_t x;
     uint8_t y;
@@ -148,27 +182,56 @@ static void melee_attack(void)
     x = g.location_components[g.player.id].coord.x + directions[dir].x;
     y = g.location_components[g.player.id].coord.y + directions[dir].y;
 
-    target = g.map.cell_head[x][y];
+    e = g.map.cell_head[x][y];
 
-    while (target != ENTITY_ID_INVALID)
+    while (e != ENTITY_ID_INVALID)
     {
-        if (entity_has_component(target, COMPONENT_DESTRUCTIBLE))
+        if (entity_has_component(e, COMPONENT_OPENABLE))
         {
-            system_combat_try_attack(g.player.id, target, ATTACK_KIND_MELEE);
+            system_door_try_close(g.player.id, e);
             return;
         }
-        target = g.location_components[target].next_in_location;
+        e = g.location_components[e].next_in_location;
+    }
+    text_printf(&g.msg_win, "\nNothing to close here");
+}
+
+static void melee_attack(void)
+{
+    entity_id_t e;
+    direction_t dir;
+    uint8_t x;
+    uint8_t y;
+
+    dir = dir_or_cancel();
+
+    if (dir == DIRECTION_NONE)
+        return;
+
+    x = g.location_components[g.player.id].coord.x + directions[dir].x;
+    y = g.location_components[g.player.id].coord.y + directions[dir].y;
+
+    e = g.map.cell_head[x][y];
+
+    while (e != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(e, COMPONENT_DESTRUCTIBLE))
+        {
+            system_combat_try_attack(g.player.id, e, ATTACK_KIND_MELEE);
+            return;
+        }
+        e = g.location_components[e].next_in_location;
     }
     text_printf(&g.msg_win, "\nNothing to attack here");
 }
 
 static void drop(void)
 {
-    entity_id_t item = prompt_inventory_item("Select item to drop");
-    if (item == ENTITY_ID_INVALID)
+    entity_id_t e = prompt_inventory_item("Select item to drop");
+    if (e == ENTITY_ID_INVALID)
         return;
 
-    if (!system_container_try_drop(g.player.id, item))
+    if (!system_container_try_drop(g.player.id, e))
     {
         text_printf(&g.msg_win, "\nYou cannot drop that");
     }
@@ -176,32 +239,61 @@ static void drop(void)
 
 static void eat(void)
 {
-    entity_id_t item = prompt_inventory_item("Select item to eat");
-    if (item == ENTITY_ID_INVALID)
+    entity_id_t e = prompt_inventory_item("Select item to eat");
+    if (e == ENTITY_ID_INVALID)
         return;
 
-    if (!system_consumable_try_consume(g.player.id, item))
+    if (!system_consumable_try_consume(g.player.id, e))
     {
         text_printf(&g.msg_win, "\nYou cannot eat that");
     }
 }
 
+static void open(void)
+{
+    entity_id_t e;
+    direction_t dir;
+    uint8_t x;
+    uint8_t y;
+
+    dir = dir_or_cancel();
+
+    if (dir == DIRECTION_NONE)
+        return;
+
+    x = g.location_components[g.player.id].coord.x + directions[dir].x;
+    y = g.location_components[g.player.id].coord.y + directions[dir].y;
+
+    e = g.map.cell_head[x][y];
+
+    while (e != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(e, COMPONENT_OPENABLE))
+        {
+            system_door_try_open(g.player.id, e);
+            return;
+        }
+        e = g.location_components[e].next_in_location;
+    }
+    text_printf(&g.msg_win, "\nNothing to open here");
+}
+
 static void pickup(void)
 {
-    entity_id_t item;
+    entity_id_t e;
     uint8_t x = g.location_components[g.player.id].coord.x;
     uint8_t y = g.location_components[g.player.id].coord.y;
 
-    item = g.map.cell_head[x][y];
+    e = g.map.cell_head[x][y];
 
-    while (item != ENTITY_ID_INVALID)
+    while (e != ENTITY_ID_INVALID)
     {
-        if (entity_has_component(item, COMPONENT_ITEM))
+        if (entity_has_component(e, COMPONENT_STACKABLE))
         {
-            system_container_try_pickup(g.player.id, item);
+            system_container_try_pickup(g.player.id, e);
             return;
         }
-        item = g.location_components[item].next_in_location;
+        e = g.location_components[e].next_in_location;
     }
     text_printf(&g.msg_win, "\nNothing to pick up here");
 }
@@ -255,7 +347,7 @@ static void inventory(void)
     int key;
 
     text_cls(&g.main_win);
-    text_printf(&g.main_win, "\nInventory");
+    text_printf(&g.main_win, "Inventory\n");
     display_inventory();
     text_print_string(&g.main_win, "\nPress any key to continue...");
 
@@ -264,11 +356,11 @@ static void inventory(void)
 
 void equip(void)
 {
-    entity_id_t item = prompt_inventory_item("Select item to equip");
-    if (item == ENTITY_ID_INVALID)
+    entity_id_t e = prompt_inventory_item("Select item to equip");
+    if (e == ENTITY_ID_INVALID)
         return;
 
-    if (!system_equipment_try_equip(g.player.id, item))
+    if (!system_equipment_try_equip(g.player.id, e))
     {
         text_printf(&g.msg_win, "\nYou cannot equip that");
     } 
@@ -276,11 +368,11 @@ void equip(void)
 
 static void unequip(void)
 {
-    entity_id_t item = prompt_inventory_item("Select item to unequip");
-    if (item == ENTITY_ID_INVALID)
+    entity_id_t e = prompt_inventory_item("Select item to unequip");
+    if (e == ENTITY_ID_INVALID)
         return;
 
-    if (!system_equipment_try_unequip(g.player.id, item))
+    if (!system_equipment_try_unequip(g.player.id, e))
     {
         text_printf(&g.msg_win, "\nYou cannot unequip that");
     }
@@ -318,9 +410,20 @@ static void display_inventory(void)
 
     item = system_container_get_first(g.player.id);
 
+    text_print_string(&g.main_win, "\n");
+
     while (item != ENTITY_ID_INVALID)
     {
         text_printf(&g.main_win, "(%c) ", c);
+        if (entity_has_component(item, COMPONENT_STACKABLE))
+        {
+            text_printf(&g.main_win, "%d ", g.stackable_components[item].quantity);
+        }
+        else
+        {
+            text_print_string(&g.main_win, "a ");
+        }
+
         system_name_print(&g.main_win, g.name_components[item]);
 
         if (system_equipment_is_equipped(g.player.id, item))

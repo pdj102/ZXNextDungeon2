@@ -48,7 +48,7 @@ bool container_system_try_pickup(entity_id_t actor, entity_id_t item)
     event_t event;
 
     /* item to be picked up has item and location components */
-    if (!entity_has_component(item, COMPONENT_ITEM))
+    if (!entity_has_component(item, COMPONENT_STACKABLE))
     {
         return 0;
     }
@@ -77,7 +77,7 @@ bool container_system_try_pickup(entity_id_t actor, entity_id_t item)
     }    
 
     /* Remove item from floor */
-    system_movement_cleanup(item);
+    system_movement_detach(item);
 
     /* Place item in container */
     container_system_add(actor, item);
@@ -124,7 +124,7 @@ bool container_system_try_drop(entity_id_t actor, entity_id_t item)
     }
 
     /* Remove item from container */
-    container_system_remove(actor, item);
+    container_system_remove(item);
     
     /* Place item on the floor*/
     system_movement_place(item, g.location_components[actor].coord.x, g.location_components[actor].coord.y);
@@ -156,12 +156,17 @@ void container_system_add(entity_id_t container, entity_id_t item)
 }
 
 
-void container_system_remove(entity_id_t container, entity_id_t item)
+void container_system_remove(entity_id_t item)
 {
+    entity_id_t container;
+
     util_assert(item < MAX_ENTITIES);
+
+    if (!entity_has_component(item, COMPONENT_CONTAINED))
+        return;
+
+    container = g.contained_components[item].container;
     util_assert(container < MAX_ENTITIES);
-    util_assert(entity_has_component(container, COMPONENT_CONTAINER));
-    util_assert(entity_has_component(item, COMPONENT_CONTAINED));
  
     entity_id_t current = g.container_components[container].head; /* start at the head of the list */
     entity_id_t prev = ENTITY_ID_INVALID; /* previous entity in the list */
@@ -259,7 +264,7 @@ void container_system_clean_up(entity_id_t id)
 {
     if (entity_has_component(id, COMPONENT_CONTAINED))
     {
-        container_system_remove(g.contained_components[id].container, id);
+        container_system_remove(id);
     }
     if (entity_has_component(id, COMPONENT_CONTAINER))
     {
@@ -279,7 +284,7 @@ void container_system_mark_contents_for_destruction(entity_id_t container)
     /* Keep removing items until head is empty */
     while (entity != ENTITY_ID_INVALID)
     {
-        container_system_remove(container, entity);
+        container_system_remove(entity);
         entity_mark_for_destruction(entity);
 
         entity = g.container_components[container].head;
