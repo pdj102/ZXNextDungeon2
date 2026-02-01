@@ -1,5 +1,5 @@
 /**
- * @file map_render.h
+ * @file camera.h
  * @author Paul Johnson
  * @brief 
  * 
@@ -7,25 +7,33 @@
  * 
  */
 
-#ifndef MAP_RENDER_H
-#define MAP_RENDER_H
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include <stdint.h>
-
-#define VIEW_WIDTH 30
-#define VIEW_HEIGHT 24
 
 /***************************************************
  * public defines
  ***************************************************/
 
+
 /***************************************************
  * public types
  ***************************************************/
+typedef struct {
+    uint8_t x;
+    uint8_t y;
+} camera_t;
+
+/***************************************************
+ * public variables
+ ***************************************************/
+
 
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_render(void);
+void camera_init(void);
+void camera_center_on(uint8_t x, uint8_t y);
 
-#endif // MAP_RENDER_H
+#endif // CAMERA_H

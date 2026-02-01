@@ -19,6 +19,7 @@
 #include "ecs/systems/systems_dispatch.h"
 
 #include "game/global_state.h"
+#include "game/camera.h"
 
 #include "core/util.h"
 
@@ -50,6 +51,7 @@ void new_game(void)
     entity_id_t e = system_monster_create_player();
 
     map_init();
+    camera_init();
 
     g.depth = 1;
 

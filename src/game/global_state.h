@@ -31,6 +31,7 @@
 #include "ecs/components/transition_com.h"
 
 #include "game/map_priv.h"
+#include "game/camera.h"
 
 #include "core/text.h"
 

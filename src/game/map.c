@@ -48,8 +48,6 @@ void map_init(void)
 {
     map_terrain_init();
     map_init_cell_heads();
-    g.camera.x = 0;
-    g.camera.y = 0;
 }
 
 bool map_can_enter(uint8_t x, uint8_t y)

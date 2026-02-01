@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 
+#include "game/camera.h"
 #include "game/map_terrain.h"
 
 #include "game/global_state.h"
