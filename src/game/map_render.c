@@ -22,20 +22,12 @@
 /***************************************************
  * private types
  * ***************************************************/
-/* Terrain type base attributes - read only  */
-typedef struct {
-    const char *name;   
-    zxnext_tile_t tile;
-} terrain_base_t;
+
 
 /***************************************************
  * private variables
  * ***************************************************/
-const terrain_base_t terrain_bases[TERRAIN_TYPE_COUNT] = {
-    [TERRAIN_NONE]   = { "None",   {'X', 0} },
-    [TERRAIN_WALL]   = { "Wall",   {'#', 0} },
-    [TERRAIN_FLOOR]  = { "Floor",  {'.', 0} }
-};
+
 
 /***************************************************
  * public functions

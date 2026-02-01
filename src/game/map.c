@@ -71,10 +71,10 @@ bool map_has_line_of_sight(coord_t *a, coord_t *b)
     // Skip the starting tile
     while (line_stepper_step(&ls))
     {
-        if (!in_bounds(ls.x0, ls.y0))
+        if (!map_in_bounds(ls.x0, ls.y0))
             return false;
 
-        if (is_opaque(ls.x0, ls.y0))
+        if (map_is_opaque(ls.x0, ls.y0))
             return false;
     }
 
@@ -97,20 +97,23 @@ void map_gen(dungeon_transition_t *c)
 /* 
  * @brief check if x,y is within map
  */
-bool in_bounds(uint8_t x, uint8_t y)
+bool map_in_bounds(uint8_t x, uint8_t y)
 {
     return ((x < MAP_WIDTH) && (y < MAP_HEIGHT));
 }
 
-bool is_opaque(uint8_t x, uint8_t y)
+/*
+ * @brief check if terrain is opaque at x,y
+ */
+bool map_is_opaque(uint8_t x, uint8_t y)
 {
     if (g.map.terrain[x][y] == TERRAIN_FLOOR)
     {
-        return 0;
+        return false;
     }
     else
     {
-        return 1;
+        return true;
     }
 }
 
@@ -136,11 +139,15 @@ static void map_init_cell_heads(void)
 static bool can_enter(uint8_t x, uint8_t y)
 {
     entity_id_t entity;
+    terrain_type_t terrain;
+
+    terrain = g.map.terrain[x][y];
 
     /* Check if terrain is blocking */
-    if (g.map.terrain[x][y] != TERRAIN_FLOOR)
+
+    if (terrain_bases[terrain].flags & TERRAIN_FLAG_BLOCKS_MOVE)
     {
-        return 0;
+        return false;
     }
 
     /* Check for any blocking entities*/
@@ -150,9 +157,9 @@ static bool can_enter(uint8_t x, uint8_t y)
     {
         if (entity_has_flag(entity, FLAG_BLOCKING))
         {
-            return 0;
+            return false;
         }
         entity = g.location_components[entity].next_in_location;
     }
-    return 1;
+    return true;
 }

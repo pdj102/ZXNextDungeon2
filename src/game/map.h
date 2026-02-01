@@ -43,7 +43,7 @@ bool map_has_line_of_sight(coord_t *a, coord_t *b);
 
 void map_gen(dungeon_transition_t *c);
 
-bool in_bounds(uint8_t x, uint8_t y);
-bool is_opaque(uint8_t x, uint8_t y);
+bool map_in_bounds(uint8_t x, uint8_t y);
+bool map_is_opaque(uint8_t x, uint8_t y);
 
 #endif // MAP_H

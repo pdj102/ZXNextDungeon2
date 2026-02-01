@@ -131,7 +131,7 @@ static void render_target_mode(target_context_t *ctx)
     {
         if (ctx->require_los)
         {
-            if (is_opaque(ls.x0, ls.y0))
+            if (map_is_opaque(ls.x0, ls.y0))
                 colour = PALETTE_TARGETING_BLOCKED;
         }
         if (map_to_screen(ls.x0, ls.y0, &sx, &sy))
