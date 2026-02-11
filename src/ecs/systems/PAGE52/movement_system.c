@@ -1,15 +1,10 @@
- The goal is to include a new function into movement_system.c, called `movement_system_move_to_position`.
-
-The function should move an entity to a specified position on the map, but only if the new position is reachable from the current one.
-
-Here's how you can achieve this:
 /**
  * @file movement_system.c
  * @author Paul Johnson
  * @brief movement system for ECS
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
 
 #include "ecs/systems/PAGE52/movement_system.h"

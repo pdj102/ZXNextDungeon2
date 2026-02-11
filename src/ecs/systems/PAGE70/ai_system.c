@@ -173,11 +173,13 @@ static void wander(entity_id_t entity)
  * 2) Try and acquire target, if successful switch to attack target
  * 3) If the monster reaches the target's last known position switch to searching for the target
  * 4) Otherwise move towards the target's last known position
+ * 5) If stuck (multiple failed moves), transition to search
  */
 static void track_target(entity_id_t entity)
 {
     ai_comp_t *ai = &g.ai_components[entity];
-    entity_id_t target = ai->target; 
+    entity_id_t target = ai->target;
+    bool moved = false;
 
     /* 1) Target no longer valid -> idle */
     if (!target_valid(target))
@@ -198,10 +200,27 @@ static void track_target(entity_id_t entity)
     }
 
     /* 4) Move towards last known position */
-    if (!move_towards_last_seen(entity))
+    moved = move_towards_last_seen(entity);
+
+    if (!moved)
     {
-        if (rand() & 1)
-            system_movement_try_move_random(entity);
+        /* Try a random move as fallback */
+        moved = system_movement_try_move_random(entity);
+    }
+
+    /* 5) Track failures - if stuck too long, start searching */
+    if (moved)
+    {
+        ai->stuck_counter = 0;
+    }
+    else
+    {
+        ai->stuck_counter++;
+        if (ai->stuck_counter >= 3)
+        {
+            util_info("AI stuck - switching to search");
+            begin_search(entity, 10);
+        }
     }
 }
 
@@ -249,11 +268,13 @@ static void search_target(entity_id_t entity)
  * 2) Try to (re)acquire visible target
  * 3) If the target is in range, attack
  * 4) Otherwise move towards target
+ * 5) If stuck (multiple failed moves), transition to search
  */
 static void attack_target(entity_id_t entity)
 {
     ai_comp_t *ai = &g.ai_components[entity];
     entity_id_t target = ai->target;
+    bool moved = false;
 
     /* 1) Target no longer valid -> idle */
     if (!target_valid(target))
@@ -266,6 +287,7 @@ static void attack_target(entity_id_t entity)
     if (!try_acquire_visible_target(entity, target))
     {
         ai->state = AI_STATE_TRACK_TARGET;
+        ai->stuck_counter = 0;
         return;
     }
 
@@ -273,14 +295,32 @@ static void attack_target(entity_id_t entity)
     if (in_attack_range(entity, target))
     {
         system_combat_try_attack(entity, target, ATTACK_KIND_MELEE);
-        return; 
+        ai->stuck_counter = 0;
+        return;
     }
 
     /* 4) Otherwise move towards target */
-    if (!move_towards_last_seen(entity))
+    moved = move_towards_last_seen(entity);
+
+    if (!moved)
     {
-        if (rand() & 1)
-            system_movement_try_move_random(entity);
+        /* Try a random move as fallback */
+        moved = system_movement_try_move_random(entity);
+    }
+
+    /* 5) Track failures - if stuck too long, start searching */
+    if (moved)
+    {
+        ai->stuck_counter = 0;
+    }
+    else
+    {
+        ai->stuck_counter++;
+        if (ai->stuck_counter >= 3)
+        {
+            util_info("AI stuck - switching to search");
+            begin_search(entity, 10);
+        }
     }
 }
 
@@ -330,6 +370,7 @@ static void acquire_target(entity_id_t ai_entity, entity_id_t target)
     ai_comp_t *ai = &g.ai_components[ai_entity];
     ai->state = AI_STATE_ATTACK_TARGET;
     ai->target = target;
+    ai->stuck_counter = 0;
     ai->last_seen.x = g.location_components[target].coord.x;
     ai->last_seen.y = g.location_components[target].coord.y;
 }
@@ -339,6 +380,7 @@ static void give_up_target(entity_id_t entity)
     ai_comp_t *ai = &g.ai_components[entity];
     ai->target = ENTITY_ID_INVALID;
     ai->state  = AI_STATE_IDLE;
+    ai->stuck_counter = 0;
 }
 
 static void update_last_seen(entity_id_t entity, entity_id_t target)
@@ -368,5 +410,6 @@ static void begin_search(entity_id_t entity, uint8_t turns)
     ai_comp_t *ai = &g.ai_components[entity];
     ai->state = AI_STATE_SEARCH_TARGET;
     ai->search_timer = turns;
+    ai->stuck_counter = 0;
 }
 

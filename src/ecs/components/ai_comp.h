@@ -35,6 +35,7 @@ typedef struct {
     ai_state_t state;
     entity_id_t target;      // usually the player
     uint8_t search_timer;    // how many turns the monster will search
+    uint8_t stuck_counter;   // consecutive failed movement attempts
     coord_t last_seen;
 } ai_comp_t;
 
