@@ -16,6 +16,7 @@
 #include "game/map_terrain.h"
 
 #include "game/global_state.h"
+#include "game/map_access.h"
 
 /***************************************************
  * private defines
@@ -104,7 +105,7 @@ static void make_rooms(void)
          rooms[num_rooms++] = r;
          for (int y = r.y; y < r.y + r.h; ++y)
             for (int x = r.x; x < r.x + r.w; ++x)
-               g.map.terrain[x][y] = TERRAIN_FLOOR;
+               map_set_terrain(x, y, TERRAIN_FLOOR);
       }
    }
 }
@@ -122,17 +123,17 @@ static void connect_rooms(void)
       {
          // horizontal then vertical
          for (int x = (x1 < x2 ? x1 : x2); x <= (x1 > x2 ? x1 : x2); x++)
-            g.map.terrain[x][y1] = TERRAIN_FLOOR;
+            map_set_terrain(x, y1, TERRAIN_FLOOR);
          for (int y = (y1 < y2 ? y1 : y2); y <= (y1 > y2 ? y1 : y2); y++)
-            g.map.terrain[x2][y] = TERRAIN_FLOOR;
+            map_set_terrain(x2, y, TERRAIN_FLOOR);
       }
       else
       {
          // vertical then horizontal
          for (int y = (y1 < y2 ? y1 : y2); y <= (y1 > y2 ? y1 : y2); y++)
-            g.map.terrain[x1][y] = TERRAIN_FLOOR;
+            map_set_terrain(x1, y, TERRAIN_FLOOR);
          for (int x = (x1 < x2 ? x1 : x2); x <= (x1 > x2 ? x1 : x2); x++)
-            g.map.terrain[x][y2] = TERRAIN_FLOOR;
+            map_set_terrain(x, y2, TERRAIN_FLOOR);
       }
    }
 }

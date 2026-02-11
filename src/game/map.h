@@ -14,6 +14,7 @@
 
 #include "game/spatial.h"
 #include "game/PAGE34/dungeon_gen.h"
+#include "game/map_terrain.h"
 
 #include <stdint.h>
 
@@ -48,5 +49,10 @@ void map_gen(dungeon_transition_t *c);
 
 bool map_in_bounds(uint8_t x, uint8_t y);
 bool map_is_opaque(uint8_t x, uint8_t y);
+
+/* Inline accessor functions defined in map_access.h (include after global_state.h) */
+terrain_type_t map_get_terrain(uint8_t x, uint8_t y);
+void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
+void map_set_entity_head(uint8_t x, uint8_t y, entity_id_t entity);
 
 #endif // MAP_H

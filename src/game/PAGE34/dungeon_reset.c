@@ -16,6 +16,7 @@
 #include "game/map_terrain.h"
 
 #include "game/global_state.h"
+#include "game/map_access.h"
 
 /***************************************************
  * private defines
@@ -53,6 +54,6 @@ static void clear_terrain(void)
 {
    for (int y = 0; y < MAP_HEIGHT; ++y)
       for (int x = 0; x < MAP_WIDTH; ++x)
-         g.map.terrain[x][y] = TERRAIN_WALL;
+         map_set_terrain(x, y, TERRAIN_WALL);
 }
 

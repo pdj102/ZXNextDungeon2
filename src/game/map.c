@@ -19,6 +19,7 @@
 #include "game/map_terrain.h"
 #include "game/PAGE34/dungeon_gen.h"
 #include "game/global_state.h"
+#include "game/map_access.h"
 #include "game/memory_map.h"
 
 #include "core/util.h"
@@ -117,7 +118,7 @@ bool map_in_bounds(uint8_t x, uint8_t y)
  */
 bool map_is_opaque(uint8_t x, uint8_t y)
 {
-    terrain_type_t terrain = g.map.terrain[x][y];
+    terrain_type_t terrain = map_get_terrain(x, y);
     return (terrain_bases[terrain].flags & TERRAIN_FLAG_BLOCKS_LOS) != 0;
 }
 
@@ -132,7 +133,7 @@ static void map_init_entity_heads(void)
 {
     for (uint8_t x = 0; x < MAP_WIDTH; x++) {
         for (uint8_t y = 0; y < MAP_HEIGHT; y++) {
-            g.map.entity_head[x][y] = ENTITY_ID_INVALID; 
+            map_set_entity_head(x, y, ENTITY_ID_INVALID);
         }
     }
 }
@@ -145,7 +146,7 @@ static bool can_enter(uint8_t x, uint8_t y)
     entity_id_t entity;
     terrain_type_t terrain;
 
-    terrain = g.map.terrain[x][y];
+    terrain = map_get_terrain(x, y);
 
     /* Check if terrain is blocking */
 

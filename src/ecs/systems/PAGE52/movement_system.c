@@ -23,6 +23,7 @@ Here's how you can achieve this:
 
 #include "game/global_state.h"
 #include "game/map_terrain.h"
+#include "game/map_access.h"
 
 /***************************************************
  * private function prototypes
@@ -201,7 +202,7 @@ static void location_link(entity_id_t entity)
     g.main_win.dirty = 1;
 
     g.location_components[entity].next_in_location = map_get_first(x, y); /* link to previous head entity at this map cell */
-    g.map.entity_head[x][y] = entity; /* set this entity as the head of the list at this map cell */
+    map_set_entity_head(x, y, entity); /* set this entity as the head of the list at this map cell */
 }
 
 /*
@@ -222,8 +223,8 @@ static void location_unlink(entity_id_t entity)
 
     while (current != ENTITY_ID_INVALID) { /* traverse the linked list */
         if (current == entity) { /* found the entity to remove */
-            if (prev == ENTITY_ID_INVALID) { 
-                g.map.entity_head[x][y] = g.location_components[current].next_in_location; /* remove from head */
+            if (prev == ENTITY_ID_INVALID) {
+                map_set_entity_head(x, y, g.location_components[current].next_in_location); /* remove from head */
             } else {
                 g.location_components[prev].next_in_location = g.location_components[current].next_in_location; /* bypass current */
             }

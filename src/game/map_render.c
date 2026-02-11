@@ -16,6 +16,7 @@
 #include "game/map_terrain.h"
 
 #include "game/global_state.h"
+#include "game/map_access.h"
 
 #include "core/zxnext.h"
 
@@ -50,15 +51,16 @@ void map_render(void)
                 continue;
             }
 
-            if (g.map.entity_head[map_x][map_y] != ENTITY_ID_INVALID)
+            entity_id_t entity = map_get_first(map_x, map_y);
+            if (entity != ENTITY_ID_INVALID)
             {
                 /* there is at least one entity at this location - render the top one */
                 /* TODO implement a while loop to determine the highest priority entity to draw*/
-                zxnext_tilemap_set(vx, vy, &g.renderable_components[g.map.entity_head[map_x][map_y]].tile);
+                zxnext_tilemap_set(vx, vy, &g.renderable_components[entity].tile);
             }
             else
             {
-                terrain_type_t terrain = g.map.terrain[map_x][map_y];
+                terrain_type_t terrain = map_get_terrain(map_x, map_y);
 
                 zxnext_tilemap_set(vx, vy, &terrain_bases[terrain].tile);
             }
