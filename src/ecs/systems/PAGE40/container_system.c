@@ -161,9 +161,7 @@ void container_system_remove(entity_id_t item)
     entity_id_t container;
 
     util_assert(item < MAX_ENTITIES);
-
-    if (!entity_has_component(item, COMPONENT_CONTAINED))
-        return;
+    util_assert(entity_has_component(item, COMPONENT_CONTAINED));
 
     container = g.contained_components[item].container;
     util_assert(container < MAX_ENTITIES);
@@ -226,7 +224,7 @@ entity_id_t container_system_get_next(entity_id_t entity)
 }
 
 /*
- * @brief Get the entity at a specific position in the container. Position is 1-based index.
+ * @brief Get the entity at a specific position in the container using 0-based indexing.
  * @param container The ID of the container
  * @param index The 0-based index of the entity in the container
  * @return The ID of the entity at the specified position or ENTITY_ID_INVALID if the position is out of bounds
@@ -285,10 +283,36 @@ void container_system_mark_contents_for_destruction(entity_id_t container)
     while (entity != ENTITY_ID_INVALID)
     {
         container_system_remove(entity);
+        /* Mark for destruction */
         entity_mark_for_destruction(entity);
 
         entity = g.container_components[container].head;
     }
+}
+
+/*
+ * @brief Check if entity is protected by persistence flag
+ * @details Returns true if the entity or any container in its chain has FLAG_PERSISTANT.
+ *          Traverses up the container hierarchy to check for persistence protection.
+ * @param id Identity of the entity to check
+ * @return true if entity is protected by persistence, false otherwise
+ */
+bool container_system_is_protected_by_persistence(entity_id_t id)
+{
+    entity_id_t cur = id;
+
+    while (cur != ENTITY_ID_INVALID)
+    {
+        if (entity_has_flag(cur, FLAG_PERSISTANT))
+            return true;
+
+        if (!entity_has_component(cur, COMPONENT_CONTAINED))
+            break;
+
+        cur = g.contained_components[cur].container;
+    }
+
+    return false;
 }
 
 /***************************************************

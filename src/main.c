@@ -22,12 +22,12 @@
 #include "game/ui.h"
 #include "game/map.h"
 #include "game/map_render.h"
+#include "game/camera.h"
 #include "game/global_state.h"
 #include "game/world.h"
 #include "game/PAGE34/dungeon_gen.h"
 
 #include "core/util.h"
-#include "core/text.h"
 
 #define STACK_LOW 0xBF00
 #define STACK_HIGH 0xBFFF
@@ -53,7 +53,11 @@ int main(void)
     stack = 0;
 
     zxnext_init();
+
     ui_init();
+
+    // Now test after UI is initialized
+    text_printf(&g.msg_win, "\nInitializing...");
     
     util_info("Debug build");
     text_printf(&g.msg_win, "\nGlobal size:%U", sizeof(g));
@@ -61,6 +65,7 @@ int main(void)
 
     new_game();
 
+    camera_update();
     map_render();
 
     ui_update_primary_stats();

@@ -16,6 +16,7 @@
 
 #include "ecs/components/components.h"
 #include "ecs/components/attack_comp.h"
+#include "ecs/components/stackable_comp.h"
 
 #include "ecs/systems/systems_dispatch.h"
 
@@ -177,7 +178,7 @@ static void attack_ctx_apply(attack_ctx_t *c)
     system_event_emit(&event);
 
     if (c->kind == ATTACK_KIND_RANGED && c->ammo != ENTITY_ID_INVALID)
-        entity_consume_or_destroy(c->ammo);
+        stackable_consume_or_destroy(c->ammo);
 
     if (c->result == ATTACK_MISS)
         return;

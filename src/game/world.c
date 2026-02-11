@@ -17,6 +17,7 @@
 #include "ecs/entity.h"
 #include "ecs/components/components.h"
 #include "ecs/systems/systems_dispatch.h"
+#include "ecs/systems/PAGE40/container_system.h"
 
 #include "game/global_state.h"
 #include "game/camera.h"
@@ -42,26 +43,24 @@ void new_game(void)
 {
     event_t event;
 
-    util_info("Initializing...");
     entity_init();
     component_init();
     systems_init();
 
     g.player.id = ENTITY_ID_INVALID;
     entity_id_t e = system_monster_create_player();
+    util_assert(e != ENTITY_ID_INVALID);
 
     map_init();
     camera_init();
 
-    g.depth = 1;
-
+     /* Emit initial teleport event to place player in the world and trigger map generation */    
     event.source = ENTITY_ID_INVALID;
     event.target = g.player.id;
     event.type = EVENT_TRANSITION_TELEPORT;
     event.value = 0;
 
     system_event_emit(&event);
-    // map_gen(&c);
 }
 
 void world_handle_event(const event_t *event)
@@ -70,16 +69,26 @@ void world_handle_event(const event_t *event)
 
     c.from_depth = g.depth;                 // transition from current world depth
     c.to_depth = g.depth + event->value;    // to current world depth + delta
-    g.depth = c.to_depth;                   
+    g.depth = c.to_depth;
     c.actor = event->target;                // e.g. player
     c.source_entity = event->source;        // stairs etc
-    c.entry_kind = g.transition_components[c.source_entity].kind;
+
+    // If  transistion was via a source entity with transition component get the entry kind (e.g. up stairs, down stairs) otherwise default to 0 for teleport/new game 
+    if (c.source_entity != ENTITY_ID_INVALID && entity_has_component(c.source_entity, COMPONENT_TRANSITION))
+    {
+        c.entry_kind = g.transition_components[c.source_entity].kind;
+    }
+    else
+    {
+        c.entry_kind = 0;  // Default entry kind for teleport/new game
+    }
 
     switch (event->type)
     {
         case EVENT_TRANSITION_TELEPORT:
         case EVENT_TRANSITION:
             map_gen(&c);
+            g.main_win.dirty = 1;
             break;
         default:
             return;
@@ -103,7 +112,7 @@ void world_destroy_non_persistent_entities(void)
             continue;
 
         /* Persistent or protected by a persistent container? */
-        if (entity_is_protected_by_persistence(id))
+        if (system_container_is_protected_by_persistence(id))
             continue;
 
         entity_mark_for_destruction(id);
@@ -142,7 +151,10 @@ void world_detach_entity(entity_id_t id)
     system_movement_detach(id);
 
     /* Remove from any container */
-    system_container_remove(id);
+    if (entity_has_component(id, COMPONENT_CONTAINED))
+    {
+        container_system_remove(id);
+    }
 
     /* TODO if the entity is the source of an effect - remove effect */
     // system_effect_cleanup_entity(id);

@@ -34,5 +34,6 @@ entity_id_t container_system_get_next(entity_id_t entity);
 entity_id_t container_system_get_at(entity_id_t container, uint8_t index);
 void container_system_mark_contents_for_destruction(entity_id_t container);
 void container_system_clean_up(entity_id_t id);
+bool container_system_is_protected_by_persistence(entity_id_t id);
 
 #endif // CONTAINER_SYSTEM_H

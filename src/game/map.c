@@ -49,6 +49,7 @@ void map_init(void)
 {
     map_terrain_init();
     map_init_entity_heads();
+    g.depth = 1;
 }
 
 bool map_can_enter(uint8_t x, uint8_t y)

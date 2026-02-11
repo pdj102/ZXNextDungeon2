@@ -70,6 +70,7 @@ entity_id_t system_container_get_next(entity_id_t entity);
 entity_id_t system_container_get_at(entity_id_t container, uint8_t position);
 void system_container_mark_contents_for_destruction(entity_id_t container);
 void system_container_clean_up(entity_id_t id);
+bool system_container_is_protected_by_persistence(entity_id_t id);
 
 /* Combat system */
 void system_combat_init(void);

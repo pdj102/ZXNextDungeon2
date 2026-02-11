@@ -33,5 +33,6 @@ typedef stackable_comp_t stackable_components_t[MAX_ENTITIES];
 /***************************************************
  * public function prototypes
  ***************************************************/
+void stackable_consume_or_destroy(entity_id_t entity);
 
 #endif // STACKABLE_COMP_H

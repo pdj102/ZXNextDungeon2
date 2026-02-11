@@ -20,6 +20,7 @@
 #include "game/spatial.h"
 #include "game/global_state.h"
 #include "game/map.h"
+#include "game/camera.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"
@@ -46,7 +47,6 @@ static void target_init(target_context_t *ctx);
 static void render_target_mode(target_context_t *ctx);
 static input_result_t handle_input(target_context_t *ctx, unsigned int key);
 static void target_resolve(target_context_t *ctx);
-static inline bool map_to_screen(uint8_t map_x, uint8_t map_y, uint8_t *screen_x, uint8_t *screen_y);
 
 /***************************************************
  * public functions
@@ -56,6 +56,11 @@ void target_mode(target_context_t *ctx)
 {
     unsigned int key;
     input_result_t r;
+    camera_mode_t prev_mode;
+
+    /* Save previous camera mode and switch to targeting */
+    prev_mode = camera_get_mode();
+    camera_set_mode(CAMERA_MODE_TARGETING);
 
     target_init(ctx);
 
@@ -68,6 +73,13 @@ void target_mode(target_context_t *ctx)
 
     if (r == TARGET)
         target_resolve(ctx);
+
+    /* Restore previous camera mode */
+    camera_set_mode(prev_mode);
+
+    /* Update camera to follow player again if needed */
+    if (prev_mode == CAMERA_MODE_FOLLOW_PLAYER)
+        camera_update();
 
     g.main_win.dirty = true;
 }
@@ -134,7 +146,7 @@ static void render_target_mode(target_context_t *ctx)
             if (map_is_opaque(ls.x0, ls.y0))
                 colour = PALETTE_TARGETING_BLOCKED;
         }
-        if (map_to_screen(ls.x0, ls.y0, &sx, &sy))
+        if (camera_map_to_screen(ls.x0, ls.y0, &sx, &sy))
         {
             zxnext_tilemap_set_attr(sx, sy, colour);
         }
@@ -165,22 +177,5 @@ static void target_resolve(target_context_t *ctx)
         ctx->selected_tile = *c;
         ctx->target_selected = 1;
     }
-}
-
-/*
- * @brief Converts a map coordinate to screen coordinates
- * @details Relies upon unsigned int underflows to a large number and fails >= VIEW_WIDTH or VIEW_HEIGHT
- */
-static inline bool map_to_screen(uint8_t map_x, uint8_t map_y, uint8_t *screen_x, uint8_t *screen_y)
-{
-    uint8_t sx = map_x - g.camera.x;
-    uint8_t sy = map_y - g.camera.y;
-
-    if (sx >= VIEW_WIDTH || sy >= VIEW_HEIGHT)
-        return false;
-
-    *screen_x = sx;
-    *screen_y = sy;
-    return true;
 }
 

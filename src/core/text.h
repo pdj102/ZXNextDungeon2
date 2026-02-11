@@ -7,8 +7,9 @@
 #ifndef TEXT_H
 #define TEXT_H
 #include <stdint.h>
+#include <stdarg.h>
 
-#include "zxnext.h"
+#include "core/zxnext.h"
 
 
  /***************************************************
@@ -58,7 +59,8 @@ void text_putc(text_window_t *win_p, unsigned char c);
 
 void text_print_string(text_window_t *win_p, const char text[]);
 
- void text_printf(text_window_t *win_p, const char *text, ...);
+void text_vprintf(text_window_t *win_p, const char *text, va_list args);
+void text_printf(text_window_t *win_p, const char *text, ...);
 
 void text_print_uint8(text_window_t *win_p, uint8_t ui);
 void text_print_int8(text_window_t *win_p, int8_t i);

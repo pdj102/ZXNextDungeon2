@@ -190,8 +190,8 @@
 > *Goal: camera follows player as they move around the map.*
 
 * [✅] Implement larger map
-* [🚧] Implement camera position and ability to pan camera
-* [ ] Implement camera following player
+* [✅] Implement camera position and ability to pan camera
+* [✅] Implement camera following player
 
 [ ] *End result: camera follows player.*
 
@@ -290,7 +290,7 @@
 * [✅] Implement ranged weapon equipment
 * [✅] Implement basic ranged attack component e.g. creatures / traps
 * [✅] Add player `target` command (ranged attack)
-* [✅] Update combat system to support ranged attacks 
+* [✅] Update combat system to support ranged attacks
 
 [✅] *End result: You can range attack and kill monsters.*
 
@@ -670,8 +670,8 @@
 > *Goal: procedural dungeon generator.*
 
 * [✅] Implement procedural map generator (rooms + corridors)
-* [ ] Place stairs up/down
-* [ ] Place player
+* [] Place stairs up/down
+* [✅] Place player
 * [ ] Add new monsters per depth
 * [ ] Add new items per depth
 * [ ] Add new features per depth

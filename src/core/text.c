@@ -13,8 +13,8 @@
  #include <stdlib.h>    /* itoa, utoa, ultoa */
  #include <stdarg.h>    /* variadic functions */
 
- #include "zxnext.h"
- #include "util.h"
+ #include "core/zxnext.h"
+ #include "core/util.h"
 
 
 /***************************************************
@@ -98,11 +98,8 @@ void text_scroll_up( text_window_t *win_p );
     }
  }
 
- void text_printf(text_window_t *win_p, const char *text, ...)
+void text_vprintf(text_window_t *win_p, const char *text, va_list ptr)
 {
-    va_list ptr;
-    va_start(ptr, text);
-
     uint8_t l = strlen(text);
 
     for (uint8_t i = 0; i < l; i++)
@@ -200,7 +197,14 @@ void text_scroll_up( text_window_t *win_p );
             text_putc(win_p, '?');
         }
     }
-    va_end(ptr);
+}
+
+void text_printf(text_window_t *win_p, const char *text, ...)
+{
+    va_list args;
+    va_start(args, text);
+    text_vprintf(win_p, text, args);
+    va_end(args);
 }
 
 void text_print_string(text_window_t *win_p, const char text[])

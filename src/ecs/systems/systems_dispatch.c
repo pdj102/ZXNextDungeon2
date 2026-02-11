@@ -7,6 +7,7 @@
 #include "ecs/systems/systems_dispatch.h"
 
 #include <arch/zxn.h>       /* ZXN_WRITE_MMU6 */
+#include <stdarg.h>         /* va_list, va_start, va_end */
 
 #include "ecs/components/stats_comp.h"
 #include "ecs/components/attack_comp.h"
@@ -34,6 +35,8 @@
 #include "ecs/systems/PAGE72/feature_system.h"
 #include "ecs/systems/PAGE74/door_system.h"
 #include "ecs/systems/PAGE74/transition_system.h"
+
+#include "core/text.h"
 
 #include "game/global_state.h"
 #include "game/memory_map.h"
@@ -312,6 +315,21 @@ void system_container_clean_up(entity_id_t id)
     container_system_clean_up(id);
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+bool system_container_is_protected_by_persistence(entity_id_t id)
+{
+    uint8_t current_bank;
+    bool result;
+
+    current_bank = ZXN_READ_MMU6();         /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_CONTAINER_SYSTEM);  /* Page container system into 8k MMU slot 6 */    
+
+    result = container_system_is_protected_by_persistence(id);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return result;
 }
 
 /* Consumable System*/
@@ -1122,10 +1140,10 @@ void system_transition_try(entity_id_t source, entity_id_t target)
 {
     uint8_t current_bank;
 
-    current_bank = ZXN_READ_MMU6();     
-    ZXN_WRITE_MMU6(PAGE_TRANSITION_SYSTEM);          
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_TRANSITION_SYSTEM);
 
     transition_system_try(source, target);
 
-    ZXN_WRITE_MMU6(current_bank);   
+    ZXN_WRITE_MMU6(current_bank);
 }

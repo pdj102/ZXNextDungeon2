@@ -218,7 +218,6 @@ static void track_target(entity_id_t entity)
         ai->stuck_counter++;
         if (ai->stuck_counter >= 3)
         {
-            util_info("AI stuck - switching to search");
             begin_search(entity, 10);
         }
     }
@@ -318,7 +317,6 @@ static void attack_target(entity_id_t entity)
         ai->stuck_counter++;
         if (ai->stuck_counter >= 3)
         {
-            util_info("AI stuck - switching to search");
             begin_search(entity, 10);
         }
     }

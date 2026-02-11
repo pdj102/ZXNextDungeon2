@@ -21,6 +21,7 @@
 
 #include "game/global_state.h"
 #include "game/map.h"
+#include "game/camera.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"
@@ -87,18 +88,19 @@ void player_system_update(void)
     switch(key) {
         case KEY_LEFT: /* left */
             system_movement_try_move(entity, -1, 0);
+            camera_update();
             break;
         case KEY_RIGHT: /* right */
             system_movement_try_move(entity, 1, 0);
+            camera_update();
             break;
         case KEY_UP: /* up */
             system_movement_try_move(entity, 0, -1);
+            camera_update();
             break;
         case KEY_DOWN: /* down */
             system_movement_try_move(entity, 0, 1);
-            break;
-        case 56: /* '8' camera right */
-            g.camera.x++;
+            camera_update();
             break;
         case KEY_LESSTHAN: /* '<' down */
             climb();

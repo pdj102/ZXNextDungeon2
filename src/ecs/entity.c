@@ -15,13 +15,8 @@
 #include <stdbool.h> /* bool */
 
 #include "ecs/entity.h"
-
 #include "ecs/components/components.h"
-
 #include "game/global_state.h"
-
-#include "ecs/systems/systems_dispatch.h"
-#include "core/text.h"
 
 /***************************************************
  * private defines
@@ -54,7 +49,7 @@ void entity_init(void)
         clear_component_mask(i);
     }
 
-    /* Set active and destory heads to index 0 */
+    /* Set active and destroy heads to index 0 */
     g.entity_components.active_head = 0;
     g.entity_components.destroy_head = 0;
 }
@@ -83,8 +78,8 @@ entity_id_t entity_create(void)
 
 bool entity_has_component(entity_id_t id, component_id_t comp)
 {
-    if (id >= MAX_ENTITIES || id == ENTITY_ID_INVALID)
-        return 0;
+    if (id >= MAX_ENTITIES)
+        return false;
 
     return (g.entity_components.entities[id]
                 .components.mask[COMP_BYTE(comp)] & COMP_BIT(comp)) != 0;
@@ -115,7 +110,7 @@ bool entity_has_flag(entity_id_t id, uint8_t flag)
 {
     if (id >= MAX_ENTITIES)
     {
-        return 0; /* invalid ID */
+        return false; /* invalid ID */
     }
 
     return (g.entity_components.entities[id].flags & flag) != 0;
@@ -142,45 +137,7 @@ void entity_clear_flag(entity_id_t id, uint8_t flag)
 }
 
 /*
- * @brief reduce quantity of entity and if quantity reaches zero, mark for destruction
- */
-void entity_consume_or_destroy(entity_id_t entity)
-{
-    if (entity_has_component(entity, COMPONENT_STACKABLE))
-    {
-        g.stackable_components[entity].quantity--;
-        if (g.stackable_components[entity].quantity == 0)
-        {
-            entity_mark_for_destruction(entity);
-        }
-        return;
-    }
-    entity_mark_for_destruction(entity);
-}
-
-/*
- * @brief returns true if the entity is protected by persistence or is contained by an entity with persistence
- */
-bool entity_is_protected_by_persistence(entity_id_t id)
-{
-    entity_id_t cur = id;
-
-    while (cur != ENTITY_ID_INVALID)
-    {
-        if (entity_has_flag(cur, FLAG_PERSISTANT))
-            return true;
-
-        if (!entity_has_component(cur, COMPONENT_CONTAINED))
-            break;
-
-        cur = g.contained_components[cur].container;
-    }
-
-    return false;
-}
-
-/*
- * @brief Mark an entity for destruction and append to for destuction list
+ * @brief Mark an entity for destruction and append to for destruction list
  */
 void entity_mark_for_destruction(entity_id_t id) 
 {

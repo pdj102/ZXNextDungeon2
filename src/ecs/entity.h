@@ -74,11 +74,7 @@ bool entity_has_flag(entity_id_t id, uint8_t flag);
 void entity_set_flag(entity_id_t id, uint8_t flag);
 void entity_clear_flag(entity_id_t id, uint8_t flag);
 
-void entity_consume_or_destroy(entity_id_t entity);
-bool entity_is_protected_by_persistence(entity_id_t id);
-
 void entity_mark_for_destruction(entity_id_t entity);
-
 void entity_cleanup(void);
 
 

@@ -294,7 +294,12 @@ void add_slots(entity_id_t id);
 
     /* Add an AI component*/
     entity_set_component(id, COMPONENT_AI);
-    g.ai_components[id].state = AI_STATE_IDLE;    
+    g.ai_components[id].state = AI_STATE_IDLE;
+    g.ai_components[id].target = ENTITY_ID_INVALID;
+    g.ai_components[id].search_timer = 0;
+    g.ai_components[id].stuck_counter = 0;
+    g.ai_components[id].last_seen.x = 0;
+    g.ai_components[id].last_seen.y = 0;    
 
     return id;
 }
