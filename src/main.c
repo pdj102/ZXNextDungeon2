@@ -130,23 +130,17 @@ static void process_entity_turn(entity_id_t id)
     {
         if (g.main_win.dirty == 1)
         {
-            map_render();
-            g.main_win.dirty = 0;
-        }
-        system_player_update();
-    }
-    else if (entity_has_component(id, COMPONENT_AI))
-    {
-        system_ai_process_entity_turn(id);
-    }
+/**
+ * @file main.c
+ * @author Paul Johnson
+ * @brief ZX Next Dungeon II
+ * @version 0.1
 
-    if (entity_has_component(id, COMPONENT_ACTIVE_EFFECT))
-    {
-        system_effect_process_entity_turn(id);
-    }
-}
-
-static uint16_t stack_max_usage(void)
+ *
+ * @copyright Copyright (c) 2025
+ *
+/**
+ * @file main.c
 {
     uint8_t *p = (uint8_t *)STACK_LOW;
     while (*p == STACK_PATTERN && (uintptr_t)p < STACK_HIGH)
@@ -154,5 +148,4 @@ static uint16_t stack_max_usage(void)
 
     return (uint16_t)(STACK_HIGH - (uintptr_t)p);
 }
-
 

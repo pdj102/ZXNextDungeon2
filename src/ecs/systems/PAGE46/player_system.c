@@ -153,7 +153,7 @@ static void climb(void)
     uint8_t x = g.location_components[g.player.id].coord.x;
     uint8_t y = g.location_components[g.player.id].coord.y;
 
-    e = g.map.cell_head[x][y];
+    e = map_get_first(x, y);
 
     while (e != ENTITY_ID_INVALID)
     {
@@ -162,7 +162,7 @@ static void climb(void)
             system_transition_try(e, g.player.id);
             return;
         }
-        e = g.location_components[e].next_in_location;
+        e = map_get_next(e);
     }
     text_printf(&g.msg_win, "\nNothing to climb here");
 }
@@ -182,7 +182,7 @@ static void climb(void)
     x = g.location_components[g.player.id].coord.x + directions[dir].x;
     y = g.location_components[g.player.id].coord.y + directions[dir].y;
 
-    e = g.map.cell_head[x][y];
+    e = map_get_first(x, y);
 
     while (e != ENTITY_ID_INVALID)
     {
@@ -191,7 +191,7 @@ static void climb(void)
             system_door_try_close(g.player.id, e);
             return;
         }
-        e = g.location_components[e].next_in_location;
+        e = map_get_next(e);
     }
     text_printf(&g.msg_win, "\nNothing to close here");
 }
@@ -211,7 +211,7 @@ static void melee_attack(void)
     x = g.location_components[g.player.id].coord.x + directions[dir].x;
     y = g.location_components[g.player.id].coord.y + directions[dir].y;
 
-    e = g.map.cell_head[x][y];
+    e = map_get_first(x, y);
 
     while (e != ENTITY_ID_INVALID)
     {
@@ -220,7 +220,7 @@ static void melee_attack(void)
             system_combat_try_attack(g.player.id, e, ATTACK_KIND_MELEE);
             return;
         }
-        e = g.location_components[e].next_in_location;
+        e = map_get_next(e);
     }
     text_printf(&g.msg_win, "\nNothing to attack here");
 }
@@ -264,7 +264,7 @@ static void open(void)
     x = g.location_components[g.player.id].coord.x + directions[dir].x;
     y = g.location_components[g.player.id].coord.y + directions[dir].y;
 
-    e = g.map.cell_head[x][y];
+    e = map_get_first(x, y);
 
     while (e != ENTITY_ID_INVALID)
     {
@@ -273,7 +273,7 @@ static void open(void)
             system_door_try_open(g.player.id, e);
             return;
         }
-        e = g.location_components[e].next_in_location;
+        e = map_get_next(e);
     }
     text_printf(&g.msg_win, "\nNothing to open here");
 }
@@ -284,7 +284,7 @@ static void pickup(void)
     uint8_t x = g.location_components[g.player.id].coord.x;
     uint8_t y = g.location_components[g.player.id].coord.y;
 
-    e = g.map.cell_head[x][y];
+    e = map_get_first(x, y);
 
     while (e != ENTITY_ID_INVALID)
     {
@@ -293,7 +293,7 @@ static void pickup(void)
             system_container_try_pickup(g.player.id, e);
             return;
         }
-        e = g.location_components[e].next_in_location;
+        e = map_get_next(e);
     }
     text_printf(&g.msg_win, "\nNothing to pick up here");
 }

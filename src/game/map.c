@@ -37,7 +37,7 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
-static void map_init_cell_heads(void);
+static void map_init_entity_heads(void);
 static bool can_enter(uint8_t x, uint8_t y);
 
 /***************************************************
@@ -47,7 +47,7 @@ static bool can_enter(uint8_t x, uint8_t y);
 void map_init(void)
 {
     map_terrain_init();
-    map_init_cell_heads();
+    map_init_entity_heads();
 }
 
 bool map_can_enter(uint8_t x, uint8_t y)
@@ -60,7 +60,17 @@ bool map_can_enter(uint8_t x, uint8_t y)
 
 entity_id_t map_get_first(uint8_t x, uint8_t y)
 {
-    return g.map.cell_head[x][y];
+    util_assert( x < MAP_WIDTH);
+    util_assert( y < MAP_HEIGHT);
+
+    return g.map.entity_head[x][y];
+}
+
+entity_id_t map_get_next(entity_id_t id)
+{
+    util_assert( id != ENTITY_ID_INVALID);
+
+    return g.location_components[id].next_in_location;
 }
 
 bool map_has_line_of_sight(coord_t *a, coord_t *b)
@@ -107,14 +117,8 @@ bool map_in_bounds(uint8_t x, uint8_t y)
  */
 bool map_is_opaque(uint8_t x, uint8_t y)
 {
-    if (g.map.terrain[x][y] == TERRAIN_FLOOR)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    terrain_type_t terrain = g.map.terrain[x][y];
+    return (terrain_bases[terrain].flags & TERRAIN_FLAG_BLOCKS_LOS) != 0;
 }
 
 /***************************************************
@@ -124,11 +128,11 @@ bool map_is_opaque(uint8_t x, uint8_t y)
  /*
   * @brief mark all map cells as empty
   */
-static void map_init_cell_heads(void)
+static void map_init_entity_heads(void)
 {
     for (uint8_t x = 0; x < MAP_WIDTH; x++) {
         for (uint8_t y = 0; y < MAP_HEIGHT; y++) {
-            g.map.cell_head[x][y] = ENTITY_ID_INVALID; 
+            g.map.entity_head[x][y] = ENTITY_ID_INVALID; 
         }
     }
 }
@@ -151,7 +155,7 @@ static bool can_enter(uint8_t x, uint8_t y)
     }
 
     /* Check for any blocking entities*/
-    entity = g.map.cell_head[x][y];
+    entity = map_get_first(x, y);
 
     while (entity != ENTITY_ID_INVALID)
     {

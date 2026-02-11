@@ -27,7 +27,7 @@
  ***************************************************/
 typedef struct {
     terrain_type_t terrain[MAP_WIDTH][MAP_HEIGHT]; /* terrain data for the map_terrain */
-    entity_id_t cell_head[MAP_WIDTH][MAP_HEIGHT];
+    entity_id_t entity_head[MAP_WIDTH][MAP_HEIGHT];
 } map_t;
 
 /***************************************************

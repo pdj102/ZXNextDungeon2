@@ -26,6 +26,9 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_render(void);
+/*
+ * @brief Render map
+ */
+ void map_render(void);
 
 #endif // MAP_RENDER_H
