@@ -1,0 +1,27 @@
+Building: ./bin/dungeon2.nex
+zcc +zxn  -startup=31 -clib=sdcc_iy -pragma-include:pragmas.inc -create-app -subtype=nex -m -o ./bin/dungeon2.nex ./obj/main.o ./obj/core/text.o ./obj/core/util.o ./obj/core/zxnext.o ./obj/core/PAGE36/zxnext_init.o ./obj/ecs/entity.o ./obj/ecs/components/components.o ./obj/ecs/components/stackable_comp.o ./obj/ecs/systems/systems_dispatch.o ./obj/ecs/systems/PAGE30/monster_system.o ./obj/ecs/systems/PAGE32/item_system.o ./obj/ecs/systems/PAGE38/timer_system.o ./obj/ecs/systems/PAGE40/container_system.o ./obj/ecs/systems/PAGE42/event_system.o ./obj/ecs/systems/PAGE44/actions_system.o ./obj/ecs/systems/PAGE46/player_system.o ./obj/ecs/systems/PAGE46/target_mode.o ./obj/ecs/systems/PAGE48/equipment_system.o ./obj/ecs/systems/PAGE50/perception_system.o ./obj/ecs/systems/PAGE52/movement_system.o ./obj/ecs/systems/PAGE54/combat_system.o ./obj/ecs/systems/PAGE56/damage_system.o ./obj/ecs/systems/PAGE58/stats_system.o ./obj/ecs/systems/PAGE60/active_effects.o ./obj/ecs/systems/PAGE60/effect_apply.o ./obj/ecs/systems/PAGE60/effect_cleanup.o ./obj/ecs/systems/PAGE60/effect_system.o ./obj/ecs/systems/PAGE60/effect_trigger.o ./obj/ecs/systems/PAGE60/effect_turn.o ./obj/ecs/systems/PAGE62/consumable_system.o ./obj/ecs/systems/PAGE64/name_system.o ./obj/ecs/systems/PAGE66/healing_system.o ./obj/ecs/systems/PAGE70/ai_system.o ./obj/ecs/systems/PAGE72/feature_system.o ./obj/ecs/systems/PAGE74/door_system.o ./obj/ecs/systems/PAGE74/transition_system.o ./obj/game/camera.o ./obj/game/dice.o ./obj/game/map.o ./obj/game/map_render.o ./obj/game/map_terrain.o ./obj/game/spatial.o ./obj/game/ui.o ./obj/game/world.o ./obj/game/PAGE34/dungeon_contents.o ./obj/game/PAGE34/dungeon_features.o ./obj/game/PAGE34/dungeon_gen.o ./obj/game/PAGE34/dungeon_layout.o ./obj/game/PAGE34/dungeon_reset.o ./obj/game/PAGE68/ui_init.o ./obj/game/PAGE68/ui_msg.o ./obj/game/PAGE68/ui_stat.o ./obj/core/tile_defs_data.o ./obj/core/PAGE36/palette_def_data.o 
+Notice: Merged BANK_5 into the main memory bank
+Bank 15, 13632 tail bytes free
+Bank 16, 14391 tail bytes free
+Bank 17, 12808 tail bytes free
+Bank 18, 15690 tail bytes free
+Bank 19, 15796 tail bytes free
+Bank 20, 14048 tail bytes free
+Bank 21, 16329 tail bytes free
+Bank 22, 16372 tail bytes free
+Bank 23, 12797 tail bytes free
+Bank 24, 14478 tail bytes free
+Bank 25, 16271 tail bytes free
+Bank 26, 14053 tail bytes free
+Bank 27, 14357 tail bytes free
+Bank 28, 15905 tail bytes free
+Bank 29, 14910 tail bytes free
+Bank 30, 13953 tail bytes free
+Bank 31, 16312 tail bytes free
+Bank 32, 16164 tail bytes free
+Bank 33, 16098 tail bytes free
+Bank 34, 14344 tail bytes free
+Bank 35, 14662 tail bytes free
+Bank 36, 15955 tail bytes free
+Bank 37, 16106 tail bytes free
+Build complete: ./bin/dungeon2.nex

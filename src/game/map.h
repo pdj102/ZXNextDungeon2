@@ -22,7 +22,7 @@
  * public defines
  ***************************************************/
 #define MAP_WIDTH 80
-#define MAP_HEIGHT 24
+#define MAP_HEIGHT 48
 
 /***************************************************
  * public types

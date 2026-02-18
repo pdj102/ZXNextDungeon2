@@ -354,8 +354,8 @@ static void spawn_special_content(dungeon_transition_t *c)
 
 static void dungeon_place_player(dungeon_transition_t *c)
 {
-    uint8_t spawn_x = 10;  // Default fallback position
-    uint8_t spawn_y = 15;
+    uint8_t spawn_x;  
+    uint8_t spawn_y;
     entity_id_t stair_entity = ENTITY_ID_INVALID;
     transistion_kind_t target_stair_kind;
 
@@ -372,7 +372,8 @@ static void dungeon_place_player(dungeon_transition_t *c)
     }
     else
     {
-        // Teleport, new game, or other - use default position
+        // Teleport, new game, or other - pick a random location in a random room
+        random_point_in_room(pick_random_room(), &spawn_x, &spawn_y);
         world_attach_entity(g.player.id, spawn_x, spawn_y);
         return;
     }

@@ -47,6 +47,7 @@ static bool can_enter(uint8_t x, uint8_t y);
 
 void map_init(void)
 {
+    util_assert(sizeof(map) <= 0x2000); /* map_t must fit within 8KB MMU slot 7 */
     map_terrain_init();
     map_init_entity_heads();
     g.depth = 1;
@@ -65,7 +66,7 @@ entity_id_t map_get_first(uint8_t x, uint8_t y)
     util_assert( x < MAP_WIDTH);
     util_assert( y < MAP_HEIGHT);
 
-    return g.map.entity_head[x][y];
+    return map.entity_head[x][y];
 }
 
 entity_id_t map_get_next(entity_id_t id)

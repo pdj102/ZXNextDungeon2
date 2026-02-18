@@ -25,8 +25,8 @@
  * slot 3 (0x6000)    Fixed tilemap and tilesets (bank 5)
  * slot 4 (0x8000)    Fixed non banking core memory_map code (bank 2)
  * slot 5 (0xa000)    Fixed non banking core memory_map code (bank 2)
- * slot 6 (0xc000)    Banked memory_map code and data (bank 0) 
- * slot 7 (0xe000)    Banked memory_map code and data (bank 0)
+ * slot 6 (0xc000)    Banked memory_map code and data (bank 0)
+ * slot 7 (0xe000)    Fixed map data - never paged (bank 61)
  *
  *
  * 0x4000 - 0x49FF      Tilemap - 40 * 32 tiles * 2 bytes per tile = 0xA00 (2,560) bytes
@@ -63,7 +63,7 @@
 #define PAGE_DAMAGE_SYSTEM    56
 #define PAGE_STATS_SYSTEM     58
 #define PAGE_EFFECT_SYSTEM_1  60
-#define PAGE_EFFECT_SYSTEM_2  61
+#define PAGE_MAP              61
 #define PAGE_CONSUMABLE_SYSTEM    62
 #define PAGE_NAME_SYSTEM      64
 #define PAGE_HEALING_SYSTEM   66

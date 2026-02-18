@@ -74,7 +74,6 @@ typedef struct
 
     /* World */
     uint8_t depth;
-    map_t map; 
     camera_t camera;
 
     /* UI */

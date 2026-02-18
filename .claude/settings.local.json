@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(bash -c \"make &> /tmp/build.log\")",
+      "Bash(bash -c:*)",
+      "Bash(make:*)",
+      "Bash(zcc:*)",
+      "Bash(dir:*)"
     ]
   }
 }

@@ -33,16 +33,19 @@
 /***************************************************
  * public functions
  ***************************************************/
-void entity_turn(entity_id_t entity)
+/*
+ * @brief Called when an entity takes a turn. Applies all active effects on the entity, reduces their duration, and removes any that have expired.
+ */
+ void entity_turn(entity_id_t entity)
 {
     event_t event;
 
-    active_effects_comp_t *effects = g.active_effect_components[entity];
+    const uint8_t head = g.active_effect_components->head[entity];
 
-    for (uint8_t i = 0; i < effects->head; )
+    for (uint8_t i = 0; i < head; )
     {
-        uint8_t slot = effects->active_stack[i];
-        effect_t *e = &effects->slots[slot].effect;
+        uint8_t slot = g.active_effect_components->active_stack[entity][i];
+        effect_t *e = &g.active_effect_components->slots[entity][slot].effect;
 
         apply_effect(entity, e);
 

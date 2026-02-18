@@ -37,8 +37,6 @@ static uint16_t stack_max_usage(void);
 static void turn(void);
 static void process_entity_turn(entity_id_t id);
 
-static void map(void);
-
 int main(void)
 {
     uint16_t stack_max;

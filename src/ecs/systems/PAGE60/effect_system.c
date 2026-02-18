@@ -33,7 +33,7 @@
  * NB this is a bit of a hack 
  * The effect system code MUST NOT exceed 6KB in size to ensure there is enough room for the active effects component array in the 8KB MMU slot.
  */
-__at (0xd800) active_effect_components_t active_effect_components_priv; 
+__at (0xd800) static active_effect_components_t active_effect_components_priv;
 
 /***************************************************
  * private function prototypes
@@ -45,16 +45,17 @@ __at (0xd800) active_effect_components_t active_effect_components_priv;
 void effect_system_init(void)
 {
     text_printf(&g.msg_win, "\nActive effects size:%U", sizeof(active_effect_components_priv));
-    util_assert(sizeof(active_effect_components_priv) < 0x1FFF); /* Must fit within 8k MMU slot */
+    util_assert(sizeof(active_effect_components_priv) < 0x800); /* Check fits within top 2KB of 8k MMU slot */
 
     g.active_effect_components = &active_effect_components_priv;
 
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        g.active_effect_components[i]->head = 0;
+        g.active_effect_components->head[i] = 0;
         for (uint8_t j = 0; j < MAX_ACTIVE_EFFECTS; j++)
         {
-            g.active_effect_components[i]->slots[j].effect.kind = EFFECT_NONE;
+            g.active_effect_components->slots[i][j].source = ENTITY_ID_INVALID;
+            g.active_effect_components->slots[i][j].effect.kind = EFFECT_NONE;
         }
     }
 }

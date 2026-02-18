@@ -86,7 +86,9 @@ static void init_zxnext(void)
     /* Map bank 28 into ZX Spectrum 8k MMU slot 0 */
     ZXN_WRITE_REG(0x50, PAGE_GLOBAL_STATE);
     /* Map bank 29 into ZX Spectrum 8k MMU slot 1 */
-    ZXN_WRITE_REG(0x51, PAGE_GLOBAL_STATE_2);    
+    ZXN_WRITE_REG(0x51, PAGE_GLOBAL_STATE_2);
+    /* Map bank 61 into ZX Spectrum 8k MMU slot 7 - fixed map data, never paged */
+    ZXN_WRITE_REG(0x57, PAGE_MAP);    
 
     init_zxnext_tilemap();
 

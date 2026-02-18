@@ -2,9 +2,9 @@
  * @file effect_system.c
  * @author Paul Johnson
  * @brief effect system for ECS
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
 
 #include "ecs/systems/systems_dispatch.h"
@@ -34,17 +34,17 @@
  * private function prototypes
  ***************************************************/
 
-static uint8_t get_free_slot(active_effects_comp_t *effects);
-static uint8_t choose_precedence_slot(active_effects_comp_t *effects, const effect_comp_t *new_effect);
-static void active_stack_append(active_effects_comp_t *effects, uint8_t slot);
-static void active_stack_remove(active_effects_comp_t *effects, uint8_t slot);
+static uint8_t get_free_slot(entity_id_t entity);
+static uint8_t choose_precedence_slot(entity_id_t entity, const effect_comp_t *new_effect);
+static void active_stack_append(entity_id_t entity, uint8_t slot);
+static void active_stack_remove(entity_id_t entity, uint8_t slot);
 
 /***************************************************
  * public functions
  ***************************************************/
 /*
  * @brief Attach an active effect to the target entity
- * @details If the entity's maximum number of active effects has been reached applies precendence rules 
+ * @details If the entity's maximum number of active effects has been reached applies precendence rules
  * @param target The entity to attach the effect to
  * @param source The entity that is applying the effect or INVALID_ENTITY_ID to apply the effect from the system context
  * @param effect The effect to apply
@@ -53,14 +53,12 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
 {
     event_t event;
 
-    active_effects_comp_t* effects = g.active_effect_components[target];
-
-    uint8_t slot = get_free_slot(effects);
+    uint8_t slot = get_free_slot(target);
 
     if (slot == INVALID_SLOT)
     {
         util_info("No free slot");
-        slot = choose_precedence_slot(effects, effect);
+        slot = choose_precedence_slot(target, effect);
         if (slot == INVALID_SLOT)
         {
             util_info("Does not take precendence");
@@ -69,13 +67,13 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
     }
 
     /* Set up new active effect */
-    effects->slots[slot].effect.kind = effect->kind;
-    effects->slots[slot].effect.duration = effect->duration;
-    effects->slots[slot].effect.attribute = effect->attribute;
-    effects->slots[slot].effect.magnitude = effect->magnitude;
-    effects->slots[slot].source = source;
+    g.active_effect_components->slots[target][slot].effect.kind = effect->kind;
+    g.active_effect_components->slots[target][slot].effect.duration = effect->duration;
+    g.active_effect_components->slots[target][slot].effect.attribute = effect->attribute;
+    g.active_effect_components->slots[target][slot].effect.magnitude = effect->magnitude;
+    g.active_effect_components->slots[target][slot].source = source;
 
-    active_stack_append(effects, slot);
+    active_stack_append(target, slot);
 
     event.type = EVENT_ACTIVE_EFFECT_ATTACHED;
     event.target = target;
@@ -89,20 +87,16 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
 {
     event_t event;
 
-    active_effects_comp_t *effects;
-
     if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
         return;
 
-    effects = g.active_effect_components[target];
-
-    active_stack_remove(effects, slot);
+    active_stack_remove(target, slot);
 
     event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
     /* TODO record source entity? */
     event.source = ENTITY_ID_INVALID;
     event.target = target;
-    system_event_emit(&event);    
+    system_event_emit(&event);
 }
 
  /*
@@ -115,28 +109,24 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
 {
     event_t event;
 
-    active_effects_comp_t* effects;
-    
     if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
         return;
 
-    effects = g.active_effect_components[target];
-
     uint8_t i = 0;
-    while (i < effects->head)
+    while (i < g.active_effect_components->head[target])
     {
-        uint8_t slot = effects->active_stack[i];
-        active_effect_comp_t* e = &effects->slots[slot];
+        uint8_t slot = g.active_effect_components->active_stack[target][i];
+        active_effect_comp_t* e = &g.active_effect_components->slots[target][slot];
 
         if (e->source == source)
         {
-            active_stack_remove(effects, slot);
+            active_stack_remove(target, slot);
             /* do NOT increment i — need to re-check swapped entry */
 
             event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
             event.target = target;
             event.source = source;
-            system_event_emit(&event);    
+            system_event_emit(&event);
         }
         else
         {
@@ -148,14 +138,12 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
 int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     int8_t mod_sum = 0;
-    
-    active_effects_comp_t* effects = g.active_effect_components[actor];
 
     uint8_t i = 0;
-    while (i < effects->head)
+    while (i < g.active_effect_components->head[actor])
     {
-        int8_t slot = effects->active_stack[i];
-        effect_t* e = &effects->slots[slot].effect;
+        int8_t slot = g.active_effect_components->active_stack[actor][i];
+        effect_t* e = &g.active_effect_components->slots[actor][slot].effect;
 
         if ((e->attribute == attribute) && (e->kind == EFFECT_STAT_MODIFIER))
         {
@@ -167,32 +155,32 @@ int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
 }
 
 
- 
+
  /***************************************************
  * private functions
  ***************************************************/
 /*
  * @brief choose the precedence slot for an effect
- * @param effects The effect component to check
+ * @param entity The entity to check
  * @param new_effect The effect to check against
  */
-static uint8_t choose_precedence_slot(active_effects_comp_t *effects, const effect_comp_t *new_effect)
+static uint8_t choose_precedence_slot(entity_id_t entity, const effect_comp_t *new_effect)
 {
-    (void)effects;
+    (void)entity;
     (void)new_effect;
     return INVALID_SLOT;
 }
 
-/* 
+/*
  * @brief Find a free slot in the entity's effects component
- * @param effects The entity's effects component
+ * @param entity The entity to check
  * @return The free slot or INVALID_SLOT
  */
-static uint8_t get_free_slot(active_effects_comp_t *effects)
+static uint8_t get_free_slot(entity_id_t entity)
 {
     for (uint8_t i = 0; i < MAX_ACTIVE_EFFECTS; i++)
     {
-        if (effects->slots[i].effect.kind == EFFECT_NONE)
+        if (g.active_effect_components->slots[entity][i].effect.kind == EFFECT_NONE)
         {
             return i;
         }
@@ -203,34 +191,34 @@ static uint8_t get_free_slot(active_effects_comp_t *effects)
 
 /*
  * @brief Appends the slot to active stack
- * param effects The entity's effects component
+ * @param entity The entity
  * @param slot The slot to append
  */
-static void active_stack_append(active_effects_comp_t *effects, uint8_t slot)
+static void active_stack_append(entity_id_t entity, uint8_t slot)
 {
-    util_assert ( effects->head < MAX_ACTIVE_EFFECTS);
+    util_assert(g.active_effect_components->head[entity] < MAX_ACTIVE_EFFECTS);
 
-    effects->active_stack[effects->head++] = slot;
+    g.active_effect_components->active_stack[entity][g.active_effect_components->head[entity]++] = slot;
 }
 
 /*
- * @brief Removes the slot from the active stack via swap-remove 
- * @param effects The entity's effects component
+ * @brief Removes the slot from the active stack via swap-remove
+ * @param entity The entity
  * @param slot The slot to remove
  */
-static void active_stack_remove(active_effects_comp_t *effects, uint8_t slot)
+static void active_stack_remove(entity_id_t entity, uint8_t slot)
 {
-    // Clear the slot's effect 
-    effects->slots[slot].effect.kind = EFFECT_NONE;
+    // Clear the slot's effect
+    g.active_effect_components->slots[entity][slot].effect.kind = EFFECT_NONE;
 
     // Remove slot from active stack
-    for (uint8_t i = 0; i < effects->head; i++)
+    for (uint8_t i = 0; i < g.active_effect_components->head[entity]; i++)
     {
-        if (effects->active_stack[i] == slot)
+        if (g.active_effect_components->active_stack[entity][i] == slot)
         {
             // Set slot at i to last slot in stack and decrement head
-            effects->active_stack[i] = effects->active_stack[--effects->head];
+            g.active_effect_components->active_stack[entity][i] = g.active_effect_components->active_stack[entity][--g.active_effect_components->head[entity]];
             break;
         }
-    }   
+    }
 }

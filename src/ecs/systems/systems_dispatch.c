@@ -460,66 +460,50 @@ bool system_door_try_close(entity_id_t actor, entity_id_t entity)
 void system_effect_init(void)
 {
     uint8_t mmu6_current_bank;
-    uint8_t mmu7_current_bank;
 
     mmu6_current_bank = ZXN_READ_MMU6();
-    mmu7_current_bank = ZXN_READ_MMU7();
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
-    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_init();
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
-    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 void system_effect_handle_event(const event_t *event)
 {
     uint8_t mmu6_current_bank;
-    uint8_t mmu7_current_bank;
 
     mmu6_current_bank = ZXN_READ_MMU6();
-    mmu7_current_bank = ZXN_READ_MMU7();
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
-    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_handle_event(event);
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
-    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 void system_effect_process_entity_turn(entity_id_t entity)
 {
     uint8_t mmu6_current_bank;
-    uint8_t mmu7_current_bank;
 
     mmu6_current_bank = ZXN_READ_MMU6();
-    mmu7_current_bank = ZXN_READ_MMU7();
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
-    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_process_entity_turn(entity);
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
-    ZXN_WRITE_MMU7(mmu7_current_bank);
 }
 
 int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     uint8_t mmu6_current_bank;
-    uint8_t mmu7_current_bank;
     uint8_t attribute_mod_sum = 0;
 
     mmu6_current_bank = ZXN_READ_MMU6();
-    mmu7_current_bank = ZXN_READ_MMU7();
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
-    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     attribute_mod_sum = effect_system_attribute_mod_sum(actor, attribute);
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
-    ZXN_WRITE_MMU7(mmu7_current_bank);
 
     return attribute_mod_sum;
 }
@@ -527,17 +511,13 @@ int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute)
 void system_effect_cleanup_entity(entity_id_t source)
 {
     uint8_t mmu6_current_bank;
-    uint8_t mmu7_current_bank;
 
     mmu6_current_bank = ZXN_READ_MMU6();
-    mmu7_current_bank = ZXN_READ_MMU7();
     ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
-    ZXN_WRITE_MMU7(PAGE_EFFECT_SYSTEM_2);
 
     effect_system_cleanup_entity(source);
 
     ZXN_WRITE_MMU6(mmu6_current_bank);
-    ZXN_WRITE_MMU7(mmu7_current_bank);    
 }
 
 /* Equipment System */

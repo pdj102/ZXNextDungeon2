@@ -26,7 +26,7 @@
  */
 static inline terrain_type_t map_get_terrain(uint8_t x, uint8_t y)
 {
-    return g.map.terrain[x][y];
+    return map.terrain[x][y];
 }
 
 /*
@@ -37,7 +37,7 @@ static inline terrain_type_t map_get_terrain(uint8_t x, uint8_t y)
  */
 static inline void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain)
 {
-    g.map.terrain[x][y] = terrain;
+    map.terrain[x][y] = terrain;
 }
 
 /*
@@ -48,7 +48,7 @@ static inline void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain)
  */
 static inline void map_set_entity_head(uint8_t x, uint8_t y, entity_id_t entity)
 {
-    g.map.entity_head[x][y] = entity;
+    map.entity_head[x][y] = entity;
 }
 
 #endif // MAP_ACCESS_H

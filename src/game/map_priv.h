@@ -26,9 +26,11 @@
  * private types
  ***************************************************/
 typedef struct {
-    terrain_type_t terrain[MAP_WIDTH][MAP_HEIGHT]; /* terrain data for the map_terrain */
+    uint8_t terrain[MAP_WIDTH][MAP_HEIGHT]; /* terrain data - uint8_t (not enum) ensures 1 byte per cell to fit in 8KB slot 7 */
     entity_id_t entity_head[MAP_WIDTH][MAP_HEIGHT];
 } map_t;
+
+__at (0xe000) static map_t map; /* Map data in fixed 8k MMU slot 7 */
 
 /***************************************************
  * private variables
