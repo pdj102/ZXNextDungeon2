@@ -53,7 +53,7 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
 {
     event_t event;
 
-    active_effects_comp_t* effects = &active_effect_components[target];
+    active_effects_comp_t* effects = g.active_effect_components[target];
 
     uint8_t slot = get_free_slot(effects);
 
@@ -94,7 +94,7 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
         return;
 
-    effects = &active_effect_components[target];
+    effects = g.active_effect_components[target];
 
     active_stack_remove(effects, slot);
 
@@ -120,7 +120,7 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
         return;
 
-    effects = &active_effect_components[target];
+    effects = g.active_effect_components[target];
 
     uint8_t i = 0;
     while (i < effects->head)
@@ -149,7 +149,7 @@ int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     int8_t mod_sum = 0;
     
-    active_effects_comp_t* effects = &active_effect_components[actor];
+    active_effects_comp_t* effects = g.active_effect_components[actor];
 
     uint8_t i = 0;
     while (i < effects->head)

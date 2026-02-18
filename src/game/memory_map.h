@@ -42,7 +42,7 @@
   *
   * NB 
   *     use even page numbers for default ORG 0xc000 e.g. page 30, 32
-  *     use odd page numbers for default ORG 0xe000 e.g. page 31, 33
+  *     odd page numbers have a default ORG of 0xe000 e.g. page 31, 33
   */
 
 #define PAGE_GLOBAL_STATE     28 
@@ -51,7 +51,6 @@
 #define PAGE_ITEM_SYSTEM      32
 #define PAGE_DUNGEON_GEN      34
 #define PAGE_INIT             36
-#define PAGE_PALETTE          37
 #define PAGE_TIMER_SYSTEM     38
 #define PAGE_CONTAINER_SYSTEM 40
 #define PAGE_EVENT_SYSTEM     42

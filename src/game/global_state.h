@@ -10,6 +10,7 @@
 #include "ecs/entity_priv.h"
 
 #include "ecs/components/ai_comp.h"
+#include "ecs/components/active_effect_comp.h"
 #include "ecs/components/ammo_comp.h"
 #include "ecs/components/attack_comp.h"
 #include "ecs/components/container_comp.h"
@@ -68,6 +69,8 @@ typedef struct
     ammo_components_t ammo_components;
     openable_components_t openable_components;
     transition_components_t transition_components;
+
+    active_effect_components_t* active_effect_components; /* Pointer to active effects component array in PAGE 60 */
 
     /* World */
     uint8_t depth;

@@ -37,7 +37,7 @@ void entity_turn(entity_id_t entity)
 {
     event_t event;
 
-    active_effects_comp_t *effects = &active_effect_components[entity];
+    active_effects_comp_t *effects = g.active_effect_components[entity];
 
     for (uint8_t i = 0; i < effects->head; )
     {

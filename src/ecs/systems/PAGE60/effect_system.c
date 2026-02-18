@@ -20,13 +20,20 @@
 
 /***************************************************
  * private defines
- ***************************************************/
 #define INVALID_SLOT 0xFF
 
  /***************************************************
  * private variables (static)
  ***************************************************/
 
+/* Active effects component array - one per entity. 
+ * Each active effect component contains a list of active effects currently affecting that entity.
+ * Declared at the top 2KB of MMU slot 6 (0xc000) of the MMU as it is too large to fit in the global state struct in slot 0 (0x0000) and needs to be accessed by the effect system and other systems that need to query active effects.
+ * Is  paged in/out of memory with the effect system. 
+ * NB this is a bit of a hack 
+ * The effect system code MUST NOT exceed 6KB in size to ensure there is enough room for the active effects component array in the 8KB MMU slot.
+ */
+__at (0xd800) active_effect_components_t active_effect_components_priv; 
 
 /***************************************************
  * private function prototypes
@@ -37,12 +44,17 @@
  ***************************************************/
 void effect_system_init(void)
 {
+    text_printf(&g.msg_win, "\nActive effects size:%U", sizeof(active_effect_components_priv));
+    util_assert(sizeof(active_effect_components_priv) < 0x1FFF); /* Must fit within 8k MMU slot */
+
+    g.active_effect_components = &active_effect_components_priv;
+
     for (uint8_t i = 0; i < MAX_ENTITIES; i++)
     {
-        active_effect_components[i].head = 0;
+        g.active_effect_components[i]->head = 0;
         for (uint8_t j = 0; j < MAX_ACTIVE_EFFECTS; j++)
         {
-            active_effect_components[i].slots[j].effect.kind = EFFECT_NONE;
+            g.active_effect_components[i]->slots[j].effect.kind = EFFECT_NONE;
         }
     }
 }

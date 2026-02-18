@@ -42,10 +42,10 @@ void cleanup_entity(entity_id_t source)
     /* If entity has active effects clean up*/
     if (entity_has_component(source, COMPONENT_ACTIVE_EFFECT))
     {
-        active_effect_components[source].head = 0;
+        g.active_effect_components[source]->head = 0;
         for (uint8_t j = 0; j < MAX_ACTIVE_EFFECTS; j++)
         {
-            active_effect_components[source].slots[j].effect.kind = EFFECT_NONE;
+            g.active_effect_components[source]->slots[j].effect.kind = EFFECT_NONE;
         }
     }
 
@@ -62,8 +62,6 @@ void cleanup_entity(entity_id_t source)
 
         if (!entity_has_component(entity, COMPONENT_ACTIVE_EFFECT))
             continue;
-
-        active_effects_comp_t *effects = &active_effect_components[entity];
 
         /* Remove any active effects bestowed by source */
         remove_effects_by_source(entity, source);

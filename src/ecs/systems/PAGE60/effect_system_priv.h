@@ -38,7 +38,7 @@ typedef struct
  /***************************************************
  * private variables (static)
  ***************************************************/
-__at (0xe000) static active_effect_components_t active_effect_components; /* Place active effects in 8k-slot 7 (MMU7) */
+// __at (0xe000) static active_effect_components_t active_effect_components; /* Place active effects in 8k-slot 7 (MMU7) */
 
 /***************************************************
  * Function prototypes

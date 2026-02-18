@@ -40,6 +40,11 @@ void effect_system_init(void );
   */
 void effect_system_handle_event(const event_t *event);
 
+ /*
+  * @brief Process entity turn
+  *   
+  */
+
 void effect_system_process_entity_turn(entity_id_t entity);
 
 /*
