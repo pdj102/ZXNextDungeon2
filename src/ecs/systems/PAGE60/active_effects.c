@@ -95,10 +95,18 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
         return;
 
+    /* Save effect data before the slot is cleared by active_stack_remove */
+    effect_t removed = g.active_effect_components->slots[target][slot].effect;
+
     active_stack_remove(target, slot);
 
+    /* If a condition was removed, clear the condition bit if no other source still applies it */
+    if (removed.kind == EFFECT_APPLY_CONDITION)
+    {
+        condition_clear_if_no_remaining(target, (condition_id_t)removed.magnitude);
+    }
+
     event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
-    /* TODO record source entity? */
     event.source = ENTITY_ID_INVALID;
     event.target = target;
     system_event_emit(&event);
@@ -125,8 +133,17 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
 
         if (e->source == source)
         {
+            /* Save effect data before the slot is cleared */
+            effect_t removed = e->effect;
+
             active_stack_remove(target, slot);
             /* do NOT increment i — need to re-check swapped entry */
+
+            /* If a condition was removed, clear the condition bit if no other source still applies it */
+            if (removed.kind == EFFECT_APPLY_CONDITION)
+            {
+                condition_clear_if_no_remaining(target, (condition_id_t)removed.magnitude);
+            }
 
             event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
             event.target = target;
@@ -165,7 +182,93 @@ int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
     return mod_sum;
 }
 
+/*
+ * @brief Clear the condition bit on an entity if no active effect is still applying it
+ * @param target The entity to check
+ * @param condition_id The condition to check for
+ */
+void condition_clear_if_no_remaining(entity_id_t target, condition_id_t condition_id)
+{
+    event_t event;
 
+    if (!entity_has_component(target, COMPONENT_CONDITION))
+        return;
+
+    /* Check remaining active effects — if any still apply the same condition, leave the bit set */
+    for (uint8_t i = 0; i < g.active_effect_components->head[target]; i++)
+    {
+        uint8_t slot = g.active_effect_components->active_stack[target][i];
+        effect_t *e = &g.active_effect_components->slots[target][slot].effect;
+        if (e->kind == EFFECT_APPLY_CONDITION && (condition_id_t)e->magnitude == condition_id)
+        {
+            return;
+        }
+    }
+
+    /* No remaining sources — clear the bit if it was set */
+    condition_mask_t mask = CONDITION_MASK(condition_id);
+    if (g.condition_components[target].conditions & mask)
+    {
+        g.condition_components[target].conditions &= ~mask;
+        event.type   = EVENT_CONDITION_REMOVED;
+        event.source = ENTITY_ID_INVALID;
+        event.target = target;
+        event.value  = (uint8_t)condition_id;
+        system_event_emit(&event);
+    }
+}
+
+/*
+ * @brief Clear a condition from an entity and remove all active effects applying it
+ * @details Used by EFFECT_REMOVE_CONDITION (e.g. cure potion) to purge a condition and all its sources
+ * @param target The entity to cure
+ * @param condition_id The condition to remove
+ */
+void remove_active_conditions_by_id(entity_id_t target, condition_id_t condition_id)
+{
+    event_t event;
+
+    /* Clear the condition bit first */
+    if (entity_has_component(target, COMPONENT_CONDITION))
+    {
+        condition_mask_t mask = CONDITION_MASK(condition_id);
+        if (g.condition_components[target].conditions & mask)
+        {
+            g.condition_components[target].conditions &= ~mask;
+            event.type   = EVENT_CONDITION_REMOVED;
+            event.source = ENTITY_ID_INVALID;
+            event.target = target;
+            event.value  = (uint8_t)condition_id;
+            system_event_emit(&event);
+        }
+    }
+
+    if (!entity_has_component(target, COMPONENT_ACTIVE_EFFECT))
+        return;
+
+    /* Remove any active effects still applying this condition */
+    uint8_t i = 0;
+    while (i < g.active_effect_components->head[target])
+    {
+        uint8_t slot = g.active_effect_components->active_stack[target][i];
+        effect_t *e = &g.active_effect_components->slots[target][slot].effect;
+
+        if (e->kind == EFFECT_APPLY_CONDITION && (condition_id_t)e->magnitude == condition_id)
+        {
+            active_stack_remove(target, slot);
+            /* do NOT increment i — need to re-check swapped entry */
+
+            event.type   = EVENT_ACTIVE_EFFECT_UNATTACHED;
+            event.source = ENTITY_ID_INVALID;
+            event.target = target;
+            system_event_emit(&event);
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
 
  /***************************************************
  * private functions

@@ -17,6 +17,7 @@
 #include "ecs/components/contained_comp.h"
 #include "ecs/components/creature_comp.h"
 #include "ecs/components/destructible_comp.h"
+#include "ecs/components/condition_comp.h"
 #include "ecs/components/effect_comp.h"
 #include "ecs/components/equippable_comp.h"
 #include "ecs/components/equipped_comp.h"
@@ -69,6 +70,7 @@ typedef struct
     ammo_components_t ammo_components;
     openable_components_t openable_components;
     transition_components_t transition_components;
+    condition_components_t condition_components;
 
     active_effect_components_t* active_effect_components; /* Pointer to active effects component array in PAGE 60 */
 

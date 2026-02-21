@@ -13,6 +13,7 @@
 #include <stdint.h>
 
 #include "ecs/entity.h"
+#include "ecs/components/condition_comp.h"
 #include "ecs/components/effect_comp.h"
 #include "ecs/components/active_effect_comp.h"
 
@@ -49,6 +50,8 @@ typedef struct
 bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t* effect);
 void unattach_active_effect(entity_id_t target, uint8_t slot);
 void remove_effects_by_source(entity_id_t target, entity_id_t source);
+void remove_active_conditions_by_id(entity_id_t target, condition_id_t condition_id);
+void condition_clear_if_no_remaining(entity_id_t target, condition_id_t condition_id);
 int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute);
 
 /* Apply effects */

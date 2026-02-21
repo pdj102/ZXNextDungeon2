@@ -15,6 +15,8 @@
 
 #include "ecs/components/components.h"
 
+#include "ecs/components/condition_comp.h"
+
 #include "game/global_state.h"
 
 #include "core/text.h"
@@ -78,6 +80,16 @@
 };
 
 
+
+/* Condition descriptions — indexed by condition_id_t, used in applied/removed messages */
+static const char *condition_name[] = {
+    [CONDITION_ID_NONE]          = "",
+    [CONDITION_ID_BLIND]         = "blinded",
+    [CONDITION_ID_DEAF]          = "deafened",
+    [CONDITION_ID_INCAPACITATED] = "incapacitated",
+    [CONDITION_ID_POISONED]      = "poisoned",
+    [CONDITION_ID_CONFUSED]      = "confused",
+};
 
 /***************************************************
  * private function prototypes
@@ -156,6 +168,28 @@ static void ui_msg_win_nl(void);
         case EVENT_ACTIVE_EFFECT_EXPIRED:
             util_info("Active effect expired");
             break;
+        case EVENT_CONDITION_APPLIED:
+        {
+            condition_id_t cid = (condition_id_t)event->value;
+            ui_msg_win_nl();
+            ui_msg_win_print_subject(event->target);
+            if (target_is_player)
+                text_printf(&g.msg_win, " are %s!", condition_name[cid]);
+            else
+                text_printf(&g.msg_win, " is %s!", condition_name[cid]);
+            break;
+        }
+        case EVENT_CONDITION_REMOVED:
+        {
+            condition_id_t cid = (condition_id_t)event->value;
+            ui_msg_win_nl();
+            ui_msg_win_print_subject(event->target);
+            if (target_is_player)
+                text_printf(&g.msg_win, " are no longer %s.", condition_name[cid]);
+            else
+                text_printf(&g.msg_win, " is no longer %s.", condition_name[cid]);
+            break;
+        }
         case EVENT_TRANSITION:
             text_printf(&g.msg_win, "Transitioning...");
             break;

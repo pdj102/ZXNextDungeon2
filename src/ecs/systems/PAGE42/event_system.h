@@ -49,6 +49,8 @@ typedef enum {
     EVENT_CLOSED,                   // Source closed target
     EVENT_TRANSITION,               // Source transitions target to a new depth
     EVENT_TRANSITION_TELEPORT,      // Source transitions target to a new depth
+    EVENT_CONDITION_APPLIED,        // Condition applied to target; value = condition_id_t
+    EVENT_CONDITION_REMOVED,        // Condition removed from target; value = condition_id_t
     EVENT_COUNT
 
 } event_type_t;

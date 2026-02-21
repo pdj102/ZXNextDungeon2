@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 
+#include "ecs/components/condition_comp.h"
 #include "ecs/components/effect_comp.h"
 
 #include "ecs/systems/PAGE42/event_system.h"
@@ -60,6 +61,13 @@ void effect_system_cleanup_entity(entity_id_t source);
  * @param actor The actor 
  */
 int8_t effect_system_attribute_mod_sum(entity_id_t actor, attribute_t attribute);
+
+/*
+ * @brief Returns true if the entity currently has the specified condition active
+ * @param entity The entity to query
+ * @param condition The condition to check for
+ */
+bool effect_system_has_condition(entity_id_t entity, condition_id_t condition);
 
 
 #endif // EFFECT_SYSTEM_H

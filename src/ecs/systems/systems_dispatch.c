@@ -520,6 +520,21 @@ void system_effect_cleanup_entity(entity_id_t source)
     ZXN_WRITE_MMU6(mmu6_current_bank);
 }
 
+bool system_effect_has_condition(entity_id_t entity, condition_id_t condition)
+{
+    uint8_t mmu6_current_bank;
+    bool result;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+
+    result = effect_system_has_condition(entity, condition);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+
+    return result;
+}
+
 /* Equipment System */
  void system_equipment_init(void)
  {

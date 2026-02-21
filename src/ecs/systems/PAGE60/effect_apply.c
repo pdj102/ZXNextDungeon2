@@ -55,7 +55,28 @@ void apply_effect(entity_id_t target, const effect_t *effect)
         /* Not applicable - stats are not directly modified by effects. */
             break;
         case EFFECT_APPLY_CONDITION:
+        {
+            if (entity_has_component(target, COMPONENT_CONDITION))
+            {
+                condition_mask_t mask = CONDITION_MASK(effect->magnitude);
+                if (!(g.condition_components[target].conditions & mask))
+                {
+                    g.condition_components[target].conditions |= mask;
+                    event_t event;
+                    event.type   = EVENT_CONDITION_APPLIED;
+                    event.source = ENTITY_ID_INVALID;
+                    event.target = target;
+                    event.value  = (uint8_t)effect->magnitude;
+                    system_event_emit(&event);
+                }
+            }
+            break;
+        }
         case EFFECT_REMOVE_CONDITION:
+        {
+            remove_active_conditions_by_id(target, (condition_id_t)effect->magnitude);
+            break;
+        }
         case EFFECT_TRIGGER_ONLY:
             break;
         default:

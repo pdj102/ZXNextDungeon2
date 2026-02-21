@@ -90,6 +90,16 @@ void effect_system_cleanup_entity(entity_id_t source)
     cleanup_entity(source);
 }
 
+bool effect_system_has_condition(entity_id_t entity, condition_id_t condition)
+{
+    util_assert(entity < MAX_ENTITIES);
+
+    if (!entity_has_component(entity, COMPONENT_CONDITION))
+        return false;
+
+    return (g.condition_components[entity].conditions & CONDITION_MASK(condition)) != 0;
+}
+
  /***************************************************
  * private functions
  ***************************************************/
