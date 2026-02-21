@@ -40,9 +40,8 @@
 {
     event_t event;
 
-    const uint8_t head = g.active_effect_components->head[entity];
-
-    for (uint8_t i = 0; i < head; )
+    /* Loop through active effects on the entity and apply them. If any duration-based effects expire, remove them and emit an event. */
+    for (uint8_t i = 0; i < g.active_effect_components->head[entity]; )
     {
         uint8_t slot = g.active_effect_components->active_stack[entity][i];
         effect_t *e = &g.active_effect_components->slots[entity][slot].effect;

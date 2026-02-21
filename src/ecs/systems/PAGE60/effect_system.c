@@ -20,7 +20,7 @@
 
 /***************************************************
  * private defines
-#define INVALID_SLOT 0xFF
+ ***************************************************/
 
  /***************************************************
  * private variables (static)
@@ -44,7 +44,9 @@ __at (0xd800) static active_effect_components_t active_effect_components_priv;
  ***************************************************/
 void effect_system_init(void)
 {
-    text_printf(&g.msg_win, "\nActive effects size:%U", sizeof(active_effect_components_priv));
+    #ifndef NDEBUG
+        text_printf(&g.msg_win, "\nActive effects size:%U", sizeof(active_effect_components_priv));
+    #endif
     util_assert(sizeof(active_effect_components_priv) < 0x800); /* Check fits within top 2KB of 8k MMU slot */
 
     g.active_effect_components = &active_effect_components_priv;

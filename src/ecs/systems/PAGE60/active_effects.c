@@ -210,6 +210,7 @@ static void active_stack_remove(entity_id_t entity, uint8_t slot)
 {
     // Clear the slot's effect
     g.active_effect_components->slots[entity][slot].effect.kind = EFFECT_NONE;
+    g.active_effect_components->slots[entity][slot].source = ENTITY_ID_INVALID;
 
     // Remove slot from active stack
     for (uint8_t i = 0; i < g.active_effect_components->head[entity]; i++)
