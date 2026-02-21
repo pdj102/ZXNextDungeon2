@@ -59,6 +59,13 @@ uint8_t dungeon_room_count(void)
    return num_rooms;
 }
 
+const Room *dungeon_get_room(uint8_t idx)
+{
+    if (idx >= num_rooms)
+        return NULL;
+    return &rooms[idx];
+}
+
 Room *pick_random_room(void)
 {
     if (num_rooms == 0) return NULL;
