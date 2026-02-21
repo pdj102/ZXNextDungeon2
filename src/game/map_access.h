@@ -37,7 +37,7 @@ static inline terrain_type_t map_get_terrain(uint8_t x, uint8_t y)
  */
 static inline void map_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain)
 {
-    map.terrain[x][y] = terrain;
+    map.terrain[x][y] = (uint8_t)terrain;
 }
 
 /*

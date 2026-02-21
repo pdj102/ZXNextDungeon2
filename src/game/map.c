@@ -24,7 +24,6 @@
 
 #include "core/util.h"
 
-#define MAX_VIEW_DISTANCE 10
 
 /***************************************************
  * private types
@@ -48,7 +47,6 @@ static bool can_enter(uint8_t x, uint8_t y);
 void map_init(void)
 {
     util_assert(sizeof(map) <= 0x2000); /* map_t must fit within 8KB MMU slot 7 */
-    map_terrain_init();
     map_init_entity_heads();
     g.depth = 1;
 }
@@ -166,7 +164,7 @@ static bool can_enter(uint8_t x, uint8_t y)
         {
             return false;
         }
-        entity = g.location_components[entity].next_in_location;
+        entity = map_get_next(entity);
     }
     return true;
 }

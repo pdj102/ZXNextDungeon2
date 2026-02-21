@@ -48,8 +48,5 @@ extern const terrain_base_t terrain_bases[];
 /***************************************************
  * public function prototypes
  ***************************************************/
-void map_terrain_init(void);
-terrain_type_t map_terrain_get_terrain( uint8_t x, uint8_t y);
-void map_terrain_set_terrain(uint8_t x, uint8_t y, terrain_type_t terrain);
 
 #endif // MAP_TERRAIN_H
