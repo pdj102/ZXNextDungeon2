@@ -67,10 +67,8 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
     }
 
     /* Set up new active effect */
-    g.active_effect_components->slots[target][slot].effect.kind = effect->kind;
-    g.active_effect_components->slots[target][slot].effect.duration = effect->duration;
-    g.active_effect_components->slots[target][slot].effect.attribute = effect->attribute;
-    g.active_effect_components->slots[target][slot].effect.magnitude = effect->magnitude;
+    text_printf(&g.msg_win, "\nAttaching active effect with kind %d to target %d in slot %d", effect->kind, target, slot); // TODO remove
+    g.active_effect_components->slots[target][slot].effect = *effect;
     g.active_effect_components->slots[target][slot].source = source;
 
     active_stack_append(target, slot);
@@ -103,7 +101,7 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     /* If a condition was removed, clear the condition bit if no other source still applies it */
     if (removed.kind == EFFECT_APPLY_CONDITION)
     {
-        condition_clear_if_no_remaining(target, (condition_id_t)removed.magnitude);
+        condition_clear_if_no_remaining(target, removed.condition);
     }
 
     event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
@@ -142,7 +140,7 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
             /* If a condition was removed, clear the condition bit if no other source still applies it */
             if (removed.kind == EFFECT_APPLY_CONDITION)
             {
-                condition_clear_if_no_remaining(target, (condition_id_t)removed.magnitude);
+                condition_clear_if_no_remaining(target, removed.condition);
             }
 
             event.type = EVENT_ACTIVE_EFFECT_UNATTACHED;
@@ -173,9 +171,12 @@ int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
         int8_t slot = g.active_effect_components->active_stack[actor][i];
         effect_t* e = &g.active_effect_components->slots[actor][slot].effect;
 
-        if ((e->attribute == attribute) && (e->kind == EFFECT_STAT_MODIFIER))
+        // text_printf(&g.msg_win, "\nChecking active effect with kind %d for attribute %d", e->kind, e->stat.attribute); // TODO remove
+
+        if ((e->stat.attribute == attribute) && (e->kind == EFFECT_STAT_MODIFIER))
         {
-            mod_sum += e->magnitude;
+            mod_sum += e->stat.magnitude;
+            text_printf(&g.msg_win, "\nMod sum increased by %d to %d", e->stat.magnitude, mod_sum); // TODO remove
         }
         i++;
     }

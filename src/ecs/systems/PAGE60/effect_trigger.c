@@ -84,11 +84,14 @@ static void process_trigger( const trigger_context_t *ctx)
     /* Do nothing if the source has no effect to apply */
     if (!entity_has_component(ctx->source, COMPONENT_EFFECT))
     {
+        // text_printf(&g.msg_win, "\nSource entity %d has no effect component", ctx->source); // TODO remove
         return;
     }
 
     /* Get source entity's effect */
     effect = &g.effect_components[ctx->source];
+
+    // text_printf(&g.msg_win, "\nProcessing trigger %d from source %d to target %d for effect with kind %d", ctx->trigger, ctx->source, ctx->target, effect->kind); // TODO remove
 
     /* Do nothing if trigger is not a trigger for the effect */
     if ((effect->triggers & ctx->trigger) == 0)

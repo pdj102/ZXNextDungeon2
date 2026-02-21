@@ -222,9 +222,9 @@ static const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_POTION_OF_HEALING] = { .kind = EFFECT_NONE},
     /* Scrolls */
     /* Food and drink */
-    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .magnitude = 5, .duration = 0, .attribute = ATTRIBUTE_CUR_HP, .triggers = TRIGGER_ON_CONSUMED},
+    [ITEM_BREAD] = { .kind = EFFECT_HEAL, .duration = 0, .triggers = TRIGGER_ON_CONSUMED, .stat = { .magnitude = 5, .attribute = ATTRIBUTE_CUR_HP }},
     /* Rings */
-    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .magnitude = 2, .duration = 0xFF, .attribute = ATTRIBUTE_STR, .triggers = TRIGGER_ON_EQUIPPED},
+    [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .duration = 0xFF, .triggers = TRIGGER_ON_EQUIPPED, .stat = { .magnitude = 2, .attribute = ATTRIBUTE_STR }},
     /* Wands */
     /* Light sources */
     /* Keys */
@@ -282,8 +282,10 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     }            
 
     /* If item has an effect e.g. bread restores health*/
+    // text_printf(&g.msg_win, "\nChecking item for effect with kind %d", (uint8_t)effect_base[kind].kind); // TODO remove
     if (effect_base[kind].kind != EFFECT_NONE)
     {
+        // text_printf(&g.msg_win, "\nAdding effect with kind %d to item %d", effect_base[kind].kind, id); // TODO remove
         add_effect(id, &effect_base[kind]);
     }
 
@@ -363,11 +365,9 @@ static void add_effect(entity_id_t entity, const effect_comp_t *effect)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_EFFECT)); 
 
-    g.effect_components[entity].kind = effect->kind;
-    g.effect_components[entity].magnitude = effect->magnitude;
-    g.effect_components[entity].duration = effect->duration;
-    g.effect_components[entity].attribute = effect->attribute;
-    g.effect_components[entity].triggers = effect->triggers;
+    g.effect_components[entity] = *effect;
+
+    // text_printf(&g.msg_win, "\nAdding effect with kind %d to entity %d", effect->kind, entity); // TODO remove
 
     entity_set_component(entity, COMPONENT_EFFECT); /* set entity effect component mask */
 }

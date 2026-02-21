@@ -39,10 +39,10 @@ void apply_effect(entity_id_t target, const effect_t *effect)
     switch (effect->kind)
     {
         case EFFECT_DAMAGE:
-            system_damage_try_take_damage(target, effect->magnitude, DAMAGE_NONE);
+            system_damage_try_take_damage(target, effect->stat.magnitude, DAMAGE_NONE);
             break;
         case EFFECT_HEAL:
-            system_healing_try_take_healing(target, effect->magnitude, HEALING_KIND_HP);
+            system_healing_try_take_healing(target, effect->stat.magnitude, HEALING_KIND_HP);
             text_printf(&g.msg_win, "\nYou feel better!"); // TODO remove
             break;
         case EFFECT_STAT_MODIFIER:

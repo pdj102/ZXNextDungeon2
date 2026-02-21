@@ -337,6 +337,7 @@ static void spawn_special_content(dungeon_transition_t *c)
     Room *spawn_room;
     int spawn_x, spawn_y;
     entity_id_t potion;
+    entity_id_t ring;
 
     /* Always spawn at least 1 healing potion */
     spawn_room = pick_random_room();
@@ -350,6 +351,13 @@ static void spawn_special_content(dungeon_transition_t *c)
 
     /* TODO: Spawn keys if locked doors exist */
     /* TODO: 10% chance monsters carry items */
+
+    /* DEBUG - force spawning for testing*/
+    ring = system_item_create(ITEM_RING_OF_STRENGTH, 1);
+    if (ring != ENTITY_ID_INVALID)
+    {
+            world_attach_entity(ring, 22, 20);
+    }
 }
 
 static void dungeon_place_player(dungeon_transition_t *c)

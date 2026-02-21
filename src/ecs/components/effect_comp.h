@@ -91,7 +91,7 @@ typedef struct {
         struct {
             int8_t      magnitude;  /* DAMAGE, HEAL, STAT_MODIFIER: signed quantity (+ / -) */
             attribute_t attribute;  /* DAMAGE, HEAL, STAT_MODIFIER: stat / resource the effect applies to e.g. HP */
-        };
+        } stat;                     /* named — required for SDCC designated-initializer support */
         condition_id_t condition;   /* APPLY_CONDITION, REMOVE_CONDITION: which condition */
     };
 } effect_t;
