@@ -54,8 +54,8 @@ void apply_effect(entity_id_t target, const effect_t *effect)
         case EFFECT_STAT_MODIFIER:
         /* Not applicable - stats are not directly modified by effects. */
             break;
-        case EFFECT_APPLY_STATUS:
-        case EFFECT_REMOVE_STATUS:
+        case EFFECT_APPLY_CONDITION:
+        case EFFECT_REMOVE_CONDITION:
         case EFFECT_TRIGGER_ONLY:
             break;
         default:

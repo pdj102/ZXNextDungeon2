@@ -83,6 +83,11 @@ bool attach_active_effect(entity_id_t target, entity_id_t source, const effect_t
     return 1;
 }
 
+/*
+ * @brief Unattach the active effect in the specified slot from the target entity
+ * @param target The entity to unattach the effect from
+ * @param slot The slot to unattach
+ */
 void unattach_active_effect(entity_id_t target, uint8_t slot)
 {
     event_t event;
@@ -135,6 +140,12 @@ void unattach_active_effect(entity_id_t target, uint8_t slot)
     }
 }
 
+/*
+ * @brief Get the sum of all modifiers from active effects on the specified attribute for the entity
+ * @param actor The entity to check
+ * @param attribute The attribute to check
+ * @return The sum of all modifiers from active effects on the specified attribute for the entity
+ */
 int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
 {
     int8_t mod_sum = 0;
@@ -163,9 +174,11 @@ int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute)
  * @brief choose the precedence slot for an effect
  * @param entity The entity to check
  * @param new_effect The effect to check against
+ * @return The slot to replace or INVALID_SLOT if the new effect does not take precedence over any existing effects
  */
 static uint8_t choose_precedence_slot(entity_id_t entity, const effect_comp_t *new_effect)
 {
+    /* TODO implement precedence logic */
     (void)entity;
     (void)new_effect;
     return INVALID_SLOT;

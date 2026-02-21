@@ -62,9 +62,9 @@ typedef enum {
     /* Persistent stat modifiers */
     EFFECT_STAT_MODIFIER,       /* apply +/- modifier to a resource or stat while active e.g. +1 */
 
-    /* Status effects */
-    EFFECT_APPLY_STATUS,        /* apply a status e.g. poison etc */
-    EFFECT_REMOVE_STATUS,       /* remove a status e.g. blind etc */
+    /* Condition effects */
+    EFFECT_APPLY_CONDITION,        /* apply a condition e.g. poisoned, blinded, incapacitated etc */
+    EFFECT_REMOVE_CONDITION,       /* remove a condition e.g. remove blindness etc */
 
     /* Utility / hooks */
     EFFECT_TRIGGER_ONLY,        /* no direct change, just emits event */
