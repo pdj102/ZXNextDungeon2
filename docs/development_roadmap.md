@@ -32,7 +32,7 @@
 > *Goal: basic map.*
 
 * [✅] Implement map. Map is a composite of map of map_terrain, entity lists and camera
-* [✅] Implment map_terrain
+* [✅] Implement map_terrain
 * [✅] `map_is_walkable(x, y)` with checks for terrain
 
 [✅] *End result: Can see the game map.*
@@ -54,12 +54,11 @@
 
 > *Goal: multiple creatures and items exist on the map.*
 
-* [✅] Add `Creature` and `Item` components  - implement helper functions e.g. add() and remove()
 * [✅] Implement `monster_system` to spawn monsters
 * [✅] Implement `item_system` to spawn items
-* [✅] Remove creature and item components on entity destroy
+* [✅] Implement `feature_system` to spawn dungeon features
 
-[✅] *End result: Can spawn mosnters and entities of different kinds*
+[✅] *End result: Can spawn monsters, items and features of different kinds*
 
 ---
 
@@ -149,7 +148,7 @@
 * [✅] Add `event_picked_up`
 * [✅] Add message log system for pick up events e.g. (“You pickup the potion.”)
 
-[ ] *End result: Player can pick up items.*
+[🚧] *End result: Player can pick up items.*
 
 ### 🪜 **Milestone 112 — Drop**
 
@@ -158,8 +157,8 @@
 * [✅] Add player `drop` command
 * [✅] Add mechanic to select item to drop from inventory
 * [✅] Implement `container_try_drop()`
-* [✅] Add `event_dropped_up`
-* [✅] Add message log system for pick up events e.g. (“You drop the potion.”)
+* [✅] Add `event_dropped`
+* [✅] Add message log system for drop events e.g. ("You drop the potion.")
 
 [✅] *End result: Player can drop items.*
 
@@ -168,7 +167,7 @@
 > *Goal: PLayer can equip and unequip items*
 
 * [✅] Add `equippable`, `equipped` and `slot` components
-* [✅] Implment `equipment_system`
+* [✅] Implement `equipment_system`
 * [✅] Update view inventory window to show equipped items
 * [✅] Add player `equip` command
 * [✅] Add player `unequip` command
@@ -179,9 +178,9 @@
 * [✅] Manage dropping equiped items
 * [✅] Manage `equippable`, `equipped` and `slot` component cleanup on entity destroy
 * [✅] Add message log system for equip and unequip events e.g. (“You equip the sword.”)
-* [ ] Implment `equipment_system_cleanup_entity(entity)` - cleanup equipped and slots components on entity destroy
+* [ ] Implement `equipment_system_cleanup_entity(entity)` - cleanup equipped and slots components on entity destroy
 
-[✅] *End result: Player can equip and uneqip items.*
+[✅] *End result: Player can equip and unequip items.*
 
 ---
 
@@ -193,7 +192,7 @@
 * [✅] Implement camera position and ability to pan camera
 * [✅] Implement camera following player
 
-[ ] *End result: camera follows player.*
+[✅] *End result: camera follows player.*
 
 ---
 
@@ -226,7 +225,7 @@
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
 * [✅] Manage `melee` components cleanup on entity destroy
 
-[✅] *End result: Player can equip and attack with melee weapon
+[✅] *End result: Player can equip and attack with melee weapon.*
 
 ---
 
@@ -249,11 +248,11 @@
 > *Goal: Objects can have damage immunities, resistances, and vulnerabilities*
 
 * [✅] Create an object with an immunity / resistance / vulnerability to a specific damage type
-* [✅] Update `damage_system` to take imunities into account
+* [✅] Update `damage_system` to take immunities into account
 * [✅] Update `damage_system` to take resistances into account
 * [✅] Update `damage_system` to take vulnerabilities into account
 
-[✅] *End result: Damage calculation takes objects imunities, resistances and vulnerabilities into account.*
+[✅] *End result: Damage calculation takes objects immunities, resistances and vulnerabilities into account.*
 
 ---
 
@@ -322,7 +321,7 @@
 
 ---
 
-### 🪜 **Milestone 122 — Player Levels**
+### 🪜 **Milestone 123 — Player Levels**
 
 > *Goal: Player can level up.*
 
@@ -340,7 +339,7 @@
 * [✅] Implement `effect_t` that describes an event that could happen - type, magnitude, duration (0 = instant), stat, status
 * [✅] Implement `effect_kind_t` enum e.g. EFFECT_DAMAGE, EFFECT_HEAL
 * [✅] Implement `ATTRIBUTE_t` enum e.g. ATTRIBUTE_CUR_HP
-* [✅] Implment `effect_system`
+* [✅] Implement `effect_system`
 * [✅] Implement `effect_system_handle_event()` - create effect triggers based on game events
 * [✅] Implement `process_trigger()` - process triggers and apply effects
 * [✅] Implement `apply_effect()` - apply an effect e.g. heal, damage etc
@@ -366,7 +365,7 @@
 * [✅] Respond to unequip events and  remove effects when source is unequipped (e.g. unequipped weapon)
 * [✅] Implement active effect cleanup on entity destruction. If source has effect component, scan all entities for active effects for that source and remove the effect.
 
-[ ] *End result: stats and status are affected by active effect.*
+[🚧] *End result: stats and status are affected by active effect.*
 
 ### 🪜 **Milestone 126 — Implement steppable entities**
 
@@ -387,9 +386,60 @@
 
 ### 🪜 **Milestone 127 — Implement bumpable entities**
 
-> *Goal: Entities can react to bumped into*
+> *Goal: Entities can react to being bumped into.*
+
+* [ ] Add `Bumpable` component with `bump_action`
+* [ ] Update movement system to emit `EVENT_BUMPED` when a move is blocked by a bumpable entity
+* [ ] Implement `bumpable_system` and `bumpable_system_on_bumped()`
+* [ ] Implement unlocked door as bumpable (opens on bump)
+* [ ] Remove bumpable component on entity destroy
 
 [ ] *End result: Unlocked doors open if you walk into them*
+
+---
+
+### 🪜 **Milestone 128 — Field of View & Exploration Tracking**
+
+> *Goal: Player can only see within their field of view; explored tiles are remembered.*
+
+* [ ] Add per-tile `explored` flag to map (persists after leaving FOV)
+* [ ] Implement FOV computation (e.g. shadowcasting) stored as per-tile `visible` flag
+* [ ] Recompute FOV each turn when player moves
+* [ ] Update renderer: only draw tiles that are explored; dim tiles outside current FOV
+* [ ] Update monster AI: monsters only spot player if player is within FOV
+
+[ ] *End result: Player explores the dungeon with limited visibility; monsters cannot see through walls.*
+
+---
+
+### 🪜 **Milestone 129 — Natural regeneration**
+
+> *Goal: Entities regenerate HP slowly over time when not in combat.*
+
+* [ ] Add `regen_rate` field to `destructible_comp` (turns between +1 HP ticks; 0 = no regen)
+* [ ] Implement regen tick in turn system: every `regen_rate` turns, heal 1 HP if below max
+* [ ] Emit `EVENT_HEALED_HP` on regen tick (message log already handles this event)
+* [ ] Set player regen rate; monsters do not regenerate by default
+
+[ ] *End result: Player recovers HP slowly by waiting; creates incentive to rest between fights.*
+
+---
+
+### 🪜 **Milestone 130 — Status effects**
+
+> *Goal: Entities can be poisoned, paralysed, or confused; status affects their turn.*
+
+* [ ] Implement `status_flags_t` bitmask: `STATUS_POISONED`, `STATUS_PARALYSED`, `STATUS_CONFUSED`
+* [ ] Add status fields to `destructible_comp`: `status_flags_t status` and `uint8_t status_duration`
+* [ ] Implement `status_system` — process status flags each entity turn
+* [ ] Poison — deal 1 HP damage per turn for duration; emit `EVENT_DAMAGED`
+* [ ] Paralysis — skip entity turn for duration
+* [ ] Confusion — randomise movement direction for duration
+* [ ] Implement `status_system_apply(entity, status, duration)` and `status_system_clear(entity, status)`
+* [ ] Display active status icons on player status UI (Milestone 602)
+* [ ] Remove status on entity destroy
+
+[ ] *End result: Monsters can poison, paralyse, or confuse the player; status creates tactical urgency.*
 
 ---
 
@@ -403,7 +453,7 @@
 * [ ] Bug - attack direction can select no direction and attack self
 * [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
 
-[ ] *End result: Unlocked doors open if you walk into them*
+[ ] *End result: Code is clean and known bugs are fixed.*
 
 ---
 
@@ -413,7 +463,11 @@
 
 > *Goal: Variety of melee weapons*
 
-* [ ] Implement melee weapon items
+* [ ] Implement dagger (fast, low damage)
+* [ ] Implement short sword (balanced)
+* [ ] Implement longsword (slow, high damage)
+* [ ] Implement club / mace (blunt damage type)
+* [ ] Register all items in item factory
 
 [ ] *End result: Game should have a variety of melee weapons.*
 
@@ -423,7 +477,10 @@
 
 > *Goal: Variety of ranged weapons*
 
-* [ ] Implement ranged weapon items
+* [ ] Implement short bow (uses arrows)
+* [ ] Implement crossbow (uses bolts, slower but higher damage)
+* [ ] Implement sling (uses stones)
+* [ ] Register all items in item factory
 
 [ ] *End result: Game should have a variety of ranged weapons.*
 
@@ -433,9 +490,12 @@
 
 > *Goal: Variety of armour*
 
-* [ ] Implement body armour items
+* [ ] Implement leather armour (light, low AC)
+* [ ] Implement chain mail (medium AC)
+* [ ] Implement plate armour (high AC, speed penalty)
+* [ ] Register all items in item factory
 
-[ ] *End result: Game should have a varierty of armour.*
+[ ] *End result: Game should have a variety of armour.*
 
 ---
 
@@ -443,9 +503,11 @@
 
 > *Goal: Variety of shields*
 
-* [ ] Implement shield items
+* [ ] Implement small shield (low AC bonus)
+* [ ] Implement large shield (higher AC bonus, speed penalty)
+* [ ] Register all items in item factory
 
-[ ] *End result: Game should have a varierty of shields.*
+[ ] *End result: Game should have a variety of shields.*
 
 ---
 
@@ -453,9 +515,12 @@
 
 > *Goal: Variety of ammo*
 
-* [ ] Implement ammo items
+* [ ] Implement arrows (for short bow)
+* [ ] Implement bolts (for crossbow)
+* [ ] Implement stones (for sling)
+* [ ] Register all items in item factory
 
-[ ] *End result: Game should have a varierty of ammo.*
+[ ] *End result: Game should have a variety of ammo.*
 
 ---
 
@@ -473,7 +538,7 @@
 
 ---
 
-### 🪜 **Milestone 206 — Scrolls**
+### 🪜 **Milestone 207 — Scrolls**
 
 > *Goal: PLayer read scrolls*
 
@@ -487,7 +552,7 @@
 
 ---
 
-### 🪜 **Milestone 207 — Consumables**
+### 🪜 **Milestone 208 — Consumables**
 
 > *Goal: eat food to restore health.*
 
@@ -495,17 +560,17 @@
 * [ ] Implement a consumable e.g. bread
 * [ ] Implement a variety of consumables
 * [ ] Add player `eat` command - select from inventory
-* [ ] Implment `consumption_system`
+* [ ] Implement `consumption_system`
 * [ ] Implement `consumption_system_try_eat()`. Handle eating food including decrement or destroy, emitting `effect` events and `consumed` event
 * [ ] Trigger applying effects to actor
-* [ ] Implement `item_decrement_or_destory`
+* [ ] Implement `item_decrement_or_destroy`
 * [ ] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
 
 [ ] *End result: Player can restore health by eating food and food is destroyed.*
 
 ---
 
-### 🪜 **Milestone 206 — Wands**
+### 🪜 **Milestone 209 — Wands**
 
 > *Goal: PLayer zap wands*
 
@@ -519,7 +584,7 @@
 
 ---
 
-### 🪜 **Milestone 206 — Keys**
+### 🪜 **Milestone 210 — Keys**
 
 > *Goal: Openable items can be locked with keys*
 
@@ -530,6 +595,49 @@
 * [ ] Add message log system for unlock effects e.g. (“You unlock the door.”)
 
 [ ] *End result: Lockable entity can be unlocked.*
+
+---
+
+### 🪜 **Milestone 211 — Gold and currency**
+
+> *Goal: Gold exists as a collectible resource; player score is tracked.*
+
+* [ ] Add `gold` field (uint16_t) to player state
+* [ ] Implement gold pile as a map entity: auto-picked up on step, not stored in inventory
+* [ ] Dungeon generator places gold piles scaled by depth
+* [ ] Display gold count on status UI
+* [ ] Use gold total as the base for death-screen score (score = depth × gold)
+
+[ ] *End result: Player collects gold; gold drives the death-screen score.*
+
+---
+
+### 🪜 **Milestone 212 — Item stacking**
+
+> *Goal: Identical items stack in inventory, saving slots.*
+
+* [ ] Add `stack_count` field (uint8_t) to item component
+* [ ] On pickup: if identical item already in inventory, increment count instead of adding a slot
+* [ ] On drop: decrement count; remove slot when count reaches 0 (reuse `item_decrement_or_destroy`)
+* [ ] Update inventory window to display count (e.g. "3 × healing potion")
+* [ ] Ammo items stack by default
+
+[ ] *End result: Arrows, potions, and scrolls of the same type share one inventory slot.*
+
+---
+
+### 🪜 **Milestone 213 — Item identification**
+
+> *Goal: Potions, scrolls, and wands start unidentified; the player learns what they are by using them.*
+
+* [ ] Add `identified` flag to item component
+* [ ] Add per-run appearance table: randomised name mapped to true item type (e.g. "pink potion" → healing potion)
+* [ ] Render unidentified items using randomised appearance name; render identified items using true name
+* [ ] On use: mark item type as identified for the rest of the run
+* [ ] Implement `scroll of identify` — player selects an item from inventory to identify
+* [ ] Add message log for identification e.g. ("The pink potion was a potion of healing!")
+
+[ ] *End result: Items are mysterious on first encounter; knowledge accumulates across a run.*
 
 ---
 
@@ -549,7 +657,7 @@
 
 ---
 
-### 🪜 **Milestone 301 — Sleep state**
+### 🪜 **Milestone 302 — Sleep state**
 
 > *Goal: monsters can sleep.*
 
@@ -560,7 +668,7 @@
 
 ---
 
-### 🪜 **Milestone 302 — Wandering state**
+### 🪜 **Milestone 303 — Wandering state**
 
 > *Goal: monsters can wander.*
 
@@ -570,7 +678,7 @@
 
 ---
 
-### 🪜 **Milestone 303 — Attack state**
+### 🪜 **Milestone 304 — Attack state**
 
 > *Goal: monsters can attack.*
 
@@ -581,33 +689,48 @@
 
 ---
 
-### 🪜 **Milestone 304 — Track state**
+### 🪜 **Milestone 305 — Track state**
 
 > *Goal: monsters will track target when not visible.*
 
 * [✅] Implement `track_target()` - monster will move to last known position of target
 
-[✅] *End result: Monsters can drunken walk.*
+[✅] *End result: Monsters move to the last known position of their target.*
 
 ---
 
-### 🪜 **Milestone 305 — Track state**
+### 🪜 **Milestone 306 — Search state**
 
 > *Goal: monsters will search target when not visible.*
 
 * [✅] Implement `search_target()` - monster will search to reaquire target
 
-[ ] *End result: Monsters can reacquire target.*
+[✅] *End result: Monsters can reacquire target.*
 
 ---
 
-### 🪜 **Milestone 305 — Flee state**
+### 🪜 **Milestone 307 — Flee state**
 
 > *Goal: monsters will flee.*
 
 * [✅] Implement `flee()` - monster will flee
 
-[ ] *End result: Monsters can flee.*
+[✅] *End result: Monsters can flee.*
+
+---
+
+### 🪜 **Milestone 308 — Monster definitions**
+
+> *Goal: A variety of monsters exist with different stats, speeds, and behaviours.*
+
+* [ ] Define monster data table (name, tile, hp, ac, speed, melee attack, XP value, AI flags)
+* [ ] Implement rat / basic melee monster
+* [ ] Implement archer / basic ranged monster
+* [ ] Implement fast monster (high speed)
+* [ ] Implement tough monster (high hp/ac)
+* [ ] Update dungeon generator to place monster variety per depth
+
+[ ] *End result: Multiple distinct monster types populate the dungeon.*
 
 ---
 
@@ -617,19 +740,20 @@
 
 > *Goal: dungeons can have features that can be interacted with.*
 
-* [] Implement feature factory to spawn features
-* [ ] Implement a basic door feature
-* [ ] Add player `open` command for doors
-* [ ] Add player `close` command for doors
-* [ ] Implement `try_open_door()` for door
-* [ ] Implement `try_close_door()` for door
-* [ ] Add `event_door_opened`
-* [ ] Add `event_door_closed`
-* [ ] Prevent walking through closed doors
-* [ ] Destroy feature component on entity destroy
-* [ ] Add message log system for open/close door events e.g. (“You open the door.”)
+* [✅] Implement feature factory to spawn features
+* [✅] Implement openable component
+* [✅] Implement a basic door feature
+* [✅] Add player `open` command for doors
+* [✅] Add player `close` command for doors
+* [✅] Implement `try_open_door()` for door
+* [✅] Implement `try_close_door()` for door
+* [✅] Add `event_door_opened`
+* [✅] Add `event_door_closed`
+* [✅] Prevent walking through closed doors
+* [✅] Destroy feature component on entity destroy
+* [🚧] Add message log system for open/close door events e.g. (“You open the door.”)
 
-[ ] *End result: Player can open and close basic doors.*
+[🚧] *End result: Player can open and close basic doors.*
 
 ---
 
@@ -652,14 +776,30 @@
 
 > *Goal: Can climb stairs.*
 
-* [ ] Implement up and down stair features
-* [ ] Add player `climb` command for stairs
-* [ ] Implement `try_climb()` for stairs
-* [ ] Add `event_ascend_stairs` and `event_descend_stairs`
-* [ ] Implement chest inventory and ability to take an item
-* [ ] Add message log system for opening chest and taking items e.g. (“You open the chest.”, "You take the ring.")
+* [✅] Implement up and down stair features
+* [✅] Add player `climb` command for stairs
+* [✅] Implement `try_climb()` for stairs
+* [✅] Add `transition_comp` for entities that can cause transition events e.g. stairs, pits, etc
+* [✅] Implement `EVENT_TRANSITION` to trigger transition to a different depth e.g. transition_up (stairs), transition_down (stairs), transition_fall (pit), transition_teleport (new game, magic)
+* [✅] Implement `transition system` for transitioning depth levels
+* [ ] Add message log system for stair events e.g. ("You descend the stairs.")
 
-[ ] *End result: Player can open chest and take items.*
+[🚧] *End result: Player can ascend and descend stairs to change depth.*
+
+---
+
+### 🪜 **Milestone 404 — Shops**
+
+> *Goal: The player can buy and sell items at a shop.*
+
+* [ ] Implement `vendor` component with stock list and price table
+* [ ] Implement shop as a dungeon feature (spawned by generator on some levels)
+* [ ] Add player `buy` command — opens shop inventory UI; deducts gold
+* [ ] Add player `sell` command — sells selected inventory item; adds gold
+* [ ] Implement `shop_system_try_buy()` and `shop_system_try_sell()`
+* [ ] Add message log for transactions e.g. ("You buy the potion of healing for 50 gold.")
+
+[ ] *End result: Player can spend collected gold on items; gold becomes a meaningful resource.*
 
 ---
 
@@ -670,28 +810,33 @@
 > *Goal: procedural dungeon generator.*
 
 * [✅] Implement procedural map generator (rooms + corridors)
-* [] Place stairs up/down
+* [🚧] Place stairs up/down
 * [✅] Place player
-* [ ] Add new monsters per depth
-* [ ] Add new items per depth
-* [ ] Add new features per depth
+* [🚧] Place new monsters, taking depth into account
+* [🚧] Place new items, taking depth into account
+* [ ] Place persistent items that are at the current depth
+* [🚧] Add new features, taking depth into account
+* [ ] Place basic doors
+* [ ] Place locked doors and keys
+* [ ] Place other feature types
+* [ ] Implement dungeon map decoration
 
 [ ] *End result: Dungeon with rooms, corridors and populated with entities.*
 
 ---
 
-### 🪜 **Milestone 502 — Dungeon level transistion**
+### 🪜 **Milestone 502 — Dungeon level transition**
 
-> *Goal: handle depth transistions (load next map).*
+> *Goal: handle depth transitions (load next map).*
 
-* [ ] Implement persistent entities with level
-* [ ] Implement persistance entity check (recursive)
-* [ ] Implement deletion of non persistent entities
-* [ ] Implement depth change including moving player to new depth
-* [ ] Update map generator to place persitent entities on level
-* [ ] Call map generator
+* [🚧] Implement persistent entities with an associated depth
+* [✅] Implement persistance entity check (recursive)
+* [✅] Implement deletion of non persistent entities
+* [✅] Implement depth change including moving player to new depth
+* [✅] Update map generator to place persitent entities on level
+* [✅] Call map generator
 
-[ ] *End result: Able to transistion levels and persistent entities are retained.*
+[ ] *End result: Able to transition levels and persistent entities are retained.*
 
 ---
 
@@ -704,7 +849,7 @@
 * [✅] Implement message log window
 * [ ] Implement 'press key to continue' if messages exceeds window size before players next turn
 
-[ ] *End result: Player is notified of game events.*
+[🚧] *End result: Player is notified of game events.*
 
 ### 🪜 **Milestone 602 — Status UI**
 
@@ -720,6 +865,19 @@
 * [ ] Update status on change (e.g. poisoned)
 
 [🚧] *End result: Player can see current status.*
+
+### 🪜 **Milestone 603 — Game modes & context-sensitive hint bar**
+
+> *Goal: Game loop is driven by a mode state machine; a hint bar displays available keys for the current mode.*
+
+* [ ] Add `game_mode_t` enum: `MODE_PLAYER_TURN`, `MODE_TARGETING`, `MODE_MENU`
+* [ ] Refactor main game loop to dispatch input via current `game_mode_t`
+* [ ] Implement hint bar UI widget (single line, shows key legend)
+* [ ] Player turn mode — hint bar shows movement, action, and shortcut keys
+* [ ] Targeting mode — hint bar shows "Move target: arrows  Confirm: T  Cancel: Esc"
+* [ ] Menu mode — hint bar shows relevant menu navigation keys
+
+[ ] *End result: Player always sees relevant key hints; new modes can be added by extending the enum and handler table.*
 
 ---
 
@@ -738,7 +896,7 @@
 
 [ ] *End result: Smooth play experience on Spectrum Next.*
 
-### 🪜 **Milestone 700 — Game data structure verification**
+### 🪜 **Milestone 701 — Game data structure verification**
 
 > *Goal: game data structure is in valid state.*
 
@@ -766,8 +924,7 @@
 ## 🧰 Optional Enhancements
 
 * [ ] Save/load game state
-* [ ] Dynamic lighting or FOV
-* [ ] Ranged attacks and projectiles
+* [ ] Projectile visual effects (bolts, arrows in flight)
 * [ ] Spellcasting system
 * [ ] Equipment and inventory weights
 * [ ] Procedural names/descriptions

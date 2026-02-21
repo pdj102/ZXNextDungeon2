@@ -108,10 +108,12 @@ static void ui_msg_win_nl(void);
         case EVENT_ATTACKED:
         case EVENT_ATTACKED_AND_CRITICAL:
         case EVENT_ATTACKED_AND_MISSED:
+        case EVENT_CLOSED:
         case EVENT_CONSUMED:
         case EVENT_DROPPED:
         case EVENT_EQUIPPED:
         case EVENT_UNEQUIPPED:
+        case EVENT_OPENED:
         case EVENT_PICKED_UP:
         case EVENT_SPOTTED_TARGET:
             ui_msg_win_nl();
