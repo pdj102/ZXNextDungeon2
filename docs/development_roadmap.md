@@ -425,17 +425,17 @@
 
 ---
 
-### 🪜 **Milestone 130 — Status effects**
+### 🪜 **Milestone 130 — Conditions **
 
-> *Goal: Entities can be poisoned, paralysed, or confused; status affects their turn.*
+> *Goal: Entities can be poisoned, paralysed, or confused; conditions affects their turn.*
 
-* [ ] Implement `status_flags_t` bitmask: `STATUS_POISONED`, `STATUS_PARALYSED`, `STATUS_CONFUSED`
-* [ ] Add status fields to `destructible_comp`: `status_flags_t status` and `uint8_t status_duration`
-* [ ] Implement `status_system` — process status flags each entity turn
+* [✅] Implement condition component with `condition_id_t` e.g. CONDITION_ID_BLIND, CONDITION_ID_POISONED etc
+* [✅] Add `condition` to effect component
+* [✅] Extend `apply_effect()` to support `EFFECT_APPLY_CONDITION` and `EFFECT_REMOVE_CONDITION`
+* [✅] Implement `has_condition` to effect system
 * [ ] Poison — deal 1 HP damage per turn for duration; emit `EVENT_DAMAGED`
 * [ ] Paralysis — skip entity turn for duration
 * [ ] Confusion — randomise movement direction for duration
-* [ ] Implement `status_system_apply(entity, status, duration)` and `status_system_clear(entity, status)`
 * [ ] Display active status icons on player status UI (Milestone 602)
 * [ ] Remove status on entity destroy
 
