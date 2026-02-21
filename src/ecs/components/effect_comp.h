@@ -15,6 +15,7 @@
 #include "core/util.h"
 
 #include "ecs/entity.h"
+#include "ecs/components/condition_comp.h"
 
 /***************************************************
  * public defines
@@ -45,9 +46,6 @@ typedef enum {
     ATTRIBUTE_SPEED,
     ATTRIBUTE_ATTACK,
     ATTRIBUTE_DAMAGE,
-
-    /* Status slot (used with EFFECT_APPLY_STATUS) */
-    ATTRIBUTE_STATUS,
 
     ATTRIBUTE_COUNT
 } attribute_t;
@@ -86,11 +84,16 @@ typedef uint8_t trigger_mask_t; /* bitmask of triggers */
 
 /* A single effect  */
 typedef struct {
-    effect_kind_t kind;             /* kind of effect */
-    int8_t magnitude;               /* magnitude of effect (+ / -) */
-    uint8_t duration;               /* Instant effect = 0. Duration effect =  number of turns or 0xFF if permanaent (until removed) */
-    attribute_t attribute;          /* stat / resource the effect applies to e.g. HP */
-    trigger_mask_t triggers;        /* The triggers that cause the effect to trigger */
+    effect_kind_t  kind;        /* kind of effect */
+    uint8_t        duration;    /* Instant effect = 0. Duration effect = number of turns or 0xFF if permanent (until removed) */
+    trigger_mask_t triggers;    /* The triggers that cause the effect to trigger */
+    union {
+        struct {
+            int8_t      magnitude;  /* DAMAGE, HEAL, STAT_MODIFIER: signed quantity (+ / -) */
+            attribute_t attribute;  /* DAMAGE, HEAL, STAT_MODIFIER: stat / resource the effect applies to e.g. HP */
+        };
+        condition_id_t condition;   /* APPLY_CONDITION, REMOVE_CONDITION: which condition */
+    };
 } effect_t;
 
 typedef effect_t effect_comp_t; /* Effect component is an effect */

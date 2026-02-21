@@ -199,7 +199,7 @@ void condition_clear_if_no_remaining(entity_id_t target, condition_id_t conditio
     {
         uint8_t slot = g.active_effect_components->active_stack[target][i];
         effect_t *e = &g.active_effect_components->slots[target][slot].effect;
-        if (e->kind == EFFECT_APPLY_CONDITION && (condition_id_t)e->magnitude == condition_id)
+        if (e->kind == EFFECT_APPLY_CONDITION && e->condition == condition_id)
         {
             return;
         }
@@ -253,7 +253,7 @@ void remove_active_conditions_by_id(entity_id_t target, condition_id_t condition
         uint8_t slot = g.active_effect_components->active_stack[target][i];
         effect_t *e = &g.active_effect_components->slots[target][slot].effect;
 
-        if (e->kind == EFFECT_APPLY_CONDITION && (condition_id_t)e->magnitude == condition_id)
+        if (e->kind == EFFECT_APPLY_CONDITION && e->condition == condition_id)
         {
             active_stack_remove(target, slot);
             /* do NOT increment i — need to re-check swapped entry */

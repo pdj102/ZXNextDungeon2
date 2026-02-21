@@ -26,12 +26,6 @@
  ***************************************************/
 
 /***************************************************
- * private function prototypes
- ***************************************************/
-static void apply_damage_effect(entity_id_t target, const effect_comp_t *effect);
-static void apply_healing_effect(entity_id_t target, const effect_comp_t *effect);
-
-/***************************************************
  * public functions
  ***************************************************/
 /*
@@ -58,7 +52,7 @@ void apply_effect(entity_id_t target, const effect_t *effect)
         {
             if (entity_has_component(target, COMPONENT_CONDITION))
             {
-                condition_mask_t mask = CONDITION_MASK(effect->magnitude);
+                condition_mask_t mask = CONDITION_MASK(effect->condition);
                 if (!(g.condition_components[target].conditions & mask))
                 {
                     g.condition_components[target].conditions |= mask;
@@ -66,7 +60,7 @@ void apply_effect(entity_id_t target, const effect_t *effect)
                     event.type   = EVENT_CONDITION_APPLIED;
                     event.source = ENTITY_ID_INVALID;
                     event.target = target;
-                    event.value  = (uint8_t)effect->magnitude;
+                    event.value  = (uint8_t)effect->condition;
                     system_event_emit(&event);
                 }
             }
@@ -74,7 +68,7 @@ void apply_effect(entity_id_t target, const effect_t *effect)
         }
         case EFFECT_REMOVE_CONDITION:
         {
-            remove_active_conditions_by_id(target, (condition_id_t)effect->magnitude);
+            remove_active_conditions_by_id(target, effect->condition);
             break;
         }
         case EFFECT_TRIGGER_ONLY:
@@ -87,66 +81,3 @@ void apply_effect(entity_id_t target, const effect_t *effect)
  /***************************************************
  * private functions
  ***************************************************/
-
-
-static void apply_damage_effect(entity_id_t target, const effect_comp_t *effect)
-{
-    switch (effect->attribute)
-    {
-        case ATTRIBUTE_CUR_HP:
-            system_damage_try_take_damage(target, effect->magnitude, DAMAGE_NONE);
-            break;
-        case ATTRIBUTE_CUR_MP:
-        case ATTRIBUTE_MAX_HP:
-        case ATTRIBUTE_MAX_MP:
-
-        /* Primary stats */
-        case ATTRIBUTE_STR:
-        case ATTRIBUTE_DEX:
-        case ATTRIBUTE_CON:
-        case ATTRIBUTE_INT:
-        case ATTRIBUTE_WIS:
-        case ATTRIBUTE_CHA:
-
-        /* Secondary stats */
-        case ATTRIBUTE_ARMOR_CLASS:
-        case ATTRIBUTE_SPEED:
-        case ATTRIBUTE_ATTACK:
-        case ATTRIBUTE_DAMAGE:
-            break;
-
-        /* Status slot (used with EFFECT_APPLY_STATUS) */
-        ATTRIBUTE_STATUS:
-    }
-}
-
-static void apply_healing_effect(entity_id_t target, const effect_comp_t *effect)
-{
-    switch (effect->attribute)
-    {
-        case ATTRIBUTE_CUR_HP:
-            system_healing_try_take_healing(target, effect->magnitude, HEALING_KIND_HP);
-            break;
-        case ATTRIBUTE_CUR_MP:
-        case ATTRIBUTE_MAX_HP:
-        case ATTRIBUTE_MAX_MP:
-
-        /* Primary stats */
-        case ATTRIBUTE_STR:
-        case ATTRIBUTE_DEX:
-        case ATTRIBUTE_CON:
-        case ATTRIBUTE_INT:
-        case ATTRIBUTE_WIS:
-        case ATTRIBUTE_CHA:
-
-        /* Secondary stats */
-        case ATTRIBUTE_ARMOR_CLASS:
-        case ATTRIBUTE_SPEED:
-        case ATTRIBUTE_ATTACK:
-        case ATTRIBUTE_DAMAGE:
-            break;
-
-        /* Status slot (used with EFFECT_APPLY_STATUS) */
-        ATTRIBUTE_STATUS:
-    }
-}
