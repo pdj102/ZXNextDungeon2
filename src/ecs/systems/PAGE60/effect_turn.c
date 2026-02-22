@@ -45,8 +45,9 @@
     {
         uint8_t slot = g.active_effect_components->active_stack[entity][i];
         effect_t *e = &g.active_effect_components->slots[entity][slot].effect;
+        entity_id_t source = g.active_effect_components->slots[entity][slot].source;
 
-        apply_effect(entity, e);
+        apply_effect(entity, source, e);
 
         if (e->duration != 0xFF)
         {
@@ -54,8 +55,7 @@
             {
                 unattach_active_effect(entity, slot);
                 event.type = EVENT_ACTIVE_EFFECT_EXPIRED;
-                /* TODO record source entity?*/
-                event.source = ENTITY_ID_INVALID;
+                event.source = source;
                 event.target = entity;
                 system_event_emit(&event);
                 continue; // don't increment i since we removed an element

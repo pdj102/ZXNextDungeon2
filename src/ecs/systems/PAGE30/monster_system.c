@@ -57,7 +57,7 @@ static const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] 
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
     [CREATURE_COMMONER] = {.ac = 10, .cur_hp = 4, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
-    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 12, .max_hp = 4, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
+    [CREATURE_PLAYER] = {.ac = 10, .cur_hp = 12, .max_hp = 12, .immune = DAMAGE_NONE, .resist = DAMAGE_NONE, .vulnerable = DAMAGE_NONE},
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    

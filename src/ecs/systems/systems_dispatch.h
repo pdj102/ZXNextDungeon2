@@ -80,8 +80,8 @@ uint8_t system_combat_attack_range(entity_id_t attacker, attack_kind_t kind);
 
 /* Damage system */
 void system_damage_init(void);
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag);
-bool system_damage_try_die(entity_id_t creature);
+int8_t system_damage_try_take_damage(entity_id_t target, entity_id_t source, int8_t damage, damage_flag_t flag);
+bool system_damage_try_kill(entity_id_t target, entity_id_t source);
 
 /* Door system*/
 bool system_door_try_open(entity_id_t actor, entity_id_t entity);
@@ -141,6 +141,7 @@ bool system_perception_can_see_target(entity_id_t ai, entity_id_t target);
 
 /* Player System */
 void system_player_init(void);
+void system_player_handle_event(const event_t *event);
 void system_player_update(void);
 
 /* Stats system */
@@ -154,6 +155,8 @@ uint8_t system_stats_get_ac_cur(entity_id_t actor);
 uint8_t system_stats_get_ac_base(entity_id_t actor);
 uint8_t system_stats_get_hp_cur(entity_id_t actor);
 uint8_t system_stats_get_hp_max(entity_id_t actor);
+uint8_t system_stats_get_mp_cur(entity_id_t actor);
+uint8_t system_stats_get_mp_max(entity_id_t actor);
 
 /* Timer System */
 void system_timer_init(void);

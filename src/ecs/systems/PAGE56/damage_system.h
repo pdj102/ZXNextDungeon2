@@ -22,7 +22,7 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-int8_t damage_system_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag);
-bool damage_system_try_die(entity_id_t creature);
+int8_t damage_system_try_take_damage(entity_id_t target, entity_id_t source, int8_t damage, damage_flag_t flag);
+bool damage_system_try_kill(entity_id_t target, entity_id_t source);
 
 #endif // DAMAGE_SYSTEM_H

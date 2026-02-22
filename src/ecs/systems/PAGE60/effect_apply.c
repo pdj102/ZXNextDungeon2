@@ -33,13 +33,13 @@
  * @param target The entity to apply the effect to
  * @param effect The effect to apply
  */
-void apply_effect(entity_id_t target, const effect_t *effect)
+void apply_effect(entity_id_t target, entity_id_t source, const effect_t *effect)
 {
     /* Resolve the kind of effect */
     switch (effect->kind)
     {
         case EFFECT_DAMAGE:
-            system_damage_try_take_damage(target, effect->stat.magnitude, DAMAGE_NONE);
+            system_damage_try_take_damage(target, source, effect->stat.magnitude, DAMAGE_NONE);
             break;
         case EFFECT_HEAL:
             system_healing_try_take_healing(target, effect->stat.magnitude, HEALING_KIND_HP);

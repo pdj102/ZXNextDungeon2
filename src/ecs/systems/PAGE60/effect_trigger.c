@@ -102,7 +102,7 @@ static void process_trigger( const trigger_context_t *ctx)
     if (effect->duration == 0 )
     {
         /* If the effect is instant, apply immediately */
-        apply_effect(ctx->target, effect);
+        apply_effect(ctx->target, ctx->source, effect);
     }
     else if (entity_has_component(ctx->target, COMPONENT_ACTIVE_EFFECT))
     {

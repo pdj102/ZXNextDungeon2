@@ -66,9 +66,8 @@ int main(void)
     camera_update();
     map_render();
 
-    ui_update_primary_stats();
-    ui_update_secondary_stats();
-    ui_update_resource_stats();
+    ui_update_stats();
+
 
     text_printf(&g.info_win, "[%A?%A-Help]", PALETTE_YELLOW, PALETTE_WHITE);
 
@@ -86,9 +85,7 @@ int main(void)
 
         if (g.stat_win.dirty == 1)
         {
-            ui_update_primary_stats();
-            ui_update_secondary_stats();
-            ui_update_resource_stats();
+            ui_update_stats();
             g.stat_win.dirty = 0;
         }
 

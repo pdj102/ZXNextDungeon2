@@ -34,36 +34,36 @@ static bool damage_type_vulnerable(entity_id_t actor, damage_flag_t type);
 /***************************************************
  * public functions
  ***************************************************/
-bool damage_system_try_die(entity_id_t entity)
+bool damage_system_try_kill(entity_id_t target, entity_id_t source)
 {
     event_t event;
 
-    if (entity_has_component(entity, COMPONENT_DESTRUCTIBLE))
+    if (entity_has_component(target, COMPONENT_DESTRUCTIBLE))
     {
-        g.destructible_components[entity].cur_hp = 0;
+        g.destructible_components[target].cur_hp = 0;
     }
 
-    if (entity_has_component(entity, COMPONENT_CREATURE))
+    if (entity_has_component(target, COMPONENT_CREATURE))
     {
-        g.creature_components[entity].status = CREATURE_STATUS_DEAD;
+        g.creature_components[target].status = CREATURE_STATUS_DEAD;
     }
 
-    if (g.player.id == entity)
+    if (g.player.id == target)
     {
         g.player.id = ENTITY_ID_INVALID;
     }
 
-    entity_mark_for_destruction(entity);
+    entity_mark_for_destruction(target);
 
-    event.type = EVENT_DIED;
-    event.source = entity;
-    event.target = ENTITY_ID_INVALID;
+    event.type = EVENT_KILLED;
+    event.source = source;
+    event.target = target;
     event.value = 0;
     system_event_emit(&event);
     return 1;
 }
 
-int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_flag_t flag)
+int8_t damage_system_try_take_damage(entity_id_t target, entity_id_t source, int8_t damage, damage_flag_t flag)
 {
     event_t event;
 
@@ -98,8 +98,7 @@ int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_f
         damage = 0;
     }    
 
-    /* TODO record source? */
-    event.source = ENTITY_ID_INVALID;
+    event.source = source;
     event.target = target;
     event.value = damage;
 
@@ -108,7 +107,7 @@ int8_t damage_system_try_take_damage(entity_id_t target, int8_t damage, damage_f
     {        
         g.destructible_components[target].cur_hp = 0;
         system_event_emit(&event);
-        damage_system_try_die(target);
+        damage_system_try_kill(target, source);
     }
     else
     {

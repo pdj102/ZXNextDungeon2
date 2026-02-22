@@ -34,6 +34,9 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+void update_primary_stats(void);
+void update_secondary_stats(void);
+void update_resource_stats(void);
 
 /***************************************************
  * functions
@@ -65,41 +68,14 @@ void ui_on_event(const event_t *event)
 
  }
 
-void ui_update_primary_stats(void)
+ void ui_update_stats(void)
 {
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_UI);
 
-    ui_stat_update_primary_stats();
+    ui_stat_update();
 
     ZXN_WRITE_MMU6(current_bank);   
 }
-
-void ui_update_secondary_stats(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_UI);
-
-    ui_stat_update_secondary_stats();
-
-    ZXN_WRITE_MMU6(current_bank);   
-}
-
-void ui_update_resource_stats(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();
-    ZXN_WRITE_MMU6(PAGE_UI);
-
-    ui_stat_update_resource_stats();
-
-    ZXN_WRITE_MMU6(current_bank);   
-}
-
-
-    

@@ -38,5 +38,7 @@ uint8_t stats_system_get_ac_base(entity_id_t actor);
 /* resource stats */
 uint8_t stats_system_get_hp_cur(entity_id_t actor);
 uint8_t stats_system_get_hp_max(entity_id_t actor);
+uint8_t stats_system_get_mp_cur(entity_id_t actor);
+uint8_t stats_system_get_mp_max(entity_id_t actor);
 
 #endif // STATS_SYSTEM_H

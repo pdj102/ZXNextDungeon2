@@ -59,6 +59,31 @@ void player_system_init(void)
 {
 }
 
+void player_system_handle_event(const event_t *event)
+{
+    if (entity_has_component(event->source, COMPONENT_PLAYER))
+    {
+        // Player is the source - Player did something
+        switch (event->type)
+        {
+        case EVENT_DIED:
+            util_info("Player died");
+            break;
+        case EVENT_SPOTTED_TARGET:
+            util_info("PLayer event saw entity");
+            break;
+        }
+    }
+    else if (entity_has_component(event->target, COMPONENT_PLAYER))
+    {
+        // Player is the target - something happened to the Player
+        switch (event->type)
+        {
+            break;
+        }
+    }
+}
+
 void player_system_update(void)
 {
     uint8_t entity = g.player.id;

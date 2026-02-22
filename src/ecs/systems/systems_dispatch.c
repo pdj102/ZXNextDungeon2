@@ -396,7 +396,7 @@ uint8_t system_combat_attack_range(entity_id_t attacker, attack_kind_t kind)
 
  }
 
-int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage_flag_t flag)
+int8_t system_damage_try_take_damage(entity_id_t target, entity_id_t source, int8_t damage, damage_flag_t flag)
 {
     uint8_t current_bank;
     bool result;
@@ -404,14 +404,14 @@ int8_t system_damage_try_take_damage(entity_id_t creature, int8_t damage, damage
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
 
-    result = damage_system_try_take_damage(creature, damage, flag);
+    result = damage_system_try_take_damage(target, source, damage, flag);
 
     ZXN_WRITE_MMU6(current_bank);
 
     return result;
 }
 
-bool system_damage_try_die(entity_id_t creature)
+bool system_damage_try_kill(entity_id_t target, entity_id_t source)
 {
     uint8_t current_bank;
     bool result;
@@ -419,7 +419,7 @@ bool system_damage_try_die(entity_id_t creature)
     current_bank = ZXN_READ_MMU6();
     ZXN_WRITE_MMU6(PAGE_DAMAGE_SYSTEM);
 
-    result = damage_system_try_die(creature);
+    result = damage_system_try_kill(target, source);
 
     ZXN_WRITE_MMU6(current_bank);
 
@@ -886,6 +886,17 @@ bool system_perception_can_see_target(entity_id_t ai, entity_id_t target)
     return result; 
 }
 
+void system_player_handle_event(const event_t *event)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
+
+    player_system_handle_event(event);
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+}
 
 void system_player_update(void)
 {
@@ -1034,6 +1045,36 @@ uint8_t system_stats_get_hp_max(entity_id_t actor)
     ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
 
     value = stats_system_get_hp_max(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;    
+}
+
+uint8_t system_stats_get_mp_cur(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_mp_cur(actor);
+
+    ZXN_WRITE_MMU6(current_bank);
+
+    return value;
+}
+
+uint8_t system_stats_get_mp_max(entity_id_t actor)
+{
+    uint8_t current_bank;
+    speed_t value;
+
+    current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_STATS_SYSTEM);
+
+    value = stats_system_get_mp_max(actor);
 
     ZXN_WRITE_MMU6(current_bank);
 

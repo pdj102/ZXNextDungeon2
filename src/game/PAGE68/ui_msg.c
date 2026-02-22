@@ -33,7 +33,7 @@
  * private variables
  * ***************************************************/
 
-  /* Subject is the player */
+  /* Subject is the player e.g. "You attack the goblin." */
  static const char *verb_present_tense[] = {
     [EVENT_NONE]                    = "",
     [EVENT_ATTACKED]                = " attack ",
@@ -45,6 +45,7 @@
     [EVENT_DAMAGED_IMMUNE]          = " are immune!",
     [EVENT_DAMAGED_RESIST]          = " resist and take %d damage",
     [EVENT_DAMAGED_VULNERABLE]      = " are vulnerable and take %d damage",
+    [EVENT_KILLED]                  = " kill ",
     [EVENT_DIED]                    = " died!",
     [EVENT_DROPPED]                 = " drop ",
     [EVENT_EQUIPPED]                = " equip ",
@@ -55,8 +56,8 @@
     [EVENT_HEALED_MP]               = " restore %d mana",
     [EVENT_SPOTTED_TARGET]          = " see ",
 };
-
- /* Third person singular */
+ 
+ /* Subject is third person singular e.g. "The goblin attacks you." */
  static const char *verb_third_person_singular[] = {
     [EVENT_NONE]                    = "",
     [EVENT_ATTACKED]                = " attacks ",
@@ -69,6 +70,7 @@
     [EVENT_DAMAGED_RESIST]          = " resists and takes %d damage",
     [EVENT_DAMAGED_VULNERABLE]      = " is vulnerable and takes %d damage",
     [EVENT_DIED]                    = " dies!",
+
     [EVENT_DROPPED]                 = " drops ",
     [EVENT_EQUIPPED]                = " equips ",
     [EVENT_PICKED_UP]               = " pickups ",
@@ -128,6 +130,8 @@ static void ui_msg_win_nl(void);
         case EVENT_OPENED:
         case EVENT_PICKED_UP:
         case EVENT_SPOTTED_TARGET:
+        case EVENT_KILLED:
+            /* [Source] [Verb] [Target] e.g. You kill goblin or Goblin kills you. */
             ui_msg_win_nl();
             ui_msg_win_print_subject(event->source);
             ui_msg_win_print_verb(event->type, source_is_player);

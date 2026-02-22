@@ -28,13 +28,27 @@
  * private variables
  * ***************************************************/
 
+static const char * const cond_name[CONDITION_ID_COUNT] = {
+    [CONDITION_ID_NONE]          = "",
+    [CONDITION_ID_BLIND]         = "blinded",
+    [CONDITION_ID_DEAF]          = "deafened",
+    [CONDITION_ID_INCAPACITATED] = "incapac.",
+    [CONDITION_ID_POISONED]      = "poisoned",
+    [CONDITION_ID_CONFUSED]      = "confused",
+};
 
 /***************************************************
  * private function prototypes
  ***************************************************/
 
+static void update_primary_stats(void);
+static void update_secondary_stats(void);
+static void update_resource_stats(void);
+static void update_conditions(void);
+static void update_game_info(void);
+
 /***************************************************
- * functions
+ * Public functions
  ***************************************************/
 void ui_stat_win_on_event(event_t *event)
 {
@@ -56,8 +70,15 @@ void ui_stat_win_on_event(event_t *event)
         case EVENT_DAMAGED_VULNERABLE:
         case EVENT_HEALED_HP:
         case EVENT_HEALED_MP:
-            // TODO limit to only if the player is affected
-            g.stat_win.dirty = 1;
+        case EVENT_CONDITION_APPLIED:
+        case EVENT_CONDITION_REMOVED:
+            if (event->source == g.player.id || event->target == g.player.id)
+                g.stat_win.dirty = 1;
+            break;
+        case EVENT_TRANSITION:
+        case EVENT_TRANSITION_TELEPORT:
+                g.main_win.dirty = 1;
+                g.stat_win.dirty = 1;
             break;
         case EVENT_DIED:
         case EVENT_DAMAGED_IMMUNE:
@@ -66,14 +87,30 @@ void ui_stat_win_on_event(event_t *event)
             break;
     }    
 }
-void ui_stat_update_primary_stats(void)
+
+void ui_stat_update(void)
 {
     if (g.player.id == ENTITY_ID_INVALID)
         return;
 
-    text_set_cursor(&g.stat_win, 0, 0);
+    text_cls(&g.stat_win);        
 
-    // TODO clear the lines
+    update_primary_stats();
+    update_secondary_stats();
+    update_resource_stats();
+    update_conditions();
+    update_game_info();
+}
+
+/***************************************************
+ * Private functions
+ ***************************************************/
+/*
+ * @brief Update primary stats (STR, DEX, CON, INT, WIS, CHA)
+ */
+void update_primary_stats(void)
+{
+    text_set_cursor(&g.stat_win, 0, 0);
 
     text_printf(&g.stat_win, "STR:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_STR), system_effect_mod_sum(g.player.id, ATTRIBUTE_STR));
     text_printf(&g.stat_win, "DEX:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_DEX), system_effect_mod_sum(g.player.id, ATTRIBUTE_DEX));
@@ -81,25 +118,71 @@ void ui_stat_update_primary_stats(void)
     text_printf(&g.stat_win, "INT:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_INT), system_effect_mod_sum(g.player.id, ATTRIBUTE_INT));
     text_printf(&g.stat_win, "WIS:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_WIS), system_effect_mod_sum(g.player.id, ATTRIBUTE_WIS));
     text_printf(&g.stat_win, "CHA:%u %C\n", system_stats_get_stat_base(g.player.id, STAT_CHA), system_effect_mod_sum(g.player.id, ATTRIBUTE_CHA));
-
 }
 
-void ui_stat_update_secondary_stats(void)
+/*
+ * @brief Update secondary stats (PLayer level, XP, AC, Speed)
+ */
+void update_secondary_stats(void)
 {
-    if (g.player.id == ENTITY_ID_INVALID)
-        return;
-
     text_set_cursor(&g.stat_win, 0, 7);
+
     text_printf(&g.stat_win, " AC:%u %d\n", system_stats_get_ac_base(g.player.id), system_effect_mod_sum(g.player.id, ATTRIBUTE_ARMOR_CLASS));
     text_printf(&g.stat_win, "SPD:%u %d\n", system_stats_get_speed_base(g.player.id), system_effect_mod_sum(g.player.id, ATTRIBUTE_SPEED));
 }
 
-void ui_stat_update_resource_stats(void)
-{
-    if (g.player.id == ENTITY_ID_INVALID)
-        return;
-        
+/*
+ * @brief Update resource stats (HP, MP)
+ */
+void update_resource_stats(void)
+{       
     text_set_cursor(&g.stat_win, 0, 10);
-    text_printf(&g.stat_win, "HP:%u/%u\n", system_stats_get_hp_max(g.player.id), system_stats_get_hp_cur(g.player.id));
-    text_printf(&g.stat_win, "MP:\n");
+
+    {
+        uint8_t hp_cur = system_stats_get_hp_cur(g.player.id);
+        uint8_t hp_max = system_stats_get_hp_max(g.player.id);
+        if (hp_cur > (hp_max >> 1))
+            text_printf(&g.stat_win, "%PGHP:%u/%u%PW\n", hp_cur, hp_max);
+        else if (hp_cur > (hp_max >> 2))
+            text_printf(&g.stat_win, "%PYHP:%u/%u%PW\n", hp_cur, hp_max);
+        else
+            text_printf(&g.stat_win, "%PRHP:%u/%u%PW\n", hp_cur, hp_max);
+    }
+    text_printf(&g.stat_win, "MP:%u/%u\n", system_stats_get_mp_max(g.player.id), system_stats_get_mp_cur(g.player.id));
+}
+
+/*
+ * @brief Update conditions (e.g. poisoned, invisible)
+ */ 
+void update_conditions(void)
+{
+    uint8_t i;
+    condition_mask_t mask;
+
+    if (!entity_has_component(g.player.id, COMPONENT_CONDITION))
+        return;
+
+    text_set_cursor(&g.stat_win, 0, 12);
+
+    mask = g.condition_components[g.player.id].conditions;
+    for (i = 1; i < CONDITION_ID_COUNT; ++i)
+    {
+        if (mask & CONDITION_MASK(i))
+        {
+            if (i == CONDITION_ID_POISONED || i == CONDITION_ID_INCAPACITATED)
+                text_printf(&g.stat_win, "%PR%s%PW\n", cond_name[i]);
+            else
+                text_printf(&g.stat_win, "%PY%s%PW\n", cond_name[i]);
+        }
+    }
+}
+
+/*
+ * @brief Update game info (e.g. dungeon depth)
+ */
+void update_game_info(void)
+{
+    text_set_cursor(&g.stat_win, 0, 18);
+
+    text_printf(&g.stat_win, "Depth: %u\n", g.depth);
 }

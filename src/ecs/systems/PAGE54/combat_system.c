@@ -185,6 +185,7 @@ static void attack_ctx_apply(attack_ctx_t *c)
 
     system_damage_try_take_damage(
         c->target,
+        c->attacker,
         c->final_damage,
         c->damage_type
     );

@@ -23,8 +23,6 @@
  ***************************************************/
 
 void ui_stat_win_on_event(const event_t *event);
-void ui_stat_update_primary_stats(void);
-void ui_stat_update_secondary_stats(void);
-void ui_stat_update_resource_stats(void);
+void ui_stat_update(void);
 
 #endif // UI_STAT_H

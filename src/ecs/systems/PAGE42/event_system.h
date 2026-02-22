@@ -29,7 +29,8 @@ typedef enum {
     EVENT_ATTACKED_AND_MISSED,      // Source attacked target and missed
     EVENT_BUMPED,                   // Source bumped target
     EVENT_STOOD_ON,                 // Source stood on target
-    EVENT_DIED,                     // source died, target = ENTITY_ID_INVALID
+    EVENT_DIED,                     // source died, target = ENTITY_ID_INVALID // TO REMOVE
+    EVENT_KILLED,                   // source killed target
     EVENT_PICKED_UP,                // Source picked up target
     EVENT_DROPPED,                  // Source dropped target
     EVENT_EQUIPPED,                 // Source equipped target
@@ -49,8 +50,8 @@ typedef enum {
     EVENT_CLOSED,                   // Source closed target
     EVENT_TRANSITION,               // Source transitions target to a new depth
     EVENT_TRANSITION_TELEPORT,      // Source transitions target to a new depth
-    EVENT_CONDITION_APPLIED,        // Condition applied to target; value = condition_id_t
-    EVENT_CONDITION_REMOVED,        // Condition removed from target; value = condition_id_t
+    EVENT_CONDITION_APPLIED,        // Source applied condition to target; value = condition_id_t
+    EVENT_CONDITION_REMOVED,        // Source removed condition from target; value = condition_id_t
     EVENT_COUNT
 
 } event_type_t;

@@ -55,7 +55,7 @@ void condition_clear_if_no_remaining(entity_id_t target, condition_id_t conditio
 int8_t attribute_mod_sum(entity_id_t actor, attribute_t attribute);
 
 /* Apply effects */
-void apply_effect(entity_id_t target, const effect_t *effect);
+void apply_effect(entity_id_t target, entity_id_t source, const effect_t *effect);
 
 /* Cleanup */
 void cleanup_entity(entity_id_t source);

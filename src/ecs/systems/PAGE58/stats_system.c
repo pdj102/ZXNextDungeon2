@@ -153,6 +153,35 @@ uint8_t stats_system_get_hp_max(entity_id_t actor)
     return value;
 }
 
+uint8_t stats_system_get_mp_cur(entity_id_t actor)
+{
+    /* TODO Implement mana points e.g. magic component or as part of stats component */
+
+    // util_assert(entity_has_component(actor, COMPONENT_DESTRUCTIBLE));
+
+    // return g.destructible_components[actor].cur_mp;
+
+    return 0;
+}
+
+uint8_t stats_system_get_mp_max(entity_id_t actor)
+{
+    /* TODO Implement mana points e.g. magic component or as part of stats component */
+    // int8_t value;
+
+    // util_assert(entity_has_component(actor, COMPONENT_DESTRUCTIBLE));
+
+    // value = g.destructible_components[actor].max_mp;
+
+    // value += system_effect_mod_sum(actor, ATTRIBUTE_MAX_MP);
+
+    // value = value < 1 ? 1 : value;
+
+    // return value;
+
+    return 0;
+}
+
  /***************************************************
  * private functions
  ***************************************************/

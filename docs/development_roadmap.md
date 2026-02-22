@@ -425,7 +425,7 @@
 
 ---
 
-### 🪜 **Milestone 130 — Conditions **
+### 🪜 **Milestone 130 — Conditions**
 
 > *Goal: Entities can be poisoned, paralysed, or confused; conditions affects their turn.*
 
@@ -436,7 +436,7 @@
 * [ ] Poison — deal 1 HP damage per turn for duration; emit `EVENT_DAMAGED`
 * [ ] Paralysis — skip entity turn for duration
 * [ ] Confusion — randomise movement direction for duration
-* [ ] Display active status icons on player status UI (Milestone 602)
+* [✅] Display active status icons on player status UI (Milestone 602)
 * [ ] Remove status on entity destroy
 
 [ ] *End result: Monsters can poison, paralyse, or confuse the player; status creates tactical urgency.*
@@ -452,6 +452,7 @@
 * [ ] Change pass by value to pass by pointer if parameter is on stack or in global game state
 * [ ] Bug - attack direction can select no direction and attack self
 * [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
+* [ ] Bug - creature LOS not blocked by closed doors
 
 [ ] *End result: Code is clean and known bugs are fixed.*
 
@@ -816,7 +817,7 @@
 * [🚧] Place new items, taking depth into account
 * [ ] Place persistent items that are at the current depth
 * [🚧] Add new features, taking depth into account
-* [ ] Place basic doors
+* [✅] Place basic doors
 * [ ] Place locked doors and keys
 * [ ] Place other feature types
 * [ ] Implement dungeon map decoration
