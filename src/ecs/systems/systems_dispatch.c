@@ -616,12 +616,24 @@ void system_event_emit(const event_t *event)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_EVENT_SYSTEM);  /* Page event system into 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_EVENT_SYSTEM);  /* Page event system into 8k MMU slot 6 */
 
     event_system_emit(event);
 
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */  
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 
+}
+
+void system_event_process_queue(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_EVENT_SYSTEM);  /* Page event system into 8k MMU slot 6 */
+
+    event_system_process_queue();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
 /* Feature system*/

@@ -312,10 +312,11 @@
 
 > *Goal: Player gains experience.*
 
-* [ ] Implement experience component that gives experience
-* [ ] Implement experience system to track player's experience
-* [ ] Implement player experience
+* [✅] Add XP and level attributes to player component
+* [ ] Implement character system to manage player's experience (will also manage character creation, levelling up etc)
+* [ ] Implement `player_system_on_event()` to process events into XP awarded e.g. player kills a creature
 * [ ] Implement gain experience
+* [ ] Update status UI to display player XP and level
 
 [ ] *End result: player gains experience.*
 

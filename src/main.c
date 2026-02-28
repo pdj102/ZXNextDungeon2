@@ -121,6 +121,7 @@ static void turn(void)
         system_timer_reset(id);
 
         process_entity_turn(id);
+        system_event_process_queue();
     }
 }
 

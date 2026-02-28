@@ -101,6 +101,7 @@ bool system_effect_has_condition(entity_id_t entity, condition_id_t condition);
 /* Event System */
 void system_event_init(void);
 void system_event_emit(const event_t *event);
+void system_event_process_queue(void);
 
 
 /* Equipment System */

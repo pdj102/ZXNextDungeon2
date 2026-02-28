@@ -69,8 +69,14 @@ typedef struct {
 void event_system_init(void);
 
 /*
- * @brief Emit an event to all systems that are interested in it.
+ * @brief Enqueue an event for deferred processing.
  */
 void event_system_emit(const event_t *event);
+
+/*
+ * @brief Dispatch all queued events to interested systems.
+ *        Call once per entity turn after the entity has acted.
+ */
+void event_system_process_queue(void);
 
 #endif // EVENT_SYSTEM_H
