@@ -22,6 +22,7 @@
 #include "game/global_state.h"
 #include "game/map.h"
 #include "game/camera.h"
+#include "game/ui_info.h"
 
 #include "core/util.h"
 #include "core/zxnext.h"
@@ -105,6 +106,8 @@ void player_system_update(void)
     {
         return;
     }
+
+    ui_info_set_context(UI_CONTEXT_NORMAL);
 
     key = key_press();
 
@@ -337,7 +340,7 @@ static void target(void)
 
     text_printf(&g.msg_win, "\nRange:%d", tcx.max_range);
 
-    text_printf(&g.info_win, "\n[%PYcursor%PW-dir] [%PYt%PW-attack] [%PYspace%PW-cancel]");
+    ui_info_set_context(UI_CONTEXT_TARGETING);
 
     target_mode(&tcx);
 
@@ -358,8 +361,8 @@ static void look(void)
     tcx.source.x = g.location_components[g.player.id].coord.x;
     tcx.source.y = g.location_components[g.player.id].coord.y;
 
-    text_printf(&g.info_win, "\n[%PYcursor%PW-dir] [%PYl%PW-look] [%PYspace%PW-cancel]");
-    
+    ui_info_set_context(UI_CONTEXT_LOOK);
+
     target_mode(&tcx);
 
     if (tcx.target_selected)
@@ -474,7 +477,7 @@ static uint8_t prompt_letter(uint8_t max_index)
 {
     uint8_t max_char = 'a' + max_index;
 
-    text_printf(&g.info_win, "\n[%PYa-%c%PW-select] [%PYspace%PW-cancel]", max_char);
+    ui_info_set_inventory_context(max_char);
 
     /* Get a single character */
     int ch = key_press();
@@ -494,7 +497,7 @@ static direction_t dir_or_cancel( void )
 {
     unsigned int key;
 
-    text_printf(&g.info_win, "\n[%ACursor keys%A-direction] [%ASpace%A-cancel]", PALETTE_YELLOW, PALETTE_WHITE, PALETTE_YELLOW, PALETTE_WHITE);
+    ui_info_set_context(UI_CONTEXT_DIRECTION);
 
     key = key_press();   
 

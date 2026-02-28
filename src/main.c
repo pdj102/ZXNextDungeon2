@@ -26,6 +26,7 @@
 #include "game/global_state.h"
 #include "game/world.h"
 #include "game/PAGE34/dungeon_gen.h"
+#include "game/ui_info.h"
 
 #include "core/util.h"
 
@@ -69,7 +70,7 @@ int main(void)
     ui_update_stats();
 
 
-    text_printf(&g.info_win, "[%A?%A-Help]", PALETTE_YELLOW, PALETTE_WHITE);
+    ui_info_set_context(UI_CONTEXT_NORMAL);
 
     while (1)
     {
