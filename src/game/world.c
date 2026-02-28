@@ -61,6 +61,7 @@ void new_game(void)
     event.value = 0;
 
     system_event_emit(&event);
+    system_event_process_queue();   /* process the initial transition synchronously */
 }
 
 void world_handle_event(const event_t *event)
