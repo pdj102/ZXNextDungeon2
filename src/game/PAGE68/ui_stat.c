@@ -77,7 +77,6 @@ void ui_stat_win_on_event(event_t *event)
             break;
         case EVENT_TRANSITION:
         case EVENT_TRANSITION_TELEPORT:
-                g.main_win.dirty = 1;
                 g.stat_win.dirty = 1;
             break;
         case EVENT_DIED:

@@ -106,7 +106,8 @@
 > *Goal: Systems can emit and respond to events.*
 
 * [✅] Implement `event_system`
-* [✅] Implement `event_system_emit` function to emit events
+* [✅] Implement `event_system_emit` function to enqueue an event for deferred processing
+* [✅] Implement `event_system_process_queue();` function to process queued events
 
 [✅] *End result: Systems can emit events that other systems respond to.*
 

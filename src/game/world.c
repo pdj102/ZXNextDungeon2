@@ -35,6 +35,7 @@
 /***************************************************
  * private function prototypes
  ***************************************************/
+static void world_handle_transition(const event_t *event);
 
 /***************************************************
  * public functions
@@ -66,6 +67,30 @@ void new_game(void)
 
 void world_handle_event(const event_t *event)
 {
+    switch (event->type)
+    {
+        /* Events that require the game world map to be redrawn*/
+        case EVENT_OPENED:
+        case EVENT_CLOSED:
+        case EVENT_DROPPED:
+        case EVENT_PICKED_UP:
+        case EVENT_DIED:
+            g.main_win.dirty = 1;
+            break;
+        case EVENT_TRANSITION_TELEPORT:
+        case EVENT_TRANSITION:
+            world_handle_transition(event);
+            break;
+        default:
+            return;
+    }
+}
+
+/***************************************************
+ * private functions
+ ***************************************************/
+static void world_handle_transition(const event_t *event)
+{
     dungeon_transition_t c;
 
     c.from_depth = g.depth;                 // transition from current world depth
@@ -74,7 +99,7 @@ void world_handle_event(const event_t *event)
     c.actor = event->target;                // e.g. player
     c.source_entity = event->source;        // stairs etc
 
-    // If  transistion was via a source entity with transition component get the entry kind (e.g. up stairs, down stairs) otherwise default to 0 for teleport/new game 
+    // If transition was via a source entity with transition component get the entry kind (e.g. up stairs, down stairs) otherwise default to 0 for teleport/new game
     if (c.source_entity != ENTITY_ID_INVALID && entity_has_component(c.source_entity, COMPONENT_TRANSITION))
     {
         c.entry_kind = g.transition_components[c.source_entity].kind;
@@ -84,16 +109,8 @@ void world_handle_event(const event_t *event)
         c.entry_kind = 0;  // Default entry kind for teleport/new game
     }
 
-    switch (event->type)
-    {
-        case EVENT_TRANSITION_TELEPORT:
-        case EVENT_TRANSITION:
-            map_gen(&c);
-            g.main_win.dirty = 1;
-            break;
-        default:
-            return;
-    }
+    map_gen(&c);
+    g.main_win.dirty = 1;
 }
 
 void world_destroy_non_persistent_entities(void)
@@ -216,7 +233,3 @@ void world_process_entity_destructions(void)
     /* Phase 2 - Finalise the destruction of each entity */
     entity_cleanup();
 }
-
-/***************************************************
- * private functions
- ***************************************************/

@@ -192,11 +192,12 @@ static void location_link(entity_id_t entity)
 {
     uint8_t x = g.location_components[entity].coord.x;
     uint8_t y = g.location_components[entity].coord.y;
+    entity_id_t first = map_get_first(x, y);
 
-    /* Mark map window as dirty*/
-    g.main_win.dirty = 1;
+    /* TODO remove Mark map window as dirty*/
+    //g.main_win.dirty = 1;
 
-    g.location_components[entity].next_in_location = map_get_first(x, y); /* link to previous head entity at this map cell */
+    g.location_components[entity].next_in_location = first; /* link to previous head entity at this map cell */
     map_set_entity_head(x, y, entity); /* set this entity as the head of the list at this map cell */
 }
 
@@ -209,7 +210,7 @@ static void location_unlink(entity_id_t entity)
     entity_id_t x = g.location_components[entity].coord.x;
     entity_id_t y = g.location_components[entity].coord.y;
 
-    /* Mark map window as dirty*/
+    /* TODO remove Mark map window as dirty*/
     g.main_win.dirty = 1;
 
     /* find entity in cell list */
