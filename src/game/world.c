@@ -69,14 +69,6 @@ void world_handle_event(const event_t *event)
 {
     switch (event->type)
     {
-        /* Events that require the game world map to be redrawn*/
-        case EVENT_OPENED:
-        case EVENT_CLOSED:
-        case EVENT_DROPPED:
-        case EVENT_PICKED_UP:
-        case EVENT_DIED:
-            g.main_win.dirty = 1;
-            break;
         case EVENT_TRANSITION_TELEPORT:
         case EVENT_TRANSITION:
             world_handle_transition(event);

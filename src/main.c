@@ -65,9 +65,9 @@ int main(void)
     new_game();
 
     camera_update();
-    map_render();
+    /* map_render(); */
 
-    ui_update_stats();
+    ui_update();
 
 
     ui_info_set_context(UI_CONTEXT_NORMAL);
@@ -78,6 +78,9 @@ int main(void)
 
         turn();
 
+        ui_update();
+
+        /*
         if (g.main_win.dirty == 1)
         {
             map_render();
@@ -89,6 +92,7 @@ int main(void)
             ui_update_stats();
             g.stat_win.dirty = 0;
         }
+        */
 
         world_process_entity_destructions();
 
@@ -130,12 +134,14 @@ static void process_entity_turn(entity_id_t id)
 {
     if (entity_has_component(id, COMPONENT_PLAYER))
     {
-        if (g.main_win.dirty == 1)
+        /* if (g.main_win.dirty == 1)
         {
             map_render();
             g.main_win.dirty = 0;
         }
-        system_player_update();
+        */
+       ui_update();
+       system_player_update();
     }
     else if (entity_has_component(id, COMPONENT_AI))
     {
