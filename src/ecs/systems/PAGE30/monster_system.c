@@ -10,6 +10,8 @@
 #include "ecs/components/components.h"
 #include "ecs/components/name_comp.h"
 
+#include "ecs/systems/systems_dispatch.h"
+
 #include "game/global_state.h"
 
 #include "core/util.h"
@@ -321,9 +323,10 @@ entity_id_t monster_system_create_player( void )
 
     /* Add player control component */
     g.player.id = id;
-    g.player.xp = 0;
-    g.player.level = 1;
     entity_set_component(id, COMPONENT_PLAYER);
+
+    /* Initialise progression state (XP, level) */
+    system_player_progression_create();
 
     /* Add slots component */
     add_slots(id);    

@@ -144,6 +144,7 @@ bool system_perception_can_see_target(entity_id_t ai, entity_id_t target);
 void system_player_init(void);
 void system_player_handle_event(const event_t *event);
 void system_player_update(void);
+void system_player_progression_create(void);
 
 /* Stats system */
 void system_stats_init(void);

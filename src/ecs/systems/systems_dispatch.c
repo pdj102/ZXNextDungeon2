@@ -21,6 +21,7 @@
 #include "ecs/systems/PAGE42/event_system.h"
 #include "ecs/systems/PAGE44/actions_system.h"
 #include "ecs/systems/PAGE46/player_system.h"
+#include "ecs/systems/PAGE46/player_progression.h"
 #include "ecs/systems/PAGE48/equipment_system.h"
 #include "ecs/systems/PAGE50/perception_system.h"
 #include "ecs/systems/PAGE52/movement_system.h"
@@ -915,11 +916,23 @@ void system_player_update(void)
     uint8_t current_bank;
 
     current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */
 
     player_system_update();
 
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */    
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+}
+
+void system_player_progression_create(void)
+{
+    uint8_t current_bank;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */
+
+    player_progression_create();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }
 
 /* Stats system */
