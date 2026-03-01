@@ -51,6 +51,7 @@ void new_game(void)
     systems_init();
 
     g.player.id = ENTITY_ID_INVALID;
+    g.quest_item_spawned = 0;
     entity_id_t e = system_monster_create_player();
     util_assert(e != ENTITY_ID_INVALID);
 

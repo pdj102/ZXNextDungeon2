@@ -22,7 +22,7 @@
 /***************************************************
  * private defines
  ***************************************************/
-#define QUEST_ITEM_DEPTH  5u
+#define QUEST_ITEM_DEPTH  2u
 
 /***************************************************
  * private types
@@ -375,6 +375,7 @@ static void spawn_special_content(dungeon_transition_t *c)
                 entity_set_flag(amulet, FLAG_QUEST_ITEM);
                 world_attach_entity(amulet, spawn_x, spawn_y);
                 g.quest_item_spawned = 1;
+                text_printf(&g.msg_win, "Spawned Amulet of Yendor at depth %d\n", c->to_depth);
             }
         }
     }
