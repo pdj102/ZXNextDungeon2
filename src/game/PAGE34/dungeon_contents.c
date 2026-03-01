@@ -22,6 +22,7 @@
 /***************************************************
  * private defines
  ***************************************************/
+#define QUEST_ITEM_DEPTH  5u
 
 /***************************************************
  * private types
@@ -338,6 +339,7 @@ static void spawn_special_content(dungeon_transition_t *c)
     int spawn_x, spawn_y;
     entity_id_t potion;
     entity_id_t ring;
+    entity_id_t amulet;
 
     /* Always spawn at least 1 healing potion */
     spawn_room = pick_random_room();
@@ -357,6 +359,24 @@ static void spawn_special_content(dungeon_transition_t *c)
     if (ring != ENTITY_ID_INVALID)
     {
             world_attach_entity(ring, 22, 20);
+    }
+
+    /* Spawn the Amulet of Yendor once at the target depth */
+    if (c->to_depth == QUEST_ITEM_DEPTH && !g.quest_item_spawned)
+    {
+        spawn_room = pick_random_room();
+        if (spawn_room)
+        {
+            random_point_in_room(spawn_room, &spawn_x, &spawn_y);
+            amulet = system_item_create(ITEM_AMULET, 1);
+            if (amulet != ENTITY_ID_INVALID)
+            {
+                entity_set_flag(amulet, FLAG_PERSISTANT);
+                entity_set_flag(amulet, FLAG_QUEST_ITEM);
+                world_attach_entity(amulet, spawn_x, spawn_y);
+                g.quest_item_spawned = 1;
+            }
+        }
     }
 }
 
@@ -415,5 +435,32 @@ static void dungeon_place_player(dungeon_transition_t *c)
 
 static void dungeon_restore_peristent_entities(dungeon_transition_t *c)
 {
-   
+    entity_id_t id;
+
+    for (id = 0; id < MAX_ENTITIES; id++)
+    {
+        if (!entity_has_flag(id, FLAG_IN_USE))
+            continue;
+
+        if (!entity_has_flag(id, FLAG_PERSISTANT))
+            continue;
+
+        /* Skip player - handled by dungeon_place_player() */
+        if (entity_has_component(id, COMPONENT_PLAYER))
+            continue;
+
+        /* Skip items currently in inventory - they travel with the player */
+        if (entity_has_component(id, COMPONENT_CONTAINED))
+            continue;
+
+        /* Skip if already on the map */
+        if (entity_has_component(id, COMPONENT_LOCATION))
+            continue;
+
+        /* Only restore entities that belong to this depth */
+        if (g.location_components[id].depth != c->to_depth)
+            continue;
+
+        world_attach_entity(id, g.location_components[id].coord.x, g.location_components[id].coord.y);
+    }
 }

@@ -77,8 +77,10 @@ typedef enum {
     ITEM_RING_OF_STRENGTH,
     // Wands
     // Light sources
-    // Keys    
+    // Keys
     ITEM_KEY,
+    // Quest items
+    ITEM_AMULET,
     ITEM_KIND_COUNT
 } item_kind_t;
 

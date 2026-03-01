@@ -76,16 +76,13 @@ static void place_stairs(dungeon_transition_t *c)
     if (num_rooms == 0)
         return;
 
-    /* Depth > 1 gets upstairs */
-    if (c->to_depth > 1)
-    {
-        text_printf(&g.msg_win, "Placing upstairs...\n");
-        up_room = pick_random_room();
-        place_feature_in_room(FEATURE_UP_STAIRS, up_room);
-    }
+    /* Place upstairs in a random room */
+    text_printf(&g.msg_win, "Placing upstairs...\n");
+    up_room = pick_random_room();
+    place_feature_in_room(FEATURE_UP_STAIRS, up_room);
 
     /* All but final depth get downstairs */
-    /* TODO check depth */
+    /* TODO check depth and do not place on lowest level */
     down_room = pick_random_room();
 
     /* Avoid same room if possible */

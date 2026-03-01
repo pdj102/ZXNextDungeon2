@@ -62,6 +62,8 @@
     /* Light sources */
     /* Keys */
     NAME_KEY,
+    /* Quest items */
+    NAME_AMULET,
 
     // Doors
     NAME_CLOSED_DOOR,

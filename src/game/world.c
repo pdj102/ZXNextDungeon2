@@ -36,6 +36,8 @@
  * private function prototypes
  ***************************************************/
 static void world_handle_transition(const event_t *event);
+static bool world_player_has_quest_item(entity_id_t player);
+static void world_check_win_condition(entity_id_t player);
 
 /***************************************************
  * public functions
@@ -87,7 +89,6 @@ static void world_handle_transition(const event_t *event)
 
     c.from_depth = g.depth;                 // transition from current world depth
     c.to_depth = g.depth + event->value;    // to current world depth + delta
-    g.depth = c.to_depth;
     c.actor = event->target;                // e.g. player
     c.source_entity = event->source;        // stairs etc
 
@@ -101,6 +102,15 @@ static void world_handle_transition(const event_t *event)
         c.entry_kind = 0;  // Default entry kind for teleport/new game
     }
 
+    /* Win condition: player ascends from the shallowest dungeon level with the quest item */
+    if (c.from_depth == 1 && c.entry_kind == TRANSITION_UP)
+    {
+        world_check_win_condition(c.actor);
+        if (g.creature_components[c.actor].status == CREATURE_STATUS_WON)
+            return;  /* Do not update depth or generate a surface level */
+    }
+
+    g.depth = c.to_depth;
     map_gen(&c);
     g.main_win.dirty = 1;
 }
@@ -143,6 +153,11 @@ void world_detach_persistent_entities(void)
             continue;
 
         if (!entity_has_flag(id, FLAG_PERSISTANT))
+            continue;
+
+        /* Items inside a persistent container (e.g. player inventory) stay put */
+        /* TODO is this correct? What if the container is a chest */
+        if (entity_has_component(id, COMPONENT_CONTAINED))
             continue;
 
         world_detach_entity(id);
@@ -224,4 +239,25 @@ void world_process_entity_destructions(void)
 
     /* Phase 2 - Finalise the destruction of each entity */
     entity_cleanup();
+}
+
+static bool world_player_has_quest_item(entity_id_t player)
+{
+    entity_id_t item = container_system_get_first(player);
+    while (item != ENTITY_ID_INVALID)
+    {
+        if (entity_has_flag(item, FLAG_QUEST_ITEM))
+            return true;
+        item = container_system_get_next(item);
+    }
+    return false;
+}
+
+static void world_check_win_condition(entity_id_t player)
+{
+    if (!world_player_has_quest_item(player))
+        return;
+    g.creature_components[player].status = CREATURE_STATUS_WON;
+    text_printf(&g.msg_win, "\nYou escaped with the Amulet of Yendor. You win!");
+    g.msg_win.dirty = 1;
 }

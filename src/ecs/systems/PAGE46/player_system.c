@@ -82,8 +82,9 @@ void player_system_update(void)
     util_assert(entity_has_component(entity, COMPONENT_TIMER));
     util_assert(entity_has_flag(entity, FLAG_IN_USE));  /* Player entity has not been destroyed */
 
-    /* Check player is not dead */
-    if (g.creature_components[entity].status == CREATURE_STATUS_DEAD)
+    /* Check player is not dead or has won */
+    if (g.creature_components[entity].status == CREATURE_STATUS_DEAD ||
+        g.creature_components[entity].status == CREATURE_STATUS_WON)
     {
         return;
     }

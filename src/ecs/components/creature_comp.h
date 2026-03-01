@@ -69,7 +69,8 @@ typedef enum creature_kind_e {
 typedef enum creature_status_e {
     CREATURE_STATUS_NONE,
     CREATURE_STATUS_ALIVE,
-    CREATURE_STATUS_DEAD
+    CREATURE_STATUS_DEAD,
+    CREATURE_STATUS_WON
 } creature_status_t;
 
 typedef enum creature_cr_e {

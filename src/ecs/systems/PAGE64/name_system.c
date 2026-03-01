@@ -70,6 +70,8 @@ static const char *name_base[NAME_COUNT] =
     /* Light sources */
     /* Keys */
     [NAME_KEY] = "key",
+    /* Quest items */
+    [NAME_AMULET] = "Amulet of Yendor",
 
     // Doors
     [NAME_CLOSED_DOOR] = "closed door",

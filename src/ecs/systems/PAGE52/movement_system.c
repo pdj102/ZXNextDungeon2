@@ -48,6 +48,7 @@ void movement_system_place(entity_id_t entity, uint8_t x, uint8_t y)
 
     g.location_components[entity].coord.x = x;
     g.location_components[entity].coord.y = y;
+    g.location_components[entity].depth = g.depth;
 
     location_link(entity);
 

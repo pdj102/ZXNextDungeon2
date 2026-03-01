@@ -19,6 +19,7 @@
  ***************************************************/
 typedef struct {
     coord_t  coord;
+    uint8_t depth;                /* dungeon depth this entity is on */
     entity_id_t next_in_location; /* next entity in the same location */
 } location_comp_t;
 

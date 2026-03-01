@@ -39,8 +39,10 @@ static const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     [ITEM_RING_OF_STRENGTH] = EQUIPPABLE_FINGER,
     /* Wands */
     /* Light sources */
-    /* Keys */    
-    [ITEM_KEY] = EQUIPPABLE_NONE
+    /* Keys */
+    [ITEM_KEY] = EQUIPPABLE_NONE,
+    /* Quest items */
+    [ITEM_AMULET] = EQUIPPABLE_NONE
 };
 
 static const name_id_t item_name_base[ITEM_KIND_COUNT] = 
@@ -67,10 +69,12 @@ static const name_id_t item_name_base[ITEM_KIND_COUNT] =
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = NAME_KEY
+    [ITEM_KEY] = NAME_KEY,
+    /* Quest items */
+    [ITEM_AMULET] = NAME_AMULET
 };
 
-static const attack_comp_t melee_base[ITEM_KIND_COUNT] = 
+static const attack_comp_t melee_base[ITEM_KIND_COUNT] =
 {
     [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
@@ -78,13 +82,13 @@ static const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_MELEE, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 1, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_NONE},
     /* Ranged weapons*/
     [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_NONE },
-    /* Armour */    
+    /* Armour */
     [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
     /* Shields */
     [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ammo */
     [ITEM_ARROW] = { .attack_type = ATTACK_KIND_NONE },
-    /* Potions */    
+    /* Potions */
     [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
     /* Scrolls */
     /* Food and drink */
@@ -95,9 +99,11 @@ static const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     /* Light sources */
     /* Keys */
     [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
+    /* Quest items */
+    [ITEM_AMULET] = { .attack_type = ATTACK_KIND_NONE },
 };
 
-static const attack_comp_t ranged_base[ITEM_KIND_COUNT] = 
+static const attack_comp_t ranged_base[ITEM_KIND_COUNT] =
 {
     [ITEM_NONE] = { .attack_type = ATTACK_KIND_NONE },
     /* Melee weapons */
@@ -105,13 +111,13 @@ static const attack_comp_t ranged_base[ITEM_KIND_COUNT] =
     [ITEM_SHORT_SWORD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ranged weapons*/
     [ITEM_SHORT_BOW] = { .attack_type = ATTACK_KIND_RANGED, .damage_roll = DICE_1D6, .damage_kind = DAMAGE_PIERCING, .range = 10, .hit_mod = 0, .damage_mod = 0, .allowed_ammo = AMMO_ARROW},
-    /* Armour */    
+    /* Armour */
     [ITEM_LEATHER_ARMOUR] = { .attack_type = ATTACK_KIND_NONE },
     /* Shields */
     [ITEM_SHIELD] = { .attack_type = ATTACK_KIND_NONE },
     /* Ammo */
     [ITEM_ARROW] = { .attack_type = ATTACK_KIND_NONE },
-    /* Potions */    
+    /* Potions */
     [ITEM_POTION_OF_HEALING] = { .attack_type = ATTACK_KIND_NONE },
     /* Scrolls */
     /* Food and drink */
@@ -122,6 +128,8 @@ static const attack_comp_t ranged_base[ITEM_KIND_COUNT] =
     /* Light sources */
     /* Keys */
     [ITEM_KEY] = { .attack_type = ATTACK_KIND_NONE },
+    /* Quest items */
+    [ITEM_AMULET] = { .attack_type = ATTACK_KIND_NONE },
 };
 
 static const ammo_comp_t ammo_base[ITEM_KIND_COUNT] = 
@@ -148,7 +156,9 @@ static const ammo_comp_t ammo_base[ITEM_KIND_COUNT] =
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = { .ammo_type = AMMO_NONE },   
+    [ITEM_KEY] = { .ammo_type = AMMO_NONE },
+    /* Quest items */
+    [ITEM_AMULET] = { .ammo_type = AMMO_NONE },
 };
 
 static const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
@@ -174,7 +184,9 @@ static const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = { .tile = { 'k', 0}}
+    [ITEM_KEY] = { .tile = { 'k', 0}},
+    /* Quest items */
+    [ITEM_AMULET] = { .tile = { '"', PALETTE_YELLOW}}
 };
 
 static const uint8_t consumable_base[ITEM_KIND_COUNT] = 
@@ -201,7 +213,9 @@ static const uint8_t consumable_base[ITEM_KIND_COUNT] =
     /* Wands */
     /* Light sources */
     /* Keys */
-    [ITEM_KEY] = 0
+    [ITEM_KEY] = 0,
+    /* Quest items */
+    [ITEM_AMULET] = 0
 };
 
 static const effect_comp_t effect_base[ITEM_KIND_COUNT] = 
@@ -229,6 +243,8 @@ static const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     /* Light sources */
     /* Keys */
     [ITEM_KEY] = { .kind = EFFECT_NONE},
+    /* Quest items */
+    [ITEM_AMULET] = { .kind = EFFECT_NONE},
 };
 
 /***************************************************

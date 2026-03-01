@@ -18,10 +18,16 @@
 /***************************************************
  * public types
  ***************************************************/
+typedef enum {
+    PLAYER_CLASS_FIGHTER = 0,
+    PLAYER_CLASS_COUNT
+} player_class_t;
+
 typedef struct {
-    entity_id_t id;
-    uint8_t level;
-    uint16_t xp;
+    entity_id_t    id;
+    uint8_t        level;
+    uint16_t       xp;
+    player_class_t class;
 } player_comp_t;
 
 /***************************************************

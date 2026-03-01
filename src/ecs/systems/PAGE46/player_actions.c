@@ -46,6 +46,22 @@ void player_action_climb(void)
     {
         if (entity_has_component(e, COMPONENT_TRANSITION))
         {
+            /* Ascending from depth 1 requires the Amulet of Yendor */
+            if (g.transition_components[e].kind == TRANSITION_UP && g.depth == 1)
+            {
+                entity_id_t item = system_container_get_first(g.player.id);
+                while (item != ENTITY_ID_INVALID)
+                {
+                    if (entity_has_flag(item, FLAG_QUEST_ITEM))
+                        break;
+                    item = system_container_get_next(item);
+                }
+                if (item == ENTITY_ID_INVALID)
+                {
+                    text_printf(&g.msg_win, "\nYou need the Amulet of Yendor to return to the surface.");
+                    return;
+                }
+            }
             system_transition_try(e, g.player.id);
             return;
         }

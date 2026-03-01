@@ -76,6 +76,7 @@ typedef struct
 
     /* World */
     uint8_t depth;
+    uint8_t quest_item_spawned;
     camera_t camera;
 
     /* UI */

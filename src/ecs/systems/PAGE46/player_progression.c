@@ -60,6 +60,16 @@ static const uint16_t s_level_xp[] = {
     64000, /* 10 — max   */
 };
 
+/* Per-class stat gains applied on each level-up */
+typedef struct {
+    int8_t hp_per_level;
+    /* int8_t mp_per_level; — add when mana is introduced */
+} player_class_progression_t;
+
+static const player_class_progression_t s_class_progression[PLAYER_CLASS_COUNT] = {
+    [PLAYER_CLASS_FIGHTER] = { .hp_per_level = 10 },
+};
+
 /***************************************************
  * public functions
  ***************************************************/
@@ -67,6 +77,7 @@ void player_progression_create(void)
 {
     g.player.xp    = 0;
     g.player.level = 1;
+    g.player.class = PLAYER_CLASS_FIGHTER;
 }
 
 void player_progression_on_kill(const event_t *event)
@@ -94,7 +105,9 @@ void player_progression_on_kill(const event_t *event)
     while (g.player.level < PLAYER_MAX_LEVEL &&
            g.player.xp >= s_level_xp[g.player.level + 1])
     {
+        const player_class_progression_t *prog = &s_class_progression[g.player.class];
         g.player.level++;
+        g.destructible_components[g.player.id].max_hp += prog->hp_per_level;
         text_printf(&g.msg_win, "\nLevel up! You are now level %d.", (uint16_t)g.player.level);
     }
 

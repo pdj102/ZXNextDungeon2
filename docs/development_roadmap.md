@@ -209,24 +209,24 @@
 
 ---
 
-### 🪜 **Milestone 116 — Melee combat system**
+### 🪜 **Milestone 116 — Combat system**
 
-> *Goal: Entities can melee combat*
+> *Goal: Entities can attack*
 
 * [✅] Implement `melee` component
-* [✅] Implement melee weapon equipment - short sword
+* [✅] Implement basic melee weapon equipment - short sword
+* [✅] Implement basic ranged weapon equipment - bow, arrow
 * [✅] Implement basic melee attack component e.g. creatures/traps
-* [✅] Implement `combat system`
-* [✅] Implement `combat_system_try_melee_attack()` - use equipped melee or default melee if not
-* [✅] Implement `roll_melee_attack` - calculate attack roll for melee attack
-* [✅] Support attack rolls by player, with or without melee weapon, and basic attack rolls (monster, trap etc)
-* [✅] Implement `roll_melee_damage` - calculate damage roll for melee attack
-* [✅] Support damage rolls by player, with or without melee weapon, and basic damage rolls (monster, trap etc)
+* [✅] Implement `attack_ctx_init()`
+* [✅] Implement `attack_ctx_roll()`
+* [✅] Implement `attack_ctx_resolve()`
+* [✅] Implement `attack_ctx_apply()`
+* [🚧] Incoporate proficiency in attack roll for melee attack
 * [✅] Implement `EVENT_ATTACKED` - support both hit and miss
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
 * [✅] Manage `melee` components cleanup on entity destroy
 
-[✅] *End result: Player can equip and attack with melee weapon.*
+[] *End result: Player can equip and attack with melee weapon.*
 
 ---
 
@@ -314,23 +314,30 @@
 > *Goal: Player gains experience.*
 
 * [✅] Add XP and level attributes to player component
-* [ ] Implement character system to manage player's experience (will also manage character creation, levelling up etc)
+* [✅] Implement player progression to manage character creation, levelling up etc
 * [✅] Implement `player_system_on_event()` to process events into XP awarded e.g. player kills a creature
 * [✅] Implement gain experience
 * [✅] Update status UI to display player XP and level
 
-[ ] *End result: player gains experience.*
+[✅] *End result: player gains experience.*
 
 ---
 
-### 🪜 **Milestone 123 — Player Levels**
+### 🪜 **Milestone 123 — Player Classes and Levels**
 
 > *Goal: Player can level up.*
 
-* [ ] Implement player levels
-* [ ] Implement player levelling up
+* [✅] Implement basic player class for fighter
+* [ ] Implement basic proficiency attribute
+* [✅] Implement basic player levelling up for HP
+* [ ] Implement basic player levelling up for MP
+* [ ] Implement basic player levelling up for proficiency
+* [ ] Implement fighter class base creation
+* [ ] Implement fighter class levelling up
+* [ ] Implement mage class base creation
+* [ ] Implement mage class levelling up
 
-[ ] *End result: player can level up.*
+[🚧] *End result: player can level up.*
 
 ---
 
@@ -616,7 +623,21 @@
 
 ---
 
-### 🪜 **Milestone 212 — Item stacking**
+### 🪜 **Milestone 211 — Quest items**
+
+> *Goal: Implement Quest items.*
+
+* [ ] Implement persistent entity flag
+* [ ] Persistent items cannot be destroyed except by force destruction
+* [ ] Quest items can be spawned at a specific level
+* [ ] Implement a amulut quest item that allows player to win the game
+* [ ] If holding the amulut quest item the Player can climb the level 0 and win the game
+
+[ ] *End result: Persistent quest items can be placed in the game world.*
+
+---
+
+### 🪜 **Milestone 213 — Item stacking**
 
 > *Goal: Identical items stack in inventory, saving slots.*
 
@@ -630,7 +651,7 @@
 
 ---
 
-### 🪜 **Milestone 213 — Item identification**
+### 🪜 **Milestone 214 — Item identification**
 
 > *Goal: Potions, scrolls, and wands start unidentified; the player learns what they are by using them.*
 
