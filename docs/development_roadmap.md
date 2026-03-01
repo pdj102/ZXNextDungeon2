@@ -455,6 +455,7 @@
 * [ ] Bug - attack direction can select no direction and attack self
 * [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
 * [ ] Bug - creature LOS not blocked by closed doors
+* [ ] Bug - look and target modes should use the correct key to select target
 
 [ ] *End result: Code is clean and known bugs are fixed.*
 
@@ -864,23 +865,18 @@
 * [✅] Update secondary stats on change (e.g. equip, unequip, levelup, effect? etc)
 * [✅] Display player resource stats (Max HP, Cur HP etc)
 * [✅] Update resource stats on change (e.g. damage, equip, unequip, levelup, attach/unattach effect etc)
-* [ ] Display player status (posioned etc)
-* [ ] Update status on change (e.g. poisoned)
+* [✅] Display player status (posioned etc)
+* [✅] Update status on change (e.g. poisoned)
 
 [🚧] *End result: Player can see current status.*
 
-### 🪜 **Milestone 603 — Game modes & context-sensitive hint bar**
+### 🪜 **Milestone 603 — Info UI**
 
-> *Goal: Game loop is driven by a mode state machine; a hint bar displays available keys for the current mode.*
+> *Goal: Display context sensitive help info.*
 
-* [ ] Add `game_mode_t` enum: `MODE_PLAYER_TURN`, `MODE_TARGETING`, `MODE_MENU`
-* [ ] Refactor main game loop to dispatch input via current `game_mode_t`
-* [ ] Implement hint bar UI widget (single line, shows key legend)
-* [ ] Player turn mode — hint bar shows movement, action, and shortcut keys
-* [ ] Targeting mode — hint bar shows "Move target: arrows  Confirm: T  Cancel: Esc"
-* [ ] Menu mode — hint bar shows relevant menu navigation keys
+* [✅] Display basic context sensitive help info
 
-[ ] *End result: Player always sees relevant key hints; new modes can be added by extending the enum and handler table.*
+[🚧] *End result: Player always sees relevant key hints.*
 
 ---
 
@@ -934,3 +930,4 @@
 * [ ] Multiple dungeon themes
 
 ---
+

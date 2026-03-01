@@ -72,9 +72,26 @@ typedef enum creature_status_e {
     CREATURE_STATUS_DEAD
 } creature_status_t;
 
+typedef enum creature_cr_e {
+    CREATURE_CR_NONE,
+    CREATURE_CR_0,
+    CREATURE_CR_1_8,    // 1/8 or less
+    CREATURE_CR_1_4,    // 1/4 or less
+    CREATURE_CR_1_2,    // 1/2 or less
+    CREATURE_CR_1,
+    CREATURE_CR_2,
+    CREATURE_CR_3,
+    CREATURE_CR_4,
+    CREATURE_CR_5,
+    CREATURE_CR_6,
+    CREATURE_CR_7,
+    CREATURE_CR_8
+} creature_cr_t;
+
 typedef struct {
-    creature_kind_t kind;   /* index into creature_comp_bases[] */
-    creature_status_t status;      
+    // creature_kind_t kind;   /* TODO remove index into creature_comp_bases[] */
+    creature_status_t status;
+    creature_cr_t challenge; 
 } creature_comp_t;
 
 typedef creature_comp_t creature_components_t[MAX_ENTITIES]; 

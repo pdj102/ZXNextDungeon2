@@ -147,7 +147,21 @@ void update_resource_stats(void)
         else
             text_printf(&g.stat_win, "%PRHP:%u/%u%PW\n", hp_cur, hp_max);
     }
-    text_printf(&g.stat_win, "MP:%u/%u\n", system_stats_get_mp_max(g.player.id), system_stats_get_mp_cur(g.player.id));
+
+    {
+        uint8_t mp_cur = system_stats_get_mp_cur(g.player.id);
+        uint8_t mp_max = system_stats_get_mp_max(g.player.id);
+        if (mp_cur > (mp_max >> 1))
+            text_printf(&g.stat_win, "%PBMP:%u/%u%PW\n", mp_cur, mp_max);
+        else if (mp_cur > (mp_max >> 2))
+            text_printf(&g.stat_win, "%PYMP:%u/%u%PW\n", mp_cur, mp_max);
+        else
+            text_printf(&g.stat_win, "%PRMP:%u/%u%PW\n", mp_cur, mp_max);
+    }
+    
+    text_printf(&g.stat_win, "\nXP:%u\n", g.player.xp);
+    text_printf(&g.stat_win, "LVL:%u\n", g.player.level);
+
 }
 
 /*

@@ -112,12 +112,13 @@ static const destructible_comp_t monster_destructible_base[CREATURE_KIND_COUNT] 
     /* MONSTER_CLASS_UNDEAD */    
 };
 
+/* Challenge rating */
 static const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] = 
 {
     [CREATURE_NONE] = 0,
    /* MONSTER_CLASS_ABERRATIONS */
    /* MONSTER_CLASS_BEASTS */      
-    [CREATURE_RAT] = 10,
+    [CREATURE_RAT] = CREATURE_CR_0,
    /* MONSTER_CLASS_CELESTIALS */
    /* MONSTER_CLASS_CONSTRUCTS */
    /* MONSTER_CLASS_DRAGONS */
@@ -126,12 +127,12 @@ static const uint8_t monster_challenge_base[CREATURE_KIND_COUNT] =
    /* MONSTER_CLASS_FIENDS */
    /* MONSTER_CLASS_GIANTS */
    /* MONSTER_CLASS_HUMANOIDS */    
-    [CREATURE_COMMONER] = 10,
-    [CREATURE_PLAYER] = 10,
+    [CREATURE_COMMONER] = CREATURE_CR_0,
+    [CREATURE_PLAYER] = CREATURE_CR_0,
     /* MONSTER_CLASS_MONSTROSITIES */
     /* MONSTER_CLASS_OOZES */
     /* MONSTER_CLASS_PLANTS */    
-    [CREATURE_WITHERWEED] = 100
+    [CREATURE_WITHERWEED] = CREATURE_CR_1_2
     /* MONSTER_CLASS_UNDEAD */    
 };
 
@@ -320,6 +321,8 @@ entity_id_t monster_system_create_player( void )
 
     /* Add player control component */
     g.player.id = id;
+    g.player.xp = 0;
+    g.player.level = 1;
     entity_set_component(id, COMPONENT_PLAYER);
 
     /* Add slots component */
@@ -358,7 +361,7 @@ static uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
-    g.creature_components[entity].kind = kind; 
+    // g.creature_components[entity].kind = kind; 
     g.creature_components[entity].status = CREATURE_STATUS_ALIVE; 
 
     entity_set_component(entity, COMPONENT_CREATURE); 
