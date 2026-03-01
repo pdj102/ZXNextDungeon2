@@ -43,16 +43,6 @@ bool damage_system_try_kill(entity_id_t target, entity_id_t source)
         g.destructible_components[target].cur_hp = 0;
     }
 
-    if (entity_has_component(target, COMPONENT_CREATURE))
-    {
-        g.creature_components[target].status = CREATURE_STATUS_DEAD;
-    }
-
-    if (g.player.id == target)
-    {
-        g.player.id = ENTITY_ID_INVALID;
-    }
-
     entity_mark_for_destruction(target);
 
     event.type = EVENT_KILLED;

@@ -79,7 +79,7 @@ void ui_stat_win_on_event(event_t *event)
         case EVENT_TRANSITION_TELEPORT:
                 g.stat_win.dirty = 1;
             break;
-        case EVENT_DIED:
+        // case EVENT_DIED:
         case EVENT_DAMAGED_IMMUNE:
             break;                        
         default:

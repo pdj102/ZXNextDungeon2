@@ -361,8 +361,8 @@ static uint8_t creature_add(entity_id_t entity, creature_kind_t kind)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_CREATURE)); /* entity must not have creature component */
 
-    // g.creature_components[entity].kind = kind; 
-    g.creature_components[entity].status = CREATURE_STATUS_ALIVE; 
+    g.creature_components[entity].status    = CREATURE_STATUS_ALIVE;
+    g.creature_components[entity].challenge = monster_challenge_base[kind];
 
     entity_set_component(entity, COMPONENT_CREATURE); 
 

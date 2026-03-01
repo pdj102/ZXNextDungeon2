@@ -69,16 +69,18 @@ void ai_system_handle_event(const event_t *event)
         ai = &g.ai_components[event->source];
         switch (event->type)
         {
-        case EVENT_DIED:
-            util_info("AI state change:died");
-            g.creature_components[event->source].status = CREATURE_STATUS_DEAD;
-            break;
-
         case EVENT_SPOTTED_TARGET:
             util_info("AI event saw entity");
             if ((ai->state == AI_STATE_IDLE) || (ai->state == AI_STATE_WANDER) || (ai->state == AI_STATE_TRACK_TARGET) || ai->state == AI_STATE_SEARCH_TARGET)
             {
                 acquire_target(event->source, event->target);
+            }
+            break;
+        case EVENT_KILLED:
+            // If the AI killed its target, give up target (switch to idle)
+            if (ai->target == event->target)
+            {
+                give_up_target(event->source);
             }
             break;
         }
@@ -91,8 +93,18 @@ void ai_system_handle_event(const event_t *event)
         {
         case EVENT_ATTACKED:
         case EVENT_DAMAGED:
+            // AI was attacked, try to acquire attacker as target
             acquire_target(event->target, event->source);     
             break;
+        case EVENT_KILLED:
+            // AI was killed, switch to idle state
+            ai->state = AI_STATE_IDLE;
+            // Set creature status to dead
+            if (entity_has_component(event->target, COMPONENT_CREATURE))
+            {
+                g.creature_components[event->target].status = CREATURE_STATUS_DEAD;
+            }
+             break;
         }
     }
 }

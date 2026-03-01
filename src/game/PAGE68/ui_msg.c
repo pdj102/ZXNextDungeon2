@@ -46,7 +46,7 @@
     [EVENT_DAMAGED_RESIST]          = " resist and take %d damage",
     [EVENT_DAMAGED_VULNERABLE]      = " are vulnerable and take %d damage",
     [EVENT_KILLED]                  = " kill ",
-    [EVENT_DIED]                    = " died!",
+    // [EVENT_DIED]                    = " died!",
     [EVENT_DROPPED]                 = " drop ",
     [EVENT_EQUIPPED]                = " equip ",
     [EVENT_PICKED_UP]               = " pickup ",
@@ -69,7 +69,7 @@
     [EVENT_DAMAGED_IMMUNE]          = " is immune!",
     [EVENT_DAMAGED_RESIST]          = " resists and takes %d damage",
     [EVENT_DAMAGED_VULNERABLE]      = " is vulnerable and takes %d damage",
-    [EVENT_DIED]                    = " dies!",
+    // [EVENT_DIED]                    = " dies!",
 
     [EVENT_DROPPED]                 = " drops ",
     [EVENT_EQUIPPED]                = " equips ",
@@ -137,11 +137,12 @@ static void ui_msg_win_nl(void);
             ui_msg_win_print_verb(event->type, source_is_player);
             ui_msg_win_print_object(event->target);
             break;
-        case EVENT_DIED:
+        /* case EVENT_DIED:
             ui_msg_win_nl();
             ui_msg_win_print_subject(event->source);
             ui_msg_win_print_verb(event->type, source_is_player);
             break;
+            */
         case EVENT_DAMAGED_IMMUNE:
             ui_msg_win_nl();
             ui_msg_win_print_subject(event->target);

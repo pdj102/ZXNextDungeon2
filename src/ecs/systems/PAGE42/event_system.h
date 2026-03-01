@@ -29,7 +29,7 @@ typedef enum {
     EVENT_ATTACKED_AND_MISSED,      // Source attacked target and missed
     EVENT_BUMPED,                   // Source bumped target
     EVENT_STOOD_ON,                 // Source stood on target
-    EVENT_DIED,                     // source died, target = ENTITY_ID_INVALID // TO REMOVE
+    // EVENT_DIED,                     // source died, target = ENTITY_ID_INVALID // TO REMOVE
     EVENT_KILLED,                   // source killed target
     EVENT_PICKED_UP,                // Source picked up target
     EVENT_DROPPED,                  // Source dropped target
