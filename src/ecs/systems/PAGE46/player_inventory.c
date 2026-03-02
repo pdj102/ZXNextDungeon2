@@ -38,12 +38,15 @@ void player_inventory_show(void)
 {
     int key;
 
-    text_cls(&g.map_win);
-    text_printf(&g.map_win, "Inventory\n");
+    text_cls(&g.main_win);
+    text_printf(&g.main_win, "Inventory\n");
     display_inventory();
-    text_print_string(&g.map_win, "\nPress any key to continue...");
+    text_print_string(&g.main_win, "\nPress any key to continue...");
 
     key = key_press();
+
+    g.map_win.dirty = 1;
+    g.info_win.dirty = 1;
 }
 
 void player_inventory_drop(void)
@@ -56,6 +59,9 @@ void player_inventory_drop(void)
     {
         text_printf(&g.msg_win, "\nYou cannot drop that");
     }
+    
+    g.map_win.dirty = 1;
+    g.info_win.dirty = 1;
 }
 
 void player_inventory_eat(void)
@@ -68,6 +74,8 @@ void player_inventory_eat(void)
     {
         text_printf(&g.msg_win, "\nYou cannot eat that");
     }
+    g.map_win.dirty = 1;
+    g.info_win.dirty = 1;
 }
 
 void player_inventory_equip(void)
@@ -80,6 +88,8 @@ void player_inventory_equip(void)
     {
         text_printf(&g.msg_win, "\nYou cannot equip that");
     }
+    g.map_win.dirty = 1;
+    g.info_win.dirty = 1;
 }
 
 void player_inventory_unequip(void)
@@ -92,6 +102,8 @@ void player_inventory_unequip(void)
     {
         text_printf(&g.msg_win, "\nYou cannot unequip that");
     }
+    g.map_win.dirty = 1;
+    g.info_win.dirty = 1;
 }
 
 /***************************************************
@@ -104,32 +116,28 @@ static void display_inventory(void)
 
     item = system_container_get_first(g.player.id);
 
-    text_print_string(&g.map_win, "\n");
+    text_print_string(&g.main_win, "\n");
 
     while (item != ENTITY_ID_INVALID)
     {
-        text_printf(&g.map_win, "(%c) ", c);
+        text_printf(&g.main_win, "(%c) ", c);
         if (entity_has_component(item, COMPONENT_STACKABLE))
         {
-            text_printf(&g.map_win, "%d ", g.stackable_components[item].quantity);
-        }
-        else
-        {
-            text_print_string(&g.map_win, "a ");
+            text_printf(&g.main_win, "%d ", g.stackable_components[item].quantity);
         }
 
-        system_name_print(&g.map_win, g.name_components[item]);
+        system_name_print(&g.main_win, g.name_components[item]);
 
         if (system_equipment_is_equipped(g.player.id, item))
         {
-            text_print_string(&g.map_win, " (equipped)");
+            text_print_string(&g.main_win, " (equipped)");
         }
-        text_print_string(&g.map_win, "\n");
+        text_print_string(&g.main_win, "\n");
 
         c++;
         item = system_container_get_next(item);
     }
-    g.map_win.dirty = 1;
+    g.main_win.dirty = 1;
 }
 
 static entity_id_t prompt_inventory_item(const char *prompt_msg)
@@ -144,8 +152,8 @@ static entity_id_t prompt_inventory_item(const char *prompt_msg)
         return ENTITY_ID_INVALID;
     }
 
-    text_cls(&g.map_win);
-    text_printf(&g.map_win, "%s\n", prompt_msg);
+    text_cls(&g.main_win);
+    text_printf(&g.main_win, "%s\n", prompt_msg);
 
     display_inventory();
 

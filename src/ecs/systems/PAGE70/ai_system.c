@@ -124,7 +124,7 @@ void ai_system_process_entity_turn(entity_id_t entity)
         ai_sleep(entity);
         break;
     case AI_STATE_IDLE:
-        util_info("Idle");
+        // util_info("Idle");
         idle(entity);
         break;
     case AI_STATE_WANDER:

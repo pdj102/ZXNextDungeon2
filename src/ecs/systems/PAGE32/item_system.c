@@ -247,9 +247,39 @@ static const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     [ITEM_AMULET] = { .kind = EFFECT_NONE},
 };
 
+static const bool stackable_base[ITEM_KIND_COUNT] =
+{
+    [ITEM_NONE]              = false,
+    /* Melee weapons */
+    [ITEM_CLUB]              = false,
+    [ITEM_SHORT_SWORD]       = false,
+    /* Ranged weapons */
+    [ITEM_SHORT_BOW]         = false,
+    /* Armour */
+    [ITEM_LEATHER_ARMOUR]    = false,
+    /* Shields */
+    [ITEM_SHIELD]            = false,
+    /* Ammo */
+    [ITEM_ARROW]             = true,
+    [ITEM_BOLT]              = true,
+    [ITEM_STONE]             = true,
+    [ITEM_DART]              = true,
+    /* Potions */
+    [ITEM_POTION_OF_HEALING] = true,
+    /* Food and drink */
+    [ITEM_BREAD]             = true,
+    /* Rings */
+    [ITEM_RING_OF_STRENGTH]  = false,
+    /* Keys */
+    [ITEM_KEY]               = false,
+    /* Quest items */
+    [ITEM_AMULET]            = false,
+};
+
 /***************************************************
  * private function prototypes
  ****************************************************/
+static void add_pickable(entity_id_t entity);
 static void add_stackable(entity_id_t entity, uint8_t quantity);
 static void add_equippable(entity_id_t entity, equippable_slot_t slot);
 static void melee_add(entity_id_t entity, const attack_comp_t *attack);
@@ -269,8 +299,14 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     if (id == ENTITY_ID_INVALID)
         return ENTITY_ID_INVALID;
 
-    /* Add stackable component */
-    add_stackable(id, quantity);
+    /* All items can be picked up */
+    add_pickable(id);
+
+    /* Only genuinely stackable items track quantity */
+    if (stackable_base[kind])
+    {
+        add_stackable(id, quantity);
+    }
     
     /* Add equippable component */
     add_equippable(id, equippable_base[kind]);
@@ -320,6 +356,13 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
 /***************************************************
  * private functions
  ****************************************************/
+static void add_pickable(entity_id_t entity)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_PICKABLE));
+    entity_set_component(entity, COMPONENT_PICKABLE);
+}
+
 static void add_stackable(entity_id_t entity, uint8_t quantity)
 {
     util_assert(entity < MAX_ENTITIES);

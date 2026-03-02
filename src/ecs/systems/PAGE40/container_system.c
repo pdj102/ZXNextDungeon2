@@ -33,6 +33,7 @@
  ****************************************************/
  static void contained_add(entity_id_t entity, entity_id_t container, entity_id_t next);
  static void contained_remove(entity_id_t entity);
+ static entity_id_t find_matching_stackable(entity_id_t container, name_id_t name);
 
 /***************************************************
  * public functions
@@ -44,37 +45,58 @@ void container_system_init(void)
 
 
 bool container_system_try_pickup(entity_id_t actor, entity_id_t item)
-{  
+{
     event_t event;
+    entity_id_t existing;
 
-    /* item to be picked up has item and location components */
-    if (!entity_has_component(item, COMPONENT_STACKABLE))
+    /* Item must be pickable and on the floor */
+    if (!entity_has_component(item, COMPONENT_PICKABLE))
     {
         return 0;
     }
     if (!entity_has_component(item, COMPONENT_LOCATION))
     {
         return 0;
-    }    
-    /* actor has container, location and item components */
+    }
+    /* Actor must be a container with a location */
     if (!entity_has_component(actor, COMPONENT_CONTAINER))
     {
         return 0;
-    }    
-    if (!entity_has_component(actor, COMPONENT_LOCATION ))
+    }
+    if (!entity_has_component(actor, COMPONENT_LOCATION))
     {
         return 0;
-    }        
-    /* actor and item are at the same location*/
+    }
+    /* Actor and item are at the same location */
     if (!system_movement_location_equal(actor, item))
     {
         return 0;
     }
-    /* container is not full */
+
+    /* Try to merge with an existing stack (bypasses capacity check) */
+    if (entity_has_component(item, COMPONENT_STACKABLE))
+    {
+        existing = find_matching_stackable(actor, g.name_components[item]);
+        if (existing != ENTITY_ID_INVALID)
+        {
+            system_movement_detach(item);
+            g.stackable_components[existing].quantity += g.stackable_components[item].quantity;
+            entity_mark_for_destruction(item);
+
+            event.type   = EVENT_PICKED_UP;
+            event.source = actor;
+            event.target = existing;
+            event.value  = 0;
+            system_event_emit(&event);
+            return 1;
+        }
+    }
+
+    /* No matching stack — need a free slot */
     if (g.container_components[actor].count >= g.container_components[actor].capacity)
     {
         return 0;
-    }    
+    }
 
     /* Remove item from floor */
     system_movement_detach(item);
@@ -82,13 +104,11 @@ bool container_system_try_pickup(entity_id_t actor, entity_id_t item)
     /* Place item in container */
     container_system_add(actor, item);
 
-    event.type = EVENT_PICKED_UP;
+    event.type   = EVENT_PICKED_UP;
     event.source = actor;
     event.target = item;
-    event.value = 0;
-
+    event.value  = 0;
     system_event_emit(&event);
-
     return 1;
 }
 
@@ -343,4 +363,25 @@ static void contained_remove(entity_id_t entity)
     util_assert(g.contained_components[entity].container == ENTITY_ID_INVALID); /* entity must not be in a container */
 
     entity_clear_component(entity, COMPONENT_CONTAINED);
+}
+
+/*
+ * @brief Find an existing stackable item in a container with a matching name_id.
+ * @param container The container to search.
+ * @param name      The name_id to match against.
+ * @return The matching entity, or ENTITY_ID_INVALID if none found.
+ */
+static entity_id_t find_matching_stackable(entity_id_t container, name_id_t name)
+{
+    entity_id_t current = g.container_components[container].head;
+    while (current != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(current, COMPONENT_STACKABLE) &&
+            g.name_components[current] == name)
+        {
+            return current;
+        }
+        current = g.contained_components[current].next;
+    }
+    return ENTITY_ID_INVALID;
 }

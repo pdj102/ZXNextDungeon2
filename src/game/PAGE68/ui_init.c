@@ -78,7 +78,7 @@ void ui_init_b(void)
     g.main_win.x = 0;
     g.main_win.y = 0;
     g.main_win.w = 40;
-    g.main_win.h = 32;
+    g.main_win.h = 24;
     g.main_win.c_x = 0;
     g.main_win.c_y = 0;
     g.main_win.dirty = 0;

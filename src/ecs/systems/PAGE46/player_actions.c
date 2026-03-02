@@ -167,7 +167,7 @@ void player_action_pickup(void)
 
     while (e != ENTITY_ID_INVALID)
     {
-        if (entity_has_component(e, COMPONENT_STACKABLE))
+        if (entity_has_component(e, COMPONENT_PICKABLE))
         {
             system_container_try_pickup(g.player.id, e);
             return;
