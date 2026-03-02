@@ -75,15 +75,15 @@ void ui_init_b(void)
     g.map_win.tile.tile_id = ' ';
     g.map_win.tile.tile_attr = PALETTE_WHITE;
 
-    g.assert_win.x = 0;
-    g.assert_win.y = 0;
-    g.assert_win.w = 40;
-    g.assert_win.h = 32;
-    g.assert_win.c_x = 0;
-    g.assert_win.c_y = 0;
-    g.assert_win.dirty = 0;
-    g.assert_win.tile.tile_id = ' ';
-    g.assert_win.tile.tile_attr = PALETTE_RED;
+    g.main_win.x = 0;
+    g.main_win.y = 0;
+    g.main_win.w = 40;
+    g.main_win.h = 32;
+    g.main_win.c_x = 0;
+    g.main_win.c_y = 0;
+    g.main_win.dirty = 0;
+    g.main_win.tile.tile_id = ' ';
+    g.main_win.tile.tile_attr = PALETTE_WHITE;
 
     zxnext_tilemap_clear(&(g.msg_win.tile));
 }
