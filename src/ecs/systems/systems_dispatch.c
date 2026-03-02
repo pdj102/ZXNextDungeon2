@@ -19,7 +19,6 @@
 #include "ecs/systems/PAGE38/timer_system.h"
 #include "ecs/systems/PAGE40/container_system.h"
 #include "ecs/systems/PAGE42/event_system.h"
-#include "ecs/systems/PAGE44/actions_system.h"
 #include "ecs/systems/PAGE46/player_system.h"
 #include "ecs/systems/PAGE46/player_progression.h"
 #include "ecs/systems/PAGE48/equipment_system.h"
@@ -64,7 +63,6 @@
 
  void systems_init(void)
  {
-    system_actions_init();
     system_combat_init();
     system_consumable_init();    
     system_container_init();
@@ -102,72 +100,6 @@ void system_ai_process_entity_turn(entity_id_t id)
     ai_system_process_entity_turn(id);
 
     ZXN_WRITE_MMU6(current_bank);
-}
-
- /* Actions system*/
- void system_actions_init(void)
- {
-
- }
-
-bool system_actions_try_quaff(entity_id_t creature, entity_id_t item)
-{
-    uint8_t current_bank;
-    bool result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = actions_system_try_quaff(creature, item);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;
-}
-
-bool system_actions_try_eat(entity_id_t creature, entity_id_t item)
-{
-    uint8_t current_bank;
-    bool result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = actions_system_try_eat(creature, item);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;
-}
-
-bool system_actions_try_open(entity_id_t creature, entity_id_t feature)
-{
-    uint8_t current_bank;
-    bool result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = actions_system_try_open(creature, feature);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;
-}
-
-bool system_actions_try_close(entity_id_t creature, entity_id_t feature)
-{
-    uint8_t current_bank;
-    bool result;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_ACTIONS_SYSTEM);  /* Page actions system into 8k MMU slot 6 */    
-
-    result = actions_system_try_close(creature, feature);
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-
-    return result;
 }
 
  /* Container System */

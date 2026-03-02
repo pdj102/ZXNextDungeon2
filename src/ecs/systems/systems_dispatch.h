@@ -43,18 +43,6 @@ void systems_init(void);
 void system_ai_handle_event(const event_t *event);
 void system_ai_process_entity_turn(entity_id_t id);
 
-/* Actions System */
-void system_actions_init(void);
-bool system_actions_try_melee_attack(entity_id_t creature, entity_id_t target);
-bool system_actions_try_pickup(entity_id_t creature, entity_id_t item);
-bool system_actions_try_drop(entity_id_t creature, entity_id_t item);
-bool system_actions_try_quaff(entity_id_t creature, entity_id_t item);
-bool system_actions_try_eat(entity_id_t creature, entity_id_t item);
-bool system_actions_try_equip(entity_id_t creature, entity_id_t item);
-bool system_actions_try_unequip(entity_id_t creature, entity_id_t item);
-bool system_actions_try_open(entity_id_t creature, entity_id_t feature);
-bool system_actions_try_close(entity_id_t creature, entity_id_t feature);
-
 /* Consumable System*/
 void system_consumable_init(void);
 bool system_consumable_try_consume(entity_id_t actor, entity_id_t entity);
