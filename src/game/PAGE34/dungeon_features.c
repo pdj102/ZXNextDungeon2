@@ -77,7 +77,6 @@ static void place_stairs(dungeon_transition_t *c)
         return;
 
     /* Place upstairs in a random room */
-    text_printf(&g.msg_win, "Placing upstairs...\n");
     up_room = pick_random_room();
     place_feature_in_room(FEATURE_UP_STAIRS, up_room);
 

@@ -30,8 +30,8 @@
 
 #include "core/util.h"
 
-#define STACK_LOW 0xBF00
-#define STACK_HIGH 0xBFFF
+#define STACK_HIGH 0xbfff
+#define STACK_LOW (STACK_HIGH - 0x10E)
 #define STACK_PATTERN 0xCD
 
 static uint16_t stack_max_usage(void);
@@ -40,23 +40,13 @@ static void process_entity_turn(entity_id_t id);
 
 int main(void)
 {
-    uint16_t stack_max;
-    uint16_t stack;
+    static uint16_t stack_max = 0;
+    static uint16_t stack = 0;
+    static uint8_t *p = (uint8_t *)STACK_LOW; 
 
-    /* Stack guard */
-    uint8_t *p = (uint8_t *)STACK_LOW;
-    while ((uintptr_t)p < STACK_HIGH)
-        *p++ = STACK_PATTERN;
-
-    stack_max = 0;
-    stack = 0;
-
-    zxnext_init();
+    zxnext_init();        
 
     ui_init();
-
-    // Now test after UI is initialized
-    text_printf(&g.msg_win, "\nInitializing...");
     
     util_info("Debug build");
     text_printf(&g.msg_win, "\nGlobal size:%U", sizeof(g));
@@ -65,12 +55,15 @@ int main(void)
     new_game();
 
     camera_update();
-    /* map_render(); */
 
     ui_update();
 
-
     ui_info_set_context(UI_CONTEXT_NORMAL);
+
+    /* ===== Init Stack Guard NB this will corrupt the main stack frame ==== */
+    while ((uintptr_t)p < STACK_HIGH)
+        *p++ = STACK_PATTERN;    
+  
 
     while (1)
     {
@@ -80,22 +73,7 @@ int main(void)
 
         ui_update();
 
-        /*
-        if (g.map_win.dirty == 1)
-        {
-            map_render();
-            g.map_win.dirty = 0;
-        }
-
-        if (g.stat_win.dirty == 1)
-        {
-            ui_update_stats();
-            g.stat_win.dirty = 0;
-        }
-        */
-
         world_process_entity_destructions();
-
 
         #ifndef NDEBUG
         stack = stack_max_usage();
