@@ -82,7 +82,7 @@ typedef struct
     /* UI */
     text_window_t stat_win;
     text_window_t msg_win;
-    text_window_t main_win;
+    text_window_t map_win;
     text_window_t info_win;
     text_window_t assert_win;
 

@@ -226,7 +226,7 @@
 * [✅] Add message log system for attack, damage and death events e.g. (“You hit the rat.”)
 * [✅] Manage `melee` components cleanup on entity destroy
 
-[] *End result: Player can equip and attack with melee weapon.*
+[🚧] *End result: Player can equip and attack with melee weapon.*
 
 ---
 
@@ -448,7 +448,7 @@
 * [✅] Display active status icons on player status UI (Milestone 602)
 * [ ] Remove status on entity destroy
 
-[ ] *End result: Monsters can poison, paralyse, or confuse the player; status creates tactical urgency.*
+[🚧] *End result: Monsters can poison, paralyse, or confuse the player; status creates tactical urgency.*
 
 ---
 
@@ -627,13 +627,13 @@
 
 > *Goal: Implement Quest items.*
 
-* [ ] Implement persistent entity flag
-* [ ] Persistent items cannot be destroyed except by force destruction
-* [ ] Quest items can be spawned at a specific level
-* [ ] Implement a amulut quest item that allows player to win the game
-* [ ] If holding the amulut quest item the Player can climb the level 0 and win the game
+* [✅] Implement persistent entity flag
+* [✅] Persistent items cannot be destroyed except by force destruction
+* [✅] Quest items can be spawned at a specific level
+* [✅] Implement an amulut quest item that allows player to win the game
+* [✅] If holding the amulut quest item the Player can climb the stairs on level 1 and win the game
 
-[ ] *End result: Persistent quest items can be placed in the game world.*
+[✅] *End result: Persistent quest items can be placed in the game world.*
 
 ---
 
@@ -846,7 +846,7 @@
 * [ ] Place other feature types
 * [ ] Implement dungeon map decoration
 
-[ ] *End result: Dungeon with rooms, corridors and populated with entities.*
+[🚧] *End result: Dungeon with rooms, corridors and populated with entities.*
 
 ---
 
@@ -861,7 +861,7 @@
 * [✅] Update map generator to place persitent entities on level
 * [✅] Call map generator
 
-[ ] *End result: Able to transition levels and persistent entities are retained.*
+[🚧] *End result: Able to transition levels and persistent entities are retained.*
 
 ---
 
@@ -923,7 +923,7 @@
 * [✅] Implement assert() global game struct is less than 16KB
 * [ ] Implement global data structure validation tests
 
-[ ] *End result: data structure validation tests pass.*
+[🚧] *End result: data structure validation tests pass.*
 
 ---
 
@@ -931,13 +931,14 @@
 
 > *Goal: complete game loop and polish.*
 
-* [ ] Add victory condition (retrieve Amulet, etc.)
+* [✅] Add victory condition (retrieve Amulet, etc.)
+* [ ] Add victory screen
 * [ ] Add title screen and logo
 * [ ] Add sound effects
 * [ ] Add death screen
 * [ ] Credits / end text
 
-[ ] *End result: Fully playable, finished roguelike.*
+[🚧] *End result: Fully playable, finished roguelike.*
 
 ---
 

@@ -113,7 +113,7 @@ static void world_handle_transition(const event_t *event)
 
     g.depth = c.to_depth;
     map_gen(&c);
-    g.main_win.dirty = 1;
+    g.map_win.dirty = 1;
 }
 
 void world_destroy_non_persistent_entities(void)

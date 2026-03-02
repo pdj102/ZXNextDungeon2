@@ -72,10 +72,10 @@ void ui_on_event(const event_t *event)
 
 void ui_update(void)
 {
-    if (g.main_win.dirty == 1)
+    if (g.map_win.dirty == 1)
     {
         map_render();
-        g.main_win.dirty = 0;
+        g.map_win.dirty = 0;
     }
 
     if (g.stat_win.dirty == 1)

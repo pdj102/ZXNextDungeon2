@@ -81,10 +81,10 @@ int main(void)
         ui_update();
 
         /*
-        if (g.main_win.dirty == 1)
+        if (g.map_win.dirty == 1)
         {
             map_render();
-            g.main_win.dirty = 0;
+            g.map_win.dirty = 0;
         }
 
         if (g.stat_win.dirty == 1)
@@ -134,10 +134,10 @@ static void process_entity_turn(entity_id_t id)
 {
     if (entity_has_component(id, COMPONENT_PLAYER))
     {
-        /* if (g.main_win.dirty == 1)
+        /* if (g.map_win.dirty == 1)
         {
             map_render();
-            g.main_win.dirty = 0;
+            g.map_win.dirty = 0;
         }
         */
        ui_update();

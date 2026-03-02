@@ -81,7 +81,7 @@ void target_mode(target_context_t *ctx)
     if (prev_mode == CAMERA_MODE_FOLLOW_PLAYER)
         camera_update();
 
-    g.main_win.dirty = true;
+    g.map_win.dirty = true;
 }
 
 static void target_init(target_context_t *ctx)

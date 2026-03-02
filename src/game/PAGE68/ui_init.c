@@ -65,15 +65,15 @@ void ui_init_b(void)
     g.stat_win.tile.tile_id = ' ';
     g.stat_win.tile.tile_attr = PALETTE_WHITE;
 
-    g.main_win.x = 0;
-    g.main_win.y = 0;
-    g.main_win.w = 30;
-    g.main_win.h = 24;
-    g.main_win.c_x = 0;
-    g.main_win.c_y = 0;
-    g.main_win.dirty = 0;
-    g.main_win.tile.tile_id = ' ';
-    g.main_win.tile.tile_attr = PALETTE_WHITE;
+    g.map_win.x = 0;
+    g.map_win.y = 0;
+    g.map_win.w = 30;
+    g.map_win.h = 24;
+    g.map_win.c_x = 0;
+    g.map_win.c_y = 0;
+    g.map_win.dirty = 0;
+    g.map_win.tile.tile_id = ' ';
+    g.map_win.tile.tile_attr = PALETTE_WHITE;
 
     g.assert_win.x = 0;
     g.assert_win.y = 0;

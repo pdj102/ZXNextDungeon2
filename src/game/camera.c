@@ -67,7 +67,7 @@ void camera_center_on(uint8_t x, uint8_t y)
     camera_clamp(camera_x, camera_y, &g.camera.x, &g.camera.y);
 
     /* Mark main window for re-render */
-    g.main_win.dirty = 1;
+    g.map_win.dirty = 1;
 }
 
 void camera_set_mode(camera_mode_t mode)

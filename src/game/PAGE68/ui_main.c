@@ -50,7 +50,7 @@ void ui_main_win_on_event(event_t *event)
         case EVENT_PICKED_UP:
         case EVENT_KILLED:
         // case EVENT_DIED:
-            g.main_win.dirty = 1;
+            g.map_win.dirty = 1;
             break;
     } 
 }
