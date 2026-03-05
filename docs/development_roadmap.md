@@ -323,18 +323,28 @@
 
 ---
 
-### 🪜 **Milestone 123 — Player Classes and Levels**
+### 🪜 **Milestone 123a — Player Classes**
+
+> *Goal: Player can play diffe.*
+
+* [✅] Implement basic default player class based on a fighter
+* [ ] Implement new game player generation, player can select class
+* [ ] Implement fighter class, player can select class, accept default stats
+* [ ] Implement mage class, player can select class, accept default stats
+
+[🚧] *End result: player can select character class.*
+
+---
+
+### 🪜 **Milestone 123b — Player Levels**
 
 > *Goal: Player can level up.*
 
-* [✅] Implement basic player class for fighter
 * [ ] Implement basic proficiency attribute
 * [✅] Implement basic player levelling up for HP
 * [ ] Implement basic player levelling up for MP
 * [ ] Implement basic player levelling up for proficiency
-* [ ] Implement fighter class base creation
 * [ ] Implement fighter class levelling up
-* [ ] Implement mage class base creation
 * [ ] Implement mage class levelling up
 
 [🚧] *End result: player can level up.*
@@ -461,8 +471,9 @@
 * [ ] Change pass by value to pass by pointer if parameter is on stack or in global game state
 * [ ] Bug - attack direction can select no direction and attack self
 * [ ] Bug - speed - show as (20 - speed) in UI so faster is a higher number. Need to clamp speed to max
-* [ ] Bug - creature LOS not blocked by closed doors
+* [✅] Bug - creature LOS not blocked by closed doors
 * [ ] Bug - look and target modes should use the correct key to select target
+* [ ] Bug - an AI can get stuck in a loop moving towards target, being blocked, side stepping and moving towards target and again being blocked, resulting in endless loop
 
 [ ] *End result: Code is clean and known bugs are fixed.*
 
@@ -541,7 +552,7 @@
 
 * [ ] Implement a potion e.g. potion of healing
 * [ ] Implement a variety of potions
-* [ ] Add player `quaff` command - select from inventory
+* [ ] Add player `quaff` command - select from inventory and can only quaff consumables with consumable method quaffe
 * [ ] Implement `consumable_system_try_quaff`
 * [ ] Add message log system for potion quaffed events e.g. (“You quaff the potion of healing.”)
 
@@ -567,15 +578,15 @@
 
 > *Goal: eat food to restore health.*
 
-* [ ] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe, drink, etc.
-* [ ] Implement a consumable e.g. bread
-* [ ] Implement a variety of consumables
-* [ ] Add player `eat` command - select from inventory
-* [ ] Implement `consumption_system`
-* [ ] Implement `consumption_system_try_eat()`. Handle eating food including decrement or destroy, emitting `effect` events and `consumed` event
-* [ ] Trigger applying effects to actor
-* [ ] Implement `item_decrement_or_destroy`
-* [ ] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
+* [🚧] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe,  etc.
+* [🚧] Implement a consumable e.g. bread
+* [🚧] Implement a variety of consumables
+* [🚧] Add player `eat` command - select from inventory and can only eat consumables with consumable method eat
+* [🚧] Implement `consumption_system`
+* [🚧] Implement `consumable_system_try_consume()`. On consume emit EVENT_CONSUMED
+* [🚧] Implement `item_decrement_or_destroy`
+* [🚧] Update the event system handle_event() to trigger `TRIGGER_ON_CONSUMED` effects 
+* [🚧] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
 
 [ ] *End result: Player can restore health by eating food and food is destroyed.*
 

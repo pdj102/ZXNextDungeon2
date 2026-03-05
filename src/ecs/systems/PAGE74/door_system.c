@@ -42,6 +42,7 @@ bool door_system_try_open(entity_id_t actor, entity_id_t entity)
     g.openable_components[entity].is_open = true;
     g.renderable_components[entity].tile.tile_id = '\'';
     entity_clear_flag(entity, FLAG_BLOCKING);
+    entity_clear_flag(entity, FLAG_BLOCK_LOS);
 
     event.source = actor;
     event.target = entity;
@@ -66,6 +67,7 @@ bool door_system_try_close(entity_id_t actor, entity_id_t entity)
     g.openable_components[entity].is_open = false;
     g.renderable_components[entity].tile.tile_id = '+';
     entity_set_flag(entity, FLAG_BLOCKING);
+    entity_set_flag(entity, FLAG_BLOCK_LOS);    
 
     event.source = actor;
     event.target = entity;
@@ -79,3 +81,5 @@ bool door_system_try_close(entity_id_t actor, entity_id_t entity)
 /***************************************************
  * private functions
  ****************************************************/
+
+ 

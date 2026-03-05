@@ -77,9 +77,10 @@ entity_id_t map_get_next(entity_id_t id)
 bool map_has_line_of_sight(coord_t *a, coord_t *b)
 {
     line_stepper_t ls;
+    entity_id_t entity;
+
     line_stepper_init(&ls, a->x, a->y, b->x, b->y);
 
-    // Skip the starting tile
     while (line_stepper_step(&ls))
     {
         if (!map_in_bounds(ls.x0, ls.y0))
@@ -87,6 +88,14 @@ bool map_has_line_of_sight(coord_t *a, coord_t *b)
 
         if (map_is_opaque(ls.x0, ls.y0))
             return false;
+
+        entity = map_get_first(ls.x0, ls.y0);
+        while (entity != ENTITY_ID_INVALID)
+        {
+            if (entity_has_flag(entity, FLAG_BLOCK_LOS))
+                return false;
+            entity = map_get_next(entity);
+        }
     }
 
     return true;

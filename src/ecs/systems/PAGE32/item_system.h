@@ -73,6 +73,7 @@ typedef enum {
     // Scrolls
     // Food and drink
     ITEM_BREAD,
+    ITEM_APPLE,
     // Rings
     ITEM_RING_OF_STRENGTH,
     // Wands

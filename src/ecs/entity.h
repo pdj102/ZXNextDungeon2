@@ -54,6 +54,7 @@ typedef enum {
 #define FLAG_BLOCKING           1 << 2
 #define FLAG_PERSISTANT         1 << 3
 #define FLAG_QUEST_ITEM         1 << 4
+#define FLAG_BLOCK_LOS          1 << 5
 
 /***************************************************
  * public types

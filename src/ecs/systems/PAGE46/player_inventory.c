@@ -29,6 +29,7 @@
  ***************************************************/
 static void display_inventory(void);
 static entity_id_t prompt_inventory_item(const char *prompt_msg);
+static entity_id_t prompt_consumable_by_method(const char *prompt_msg, consume_method_t method);
 static uint8_t prompt_letter(uint8_t max_index);
 
 /***************************************************
@@ -66,11 +67,17 @@ void player_inventory_drop(void)
 
 void player_inventory_eat(void)
 {
-    entity_id_t e = prompt_inventory_item("Select item to eat");
+    entity_id_t e = prompt_consumable_by_method("Select food to eat", CONSUME_METHOD_EAT);
     if (e == ENTITY_ID_INVALID)
         return;
 
-    if (!system_consumable_try_consume(g.player.id, e))
+    if (system_consumable_try_consume(g.player.id, e))
+    {
+        text_printf(&g.msg_win, "\nYou eat the ");
+        system_name_print(&g.msg_win, g.name_components[e]);
+        text_print_string(&g.msg_win, ".");
+    }
+    else
     {
         text_printf(&g.msg_win, "\nYou cannot eat that");
     }
@@ -162,6 +169,72 @@ static entity_id_t prompt_inventory_item(const char *prompt_msg)
         return ENTITY_ID_INVALID;
 
     return system_container_get_at(g.player.id, index);
+}
+
+static entity_id_t prompt_consumable_by_method(const char *prompt_msg, consume_method_t method)
+{
+    entity_id_t item;
+    uint8_t count = 0;
+    uint8_t index;
+    uint8_t n;
+    unsigned char c;
+
+    /* Count matching items */
+    item = system_container_get_first(g.player.id);
+    while (item != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(item, COMPONENT_CONSUMABLE) &&
+            g.consumable_components[item].method == method)
+            count++;
+        item = system_container_get_next(item);
+    }
+
+    if (count == 0)
+    {
+        text_printf(&g.msg_win, "\nNothing to eat");
+        return ENTITY_ID_INVALID;
+    }
+
+    /* Display matching items */
+    text_cls(&g.main_win);
+    text_printf(&g.main_win, "%s\n\n", prompt_msg);
+    c = 'a';
+    item = system_container_get_first(g.player.id);
+    while (item != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(item, COMPONENT_CONSUMABLE) &&
+            g.consumable_components[item].method == method)
+        {
+            text_printf(&g.main_win, "(%c) ", c);
+            if (entity_has_component(item, COMPONENT_STACKABLE))
+                text_printf(&g.main_win, "%d ", g.stackable_components[item].quantity);
+            system_name_print(&g.main_win, g.name_components[item]);
+            text_print_string(&g.main_win, "\n");
+            c++;
+        }
+        item = system_container_get_next(item);
+    }
+    g.main_win.dirty = 1;
+
+    index = prompt_letter(count - 1);
+    if (index == 99)
+        return ENTITY_ID_INVALID;
+
+    /* Return the Nth matching item */
+    n = 0;
+    item = system_container_get_first(g.player.id);
+    while (item != ENTITY_ID_INVALID)
+    {
+        if (entity_has_component(item, COMPONENT_CONSUMABLE) &&
+            g.consumable_components[item].method == method)
+        {
+            if (n == index)
+                return item;
+            n++;
+        }
+        item = system_container_get_next(item);
+    }
+    return ENTITY_ID_INVALID;
 }
 
 /*

@@ -86,6 +86,7 @@ entity_id_t feature_system_create(feature_kind_t kind)
         entity_set_component(id, COMPONENT_OPENABLE);
         g.openable_components[id].is_open = false;
         entity_set_flag(id, FLAG_BLOCKING);
+        entity_set_flag(id, FLAG_BLOCK_LOS);
     }
 
     /* Transition */

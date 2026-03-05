@@ -59,7 +59,8 @@ static const spawn_entry_t tier1_creatures[] = {
 };
 
 static const spawn_entry_t tier1_items[] = {
-    { ITEM_BREAD,              25, 1, 1 },
+    { ITEM_BREAD,              20, 1, 1 },
+    { ITEM_APPLE,              15, 1, 1 },
     { ITEM_POTION_OF_HEALING,  25, 1, 1 },
     { ITEM_CLUB,               15, 1, 1 },
     { ITEM_STONE,              15, 3, 6 },

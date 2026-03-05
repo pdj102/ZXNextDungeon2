@@ -64,6 +64,7 @@ static const char *name_base[NAME_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [NAME_BREAD] = "bread",
+    [NAME_APPLE] = "apple",
     /* Rings */
     [NAME_RING_OF_STRENGTH] = "ring of strength",
     /* Wands */

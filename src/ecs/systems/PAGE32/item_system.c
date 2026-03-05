@@ -7,6 +7,7 @@
 #include "item_system.h"
 
 #include "ecs/components/components.h"
+#include "ecs/components/consumable_comp.h"
 #include "ecs/components/effect_comp.h"
 #include "ecs/components/name_comp.h"
 
@@ -35,6 +36,7 @@ static const equippable_slot_t equippable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = EQUIPPABLE_NONE,
+    [ITEM_APPLE] = EQUIPPABLE_NONE,
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = EQUIPPABLE_FINGER,
     /* Wands */
@@ -64,6 +66,7 @@ static const name_id_t item_name_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = NAME_BREAD,
+    [ITEM_APPLE] = NAME_APPLE,
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = NAME_RING_OF_STRENGTH,
     /* Wands */
@@ -93,6 +96,7 @@ static const attack_comp_t melee_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .attack_type = ATTACK_KIND_NONE },
+    [ITEM_APPLE] = { .attack_type = ATTACK_KIND_NONE },
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = { .attack_type = ATTACK_KIND_NONE},
     /* Wands */
@@ -122,6 +126,7 @@ static const attack_comp_t ranged_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .attack_type = ATTACK_KIND_NONE },
+    [ITEM_APPLE] = { .attack_type = ATTACK_KIND_NONE },
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = { .attack_type = ATTACK_KIND_NONE},
     /* Wands */
@@ -151,6 +156,7 @@ static const ammo_comp_t ammo_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .ammo_type = AMMO_NONE },
+    [ITEM_APPLE] = { .ammo_type = AMMO_NONE },
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = { .ammo_type = AMMO_NONE },
     /* Wands */
@@ -179,6 +185,7 @@ static const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .tile = { '%', 0}},
+    [ITEM_APPLE] = { .tile = { '%', PALETTE_GREEN}},
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = { .tile = { 'r', PALETTE_ORANGE}},
     /* Wands */
@@ -189,33 +196,14 @@ static const renderable_comp_t renderable_base[ITEM_KIND_COUNT] = {
     [ITEM_AMULET] = { .tile = { '"', PALETTE_YELLOW}}
 };
 
-static const uint8_t consumable_base[ITEM_KIND_COUNT] = 
+static const consume_method_t consumable_base[ITEM_KIND_COUNT] =
 {
-    [ITEM_NONE] = 0,
-    /* Melee weapons */
-    [ITEM_CLUB] = 0, 
-    [ITEM_SHORT_SWORD] = 0,
-    /* Ranged weapons*/
-    [ITEM_SHORT_BOW] = 0,
-    /* Armour */    
-    [ITEM_LEATHER_ARMOUR] = 0,
-    /* Shields */
-    [ITEM_SHIELD] = 0,
-    /* Ammo */
-    [ITEM_ARROW] = 0,
-    /* Potions */    
-    [ITEM_POTION_OF_HEALING] = 1,
-    /* Scrolls */
+    /* Potions */
+    [ITEM_POTION_OF_HEALING] = CONSUME_METHOD_QUAFF,
     /* Food and drink */
-    [ITEM_BREAD] = 1,
-    /* Rings */
-    [ITEM_RING_OF_STRENGTH] = 0,
-    /* Wands */
-    /* Light sources */
-    /* Keys */
-    [ITEM_KEY] = 0,
-    /* Quest items */
-    [ITEM_AMULET] = 0
+    [ITEM_BREAD] = CONSUME_METHOD_EAT,
+    [ITEM_APPLE] = CONSUME_METHOD_EAT,
+    /* all others default to CONSUME_METHOD_NONE */
 };
 
 static const effect_comp_t effect_base[ITEM_KIND_COUNT] = 
@@ -237,6 +225,7 @@ static const effect_comp_t effect_base[ITEM_KIND_COUNT] =
     /* Scrolls */
     /* Food and drink */
     [ITEM_BREAD] = { .kind = EFFECT_HEAL, .duration = 0, .triggers = TRIGGER_ON_CONSUMED, .stat = { .magnitude = 5, .attribute = ATTRIBUTE_CUR_HP }},
+    [ITEM_APPLE] = { .kind = EFFECT_HEAL, .duration = 0, .triggers = TRIGGER_ON_CONSUMED, .stat = { .magnitude = 2, .attribute = ATTRIBUTE_CUR_HP }},
     /* Rings */
     [ITEM_RING_OF_STRENGTH] = { .kind = EFFECT_STAT_MODIFIER, .duration = 0xFF, .triggers = TRIGGER_ON_EQUIPPED, .stat = { .magnitude = 2, .attribute = ATTRIBUTE_STR }},
     /* Wands */
@@ -268,6 +257,7 @@ static const bool stackable_base[ITEM_KIND_COUNT] =
     [ITEM_POTION_OF_HEALING] = true,
     /* Food and drink */
     [ITEM_BREAD]             = true,
+    [ITEM_APPLE]             = true,
     /* Rings */
     [ITEM_RING_OF_STRENGTH]  = false,
     /* Keys */
@@ -281,6 +271,7 @@ static const bool stackable_base[ITEM_KIND_COUNT] =
  ****************************************************/
 static void add_pickable(entity_id_t entity);
 static void add_stackable(entity_id_t entity, uint8_t quantity);
+static void add_consumable(entity_id_t entity, consume_method_t method);
 static void add_equippable(entity_id_t entity, equippable_slot_t slot);
 static void melee_add(entity_id_t entity, const attack_comp_t *attack);
 static void ranged_add(entity_id_t entity, const attack_comp_t *attack);
@@ -342,9 +333,9 @@ entity_id_t item_system_create(item_kind_t kind, uint8_t quantity)
     }
 
     /* If item is consumable add consumable component e.g. bread, potions*/
-    if (consumable_base[kind] == 1)
+    if (consumable_base[kind] != CONSUME_METHOD_NONE)
     {
-        entity_set_component(id, COMPONENT_CONSUMABLE);
+        add_consumable(id, consumable_base[kind]);
     }
 
     /* All items have a name component*/
@@ -361,6 +352,14 @@ static void add_pickable(entity_id_t entity)
     util_assert(entity < MAX_ENTITIES);
     util_assert(!entity_has_component(entity, COMPONENT_PICKABLE));
     entity_set_component(entity, COMPONENT_PICKABLE);
+}
+
+static void add_consumable(entity_id_t entity, consume_method_t method)
+{
+    util_assert(entity < MAX_ENTITIES);
+    util_assert(!entity_has_component(entity, COMPONENT_CONSUMABLE));
+    g.consumable_components[entity].method = method;
+    entity_set_component(entity, COMPONENT_CONSUMABLE);
 }
 
 static void add_stackable(entity_id_t entity, uint8_t quantity)

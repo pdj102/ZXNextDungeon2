@@ -56,6 +56,7 @@
     /* Scrolls */
     /* Food and drink */
     NAME_BREAD,
+    NAME_APPLE,
     /* Rings */
     NAME_RING_OF_STRENGTH,
     /* Wands */
