@@ -578,17 +578,16 @@
 
 > *Goal: eat food to restore health.*
 
-* [🚧] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe,  etc.
-* [🚧] Implement a consumable e.g. bread
-* [🚧] Implement a variety of consumables
-* [🚧] Add player `eat` command - select from inventory and can only eat consumables with consumable method eat
-* [🚧] Implement `consumption_system`
-* [🚧] Implement `consumable_system_try_consume()`. On consume emit EVENT_CONSUMED
-* [🚧] Implement `item_decrement_or_destroy`
-* [🚧] Update the event system handle_event() to trigger `TRIGGER_ON_CONSUMED` effects 
-* [🚧] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
+* [✅] Implement `consumable` component with `consumable_method_t` e.g.eat, quaffe,  etc.
+* [✅] Implement a variety of consumables e.g. bread, apple
+* [✅] Add player `eat` command - select from inventory and can only eat consumables with consumable method eat
+* [✅] Implement `consumption_system`
+* [✅] Implement `consumable_system_try_consume()`. On consume emit EVENT_CONSUMED
+* [✅] Implement `item_decrement_or_destroy`
+* [✅] Update the event system handle_event() to trigger `TRIGGER_ON_CONSUMED` effects 
+* [✅] Add message log system for food `consumed` events e.g. (“You eat the apple.”)
 
-[ ] *End result: Player can restore health by eating food and food is destroyed.*
+[✅] *End result: Player can restore health by eating food and food is destroyed.*
 
 ---
 

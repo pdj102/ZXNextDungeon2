@@ -29,6 +29,7 @@
 #include "game/ui_info.h"
 
 #include "core/util.h"
+#include "core/zxnext.h"
 
 #define STACK_HIGH 0xbfff
 #define STACK_LOW (STACK_HIGH - 0x10E)
@@ -44,18 +45,17 @@ int main(void)
     static uint16_t stack = 0;
     static uint8_t *p = (uint8_t *)STACK_LOW; 
 
+    /* ===== One time initialization ==== */
     zxnext_init();        
-
     ui_init();
     
     util_info("Debug build");
     text_printf(&g.msg_win, "\nGlobal size:%U", sizeof(g));
     util_assert(sizeof(g) < 0x3FFF);
 
+    /* ===== Start a new game ==== */
     new_game();
-
     camera_update();
-
     ui_update();
 
     ui_info_set_context(UI_CONTEXT_NORMAL);
@@ -64,7 +64,7 @@ int main(void)
     while ((uintptr_t)p < STACK_HIGH)
         *p++ = STACK_PATTERN;    
   
-
+    /* ===== Main game loop ==== */
     while (1)
     {
         system_timer_update();
@@ -74,6 +74,21 @@ int main(void)
         ui_update();
 
         world_process_entity_destructions();
+
+        /* Check for game over: player died or won */
+        creature_status_t player_status = g.creature_components[g.player.id].status;
+        if (player_status == CREATURE_STATUS_DEAD || player_status == CREATURE_STATUS_WON)
+        {
+            text_printf(&g.msg_win, "\nPress any key to start a new game...");
+            ui_update();
+            key_press();
+
+            /* TODO: Character generation goes here */
+
+            new_game();
+            camera_update();
+            ui_update();
+        }
 
         #ifndef NDEBUG
         stack = stack_max_usage();
