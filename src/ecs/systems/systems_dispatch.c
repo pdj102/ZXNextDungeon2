@@ -467,6 +467,37 @@ bool system_effect_has_condition(entity_id_t entity, condition_id_t condition)
     return result;
 }
 
+uint8_t system_effect_get_count(entity_id_t entity)
+{
+    uint8_t mmu6_current_bank;
+    uint8_t result;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+
+    result = effect_system_get_count(entity);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+
+    return result;
+}
+
+bool system_effect_get_at(entity_id_t entity, uint8_t index,
+                           effect_t *out_effect, entity_id_t *out_source)
+{
+    uint8_t mmu6_current_bank;
+    bool result;
+
+    mmu6_current_bank = ZXN_READ_MMU6();
+    ZXN_WRITE_MMU6(PAGE_EFFECT_SYSTEM_1);
+
+    result = effect_system_get_at(entity, index, out_effect, out_source);
+
+    ZXN_WRITE_MMU6(mmu6_current_bank);
+
+    return result;
+}
+
 /* Equipment System */
  void system_equipment_init(void)
  {

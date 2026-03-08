@@ -24,5 +24,6 @@
  * public function prototypes
  ***************************************************/
 entity_id_t player_factory_create(void);
+void player_factory_show(void);
 
 #endif // PLAYER_FACTORY_H

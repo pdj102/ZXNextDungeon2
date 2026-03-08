@@ -85,6 +85,9 @@ void system_effect_process_entity_turn(entity_id_t entity);
 void system_effect_cleanup_entity(entity_id_t source);
 int8_t system_effect_mod_sum(entity_id_t actor, attribute_t attribute);
 bool system_effect_has_condition(entity_id_t entity, condition_id_t condition);
+uint8_t system_effect_get_count(entity_id_t entity);
+bool system_effect_get_at(entity_id_t entity, uint8_t index,
+                           effect_t *out_effect, entity_id_t *out_source);
 
 /* Event System */
 void system_event_init(void);

@@ -100,6 +100,23 @@ bool effect_system_has_condition(entity_id_t entity, condition_id_t condition)
     return (g.condition_components[entity].conditions & CONDITION_MASK(condition)) != 0;
 }
 
+uint8_t effect_system_get_count(entity_id_t entity)
+{
+    return g.active_effect_components->head[entity];
+}
+
+bool effect_system_get_at(entity_id_t entity, uint8_t index,
+                           effect_t *out_effect, entity_id_t *out_source)
+{
+    uint8_t slot;
+    if (index >= g.active_effect_components->head[entity])
+        return false;
+    slot        = g.active_effect_components->active_stack[entity][index];
+    *out_effect = g.active_effect_components->slots[entity][slot].effect;
+    *out_source = g.active_effect_components->slots[entity][slot].source;
+    return true;
+}
+
  /***************************************************
  * private functions
  ***************************************************/

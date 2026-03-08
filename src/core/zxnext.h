@@ -29,7 +29,8 @@
 
 #define KEY_LESSTHAN         60
 #define KEY_GREATERTHAN      62
-#define KEY_U_E         69
+#define KEY_U_C             67
+#define KEY_U_E             69
 
 #define PALETTE_GREYSCALE   0b00000000
 #define PALETTE_WHITE       0b00010000

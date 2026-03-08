@@ -18,6 +18,7 @@
 
 #include "ecs/systems/systems_dispatch.h"
 #include "ecs/systems/PAGE46/player_actions.h"
+#include "ecs/systems/PAGE46/player_factory.h"
 #include "ecs/systems/PAGE46/player_inventory.h"
 #include "ecs/systems/PAGE46/player_progression.h"
 
@@ -117,6 +118,9 @@ void player_system_update(void)
         case KEY_GREATERTHAN: /* '>' down */
             player_action_climb();
             break;
+        case KEY_U_C: /* 'C' display player stats */
+            player_factory_show();
+            break;            
         case KEY_U_E: /* 'E' eat */
             player_inventory_eat();
             break;

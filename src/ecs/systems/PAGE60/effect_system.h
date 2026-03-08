@@ -69,5 +69,17 @@ int8_t effect_system_attribute_mod_sum(entity_id_t actor, attribute_t attribute)
  */
 bool effect_system_has_condition(entity_id_t entity, condition_id_t condition);
 
+/*
+ * @brief Returns the number of active effects on the entity (0-MAX_ACTIVE_EFFECTS)
+ */
+uint8_t effect_system_get_count(entity_id_t entity);
+
+/*
+ * @brief Copies the effect and source at the given index into caller-provided outputs
+ * @return false if index >= count
+ */
+bool effect_system_get_at(entity_id_t entity, uint8_t index,
+                           effect_t *out_effect, entity_id_t *out_source);
+
 
 #endif // EFFECT_SYSTEM_H
