@@ -46,17 +46,16 @@ void new_game(void)
 {
     event_t event;
 
+    /* Reset global state */
     entity_init();
     component_init();
     systems_init();
-
-    g.player.id = ENTITY_ID_INVALID;
-    g.quest_item_spawned = 0;
-    entity_id_t e = system_monster_create_player();
-    util_assert(e != ENTITY_ID_INVALID);
-
     map_init();
     camera_init();
+    g.quest_item_spawned = 0;
+
+    /* Create player */
+    system_player_factory_create();
 
      /* Emit initial teleport event to place player in the world and trigger map generation */    
     event.source = ENTITY_ID_INVALID;

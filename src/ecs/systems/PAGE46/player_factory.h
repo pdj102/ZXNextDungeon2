@@ -1,15 +1,14 @@
 /**
- * @file player_system.h
+ * @file player_factory.h
  * @author Paul Johnson
- * @brief 
- 
+ * @brief Player character creation and initialisation
  * 
  * @copyright Copyright (c) 2025
  * 
  */
 
-#ifndef PLAYER_SYSTEM_H
-#define PLAYER_SYSTEM_H
+#ifndef PLAYER_FACTORY_H
+#define PLAYER_FACTORY_H
 
 #include "ecs/systems/PAGE42/event_system.h"
 
@@ -24,7 +23,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_system_handle_event(const event_t *event);
-void player_system_update(void);
+entity_id_t player_factory_create(void);
 
-#endif // PLAYER_SYSTEM_H
+#endif // PLAYER_FACTORY_H

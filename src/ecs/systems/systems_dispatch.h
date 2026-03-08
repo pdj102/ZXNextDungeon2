@@ -129,10 +129,10 @@ bool system_perception_try_check(entity_id_t creature);
 bool system_perception_can_see_target(entity_id_t ai, entity_id_t target);
 
 /* Player System */
-void system_player_init(void);
+entity_id_t system_player_factory_create(void);
 void system_player_handle_event(const event_t *event);
+entity_id_t player_factory_create(void);
 void system_player_update(void);
-void system_player_progression_create(void);
 
 /* Stats system */
 void system_stats_init(void);

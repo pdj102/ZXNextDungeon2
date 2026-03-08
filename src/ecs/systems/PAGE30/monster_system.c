@@ -325,9 +325,6 @@ entity_id_t monster_system_create_player( void )
     g.player.id = id;
     entity_set_component(id, COMPONENT_PLAYER);
 
-    /* Initialise progression state (XP, level) */
-    system_player_progression_create();
-
     /* Add slots component */
     add_slots(id);    
 

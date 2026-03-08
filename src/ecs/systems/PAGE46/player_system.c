@@ -32,9 +32,6 @@
  /***************************************************
  * public functions
  ***************************************************/
-void player_system_init(void)
-{
-}
 
 void player_system_handle_event(const event_t *event)
 {

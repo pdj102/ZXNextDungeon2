@@ -72,7 +72,6 @@
     system_event_init();
     system_monster_init();
     system_movement_init();
-    system_player_init();
     system_stats_init();
     system_timer_init();
  }
@@ -787,19 +786,6 @@ void system_name_print(text_window_t *win, name_id_t name)
     ZXN_WRITE_MMU6(current_bank);     
 }
 
-/* Player System */
-void system_player_init(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
-
-    player_system_init();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-}
-
 /* Perception system */
 bool system_perception_try_check(entity_id_t creature)
 {
@@ -831,6 +817,22 @@ bool system_perception_can_see_target(entity_id_t ai, entity_id_t target)
     return result; 
 }
 
+/* Player System */
+entity_id_t system_player_factory_create(void)
+{
+    uint8_t current_bank;
+    entity_id_t player;
+
+    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
+    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */    
+
+    player = player_factory_create();
+
+    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
+
+    return player;
+}
+
 void system_player_handle_event(const event_t *event)
 {
     uint8_t current_bank;
@@ -851,18 +853,6 @@ void system_player_update(void)
     ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */
 
     player_system_update();
-
-    ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
-}
-
-void system_player_progression_create(void)
-{
-    uint8_t current_bank;
-
-    current_bank = ZXN_READ_MMU6();     /* Remember current bank*/
-    ZXN_WRITE_MMU6(PAGE_PLAYER_SYSTEM);  /* Page player system into 8k MMU slot 6 */
-
-    player_progression_create();
 
     ZXN_WRITE_MMU6(current_bank);       /* restore previous bank */
 }

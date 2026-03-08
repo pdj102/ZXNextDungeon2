@@ -73,13 +73,6 @@ static const player_class_progression_t s_class_progression[PLAYER_CLASS_COUNT] 
 /***************************************************
  * public functions
  ***************************************************/
-void player_progression_create(void)
-{
-    g.player.xp    = 0;
-    g.player.level = 1;
-    g.player.class = PLAYER_CLASS_FIGHTER;
-}
-
 void player_progression_on_kill(const event_t *event)
 {
     entity_id_t killed = event->target;

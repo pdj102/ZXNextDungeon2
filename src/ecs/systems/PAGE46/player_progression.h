@@ -15,7 +15,6 @@
 /***************************************************
  * public function prototypes
  ***************************************************/
-void player_progression_create(void);
 void player_progression_on_kill(const event_t *event);
 
 #endif // PLAYER_PROGRESSION_H
