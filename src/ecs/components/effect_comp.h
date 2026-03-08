@@ -46,6 +46,7 @@ typedef enum {
     ATTRIBUTE_SPEED,
     ATTRIBUTE_ATTACK,
     ATTRIBUTE_DAMAGE,
+    ATTRIBUTE_HUNGER,
 
     ATTRIBUTE_COUNT
 } attribute_t;

@@ -86,6 +86,8 @@ void player_system_update(void)
         return;
     }
 
+    player_hunger_update();
+
     ui_info_set_context(UI_CONTEXT_NORMAL);
 
     key = key_press();

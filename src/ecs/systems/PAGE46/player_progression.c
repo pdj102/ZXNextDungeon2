@@ -14,8 +14,11 @@
 #include "ecs/entity.h"
 #include "ecs/components/components.h"
 
+#include "ecs/systems/systems_dispatch.h"
+
 #include "game/global_state.h"
 
+#include "core/text.h"
 #include "core/util.h"
 
 
@@ -63,11 +66,11 @@ static const uint16_t s_level_xp[] = {
 /* Per-class stat gains applied on each level-up */
 typedef struct {
     int8_t hp_per_level;
-    /* int8_t mp_per_level; — add when mana is introduced */
+    int8_t mp_per_level;
 } player_class_progression_t;
 
 static const player_class_progression_t s_class_progression[PLAYER_CLASS_COUNT] = {
-    [PLAYER_CLASS_FIGHTER] = { .hp_per_level = 10 },
+    [PLAYER_CLASS_FIGHTER] = { .hp_per_level = 10, .mp_per_level = 0 },
 };
 
 /***************************************************
@@ -101,7 +104,34 @@ void player_progression_on_kill(const event_t *event)
         const player_class_progression_t *prog = &s_class_progression[g.player.class];
         g.player.level++;
         g.destructible_components[g.player.id].max_hp += prog->hp_per_level;
+        g.player.max_mp += (uint8_t)prog->mp_per_level;
+        if (g.player.cur_mp > g.player.max_mp) g.player.cur_mp = g.player.max_mp;
+        g.player.proficiency_bonus = (uint8_t)((g.player.level - 1u) / 4u + 2u); /* L1-4=+2, L5-8=+3, L9-10=+4 */
         text_printf(&g.msg_win, "\nLevel up! You are now level %d.", (uint16_t)g.player.level);
+    }
+
+    g.stat_win.dirty = 1;
+}
+
+void player_hunger_update(void)
+{
+    if (g.player.hunger > 0)
+        g.player.hunger--;
+
+    switch (g.player.hunger)
+    {
+        case HUNGER_VERY_HUNGRY:
+            text_printf(&g.msg_win, "\nYou are very hungry!");
+            break;
+        case HUNGER_HUNGRY:
+            text_printf(&g.msg_win, "\nYou are hungry.");
+            break;
+        case 0:
+            text_printf(&g.msg_win, "\nYou are starving!");
+            system_damage_try_take_damage(g.player.id, ENTITY_ID_INVALID, 1, DAMAGE_NONE);
+            break;
+        default:
+            break;
     }
 
     g.stat_win.dirty = 1;

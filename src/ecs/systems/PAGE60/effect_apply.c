@@ -39,11 +39,36 @@ void apply_effect(entity_id_t target, entity_id_t source, const effect_t *effect
     switch (effect->kind)
     {
         case EFFECT_DAMAGE:
-            system_damage_try_take_damage(target, source, effect->stat.magnitude, DAMAGE_NONE);
+            if (effect->stat.attribute == ATTRIBUTE_CUR_MP)
+            {
+                if (entity_has_component(target, COMPONENT_PLAYER))
+                {
+                    int8_t drain = effect->stat.magnitude;
+                    if (drain > (int8_t)g.player.cur_mp) drain = (int8_t)g.player.cur_mp;
+                    g.player.cur_mp -= (uint8_t)drain;
+                    g.stat_win.dirty = 1;
+                }
+            }
+            else
+            {
+                system_damage_try_take_damage(target, source, effect->stat.magnitude, DAMAGE_NONE);
+            }
             break;
         case EFFECT_HEAL:
-            system_healing_try_take_healing(target, effect->stat.magnitude, HEALING_KIND_HP);
-            text_printf(&g.msg_win, "\nYou feel better!"); // TODO remove
+            if (effect->stat.attribute == ATTRIBUTE_HUNGER)
+            {
+                if (entity_has_component(target, COMPONENT_PLAYER))
+                {
+                    g.player.hunger += (uint8_t)effect->stat.magnitude;
+                    if (g.player.hunger > HUNGER_MAX) g.player.hunger = HUNGER_MAX;
+                    g.stat_win.dirty = 1;
+                }
+            }
+            else
+            {
+                system_healing_try_take_healing(target, effect->stat.magnitude, HEALING_KIND_HP);
+                text_printf(&g.msg_win, "\nYou feel better!"); // TODO remove
+            }
             break;
         case EFFECT_STAT_MODIFIER:
         /* Not applicable - stats are not directly modified by effects. */

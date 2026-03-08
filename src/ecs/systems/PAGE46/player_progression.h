@@ -16,5 +16,6 @@
  * public function prototypes
  ***************************************************/
 void player_progression_on_kill(const event_t *event);
+void player_hunger_update(void);
 
 #endif // PLAYER_PROGRESSION_H

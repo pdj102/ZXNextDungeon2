@@ -227,8 +227,7 @@ static int8_t calc_player_attack_bonus(attack_ctx_t *c)
     */
 
 
-    /* TODO proficiency bonus */
-    proficiency = 0;
+    proficiency = (int8_t)g.player.proficiency_bonus;
 
     weapon_to_hit = c->weapon_comp->hit_mod;
 

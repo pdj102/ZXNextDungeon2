@@ -162,6 +162,17 @@ void update_resource_stats(void)
     text_printf(&g.stat_win, "\nXP:%u\n", g.player.xp);
     text_printf(&g.stat_win, "LVL:%u\n", g.player.level);
 
+    /* Hunger state — only show a label when not at full satiation */
+    if (g.player.hunger == 0)
+        text_printf(&g.stat_win, "%PRSTARVING%PW\n");
+    else if (g.player.hunger <= HUNGER_VERY_HUNGRY)
+        text_printf(&g.stat_win, "%PRV.Hungry%PW\n");
+    else if (g.player.hunger <= HUNGER_HUNGRY)
+        text_printf(&g.stat_win, "%PYHungry%PW\n");
+    else if (g.player.hunger <= HUNGER_SATISFIED)
+        text_printf(&g.stat_win, "Hungry\n");
+    /* else satiated — show nothing */
+
 }
 
 /*
@@ -198,4 +209,5 @@ void update_game_info(void)
     text_set_cursor(&g.stat_win, 0, 18);
 
     text_printf(&g.stat_win, "Depth: %u\n", g.depth);
+    text_printf(&g.stat_win, "Gold:  %u\n", g.player.gold);
 }

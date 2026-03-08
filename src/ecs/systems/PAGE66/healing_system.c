@@ -47,14 +47,29 @@ int8_t healing_system_try(entity_id_t target, int8_t amount, healing_kind_t kind
         /* clamp amount to max hp */
         if (g.destructible_components[target].cur_hp + amount > g.destructible_components[target].max_hp)
         {
-            amount = g.destructible_components[target].max_hp - g.destructible_components[target].cur_hp; 
+            amount = g.destructible_components[target].max_hp - g.destructible_components[target].cur_hp;
         }
 
         g.destructible_components[target].cur_hp += amount;
         event.value = (uint8_t)amount;
         system_event_emit(&event);
     }
-    
+    else if (kind == HEALING_KIND_MP)
+    {
+        if (!entity_has_component(target, COMPONENT_PLAYER))
+            return 0;
+
+        event.type = EVENT_HEALED_MP;
+
+        /* clamp amount to max mp */
+        if ((uint8_t)amount > g.player.max_mp - g.player.cur_mp)
+            amount = (int8_t)(g.player.max_mp - g.player.cur_mp);
+
+        g.player.cur_mp += (uint8_t)amount;
+        event.value = (uint8_t)amount;
+        system_event_emit(&event);
+    }
+
     return 1;
 }
  

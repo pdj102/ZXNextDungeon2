@@ -35,9 +35,14 @@ entity_id_t player_factory_create(void)
     g.player.id = e;
 
     /* ==== initialise a default player ===*/
-    g.player.xp    = 0;
-    g.player.level = 1;
-    g.player.class = PLAYER_CLASS_FIGHTER;
+    g.player.xp                = 0;
+    g.player.level             = 1;
+    g.player.class             = PLAYER_CLASS_FIGHTER;
+    g.player.gold              = 0;
+    g.player.hunger            = HUNGER_MAX;  /* Start satiated */
+    g.player.cur_mp            = 0;
+    g.player.max_mp            = 0;
+    g.player.proficiency_bonus = 2;           /* D&D 5e: +2 at level 1 */
 
     return e;
 }
